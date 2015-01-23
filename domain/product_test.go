@@ -1,16 +1,45 @@
 package domain
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 )
 
 func TestProductStructure(t *testing.T) {
-	expected := `{"name":"Product1","id":1,"description":` +
-		`"A prodcut","slug":"product1","meta_description":"..."` +
-		`,"meta_keywords":"...","available_on":"2013-10-10T00:00:00Z"` +
-		`,"shipping_category_id":1}`
+	expected := `{"id":1,"name":"Product1","description":` +
+		`"A prodcut","price":"10.0","display_price":"$10.0"` +
+		`,"available_on":"2013-10-10T00:00:00Z","slug":` +
+		`"product1","meta_description":"...","meta_keywords"` +
+		`:"...","shipping_category_id":1,"taxon_ids":[1,10]` +
+		`,"total_on_hand":10,"has_variants":true,"master":` +
+		`{"id":1,"name":"prod1","price":"10,0","sku":"A1233"` +
+		`,"weight":0,"height":0,"width":0,"depth":0,"is_master"` +
+		`:false,"slug":"","description":"","cost_price":""` +
+		`,"display_price":"","options_text":"","in_stock"` +
+		`:false,"is_backorderable":false,"total_on_hand":0` +
+		`,"is_destroyed":false,"option_values":null,"images":` +
+		`null,"track_inventory":false},"variants":[{"id":2` +
+		`,"name":"prod1","price":"10,0","sku":"B1233","weight"` +
+		`:0,"height":0,"width":0,"depth":0,"is_master":false,` +
+		`"slug":"","description":"","cost_price":"","display_price"` +
+		`:"","options_text":"","in_stock":false,"is_backorderable"` +
+		`:false,"total_on_hand":0,"is_destroyed":false,` +
+		`"option_values":null,"images":null,"track_inventory"` +
+		`:false},{"id":3,"name":"prod1","price":"10,0","sku":` +
+		`"A1234","weight":0,"height":0,"width":0,"depth":0,` +
+		`"is_master":false,"slug":"","description":"","cost_price"` +
+		`:"","display_price":"","options_text":"","in_stock"` +
+		`:false,"is_backorderable":false,"total_on_hand":0,` +
+		`"is_destroyed":false,"option_values":null,"images"` +
+		`:null,"track_inventory":false}],"option_types":[{"id"` +
+		`:90,"name":"option 90","presentation":"pres1","position"` +
+		`:99},{"id":91,"name":"option 91","presentation":` +
+		`"pres2","position":100}],"product_properties"` +
+		`:[{"id":1,"product_id":1,"property_id":91,"value"` +
+		`:"prop1","property_name":"name_prop1"}],"classifications"` +
+		`:[{"taxon_id":1,"position":20,"taxon":{"id":1,"parent_id"` +
+		`:1,"taxonomy_id":0,"position":0,"name":"taxon1",` +
+		`"pretty_name":"","permalink":"","taxons":null}}]}`
 
 	someTime := time.Date(2013, 10, 10, 0, 0, 0, 0, time.UTC)
 
@@ -84,14 +113,5 @@ func TestProductStructure(t *testing.T) {
 		},
 	}
 
-	jsonData, err := json.Marshal(&product)
-	if err != nil {
-		t.Errorf("An error has ocurred", err.Error())
-	}
-
-	jsonString := string(jsonData)
-
-	if jsonString != expected {
-		t.Errorf("Mismacth: ", jsonString)
-	}
+	AssertEqualJson(t, product, expected)
 }
