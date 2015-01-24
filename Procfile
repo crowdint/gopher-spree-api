@@ -1,1 +1,1 @@
-api: cd interfaces/api && go get && fresh
+api: cd interfaces/web && go get && fresh
