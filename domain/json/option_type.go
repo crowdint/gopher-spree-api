@@ -1,4 +1,4 @@
-package domain
+package json
 
 type OptionType struct {
 	ID           int64  `json:"id"`

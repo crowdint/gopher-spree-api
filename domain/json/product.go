@@ -1,8 +1,6 @@
-package domain
+package json
 
-import (
-	"time"
-)
+import "time"
 
 type Product struct {
 	ID                 int64             `json:"id" sql:"id"`

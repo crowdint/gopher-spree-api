@@ -1,4 +1,4 @@
-package domain
+package json
 
 type ProductProperty struct {
 	ID           int64  `json:"id"`
@@ -7,3 +7,4 @@ type ProductProperty struct {
 	Value        string `json:"value"`
 	PropertyName string `json:"property_name"`
 }
+

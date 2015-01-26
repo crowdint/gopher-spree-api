@@ -1,4 +1,4 @@
-package domain
+package json
 
 type Classification struct {
 	TaxonId  int64 `json:"taxon_id"`
