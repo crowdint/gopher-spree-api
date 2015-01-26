@@ -14,6 +14,6 @@ func AssertEqualJson(t *testing.T, got interface{}, expected string) {
 	jsonString := string(jsonData)
 
 	if jsonString != expected {
-		t.Errorf("Mismacth: ", jsonString)
+		t.Errorf("Mismacth: %s : %s", jsonString, expected)
 	}
 }
