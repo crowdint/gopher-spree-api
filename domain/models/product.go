@@ -2,6 +2,11 @@ package models
 
 import "time"
 
+type ProductRepository interface {
+	Store(Product)
+	FindById(id int64)
+}
+
 type Product struct {
 	ID                 int64
 	Name               string
