@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestProductRepo(t *testing.T) {
+func TestDB(t *testing.T) {
 	os.Setenv(dbUrlEnvName, "dbname=spree_dev sslmode=disable")
 
 	err := InitDB()
@@ -18,18 +18,5 @@ func TestProductRepo(t *testing.T) {
 		t.Error("Database helper not initialized")
 	}
 
-	defer spree_db.Close()
-
-	productRepo := NewProductRepo()
-
-	product := productRepo.FindById(1)
-
-	if product.Name == "" {
-		t.Error("No name found")
-	}
-
-	if product.CreatedAt.IsZero() {
-		t.Error("No created_at found")
-	}
-
+	spree_db.Close()
 }
