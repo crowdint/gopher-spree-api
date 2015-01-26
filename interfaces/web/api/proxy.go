@@ -21,10 +21,9 @@ func init() {
 	}
 
 	proxy = httputil.NewSingleHostReverseProxy(spreeUrl)
-
 }
 
-func Router() gin.HandlerFunc {
+func Proxy() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		if c.Request.Method != "GET" || isMissingURL(c.Request.URL) {
