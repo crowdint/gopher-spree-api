@@ -4,6 +4,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"os"
+	"regexp"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +27,7 @@ func init() {
 func Router() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		if c.Request.Method != "GET" || missingHandler(c.Request.URL) {
+		if c.Request.Method != "GET" || isMissingURL(c.Request.URL) {
 			proxy.ServeHTTP(c.Writer, c.Request)
 		}
 
@@ -34,8 +35,18 @@ func Router() gin.HandlerFunc {
 	}
 }
 
-func missingHandler(url *url.URL) bool {
-	// TODO: Determine which GET routes should be proxied to Spree
-	// In essence endpoints not yet implemented in Go.
-	return false
+func isMissingURL(url *url.URL) bool {
+	for _, pattern := range regexRoutesPattern() {
+		if match, _ := regexp.MatchString(pattern, url.Path); match {
+			return false
+		}
+	}
+	return true
+}
+
+func regexRoutesPattern() []string {
+	return []string{
+		`/api/products(/*)`, // products index
+		`/api/products/\d`,  // products show
+	}
 }
