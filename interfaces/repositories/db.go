@@ -1,13 +1,15 @@
-package interfaces
+package repositories
 
 import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
-
-	"github.com/gopher-spree-api/domain/models"
 )
 
 var spree_db *gorm.DB
+
+type DbRepo struct {
+	dbHandler *gorm.DB
+}
 
 func InitDB() error {
 	db, err := gorm.Open("postgres", "dbname=spree_dev sslmode=disable")
@@ -29,26 +31,4 @@ func InitDB() error {
 	spree_db = &db
 
 	return nil
-}
-
-type DbRepo struct {
-	dbHandler *gorm.DB
-}
-
-type ProductRepo DbRepo
-
-func NewProductRepo() *ProductRepo {
-	return &ProductRepo{
-		dbHandler: spree_db,
-	}
-}
-
-func (this *ProductRepo) FindById(id int64) *models.Product {
-	product := &models.Product{
-		ID: id,
-	}
-
-	this.dbHandler.First(product)
-
-	return product
 }

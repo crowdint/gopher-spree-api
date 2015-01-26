@@ -3,7 +3,6 @@ package models
 import "time"
 
 type ProductRepository interface {
-	Store(Product)
 	FindById(id int64)
 }
 

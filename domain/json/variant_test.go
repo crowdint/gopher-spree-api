@@ -1,4 +1,4 @@
-package domain
+package json
 
 import "testing"
 
