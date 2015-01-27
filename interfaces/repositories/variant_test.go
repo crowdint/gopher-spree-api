@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"os"
+	"reflect"
 	"testing"
 )
 
@@ -28,6 +29,16 @@ func TestVariantRepo(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	t.Error(variants)
+	nv := len(variants)
+
+	if nv < 1 {
+		t.Errorf("Invalid number of rows: %d", nv)
+	}
+
+	temp := reflect.ValueOf(variants[0]).Type().String()
+
+	if temp != "models.Variant" {
+		t.Error("Invalid type", t)
+	}
 
 }
