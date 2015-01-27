@@ -13,7 +13,7 @@ type Asset struct {
   AttachmentHeight        int64     `json:"attachment_height"`
   Alt                     string    `json:"alt"`
   ViewableType            string    `json:"viewable_type"`
-  ViewableId              int64     `json:"viewable_id"`
+  ViewableID              int64     `json:"viewable_id"`
   MiniUrl                 string    `json:"mini_url"`
   SmallUrl                string    `json:"small_url"`
   ProductUrl              string    `json:"product_url"`
