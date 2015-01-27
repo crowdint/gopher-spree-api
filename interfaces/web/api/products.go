@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	products := Router().Group("/api/products")
+	products := API().Group("/products")
 	{
 		products.GET("", ProductsIndex)
 		products.GET("/", ProductsIndex)

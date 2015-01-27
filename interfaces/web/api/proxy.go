@@ -15,13 +15,13 @@ var (
 )
 
 func init() {
-	spreeUrl, err := url.Parse(os.Getenv("SPREE_URL"))
+	spreeURL, err := url.Parse(os.Getenv("SPREE_URL"))
 
 	if err != nil {
 		panic(err)
 	}
 
-	proxy = httputil.NewSingleHostReverseProxy(spreeUrl)
+	proxy = httputil.NewSingleHostReverseProxy(spreeURL)
 }
 
 func Proxy() gin.HandlerFunc {
