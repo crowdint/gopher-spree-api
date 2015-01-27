@@ -33,4 +33,11 @@ func TestProductRepo(t *testing.T) {
 		t.Error("No created_at found")
 	}
 
+	productSlice, err := productRepo.List()
+	if err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	t.Error(productSlice)
+
 }

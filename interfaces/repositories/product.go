@@ -21,3 +21,33 @@ func (this *ProductRepo) FindById(id int64) *models.Product {
 
 	return product
 }
+
+func (this *ProductRepo) List() ([]models.Product, error) {
+	product := &models.Product{}
+
+	rows, err := this.dbHandler.Find(product).Rows()
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := ParseAllRows(&models.Product{}, rows)
+	if err != nil {
+		return nil, err
+	}
+
+	productSlice := this.toProductSlice(result)
+
+	return productSlice, nil
+}
+
+func (this *ProductRepo) toProductSlice(result []interface{}) []models.Product {
+	productSlice := []models.Product{}
+
+	for _, element := range result {
+		product := element.(models.Product)
+
+		productSlice = append(productSlice, product)
+	}
+
+	return productSlice
+}

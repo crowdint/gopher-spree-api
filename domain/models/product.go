@@ -16,11 +16,11 @@ type Product struct {
 	MetaDescription    string
 	MetaKeyWords       string
 	TaxCategoryID      int64
+	ShippingCategoryId int64
 	CreatedAt          time.Time
 	UpdatedAt          time.Time
 	Promotionable      bool
 	MetaTitle          string
-	ShippingCategoryId int64
 }
 
 func (this Product) TableName() string {
