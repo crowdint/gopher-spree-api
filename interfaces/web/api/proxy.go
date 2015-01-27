@@ -1,7 +1,6 @@
 package api
 
 import (
-	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"os"
@@ -35,11 +34,7 @@ func Proxy() gin.HandlerFunc {
 }
 
 func shouldRedirectToOrigin(c *gin.Context) bool {
-	return c.Request.Method != "GET" || isNotJSONRequest(c.Request.Header) || isMissingURL(c.Request.URL)
-}
-
-func isNotJSONRequest(header http.Header) bool {
-	return header.Get("Content-Type") != "application/json"
+	return c.Request.Method != "GET" || isMissingURL(c.Request.URL)
 }
 
 func isMissingURL(url *url.URL) bool {
