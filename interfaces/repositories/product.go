@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain/models"
 )
 
 type ProductRepo DbRepo
