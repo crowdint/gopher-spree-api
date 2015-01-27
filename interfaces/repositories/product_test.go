@@ -7,6 +7,7 @@ import (
 
 func TestProductRepo(t *testing.T) {
 	os.Setenv(dbUrlEnvName, "dbname=spree_dev sslmode=disable")
+	os.Setenv(dbmsEnvName, "postgres")
 
 	err := InitDB()
 

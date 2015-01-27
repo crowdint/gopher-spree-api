@@ -17,18 +17,20 @@ type DbRepo struct {
 
 const (
 	dbUrlEnvName       = "DATABASE_URL"
+	dbmsEnvName        = "DBMS_NAME"
 	maxIdleConnections = "MAX_IDLE_CONNS"
 	maxOpenConnections = "MAX_OPEN_CONNS"
 )
 
 func InitDB() error {
 	dbUrl := os.Getenv(dbUrlEnvName)
+	dbmsName := os.Getenv(dbmsEnvName)
 
 	if dbUrl == "" {
 		return errors.New(dbUrlEnvName + " environment variable not found")
 	}
 
-	db, err := gorm.Open("postgres", "dbname=spree_dev sslmode=disable")
+	db, err := gorm.Open(dbmsName, dbUrl)
 	if err != nil {
 		return err
 	}
