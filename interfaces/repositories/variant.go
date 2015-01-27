@@ -1,8 +1,6 @@
 package repositories
 
 import (
-	"database/sql"
-
 	"github.com/gopher-spree-api/domain/models"
 )
 
@@ -14,7 +12,7 @@ func NewVariantRepo() *VariantRepo {
 	}
 }
 
-func (this *VariantRepo) FindByProductId(productId int64) ([]interface{}, error) {
+func (this *VariantRepo) FindByProductId(productId int64) ([]models.Variant, error) {
 	variant := &models.Variant{
 		ProductId: productId,
 	}
@@ -24,34 +22,24 @@ func (this *VariantRepo) FindByProductId(productId int64) ([]interface{}, error)
 		return nil, err
 	}
 
-	return ParseAllRows(&models.Variant{}, rows)
-}
-
-func (this *VariantRepo) mapToVariants(rows *sql.Rows) ([]models.Variant, error) {
-	variantSlice := []models.Variant{}
-
-	cols, err := rows.Columns()
+	result, err := ParseAllRows(&models.Variant{}, rows)
 	if err != nil {
 		return nil, err
 	}
 
-	rawResult := make([]interface{}, len(cols))
-
-	dest := make([]interface{}, len(cols)) // A temporary interface{} slice
-
-	for i, _ := range rawResult {
-		dest[i] = &rawResult[i] // Put pointers to each string in the interface slice
-	}
-
-	for rows.Next() {
-		rows.Scan(dest...)
-
-		newVariant := models.Variant{}
-
-		ParseRow(rawResult, &newVariant)
-
-		variantSlice = append(variantSlice, newVariant)
-	}
+	variantSlice := this.toVariantSlice(result)
 
 	return variantSlice, nil
+}
+
+func (this *VariantRepo) toVariantSlice(result []interface{}) []models.Variant {
+	variantSlice := []models.Variant{}
+
+	for _, element := range result {
+		variant := element.(models.Variant)
+
+		variantSlice = append(variantSlice, variant)
+	}
+
+	return variantSlice
 }

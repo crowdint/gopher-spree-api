@@ -5,21 +5,6 @@ import (
 	"reflect"
 )
 
-func ParseRow(row []interface{}, target interface{}) {
-	s := reflect.ValueOf(target).Elem()
-	for i := 0; i < s.NumField(); i++ {
-		if row[i] == nil {
-			continue
-		}
-
-		f := s.Field(i)
-
-		strVal := reflect.ValueOf(row[i]).Convert(f.Type())
-
-		f.Set(strVal)
-	}
-}
-
 func ParseAllRows(kind interface{}, rows *sql.Rows) ([]interface{}, error) {
 	arr := make([]interface{}, 0)
 
@@ -41,22 +26,27 @@ func ParseAllRows(kind interface{}, rows *sql.Rows) ([]interface{}, error) {
 	for rows.Next() {
 		rows.Scan(dest...)
 
-		newElement := reflect.New(s.Type()).Elem()
+		newElement := ParseRow(rawResult, s.Type())
 
-		for i := 0; i < newElement.NumField(); i++ {
-			if rawResult[i] == nil {
-				continue
-			}
-
-			f := newElement.Field(i)
-
-			strVal := reflect.ValueOf(rawResult[i]).Convert(f.Type())
-
-			f.Set(strVal)
-		}
-
-		arr = append(arr, newElement.Interface())
+		arr = append(arr, newElement)
 	}
 
 	return arr, nil
+}
+
+func ParseRow(row []interface{}, t reflect.Type) interface{} {
+	newElement := reflect.New(t).Elem()
+
+	for i := 0; i < newElement.NumField(); i++ {
+		if row[i] == nil {
+			continue
+		}
+
+		f := newElement.Field(i)
+
+		strVal := reflect.ValueOf(row[i]).Convert(f.Type())
+
+		f.Set(strVal)
+	}
+	return newElement.Interface()
 }
