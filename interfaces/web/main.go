@@ -9,6 +9,5 @@ import (
 
 func main() {
 	repositories.InitDB()
-	api.Router().Use(api.Proxy())
 	api.Router().Run("0.0.0.0:" + os.Getenv("PORT"))
 }
