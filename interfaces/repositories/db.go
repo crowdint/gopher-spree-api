@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-var spree_db *gorm.DB
+var Spree_db *gorm.DB
 
 type DbRepo struct {
 	dbHandler *gorm.DB
@@ -47,7 +47,7 @@ func InitDB() error {
 
 	db.SingularTable(true)
 
-	spree_db = &db
+	Spree_db = &db
 
 	return nil
 }

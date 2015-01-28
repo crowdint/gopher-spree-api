@@ -1,41 +1,41 @@
 package repositories
 
 import (
-  "os"
-  "reflect"
-  "testing"
+	"os"
+	"reflect"
+	"testing"
 )
 
-func TestPriceRepo (t *testing.T) {
-  os.Setenv(dbUrlEnvName, "dbname=spree_dev sslmode=disable")
-  os.Setenv(dbEngineEnvName, "postgres")
+func TestPriceRepo(t *testing.T) {
+	os.Setenv(dbUrlEnvName, "dbname=spree_dev sslmode=disable")
+	os.Setenv(dbEngineEnvName, "postgres")
 
-  err := InitDB()
+	err := InitDB()
 
-  if err != nil {
-    t.Error("An error has ocurred", err)
-  }
+	if err != nil {
+		t.Error("An error has ocurred", err)
+	}
 
-  if spree_db == nil {
-    t.Error("Database helper not initialized")
-  }
+	if Spree_db == nil {
+		t.Error("Database helper not initialized")
+	}
 
-  defer spree_db.Close()
+	defer Spree_db.Close()
 
-  priceRepo := NewPriceRepo()
+	priceRepo := NewPriceRepo()
 
-  price := priceRepo.GetByVariant(26)
+	price := priceRepo.GetByVariant(26)
 
-  temp := reflect.ValueOf(price).Type().String()
+	temp := reflect.ValueOf(price).Type().String()
 
-  if temp != "models.Price" {
-    t.Error("Invalid type", t)
-  }
+	if temp != "models.Price" {
+		t.Error("Invalid type", t)
+	}
 
-  currency := price.Currency
+	currency := price.Currency
 
-  if currency != "USD" {
-    t.Error("Wrong currency price", t)
-  }
+	if currency != "USD" {
+		t.Error("Wrong currency price", t)
+	}
 
 }

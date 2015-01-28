@@ -8,7 +8,7 @@ type ProductRepo DbRepo
 
 func NewProductRepo() *ProductRepo {
 	return &ProductRepo{
-		dbHandler: spree_db,
+		dbHandler: Spree_db,
 	}
 }
 
@@ -17,7 +17,7 @@ func (this *ProductRepo) FindById(id int64) (*models.Product, error) {
 		Id: id,
 	}
 
-  query := this.dbHandler.First(product)
+	query := this.dbHandler.First(product)
 
 	return product, query.Error
 }
@@ -25,7 +25,7 @@ func (this *ProductRepo) FindById(id int64) (*models.Product, error) {
 func (this *ProductRepo) List() ([]*models.Product, error) {
 	var products []*models.Product
 
-  query := this.dbHandler.Find(&products)
+	query := this.dbHandler.Find(&products)
 
 	return products, query.Error
 }

@@ -15,9 +15,9 @@ func TestDB(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	if spree_db == nil {
+	if Spree_db == nil {
 		t.Error("Database helper not initialized")
 	}
 
-	spree_db.Close()
+	Spree_db.Close()
 }

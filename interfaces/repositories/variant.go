@@ -8,7 +8,7 @@ type VariantRepo DbRepo
 
 func NewVariantRepo() *VariantRepo {
 	return &VariantRepo{
-		dbHandler: spree_db,
+		dbHandler: Spree_db,
 	}
 }
 

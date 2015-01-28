@@ -16,11 +16,11 @@ func TestVariantRepo(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	if spree_db == nil {
+	if Spree_db == nil {
 		t.Error("Database helper not initialized")
 	}
 
-	defer spree_db.Close()
+	defer Spree_db.Close()
 
 	variantRepo := NewVariantRepo()
 

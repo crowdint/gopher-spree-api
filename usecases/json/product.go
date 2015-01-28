@@ -1,4 +1,4 @@
-package usecases
+package json
 
 import (
 	"github.com/crowdint/gopher-spree-api/domain/json"
@@ -18,8 +18,11 @@ func NewProductInteractor() *ProductInteractor {
 	}
 }
 
-func (this *ProductInteractor) GetMergedResponse() []*json.Product {
-	productModelSlice := this.ProductRepo.List()
+func (this *ProductInteractor) GetMergedResponse() ([]*json.Product, error) {
+	productModelSlice, err := this.ProductRepo.List()
+	if err != nil {
+		return []*json.Product{}, err
+	}
 
 	productJsonSlice := this.modelsToJsonProductsSlice(productModelSlice)
 
@@ -29,7 +32,7 @@ func (this *ProductInteractor) GetMergedResponse() []*json.Product {
 
 	this.mergeVariants(productJsonSlice, variantsMap)
 
-	return productJsonSlice
+	return productJsonSlice, nil
 }
 
 func (this *ProductInteractor) getIdSlice(productSlice []*models.Product) []int64 {

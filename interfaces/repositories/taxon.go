@@ -8,7 +8,7 @@ type TaxonRepo DbRepo
 
 func NewTaxonRepo() *TaxonRepo {
 	return &TaxonRepo{
-		dbHandler: spree_db,
+		dbHandler: Spree_db,
 	}
 }
 

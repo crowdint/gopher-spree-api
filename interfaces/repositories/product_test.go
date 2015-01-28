@@ -16,11 +16,11 @@ func TestProductRepo(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	if spree_db == nil {
+	if Spree_db == nil {
 		t.Error("Database helper not initialized")
 	}
 
-	defer spree_db.Close()
+	defer Spree_db.Close()
 
 	productRepo := NewProductRepo()
 
@@ -34,9 +34,9 @@ func TestProductRepo(t *testing.T) {
 		t.Error("No created_at found")
 	}
 
-  if err != nil {
-    t.Error("dbHandler error:", err)
-  }
+	if err != nil {
+		t.Error("dbHandler error:", err)
+	}
 
 	productSlice, err := productRepo.List()
 
@@ -52,7 +52,7 @@ func TestProductRepo(t *testing.T) {
 		t.Error("Invalid type", t)
 	}
 
-  if err != nil {
-    t.Error("dbHandler error:", err)
-  }
+	if err != nil {
+		t.Error("dbHandler error:", err)
+	}
 }

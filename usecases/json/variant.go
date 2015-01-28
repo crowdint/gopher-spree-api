@@ -1,4 +1,4 @@
-package usecases
+package json
 
 import (
 	"github.com/crowdint/gopher-spree-api/domain/json"
