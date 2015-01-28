@@ -1,0 +1,5 @@
+SPREE_URL:       http://localhost:5100
+SPREE_NS:        store
+
+DATABASE_URL:    postgres://localhost/spree_dev?sslmode=disable
+DATABASE_ENGINE: postgres
