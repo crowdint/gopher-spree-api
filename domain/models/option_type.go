@@ -3,7 +3,7 @@ package models
 import "time"
 
 type OptionType struct {
-  ID            int64
+  Id            int64
   Name          string
   Presentation  string
   Position      int64

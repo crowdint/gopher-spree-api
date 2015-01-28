@@ -14,7 +14,7 @@ func NewTaxonRepo() *TaxonRepo {
 
 func (this *TaxonRepo) FindById(id int64) *models.Taxon {
 	taxon := &models.Taxon{
-		ID: id,
+		Id: id,
 	}
 
 	this.dbHandler.First(taxon)

@@ -7,7 +7,7 @@ type ProductRepository interface {
 }
 
 type Product struct {
-	ID                 int64
+	Id                 int64
 	Name               string
 	Description        string
 	AvailableOn        time.Time

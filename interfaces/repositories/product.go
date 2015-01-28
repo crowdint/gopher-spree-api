@@ -14,7 +14,7 @@ func NewProductRepo() *ProductRepo {
 
 func (this *ProductRepo) FindById(id int64) *models.Product {
 	product := &models.Product{
-		ID: id,
+		Id: id,
 	}
 
 	this.dbHandler.First(product)

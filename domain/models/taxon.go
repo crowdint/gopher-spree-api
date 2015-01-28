@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Taxon struct {
-  ID              int64
+  Id              int64
   ParentId        int64
   Position        int64
   Name            string
