@@ -33,6 +33,7 @@ func TestAuthenticationWhenProxied(t *testing.T) {
 }
 
 func TestAuthenticationWithToken(t *testing.T) {
+	t.Skip("TestAuthenticationWithToken: Implement database connection")
 	req, _ := http.NewRequest("GET", "/products", nil)
 	req.Header.Set(SPREE_TOKEN_HEADER, "spree123")
 	w := httptest.NewRecorder()
