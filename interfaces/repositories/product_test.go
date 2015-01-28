@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"os"
+	"reflect"
 	"testing"
 )
 
@@ -38,6 +39,15 @@ func TestProductRepo(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	t.Error(productSlice)
+	nv := len(productSlice)
 
+	if nv < 1 {
+		t.Errorf("Invalid number of rows: %d", nv)
+	}
+
+	temp := reflect.ValueOf(productSlice[0]).Type().String()
+
+	if temp != "models.Product" {
+		t.Error("Invalid type", t)
+	}
 }
