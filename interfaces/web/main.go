@@ -8,6 +8,11 @@ import (
 )
 
 func main() {
-	repositories.InitDB()
+	err := repositories.InitDB()
+
+	if err != nil {
+		panic(err)
+	}
+
 	api.Router().Run("0.0.0.0:" + os.Getenv("PORT"))
 }
