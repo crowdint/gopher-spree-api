@@ -37,3 +37,7 @@ type User struct {
 	UnlockToken         string
 	UpdatedAt           time.Time
 }
+
+func (this User) TableName() string {
+	return "spree_users"
+}

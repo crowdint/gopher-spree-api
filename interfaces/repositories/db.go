@@ -64,6 +64,10 @@ func getIntegerOrDefault(value string, def int) int {
 	return number
 }
 
-func (this *DbRepo) FindBy(model interface{}, attrs attributes) error {
-	return this.dbHandler.Where(attrs).First(model).Error
+func NewDatabaseRepository() *DbRepo {
+	return &DbRepo{spree_db}
+}
+
+func (this *DbRepo) FindBy(model interface{}, attrs map[string]interface{}) error {
+	return this.dbHandler.First(model, attrs).Error
 }
