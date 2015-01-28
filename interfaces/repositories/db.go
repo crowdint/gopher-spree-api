@@ -59,3 +59,7 @@ func getIntegerOrDefault(value string, def int) int {
 	}
 	return number
 }
+
+func (this *DbRepo) FindBy(model interface{}, attrs attributes) error {
+	return this.dbHandler.Where(attrs).First(model).Error
+}
