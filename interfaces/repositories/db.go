@@ -1,12 +1,12 @@
 package repositories
 
 import (
-	"github.com/jinzhu/gorm"
-	_ "github.com/lib/pq"
-
 	"errors"
 	"os"
 	"strconv"
+
+	"github.com/jinzhu/gorm"
+	_ "github.com/lib/pq"
 )
 
 var Spree_db *gorm.DB
@@ -35,6 +35,10 @@ func InitDB() error {
 	}
 
 	db, err := gorm.Open(dbEngine, dbUrl)
+
+    dbLog, _ := strconv.ParseBool(os.Getenv("DATABASE_DEBUG"))
+	db.LogMode(dbLog)
+
 	if err != nil {
 		return err
 	}
