@@ -12,20 +12,20 @@ func NewProductRepo() *ProductRepo {
 	}
 }
 
-func (this *ProductRepo) FindById(id int64) *models.Product {
+func (this *ProductRepo) FindById(id int64) (*models.Product, error) {
 	product := &models.Product{
 		Id: id,
 	}
 
-	this.dbHandler.First(product)
+  query := this.dbHandler.First(product)
 
-	return product
+	return product, query.Error
 }
 
-func (this *ProductRepo) List() []*models.Product {
+func (this *ProductRepo) List() ([]*models.Product, error) {
 	var products []*models.Product
 
-	this.dbHandler.Find(&products)
+  query := this.dbHandler.Find(&products)
 
-	return products
+	return products, query.Error
 }

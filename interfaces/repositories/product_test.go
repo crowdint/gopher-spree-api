@@ -24,7 +24,7 @@ func TestProductRepo(t *testing.T) {
 
 	productRepo := NewProductRepo()
 
-	product := productRepo.FindById(1)
+	product, err := productRepo.FindById(1)
 
 	if product.Name == "" {
 		t.Error("No name found")
@@ -34,7 +34,11 @@ func TestProductRepo(t *testing.T) {
 		t.Error("No created_at found")
 	}
 
-	productSlice := productRepo.List()
+  if err != nil {
+    t.Error("dbHandler error:", err)
+  }
+
+	productSlice, err := productRepo.List()
 
 	nv := len(productSlice)
 
@@ -47,4 +51,8 @@ func TestProductRepo(t *testing.T) {
 	if temp != "models.Product" {
 		t.Error("Invalid type", t)
 	}
+
+  if err != nil {
+    t.Error("dbHandler error:", err)
+  }
 }
