@@ -2,6 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+
+	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
 func init() {
@@ -14,7 +16,13 @@ func init() {
 }
 
 func ProductsIndex(c *gin.Context) {
-	c.JSON(200, []struct{}{})
+	products, err := repositories.NewProductRepo().List()
+
+	if err != nil {
+		c.JSON(422, gin.H{"error": err.Error()})
+	} else {
+		c.JSON(200, products)
+	}
 }
 
 func ProductsShow(c *gin.Context) {
