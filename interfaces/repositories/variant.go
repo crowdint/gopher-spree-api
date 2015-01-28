@@ -12,34 +12,11 @@ func NewVariantRepo() *VariantRepo {
 	}
 }
 
-func (this *VariantRepo) FindByProductId(productId int64) ([]models.Variant, error) {
-	variant := &models.Variant{
-		ProductId: productId,
-	}
+func (this *VariantRepo) FindByProductIds(productIds []int64) []*models.Variant {
 
-	rows, err := this.dbHandler.Find(variant).Rows()
-	if err != nil {
-		return nil, err
-	}
+	var variants []*models.Variant
 
-	result, err := ParseAllRows(&models.Variant{}, rows)
-	if err != nil {
-		return nil, err
-	}
+	this.dbHandler.Where("product_id in (?)", productIds).Find(&variants)
 
-	variantSlice := this.toVariantSlice(result)
-
-	return variantSlice, nil
-}
-
-func (this *VariantRepo) toVariantSlice(result []interface{}) []models.Variant {
-	variantSlice := []models.Variant{}
-
-	for _, element := range result {
-		variant := element.(models.Variant)
-
-		variantSlice = append(variantSlice, variant)
-	}
-
-	return variantSlice
+	return variants
 }

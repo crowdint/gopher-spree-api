@@ -22,32 +22,10 @@ func (this *ProductRepo) FindById(id int64) *models.Product {
 	return product
 }
 
-func (this *ProductRepo) List() ([]models.Product, error) {
-	product := &models.Product{}
+func (this *ProductRepo) List() []*models.Product {
+	var products []*models.Product
 
-	rows, err := this.dbHandler.Find(product).Rows()
-	if err != nil {
-		return nil, err
-	}
+	this.dbHandler.Find(&products)
 
-	result, err := ParseAllRows(&models.Product{}, rows)
-	if err != nil {
-		return nil, err
-	}
-
-	productSlice := this.toProductSlice(result)
-
-	return productSlice, nil
-}
-
-func (this *ProductRepo) toProductSlice(result []interface{}) []models.Product {
-	productSlice := []models.Product{}
-
-	for _, element := range result {
-		product := element.(models.Product)
-
-		productSlice = append(productSlice, product)
-	}
-
-	return productSlice
+	return products
 }

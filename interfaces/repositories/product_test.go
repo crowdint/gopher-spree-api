@@ -34,10 +34,7 @@ func TestProductRepo(t *testing.T) {
 		t.Error("No created_at found")
 	}
 
-	productSlice, err := productRepo.List()
-	if err != nil {
-		t.Error("An error has ocurred", err)
-	}
+	productSlice := productRepo.List()
 
 	nv := len(productSlice)
 
@@ -45,7 +42,7 @@ func TestProductRepo(t *testing.T) {
 		t.Errorf("Invalid number of rows: %d", nv)
 	}
 
-	temp := reflect.ValueOf(productSlice[0]).Type().String()
+	temp := reflect.ValueOf(*productSlice[0]).Type().String()
 
 	if temp != "models.Product" {
 		t.Error("Invalid type", t)

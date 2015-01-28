@@ -24,10 +24,7 @@ func TestTaxonRepo(t *testing.T) {
 
 	taxonRepo := NewTaxonRepo()
 
-	taxons, err := taxonRepo.List()
-	if err != nil {
-		t.Error("An error has ocurred", err)
-	}
+	taxons := taxonRepo.List()
 
 	nv := len(taxons)
 
@@ -35,7 +32,7 @@ func TestTaxonRepo(t *testing.T) {
 		t.Errorf("Invalid number of rows: %d", nv)
 	}
 
-	temp := reflect.ValueOf(taxons[0]).Type().String()
+	temp := reflect.ValueOf(*taxons[0]).Type().String()
 
 	if temp != "models.Taxon" {
 		t.Error("Invalid type", t)

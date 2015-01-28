@@ -24,10 +24,7 @@ func TestVariantRepo(t *testing.T) {
 
 	variantRepo := NewVariantRepo()
 
-	variants, err := variantRepo.FindByProductId(1)
-	if err != nil {
-		t.Error("An error has ocurred", err)
-	}
+	variants := variantRepo.FindByProductIds([]int64{1, 2, 3})
 
 	nv := len(variants)
 
@@ -35,7 +32,7 @@ func TestVariantRepo(t *testing.T) {
 		t.Errorf("Invalid number of rows: %d", nv)
 	}
 
-	temp := reflect.ValueOf(variants[0]).Type().String()
+	temp := reflect.ValueOf(*variants[0]).Type().String()
 
 	if temp != "models.Variant" {
 		t.Error("Invalid type", t)
