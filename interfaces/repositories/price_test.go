@@ -6,7 +6,7 @@ import (
   "testing"
 )
 
-func TestAssetRepo(t *testing.T) {
+func TestPriceRepo (t *testing.T) {
   os.Setenv(dbUrlEnvName, "dbname=spree_dev sslmode=disable")
   os.Setenv(dbEngineEnvName, "postgres")
 
@@ -22,19 +22,20 @@ func TestAssetRepo(t *testing.T) {
 
   defer spree_db.Close()
 
-  assetRepo := NewAssetRepo()
+  priceRepo := NewPriceRepo()
 
-  assets := assetRepo.FindByViewableIds([]int64{11})
+  price := priceRepo.GetByVariant(26)
 
-  na := len(assets)
+  temp := reflect.ValueOf(price).Type().String()
 
-  if na < 1 {
-    t.Error("Invalid number of assets: %d", na)
-  }
-
-  temp := reflect.ValueOf(*assets[0]).Type().String()
-
-  if temp != "models.Asset" {
+  if temp != "models.Price" {
     t.Error("Invalid type", t)
   }
+
+  currency := price.Currency
+
+  if currency != "USD" {
+    t.Error("Wrong currency price", t)
+  }
+
 }
