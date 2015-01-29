@@ -38,4 +38,9 @@ func TestVariantRepo(t *testing.T) {
 		t.Error("Invalid type", t)
 	}
 
+	v1 := variants[0]
+
+	if v1.Price == "" {
+		t.Error("Invalid price")
+	}
 }

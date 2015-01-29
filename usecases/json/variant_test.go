@@ -24,8 +24,19 @@ func TestVariantInteractor_GetJsonVariantsMap(t *testing.T) {
 
 	nvariants := len(variantMap)
 
-	if nvariants != 3 {
+	if nvariants < 1 {
 		t.Errorf("Wrong number of records %d", nvariants)
+	}
+
+	varray1 := variantMap[1]
+	if len(varray1) < 1 {
+		t.Error("No variants found")
+	}
+
+	v1 := varray1[0]
+
+	if v1.Price == "" {
+		t.Error("Variant has no price")
 	}
 }
 

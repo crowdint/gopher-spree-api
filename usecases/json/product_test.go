@@ -1,6 +1,7 @@
 package json
 
 import (
+	"encoding/json"
 	"testing"
 
 	jsn "github.com/crowdint/gopher-spree-api/domain/json"
@@ -18,7 +19,7 @@ func TestProductInteractor_GetMergedResponse(t *testing.T) {
 
 	productInteractor := NewProductInteractor()
 
-	jsonProductSlice, err := productInteractor.GetMergedResponse()
+	jsonProductSlice, err := productInteractor.GetResponse()
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}
@@ -26,6 +27,15 @@ func TestProductInteractor_GetMergedResponse(t *testing.T) {
 	if len(jsonProductSlice) < 1 {
 		t.Error("Error: Invalid number of rows")
 		return
+	}
+
+	jsonBytes, err := json.Marshal(jsonProductSlice)
+	if err != nil {
+		t.Error("Error: An error has ocurred:", err.Error())
+	}
+
+	if string(jsonBytes) == "" {
+		t.Error("Error: Json string is empty")
 	}
 }
 
@@ -132,16 +142,21 @@ func TestProductInteractor_mergeVariants(t *testing.T) {
 
 	productInteractor.mergeVariants(jsonProductSlice, jsonVariantsMap)
 
-	p2 := jsonProductSlice[1]
+	p2 := jsonProductSlice[0]
 
 	if p2.Variants == nil {
-		t.Error("No variants found")
+		t.Error("Product variants are nil")
+		return
+	}
+
+	if len(p2.Variants) == 0 {
+		t.Error("No product variants found")
 		return
 	}
 
 	v1 := p2.Variants[0]
 
-	if v1.ID != 2 || v1.Name != "variant2" || !v1.IsMaster {
+	if v1.ID != 1 || v1.Name != "variant1" || v1.IsMaster {
 		t.Errorf("Incorrect variant values %d %s %b", v1.ID, v1.Name, v1.IsMaster)
 	}
 }

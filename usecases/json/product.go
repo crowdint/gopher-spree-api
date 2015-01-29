@@ -18,7 +18,7 @@ func NewProductInteractor() *ProductInteractor {
 	}
 }
 
-func (this *ProductInteractor) GetMergedResponse() ([]*json.Product, error) {
+func (this *ProductInteractor) GetResponse() ([]*json.Product, error) {
 	productModelSlice, err := this.ProductRepo.List()
 	if err != nil {
 		return []*json.Product{}, err
@@ -88,6 +88,7 @@ func (this *ProductInteractor) toJson(product *models.Product) *json.Product {
 func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, variantsMap JsonVariantsMap) {
 	for _, product := range productSlice {
 		product.Variants = []json.Variant{}
+		var totalOnHand int64
 
 		variantSlice := variantsMap[product.ID]
 
@@ -98,8 +99,22 @@ func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, varia
 		for _, variant := range variantSlice {
 			if variant.IsMaster {
 				product.Master = *variant
+				product.Price = variant.Price
+			} else {
+				product.Variants = append(product.Variants, *variant)
 			}
-			product.Variants = append(product.Variants, *variant)
+
+			totalOnHand += variant.TotalOnHand
+
+			variant.Description = product.Description
+			variant.Slug = product.Slug
+			variant.Name = product.Name
+		}
+
+		product.TotalOnHand = totalOnHand
+
+		if len(product.Variants) > 0 {
+			product.HasVariants = true
 		}
 	}
 }
