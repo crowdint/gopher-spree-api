@@ -1,7 +1,6 @@
 package json
 
 import (
-	"os"
 	"testing"
 
 	jsn "github.com/crowdint/gopher-spree-api/domain/json"
@@ -10,9 +9,6 @@ import (
 )
 
 func TestProductInteractor_GetMergedResponse(t *testing.T) {
-	os.Setenv(repositories.DbUrlEnvName, "dbname=spree_dev sslmode=disable")
-	os.Setenv(repositories.DbEngineEnvName, "postgres")
-
 	err := repositories.InitDB()
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())

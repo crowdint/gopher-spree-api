@@ -3,10 +3,11 @@ package api
 import (
 	"net/http/httputil"
 	"net/url"
-	"os"
 	"regexp"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/crowdint/gopher-spree-api/configs"
 )
 
 var (
@@ -14,7 +15,7 @@ var (
 )
 
 func init() {
-	spreeURL, err := url.Parse(os.Getenv("SPREE_URL"))
+	spreeURL, err := url.Parse(configs.Get(configs.SPREE_URL))
 
 	if err != nil {
 		panic(err)

@@ -1,15 +1,11 @@
 package repositories
 
 import (
-	"os"
 	"reflect"
 	"testing"
 )
 
 func TestVariantRepo(t *testing.T) {
-	os.Setenv(DbUrlEnvName, "dbname=spree_dev sslmode=disable")
-	os.Setenv(DbEngineEnvName, "postgres")
-
 	err := InitDB()
 
 	if err != nil {
@@ -24,7 +20,10 @@ func TestVariantRepo(t *testing.T) {
 
 	variantRepo := NewVariantRepo()
 
-	variants := variantRepo.FindByProductIds([]int64{1, 2, 3})
+	variants, err := variantRepo.FindByProductIds([]int64{1, 2, 3})
+	if err != nil {
+		t.Error("An error has ocurred", err)
+	}
 
 	nv := len(variants)
 

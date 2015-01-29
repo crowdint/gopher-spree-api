@@ -4,14 +4,10 @@ import (
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 
-	"os"
 	"testing"
 )
 
 func TestVariantInteractor_GetJsonVariantsMap(t *testing.T) {
-	os.Setenv(repositories.DbUrlEnvName, "dbname=spree_dev sslmode=disable")
-	os.Setenv(repositories.DbEngineEnvName, "postgres")
-
 	err := repositories.InitDB()
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())

@@ -1,15 +1,11 @@
 package repositories
 
 import (
-	"os"
 	"reflect"
 	"testing"
 )
 
 func TestAssetRepo(t *testing.T) {
-	os.Setenv(DbUrlEnvName, "dbname=spree_dev sslmode=disable")
-	os.Setenv(DbEngineEnvName, "postgres")
-
 	err := InitDB()
 
 	if err != nil {
