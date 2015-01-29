@@ -8,7 +8,7 @@ type User struct {
 	Id int64
 
 	AuthenticationToken string
-	BillAddress         int64
+	BillAddressId       int64
 	ConfirmationSentAt  time.Time
 	ConfirmationToken   string
 	ConfirmedAt         time.Time
@@ -31,7 +31,7 @@ type User struct {
 	RememberToken       string
 	ResetPasswordSentAt time.Time
 	ResetPasswordToken  string
-	ShipAddress         int64
+	ShipAddressId       int64
 	SignInCount         int64
 	SpreeApiKey         string
 	UnlockToken         string

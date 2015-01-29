@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -39,7 +40,9 @@ func TestAuthenticationWithValidToken(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	dbSpreeToken := "d64f2f5e7a91888ac8b6e010989434552f89fc803e8a71fd"
+	dbSpreeToken := "testUser"
+	repositories.Spree_db.FirstOrCreate(&models.User{}, models.User{SpreeApiKey: dbSpreeToken})
+
 	req, _ := http.NewRequest("GET", "/products", nil)
 	req.Header.Set(SPREE_TOKEN_HEADER, dbSpreeToken)
 	w := httptest.NewRecorder()
