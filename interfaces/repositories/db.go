@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-var spree_db *gorm.DB
+var Spree_db *gorm.DB
 
 type DbRepo struct {
 	dbHandler *gorm.DB
@@ -17,20 +17,24 @@ type DbRepo struct {
 
 const (
 	dbUrlEnvName       = "DATABASE_URL"
-	dbmsEnvName        = "DBMS_NAME"
+	dbEngineEnvName    = "DATABASE_ENGINE"
 	maxIdleConnections = "MAX_IDLE_CONNS"
 	maxOpenConnections = "MAX_OPEN_CONNS"
 )
 
 func InitDB() error {
 	dbUrl := os.Getenv(dbUrlEnvName)
-	dbmsName := os.Getenv(dbmsEnvName)
+	dbEngine := os.Getenv(dbEngineEnvName)
 
 	if dbUrl == "" {
 		return errors.New(dbUrlEnvName + " environment variable not found")
 	}
 
-	db, err := gorm.Open(dbmsName, dbUrl)
+	if dbEngine == "" {
+		return errors.New(dbEngineEnvName + " environment variable not found")
+	}
+
+	db, err := gorm.Open(dbEngine, dbUrl)
 	if err != nil {
 		return err
 	}
@@ -43,7 +47,7 @@ func InitDB() error {
 
 	db.SingularTable(true)
 
-	spree_db = &db
+	Spree_db = &db
 
 	return nil
 }

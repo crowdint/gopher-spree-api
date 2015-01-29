@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Asset struct {
-  ID                    int64
+  Id                    int64
   ViewableId            int64
   ViewableType          string
   AttachmentWidth       int64
@@ -22,3 +22,4 @@ type Asset struct {
 func (this Asset) TableName() string {
   return "spree_assets"
 }
+

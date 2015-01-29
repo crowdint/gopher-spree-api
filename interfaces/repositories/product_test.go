@@ -2,12 +2,13 @@ package repositories
 
 import (
 	"os"
+	"reflect"
 	"testing"
 )
 
 func TestProductRepo(t *testing.T) {
 	os.Setenv(dbUrlEnvName, "dbname=spree_dev sslmode=disable")
-	os.Setenv(dbmsEnvName, "postgres")
+	os.Setenv(dbEngineEnvName, "postgres")
 
 	err := InitDB()
 
@@ -15,15 +16,15 @@ func TestProductRepo(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	if spree_db == nil {
+	if Spree_db == nil {
 		t.Error("Database helper not initialized")
 	}
 
-	defer spree_db.Close()
+	defer Spree_db.Close()
 
 	productRepo := NewProductRepo()
 
-	product := productRepo.FindById(1)
+	product, err := productRepo.FindById(1)
 
 	if product.Name == "" {
 		t.Error("No name found")
@@ -33,4 +34,25 @@ func TestProductRepo(t *testing.T) {
 		t.Error("No created_at found")
 	}
 
+	if err != nil {
+		t.Error("dbHandler error:", err)
+	}
+
+	productSlice, err := productRepo.List()
+
+	nv := len(productSlice)
+
+	if nv < 1 {
+		t.Errorf("Invalid number of rows: %d", nv)
+	}
+
+	temp := reflect.ValueOf(*productSlice[0]).Type().String()
+
+	if temp != "models.Product" {
+		t.Error("Invalid type", t)
+	}
+
+	if err != nil {
+		t.Error("dbHandler error:", err)
+	}
 }

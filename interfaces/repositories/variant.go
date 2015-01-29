@@ -8,16 +8,15 @@ type VariantRepo DbRepo
 
 func NewVariantRepo() *VariantRepo {
 	return &VariantRepo{
-		dbHandler: spree_db,
+		dbHandler: Spree_db,
 	}
 }
 
-func (this *VariantRepo) FindByProductId(productId int64) *models.Variant {
-	variant := &models.Variant{
-		ProductId: productId,
-	}
+func (this *VariantRepo) FindByProductIds(productIds []int64) []*models.Variant {
 
-	this.dbHandler.Find(variant)
+	var variants []*models.Variant
 
-	return variant
+	this.dbHandler.Where("product_id in (?)", productIds).Find(&variants)
+
+	return variants
 }
