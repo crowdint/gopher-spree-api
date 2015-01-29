@@ -2,11 +2,12 @@ package repositories
 
 import (
 	"errors"
-	"os"
 	"strconv"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
+
+	"github.com/crowdint/gopher-spree-api/configs"
 )
 
 var Spree_db *gorm.DB
@@ -15,38 +16,31 @@ type DbRepo struct {
 	dbHandler *gorm.DB
 }
 
-const (
-	dbUrlEnvName       = "DATABASE_URL"
-	dbEngineEnvName    = "DATABASE_ENGINE"
-	maxIdleConnections = "MAX_IDLE_CONNS"
-	maxOpenConnections = "MAX_OPEN_CONNS"
-)
-
 func InitDB() error {
-	dbUrl := os.Getenv(dbUrlEnvName)
-	dbEngine := os.Getenv(dbEngineEnvName)
+	dbUrl := configs.Get(configs.DB_URL)
+	dbEngine := configs.Get(configs.DB_ENGINE)
 
 	if dbUrl == "" {
-		return errors.New(dbUrlEnvName + " environment variable not found")
+		return errors.New(configs.DB_URL + " environment variable not found")
 	}
 
 	if dbEngine == "" {
-		return errors.New(dbEngineEnvName + " environment variable not found")
+		return errors.New(configs.DB_ENGINE + " environment variable not found")
 	}
 
 	db, err := gorm.Open(dbEngine, dbUrl)
 
-	dbLog, _ := strconv.ParseBool(os.Getenv("DATABASE_DEBUG"))
+	dbLog, _ := strconv.ParseBool(configs.Get(configs.DB_DEBUG))
 	db.LogMode(dbLog)
 
 	if err != nil {
 		return err
 	}
 
-	maxIdle := os.Getenv(maxIdleConnections)
+	maxIdle := configs.Get(configs.DB_IDLE_CONNS)
 	db.DB().SetMaxIdleConns(getIntegerOrDefault(maxIdle, 10))
 
-	maxOpen := os.Getenv(maxOpenConnections)
+	maxOpen := configs.Get(configs.DB_OPEN_CONNS)
 	db.DB().SetMaxOpenConns(getIntegerOrDefault(maxOpen, 100))
 
 	db.SingularTable(true)

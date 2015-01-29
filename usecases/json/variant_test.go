@@ -8,13 +8,19 @@ import (
 )
 
 func TestVariantInteractor_GetJsonVariantsMap(t *testing.T) {
-	repositories.InitDB()
+	err := repositories.InitDB()
+	if err != nil {
+		t.Error("Error: An error has ocurred:", err.Error())
+	}
 
 	defer repositories.Spree_db.Close()
 
 	variantInteractor := NewVariantInteractor()
 
-	variantMap := variantInteractor.GetJsonVariantsMap([]int64{1, 2, 3})
+	variantMap, err := variantInteractor.GetJsonVariantsMap([]int64{1, 2, 3})
+	if err != nil {
+		t.Error("Error: An error has ocurred:", err.Error())
+	}
 
 	nvariants := len(variantMap)
 

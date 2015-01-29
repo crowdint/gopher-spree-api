@@ -1,14 +1,10 @@
 package repositories
 
 import (
-	"os"
 	"testing"
 )
 
 func TestDB(t *testing.T) {
-	os.Setenv(dbUrlEnvName, "dbname=spree_dev sslmode=disable")
-	os.Setenv(dbEngineEnvName, "postgres")
-
 	err := InitDB()
 
 	if err != nil {

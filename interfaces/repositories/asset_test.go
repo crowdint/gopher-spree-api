@@ -1,15 +1,11 @@
 package repositories
 
 import (
-	"os"
 	"reflect"
 	"testing"
 )
 
 func TestAssetRepo(t *testing.T) {
-	os.Setenv(dbUrlEnvName, "dbname=spree_dev sslmode=disable")
-	os.Setenv(dbEngineEnvName, "postgres")
-
 	err := InitDB()
 
 	if err != nil {
@@ -30,6 +26,7 @@ func TestAssetRepo(t *testing.T) {
 
 	if nv < 1 {
 		t.Error("Invalid number of assets: %d", nv)
+		return
 	}
 
 	temp := reflect.ValueOf(*assets[0]).Type().String()

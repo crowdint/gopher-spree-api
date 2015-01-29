@@ -1,9 +1,9 @@
 package api
 
 import (
-	"os"
-
 	"github.com/gin-gonic/gin"
+
+	"github.com/crowdint/gopher-spree-api/configs"
 )
 
 var (
@@ -22,7 +22,7 @@ func API() *gin.RouterGroup {
 
 		path := "/api"
 
-		namespace := os.Getenv("SPREE_NS")
+		namespace := configs.Get(configs.SPREE_NS)
 
 		if namespace != "" {
 			path = "/" + namespace + path
