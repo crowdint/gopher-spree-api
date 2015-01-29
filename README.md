@@ -72,7 +72,7 @@ following flags:
 ## Guidelines and project structure
 
 - We try to follow [the clean
-architechture](http://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html) please, raise your hand if you have doubts about it.
+architecture](http://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html) please, raise your hand if you have doubts about it.
 - Some helpful reading for applying it in go can be found
 [here](http://manuel.kiessling.net/2012/09/28/applying-the-clean-architecture-to-go-applications).
 
