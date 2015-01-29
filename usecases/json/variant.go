@@ -50,7 +50,7 @@ func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*models.Va
 func (this *VariantInteractor) toJson(variant *models.Variant) *json.Variant {
 	variantJson := &json.Variant{
 		ID: variant.Id,
-		//Name:
+		//Name: from product
 		Sku:      variant.Sku,
 		Price:    variant.Price,
 		Weight:   variant.Weight,
@@ -58,16 +58,16 @@ func (this *VariantInteractor) toJson(variant *models.Variant) *json.Variant {
 		Width:    variant.Width,
 		Depth:    variant.Depth,
 		IsMaster: variant.IsMaster,
-		//Slug:
-		//Description
+		//Slug: from product
+		//Description: from product
 		TrackInventory: variant.TrackInventory,
 		CostPrice:      variant.CostPrice,
 		//DisplayPrice:
 		//OptionsText:
-		//InStock:
-		//IsBackorderable:
-		//TotalOnHand:
-		//IsDestroyed:
+		InStock:         variant.RealStockItemsCount > 0,
+		IsBackorderable: variant.Backorderable,
+		TotalOnHand:     variant.RealStockItemsCount,
+		IsDestroyed:     !variant.DeletedAt.IsZero(),
 		//OptionValues:
 		//Images:
 	}

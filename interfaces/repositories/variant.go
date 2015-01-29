@@ -14,9 +14,37 @@ func NewVariantRepo() *VariantRepo {
 
 func (this *VariantRepo) FindByProductIds(productIds []int64) ([]*models.Variant, error) {
 
-	var variants []*models.Variant
+	variants := []*models.Variant{}
 
-	query := this.dbHandler.Where("product_id in (?)", productIds).Find(&variants)
+	sqlStr := "SELECT " +
+		"* " +
+		"FROM " +
+		"spree_variants " +
+		"INNER JOIN" +
+		"(SELECT " +
+		"variant_id, " +
+		"SUM(count_on_hand) AS real_stock_items_count, " +
+		"backorderable " +
+		"FROM " +
+		"spree_stock_items " +
+		"GROUP BY " +
+		"variant_id, backorderable) AS si " +
+		"ON " +
+		"si.variant_id = spree_variants.id " +
+		"INNER JOIN " +
+		"(SELECT " +
+		"id as price_id, " +
+		"amount as price " +
+		"FROM " +
+		"spree_prices " +
+		"WHERE " +
+		"currency='USD') as sp " +
+		"ON " +
+		"sp.price_id = spree_variants.id " +
+		"AND " +
+		"spree_variants.product_id IN (?)"
+
+	query := this.dbHandler.Raw(sqlStr, productIds).Scan(&variants)
 
 	return variants, query.Error
 }
