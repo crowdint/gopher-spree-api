@@ -7,8 +7,8 @@ import (
 )
 
 func TestProductRepo(t *testing.T) {
-	os.Setenv(dbUrlEnvName, "dbname=spree_dev sslmode=disable")
-	os.Setenv(dbEngineEnvName, "postgres")
+	os.Setenv(DbUrlEnvName, "dbname=spree_dev sslmode=disable")
+	os.Setenv(DbEngineEnvName, "postgres")
 
 	err := InitDB()
 
@@ -44,6 +44,7 @@ func TestProductRepo(t *testing.T) {
 
 	if nv < 1 {
 		t.Errorf("Invalid number of rows: %d", nv)
+		return
 	}
 
 	temp := reflect.ValueOf(*productSlice[0]).Type().String()

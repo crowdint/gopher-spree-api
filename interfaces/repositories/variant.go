@@ -12,11 +12,11 @@ func NewVariantRepo() *VariantRepo {
 	}
 }
 
-func (this *VariantRepo) FindByProductIds(productIds []int64) []*models.Variant {
+func (this *VariantRepo) FindByProductIds(productIds []int64) ([]*models.Variant, error) {
 
 	var variants []*models.Variant
 
-	this.dbHandler.Where("product_id in (?)", productIds).Find(&variants)
+	query := this.dbHandler.Where("product_id in (?)", productIds).Find(&variants)
 
-	return variants
+	return variants, query.Error
 }

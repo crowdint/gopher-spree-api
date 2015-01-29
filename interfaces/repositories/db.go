@@ -16,22 +16,22 @@ type DbRepo struct {
 }
 
 const (
-	dbUrlEnvName       = "DATABASE_URL"
-	dbEngineEnvName    = "DATABASE_ENGINE"
-	maxIdleConnections = "MAX_IDLE_CONNS"
-	maxOpenConnections = "MAX_OPEN_CONNS"
+	DbUrlEnvName       = "DATABASE_URL"
+	DbEngineEnvName    = "DATABASE_ENGINE"
+	MaxIdleConnections = "MAX_IDLE_CONNS"
+	MaxOpenConnections = "MAX_OPEN_CONNS"
 )
 
 func InitDB() error {
-	dbUrl := os.Getenv(dbUrlEnvName)
-	dbEngine := os.Getenv(dbEngineEnvName)
+	dbUrl := os.Getenv(DbUrlEnvName)
+	dbEngine := os.Getenv(DbEngineEnvName)
 
 	if dbUrl == "" {
-		return errors.New(dbUrlEnvName + " environment variable not found")
+		return errors.New(DbUrlEnvName + " environment variable not found")
 	}
 
 	if dbEngine == "" {
-		return errors.New(dbEngineEnvName + " environment variable not found")
+		return errors.New(DbEngineEnvName + " environment variable not found")
 	}
 
 	db, err := gorm.Open(dbEngine, dbUrl)
@@ -43,10 +43,10 @@ func InitDB() error {
 		return err
 	}
 
-	maxIdle := os.Getenv(maxIdleConnections)
+	maxIdle := os.Getenv(MaxIdleConnections)
 	db.DB().SetMaxIdleConns(getIntegerOrDefault(maxIdle, 10))
 
-	maxOpen := os.Getenv(maxOpenConnections)
+	maxOpen := os.Getenv(MaxOpenConnections)
 	db.DB().SetMaxOpenConns(getIntegerOrDefault(maxOpen, 100))
 
 	db.SingularTable(true)

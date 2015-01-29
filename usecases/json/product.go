@@ -28,7 +28,10 @@ func (this *ProductInteractor) GetMergedResponse() ([]*json.Product, error) {
 
 	productIds := this.getIdSlice(productModelSlice)
 
-	variantsMap := this.VariantInteractor.GetJsonVariantsMap(productIds)
+	variantsMap, err := this.VariantInteractor.GetJsonVariantsMap(productIds)
+	if err != nil {
+		return []*json.Product{}, err
+	}
 
 	this.mergeVariants(productJsonSlice, variantsMap)
 

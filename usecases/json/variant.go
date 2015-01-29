@@ -18,13 +18,16 @@ func NewVariantInteractor() *VariantInteractor {
 
 type JsonVariantsMap map[int64][]*json.Variant
 
-func (this *VariantInteractor) GetJsonVariantsMap(productIds []int64) JsonVariantsMap {
+func (this *VariantInteractor) GetJsonVariantsMap(productIds []int64) (JsonVariantsMap, error) {
 
-	variants := this.Repo.FindByProductIds(productIds)
+	variants, err := this.Repo.FindByProductIds(productIds)
+	if err != nil {
+		return JsonVariantsMap{}, err
+	}
 
 	variantsJson := this.modelsToJsonVariantsMap(variants)
 
-	return variantsJson
+	return variantsJson, nil
 }
 
 func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*models.Variant) JsonVariantsMap {
