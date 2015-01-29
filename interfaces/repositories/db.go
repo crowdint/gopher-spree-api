@@ -36,7 +36,7 @@ func InitDB() error {
 
 	db, err := gorm.Open(dbEngine, dbUrl)
 
-    dbLog, _ := strconv.ParseBool(os.Getenv("DATABASE_DEBUG"))
+	dbLog, _ := strconv.ParseBool(os.Getenv("DATABASE_DEBUG"))
 	db.LogMode(dbLog)
 
 	if err != nil {
@@ -65,7 +65,7 @@ func getIntegerOrDefault(value string, def int) int {
 }
 
 func NewDatabaseRepository() *DbRepo {
-	return &DbRepo{spree_db}
+	return &DbRepo{Spree_db}
 }
 
 func (this *DbRepo) FindBy(model interface{}, attrs map[string]interface{}) error {
