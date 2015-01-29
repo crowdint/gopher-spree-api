@@ -25,7 +25,9 @@ func init() {
 
 func Proxy() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
 		if shouldRedirectToOrigin(c) {
+			c.Set("Proxied", true)
 			proxy.ServeHTTP(c.Writer, c.Request)
 		}
 
