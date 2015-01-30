@@ -17,15 +17,15 @@ const (
 
 var defaultSettings = map[string]string{
 	// Database Settings
-	DB_DEBUG:      getEnvOrDefault(DB_DEBUG, "true"),
+	DB_DEBUG:      getEnvOrDefault(DB_DEBUG, "false"),
 	DB_ENGINE:     getEnvOrDefault(DB_ENGINE, "postgres"),
 	DB_URL:        getEnvOrDefault(DB_URL, "dbname=spree_dev sslmode=disable"),
-	DB_IDLE_CONNS: getEnvOrDefault(DB_IDLE_CONNS, "10"),
-	DB_OPEN_CONNS: getEnvOrDefault(DB_OPEN_CONNS, "100"),
+	DB_IDLE_CONNS: getEnvOrDefault(DB_IDLE_CONNS, "2"),
+	DB_OPEN_CONNS: getEnvOrDefault(DB_OPEN_CONNS, "5"),
 
 	// Spree Settings
 	SPREE_URL: getEnvOrDefault(SPREE_URL, "http://localhost:5100"),
-	SPREE_NS:  getEnvOrDefault(SPREE_NS, "store"),
+	SPREE_NS:  getEnvOrDefault(SPREE_NS, ""),
 }
 
 func Get(key string) string {

@@ -19,11 +19,11 @@ specific configurations, the following variables will override them:
 DATABASE_DEBUG  = true                             # Logging enabled
 DATABASE_ENGINE = postgres                         # Engine name
 DATABASE_URL    = dbname=spree_dev sslmode=disable # Connection string/URL
-MAX_IDLE_CONNS  = 10                               # Max iddle connections
-MAX_OPEN_CONNS  = 100                              # Max open connections
+MAX_IDLE_CONNS  = 2                                # Max iddle connections
+MAX_OPEN_CONNS  = 5                                # Max open connections
 
 # Spree
-SPREE_NAMESPACE = store                            # Mounted at location
+SPREE_NAMESPACE = ''                               # Mounted at location
 SPREE_URL       = http://localhost:5100            # Host and port
 ```
 
