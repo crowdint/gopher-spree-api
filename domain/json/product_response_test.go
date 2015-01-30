@@ -6,7 +6,7 @@ import (
 )
 
 func TestProductResponseStructure(t *testing.T) {
-	expected := `{"products":[],"count":1,"pages":1,"current_page":1}`
+	expected := `{"count":1,"total_count":0,"current_page":1,"per_page":0,"pages":1,"products":[]}`
 
 	productResponse := ProductResponse{
 		Products:    []*Product{},

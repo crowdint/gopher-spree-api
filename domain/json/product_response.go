@@ -1,8 +1,10 @@
 package json
 
 type ProductResponse struct {
-	Products    []*Product `json:"products"`
 	Count       int        `json:"count"`
-	Pages       int        `json:"pages"`
+	TotalCount  int        `json:"total_count"`
 	CurrentPage int        `json:"current_page"`
+	PerPage     int        `json:"per_page"`
+	Pages       int        `json:"pages"`
+	Products    []*Product `json:"products"`
 }
