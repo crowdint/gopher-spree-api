@@ -16,7 +16,7 @@ specific configurations, the following variables will override them:
 
 ```
 # Database
-DATABASE_DEBUG  = false                            # Flag for debugging
+DATABASE_DEBUG  = true                             # Logging enabled
 DATABASE_ENGINE = postgres                         # Engine name
 DATABASE_URL    = dbname=spree_dev sslmode=disable # Connection string/URL
 MAX_IDLE_CONNS  = 2                                # Max iddle connections
