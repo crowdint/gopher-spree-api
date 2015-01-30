@@ -22,6 +22,7 @@ func init() {
 	}
 
 	proxy = httputil.NewSingleHostReverseProxy(spreeURL)
+	routesPattern = regexRoutesPattern()
 }
 
 func Proxy() gin.HandlerFunc {
@@ -41,17 +42,10 @@ func shouldRedirectToOrigin(c *gin.Context) bool {
 }
 
 func isMissingURL(url *url.URL) bool {
-	for _, pattern := range regexRoutesPattern() {
+	for pattern, _ := range routesPattern {
 		if match, _ := regexp.MatchString(pattern, url.Path); match {
 			return false
 		}
 	}
 	return true
-}
-
-func regexRoutesPattern() []string {
-	return []string{
-		`/api/products(/*)`, // products index
-		`/api/products/\d`,  // products show
-	}
 }

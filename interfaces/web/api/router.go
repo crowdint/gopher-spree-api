@@ -38,7 +38,7 @@ func Router() *gin.Engine {
 
 	if router == nil {
 		router = gin.Default()
-		router.Use(Proxy(), Authentication())
+		router.Use(Proxy(), Authentication(), Authorization())
 	}
 
 	return router

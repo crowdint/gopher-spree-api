@@ -25,7 +25,7 @@ func Authentication() gin.HandlerFunc {
 
 		// Return if spree token is not provided
 		if spreeToken == "" {
-			unauthorized(c, "You must specify an API key.")
+			unauthenticated(c, "You must specify an API key.")
 			return
 		}
 
@@ -33,7 +33,7 @@ func Authentication() gin.HandlerFunc {
 		err := repositories.NewDatabaseRepository().FindBy(user, map[string]interface{}{"spree_api_key": spreeToken})
 
 		if err != nil {
-			unauthorized(c, "Invalid API key ("+spreeToken+") specified.")
+			unauthenticated(c, "Invalid API key ("+spreeToken+") specified.")
 			return
 		}
 
@@ -43,7 +43,7 @@ func Authentication() gin.HandlerFunc {
 	}
 }
 
-func unauthorized(c *gin.Context, errMsg string) {
+func unauthenticated(c *gin.Context, errMsg string) {
 	c.JSON(http.StatusUnauthorized, gin.H{"error": errMsg})
 	c.Abort(-1) // If abort index is lower than 0 header is not written
 }
