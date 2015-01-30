@@ -14,11 +14,6 @@ const (
 
 func Authentication() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if proxied, _ := c.Get("Proxied"); proxied == true {
-			c.Next()
-			return
-		}
-
 		spreeToken := getSpreeToken(c)
 
 		// Return if spree token is not provided

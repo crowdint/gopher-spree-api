@@ -4,6 +4,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"regexp"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 
@@ -27,10 +28,15 @@ func init() {
 
 func Proxy() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		if !strings.Contains(c.Request.URL.Path, configs.Get(configs.SPREE_NS)+"/api/") {
+			c.Abort(404)
+			return
+		}
 
 		if shouldRedirectToOrigin(c) {
-			c.Set("Proxied", true)
+			c.Abort(-1)
 			proxy.ServeHTTP(c.Writer, c.Request)
+			return
 		}
 
 		c.Next()
@@ -47,5 +53,6 @@ func isMissingURL(url *url.URL) bool {
 			return false
 		}
 	}
+
 	return true
 }
