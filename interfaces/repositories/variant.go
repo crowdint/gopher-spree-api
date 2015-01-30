@@ -16,33 +16,13 @@ func (this *VariantRepo) FindByProductIds(productIds []int64) ([]*models.Variant
 
 	variants := []*models.Variant{}
 
-	sqlStr := "SELECT " +
-		"* " +
-		"FROM " +
-		"spree_variants " +
-		"INNER JOIN" +
-		"(SELECT " +
-		"variant_id, " +
-		"SUM(count_on_hand) AS real_stock_items_count, " +
-		"backorderable " +
-		"FROM " +
-		"spree_stock_items " +
-		"GROUP BY " +
-		"variant_id, backorderable) AS si " +
-		"ON " +
-		"si.variant_id = spree_variants.id " +
-		"INNER JOIN " +
-		"(SELECT " +
-		"id as price_id, " +
-		"amount as price " +
-		"FROM " +
-		"spree_prices " +
-		"WHERE " +
-		"currency='USD') as sp " +
-		"ON " +
-		"sp.price_id = spree_variants.id " +
-		"AND " +
-		"spree_variants.product_id IN (?)"
+	sqlStr := "select spree_variants.id, sum(count_on_hand) AS real_stock_items_count, spree_stock_items.backorderable, spree_prices.amount price " +
+		"from spree_variants " +
+		"inner join spree_stock_items on spree_variants.id = spree_stock_items.variant_id " +
+		"inner join spree_prices on spree_variants.id = spree_prices.variant_id " +
+		"where spree_prices.currency='USD' " +
+		"AND spree_variants.product_id IN (?) " +
+		"group by spree_variants.id, spree_variants, backorderable, price"
 
 	query := this.dbHandler.Raw(sqlStr, productIds).Scan(&variants)
 

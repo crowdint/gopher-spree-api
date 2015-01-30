@@ -4,10 +4,10 @@ import "testing"
 
 func TestVariantStructure(t *testing.T) {
 	expected := `{"id":1,"name":"var1","sku":"A1234","price":"10.0","weight":11.1,` +
-    `"height":20,"width":21,"depth":23.1,"is_master":true,"slug":"var1",` +
-    `"description":"variant 1","track_inventory":true,"cost_price":"1.9",` +
-    `"display_price":"$10.0","options_text":"opt 1","in_stock":true,"is_backorderable":false,` +
-    `"total_on_hand":90,"is_destroyed":false,"option_values":[],"images":[]}`
+		`"height":20,"width":21,"depth":23.1,"is_master":true,"slug":"var1",` +
+		`"description":"variant 1","track_inventory":true,"cost_price":"1.9",` +
+		`"display_price":"$10.0","options_text":"opt 1","in_stock":true,"is_backorderable":false,` +
+		`"total_on_hand":90,"is_destroyed":false,"option_values":[],"images":[]}`
 
 	variant := Variant{
 		ID:              1,

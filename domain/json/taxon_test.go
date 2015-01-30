@@ -4,8 +4,8 @@ import "testing"
 
 func TestTaxonStructure(t *testing.T) {
 	expected := `{"id":1,"name":"taxon1","pretty_name":"a name","permalink":"http://someurl.com",` +
-  `"parent_id":1,"taxonomy_id":10,"taxons":[{"id":2,"name":"taxon2","pretty_name":"a name",` +
-  `"permalink":"http://someurl.com","parent_id":2,"taxonomy_id":10,"taxons":null}]}`
+		`"parent_id":1,"taxonomy_id":10,"taxons":[{"id":2,"name":"taxon2","pretty_name":"a name",` +
+		`"permalink":"http://someurl.com","parent_id":2,"taxonomy_id":10,"taxons":null}]}`
 
 	taxon := Taxon{
 		ID:         1,
