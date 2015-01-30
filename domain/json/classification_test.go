@@ -5,7 +5,7 @@ import "testing"
 func TestClassificationStructure(t *testing.T) {
 	expected := `{"taxon_id":1,"position":20,"taxon":` +
 		`{"id":1,"name":"taxon","pretty_name":"a name",` +
-    `"permalink":"http://someurl.com","parent_id":1,"taxonomy_id"` +
+		`"permalink":"http://someurl.com","parent_id":1,"taxonomy_id"` +
 		`:10,"taxons":null}}`
 
 	classification := Classification{

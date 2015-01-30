@@ -9,4 +9,3 @@ type Taxon struct {
 	TaxonomyID int64   `json:"taxonomy_id"`
 	Taxons     []Taxon `json:"taxons"`
 }
-
