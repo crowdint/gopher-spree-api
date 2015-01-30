@@ -34,11 +34,14 @@ func TestProductRepo(t *testing.T) {
 		t.Error("dbHandler error:", err)
 	}
 
-	productSlice, err := productRepo.List()
+	productSlice, err := productRepo.List(1, 10)
+	if err != nil {
+		t.Error("dbHandler error:", err)
+	}
 
 	nv := len(productSlice)
 
-	if nv < 1 {
+	if nv > 10 || nv < 1 {
 		t.Errorf("Invalid number of rows: %d", nv)
 		return
 	}
@@ -50,6 +53,15 @@ func TestProductRepo(t *testing.T) {
 	}
 
 	if err != nil {
+		t.Error("dbHandler error:", err)
+	}
+
+	count, err := productRepo.CountAll()
+	if err != nil {
+		t.Error("dbHandler error:", err)
+	}
+
+	if count < 1 {
 		t.Error("dbHandler error:", err)
 	}
 }

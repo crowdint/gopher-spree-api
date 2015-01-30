@@ -18,8 +18,8 @@ func NewProductInteractor() *ProductInteractor {
 	}
 }
 
-func (this *ProductInteractor) GetResponse() ([]*json.Product, error) {
-	productModelSlice, err := this.ProductRepo.List()
+func (this *ProductInteractor) GetResponse(currentPage, perPage int) ([]*json.Product, error) {
+	productModelSlice, err := this.ProductRepo.List(currentPage, perPage)
 	if err != nil {
 		return []*json.Product{}, err
 	}
@@ -65,7 +65,7 @@ func (this *ProductInteractor) toJson(product *models.Product) *json.Product {
 		ID:          product.Id,
 		Name:        product.Name,
 		Description: product.Description,
-		//Price:
+		//Price: from master variant
 		//DisplayPrice:
 		AvailableOn:     product.AvailableOn,
 		Slug:            product.Slug,
@@ -73,10 +73,10 @@ func (this *ProductInteractor) toJson(product *models.Product) *json.Product {
 		MetaKeyWords:    product.MetaDescription,
 		//ShippingCategoryId
 		//TaxonIds
-		//TotalOnHand
-		//HasVariants
-		//Master
-		//Variants
+		//TotalOnHand: from variants
+		//HasVariants: form variants
+		//Master: master variant
+		//Variants: from JsonVariantsMap
 		//OptionTypes
 		//ProductProperties
 		//Classifications
@@ -117,4 +117,8 @@ func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, varia
 			product.HasVariants = true
 		}
 	}
+}
+
+func (this *ProductInteractor) GetTotalCount() (int64, error) {
+	return this.ProductRepo.CountAll()
 }

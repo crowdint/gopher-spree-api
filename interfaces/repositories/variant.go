@@ -16,6 +16,10 @@ func (this *VariantRepo) FindByProductIds(productIds []int64) ([]*models.Variant
 
 	variants := []*models.Variant{}
 
+	if len(productIds) == 0 {
+		return variants, nil
+	}
+
 	sqlStr := "SELECT spree_variants.*, SUM(count_on_hand) AS real_stock_items_count, spree_stock_items.backorderable, spree_prices.amount price " +
 		"FROM spree_variants " +
 		"INNER JOIN spree_stock_items ON spree_variants.id = spree_stock_items.variant_id " +
