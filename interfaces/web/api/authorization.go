@@ -26,24 +26,15 @@ func Authorization() gin.HandlerFunc {
 
 		// Get current action (products.index, products.show, etc).
 		currentAction := getCurrentAction(c.Request.URL)
-		if currentAction == "" {
-			unauthorized(c, 500, "An error occured while getting current action.")
-			return
-		}
 
 		// Check if current user has permissions to perform the action.
 		if !hasPermission(currentUser, currentAction, spreeToken) {
-			unauthorized(c, 401, "You have no permissions to perform this action")
+			unauthorized(c, "You have no permissions to perform this action")
 			return
 		}
 
 		c.Next()
 	}
-}
-
-func unauthorized(c *gin.Context, code int, errMsg string) {
-	c.JSON(code, gin.H{"error": errMsg})
-	c.Abort(-1)
 }
 
 func getCurrentUserRole(currentUser *models.User) *models.Role {

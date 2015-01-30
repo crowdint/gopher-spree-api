@@ -1,6 +1,10 @@
 package api
 
 import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+
 	"github.com/crowdint/gopher-spree-api/configs"
 	"github.com/crowdint/gopher-spree-api/domain/models"
 )
@@ -30,4 +34,9 @@ func hasPermission(user *models.User, action string, args ...interface{}) bool {
 		return permissionFunc.(func(*models.User, ...interface{}) bool)(user, args...)
 	}
 	return false
+}
+
+func unauthorized(c *gin.Context, errMsg string) {
+	c.JSON(http.StatusUnauthorized, gin.H{"error": errMsg})
+	c.Abort(-1)
 }
