@@ -16,7 +16,7 @@ func (this *VariantRepo) FindByProductIds(productIds []int64) ([]*models.Variant
 
 	variants := []*models.Variant{}
 
-	sqlStr := "select spree_variants.id, sum(count_on_hand) AS real_stock_items_count, spree_stock_items.backorderable, spree_prices.amount price " +
+	sqlStr := "select spree_variants.*, sum(count_on_hand) AS real_stock_items_count, spree_stock_items.backorderable, spree_prices.amount price " +
 		"from spree_variants " +
 		"inner join spree_stock_items on spree_variants.id = spree_stock_items.variant_id " +
 		"inner join spree_prices on spree_variants.id = spree_prices.variant_id " +
