@@ -25,14 +25,15 @@ func Authorization() gin.HandlerFunc {
 		}
 
 		// Get current action (products.index, products.show, etc).
-		currentAction := getCurrentAction(c.Request.URL)
+		//currentAction := getCurrentAction(c.Request.URL)
 
-		// Check if current user has permissions to perform the action.
-		if !hasPermission(currentUser, currentAction, spreeToken) {
-			unauthorized(c, "You have no permissions to perform this action")
-			return
-		}
+		//// Check if current user has permissions to perform the action.
+		//if !hasPermission(currentUser, currentAction, spreeToken) {
+		//unauthorized(c, "You have no permissions to perform this action")
+		//return
+		//}
 
+		// Temporary, right now we only have read product endopoints
 		c.Next()
 	}
 }
