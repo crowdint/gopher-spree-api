@@ -23,7 +23,7 @@ MAX_IDLE_CONNS  = 2                                # Max iddle connections
 MAX_OPEN_CONNS  = 5                                # Max open connections
 
 # Spree
-SPREE_NAMESPACE = ''                               # Mounted at location
+SPREE_NAMESPACE = ''                               # Mounted at location (without slashes)
 SPREE_URL       = http://localhost:5100            # Host and port
 ```
 
