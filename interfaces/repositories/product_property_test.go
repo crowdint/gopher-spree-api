@@ -1,13 +1,12 @@
 package repositories
 
 import (
-  "testing"
-  "reflect"
+	"reflect"
+	"testing"
 )
 
-
 func TestProductPropertyRepo(t *testing.T) {
-  err := InitDB()
+	err := InitDB()
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
@@ -17,15 +16,15 @@ func TestProductPropertyRepo(t *testing.T) {
 		t.Error("Database helper not initialized")
 	}
 
-  defer Spree_db.Close()
+	defer Spree_db.Close()
 
-  productPropertyRepo := NewProductPropertyRepo()
+	productPropertyRepo := NewProductPropertyRepo()
 
-  productProperties, err := productPropertyRepo.FindByProductIds([]int64{1,2})
+	productProperties, err := productPropertyRepo.FindByProductIds([]int64{1, 2})
 
-  if err != nil {
-    t.Error("waka")
-  }
+	if err != nil {
+		t.Error("waka")
+	}
 
 	npp := len(productProperties)
 
