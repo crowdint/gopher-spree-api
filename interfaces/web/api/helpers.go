@@ -10,6 +10,8 @@ import (
 	"github.com/crowdint/gopher-spree-api/domain/models"
 )
 
+type params map[string]interface{}
+
 var (
 	routesPattern map[string]string
 	permissions   = map[string]interface{}{
