@@ -13,7 +13,6 @@ func init() {
 		orders.GET("", OrdersIndex)
 		orders.GET("/", OrdersIndex)
 		orders.GET("/:order_number", OrdersShow)
-		orders.GET("/mine", OrdersShow)
 	}
 }
 
