@@ -16,7 +16,7 @@ func TestResponseInteractor(t *testing.T) {
 	defer repositories.Spree_db.Close()
 	interactor := NewResponseInteractor()
 
-	response, err := interactor.GetResponse(2)
+	response, err := interactor.GetResponse(2, 0)
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}

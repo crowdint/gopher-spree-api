@@ -19,14 +19,18 @@ func NewResponseInteractor() *ResponseInteractor {
 	}
 }
 
-func (this *ResponseInteractor) GetResponse(currentPage int) (*json.ProductResponse, error) {
+func (this *ResponseInteractor) GetResponse(currentPage, perPage int) (*json.ProductResponse, error) {
 	if currentPage == 0 {
 		currentPage = 1
 	}
 
-	perPage, err := this.getPerPage(10)
-	if err != nil {
-		return nil, this.getError(err)
+	if perPage == 0 {
+		tmp, err := this.getPerPageDefault(10)
+		if err != nil {
+			return nil, this.getError(err)
+		}
+
+		perPage = int(tmp)
 	}
 
 	totalCount, err := this.ContentInteractor.GetTotalCount()
@@ -44,7 +48,7 @@ func (this *ResponseInteractor) GetResponse(currentPage int) (*json.ProductRespo
 	response := &json.ProductResponse{
 		TotalCount:  int(totalCount),
 		CurrentPage: currentPage,
-		PerPage:     int(perPage),
+		PerPage:     perPage,
 		Pages:       int(pages),
 		Products:    content,
 		Count:       len(content),
@@ -53,7 +57,7 @@ func (this *ResponseInteractor) GetResponse(currentPage int) (*json.ProductRespo
 	return response, nil
 }
 
-func (this *ResponseInteractor) getPerPage(def int64) (int64, error) {
+func (this *ResponseInteractor) getPerPageDefault(def int64) (int64, error) {
 	perPageStr := configs.Get(configs.PER_PAGE)
 
 	if perPageStr == "" {
