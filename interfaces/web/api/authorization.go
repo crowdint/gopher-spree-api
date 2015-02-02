@@ -1,13 +1,17 @@
 package api
 
 import (
-	"net/url"
-	"regexp"
-
 	"github.com/gin-gonic/gin"
 
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+)
+
+var (
+	permissions = map[string]interface{}{
+		"products.index": func(user *models.User, args ...interface{}) bool { return true },
+		"products.show":  func(user *models.User, args ...interface{}) bool { return true },
+	}
 )
 
 func Authorization() gin.HandlerFunc {
@@ -27,7 +31,7 @@ func Authorization() gin.HandlerFunc {
 		}
 
 		// Get current action (products.index, products.show, etc).
-		//currentAction := getCurrentAction(c.Request.URL)
+		//currentAction := action(c.Request.URL)
 
 		//// Check if current user has permissions to perform the action.
 		//if !hasPermission(currentUser, currentAction, spreeToken) {
@@ -40,12 +44,9 @@ func Authorization() gin.HandlerFunc {
 	}
 }
 
-func getCurrentAction(url *url.URL) string {
-	for pattern, action := range routesPattern {
-		if match, _ := regexp.MatchString(pattern, url.Path); match {
-			return action
-		}
+func hasPermission(user *models.User, action string, args ...interface{}) bool {
+	if permissionFunc := permissions[action]; permissionFunc != nil {
+		return permissionFunc.(func(*models.User, ...interface{}) bool)(user, args...)
 	}
-
-	return ""
+	return false
 }
