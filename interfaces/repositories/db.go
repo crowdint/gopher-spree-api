@@ -63,7 +63,7 @@ func NewDatabaseRepository() *DbRepo {
 }
 
 func (this *DbRepo) All(collection interface{}, attrs map[string]interface{}) error {
-  return this.dbHandler.Find(collection, attrs).Error
+	return this.dbHandler.Find(collection, attrs).Error
 }
 
 func (this *DbRepo) FindBy(model interface{}, attrs map[string]interface{}) error {
