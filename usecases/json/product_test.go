@@ -20,6 +20,7 @@ func TestProductInteractor_GetMergedResponse(t *testing.T) {
 	productInteractor := NewProductInteractor()
 
 	jsonProductSlice, err := productInteractor.GetResponse()
+
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}

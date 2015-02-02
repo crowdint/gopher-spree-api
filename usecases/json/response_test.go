@@ -17,11 +17,13 @@ func TestResponseInteractor(t *testing.T) {
 	interactor := NewResponseInteractor()
 
 	response, err := interactor.GetResponse()
+
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}
 
 	jsonBytes, err := json.Marshal(response)
+
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}

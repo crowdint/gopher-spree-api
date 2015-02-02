@@ -7,14 +7,16 @@ import (
 )
 
 type ProductInteractor struct {
-	ProductRepo       *repositories.ProductRepo
-	VariantInteractor *VariantInteractor
+	ProductRepo               *repositories.ProductRepo
+	VariantInteractor         *VariantInteractor
+	ProductPropertyInteractor *ProductPropertyInteractor
 }
 
 func NewProductInteractor() *ProductInteractor {
 	return &ProductInteractor{
-		ProductRepo:       repositories.NewProductRepo(),
-		VariantInteractor: NewVariantInteractor(),
+		ProductRepo:               repositories.NewProductRepo(),
+		VariantInteractor:         NewVariantInteractor(),
+		ProductPropertyInteractor: NewProductPropertyInteractor(),
 	}
 }
 
@@ -33,7 +35,14 @@ func (this *ProductInteractor) GetResponse() ([]*json.Product, error) {
 		return []*json.Product{}, err
 	}
 
+	productPropertiesMap, err := this.ProductPropertyInteractor.GetJsonProductPropertiesMap(productIds)
+	if err != nil {
+		return []*json.Product{}, err
+	}
+
 	this.mergeVariants(productJsonSlice, variantsMap)
+
+	this.mergeProductProperties(productJsonSlice, productPropertiesMap)
 
 	return productJsonSlice, nil
 }
@@ -115,6 +124,22 @@ func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, varia
 
 		if len(product.Variants) > 0 {
 			product.HasVariants = true
+		}
+	}
+}
+
+func (this *ProductInteractor) mergeProductProperties(productSlice []*json.Product, productPropertiesMap JsonProductPropertiesMap) {
+	for _, product := range productSlice {
+		product.ProductProperties = []json.ProductProperty{}
+
+		productPropertiesSlice := productPropertiesMap[product.ID]
+
+		if productPropertiesSlice == nil {
+			continue
+		}
+
+		for _, productProperty := range productPropertiesSlice {
+			product.ProductProperties = append(product.ProductProperties, *productProperty)
 		}
 	}
 }
