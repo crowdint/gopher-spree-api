@@ -22,10 +22,21 @@ func (this *ProductRepo) FindById(id int64) (*models.Product, error) {
 	return product, query.Error
 }
 
-func (this *ProductRepo) List() ([]*models.Product, error) {
+func (this *ProductRepo) List(currentPage, perPage int) ([]*models.Product, error) {
 	var products []*models.Product
 
-	query := this.dbHandler.Find(&products)
+	offset := (currentPage - 1) * perPage
+
+	query := this.dbHandler.Offset(offset).Limit(perPage).Order("created_at desc").Find(&products)
 
 	return products, query.Error
+}
+
+func (this *ProductRepo) CountAll() (int64, error) {
+	var products []*models.Product
+	var count int64
+
+	query := this.dbHandler.Find(&products).Count(&count)
+
+	return count, query.Error
 }

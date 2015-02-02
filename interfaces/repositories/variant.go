@@ -15,6 +15,10 @@ func NewVariantRepo() *VariantRepo {
 func (this *VariantRepo) FindByProductIds(productIds []int64) ([]*models.Variant, error) {
 
 	variants := []*models.Variant{}
+	
+	if len(productIds) == 0 {
+		return variants, nil
+	}
 
 	query := this.dbHandler.
 		Table("spree_variants").

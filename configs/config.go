@@ -13,6 +13,8 @@ const (
 
 	SPREE_URL = "SPREE_URL"
 	SPREE_NS  = "SPREE_NAMESPACE"
+
+	PER_PAGE = "PER_PAGE"
 )
 
 var defaultSettings = map[string]string{
@@ -26,6 +28,9 @@ var defaultSettings = map[string]string{
 	// Spree Settings
 	SPREE_URL: getEnvOrDefault(SPREE_URL, "http://localhost:5100"),
 	SPREE_NS:  getEnvOrDefault(SPREE_NS, ""),
+
+	//Response Settings
+	PER_PAGE: getEnvOrDefault(PER_PAGE, "10"),
 }
 
 func Get(key string) string {

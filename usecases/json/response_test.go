@@ -16,8 +16,7 @@ func TestResponseInteractor(t *testing.T) {
 	defer repositories.Spree_db.Close()
 	interactor := NewResponseInteractor()
 
-	response, err := interactor.GetResponse()
-
+	response, err := interactor.GetResponse(2, 0)
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}
@@ -28,7 +27,9 @@ func TestResponseInteractor(t *testing.T) {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}
 
-	if string(jsonBytes) == "" {
+	strJson := string(jsonBytes)
+
+	if strJson == "" {
 		t.Error("Error: Empty json string")
 	}
 }
