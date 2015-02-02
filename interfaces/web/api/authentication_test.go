@@ -11,30 +11,6 @@ import (
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
-func TestAuthenticationWhenProxied(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/products", nil)
-	req.Header.Set(SPREE_TOKEN_HEADER, "spree123")
-	w := httptest.NewRecorder()
-	var context *gin.Context
-
-	r := gin.New()
-	r.Use(func(c *gin.Context) {
-		c.Set("Proxied", true)
-		context = c
-	}, Authentication())
-
-	r.GET("/products")
-	r.ServeHTTP(w, req)
-
-	if w.Code != 200 {
-		t.Errorf("api.Authentication response code should be 200, but was: %d", w.Code)
-	}
-
-	if spreeToken, err := context.Get(SPREE_TOKEN); err == nil {
-		t.Errorf("api.Authentication spree token should be nil, but was %s", spreeToken)
-	}
-}
-
 func TestAuthenticationWithValidToken(t *testing.T) {
 	if err := repositories.InitDB(); err != nil {
 		t.Error("An error has ocurred", err)

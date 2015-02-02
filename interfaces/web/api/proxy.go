@@ -4,6 +4,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"regexp"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 
@@ -22,14 +23,15 @@ func init() {
 	}
 
 	proxy = httputil.NewSingleHostReverseProxy(spreeURL)
+	routesPattern = regexRoutesPattern()
 }
 
 func Proxy() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
 		if shouldRedirectToOrigin(c) {
-			c.Set("Proxied", true)
+			c.Abort(-1)
 			proxy.ServeHTTP(c.Writer, c.Request)
+			return
 		}
 
 		c.Next()
@@ -37,21 +39,21 @@ func Proxy() gin.HandlerFunc {
 }
 
 func shouldRedirectToOrigin(c *gin.Context) bool {
-	return c.Request.Method != "GET" || isMissingURL(c.Request.URL)
+	url := c.Request.URL
+	// TODO: After API is completed, return statement should change to this: return isNotRequestToApi(url)
+	return isNotRequestToApi(url) || c.Request.Method != "GET" || isMissingURL(url)
+}
+
+func isNotRequestToApi(url *url.URL) bool {
+	return !strings.Contains(url.Path, configs.Get(configs.SPREE_NS)+"/api/")
 }
 
 func isMissingURL(url *url.URL) bool {
-	for _, pattern := range regexRoutesPattern() {
+	for pattern, _ := range routesPattern {
 		if match, _ := regexp.MatchString(pattern, url.Path); match {
 			return false
 		}
 	}
-	return true
-}
 
-func regexRoutesPattern() []string {
-	return []string{
-		`/api/products(/*)`, // products index
-		`/api/products/\d`,  // products show
-	}
+	return true
 }

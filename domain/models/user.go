@@ -31,6 +31,7 @@ type User struct {
 	RememberToken       string
 	ResetPasswordSentAt time.Time
 	ResetPasswordToken  string
+	Roles               []Role `gorm:"many2many:spree_roles_users;"`
 	ShipAddressId       int64
 	SignInCount         int64
 	SpreeApiKey         string
