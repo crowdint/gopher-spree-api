@@ -32,6 +32,7 @@ func regexRoutesPattern() map[string]string {
 		`^` + ns + `/api/products/\d+$`: "products.show",
 		`^` + ns + `/api/orders(/?)$`:   "orders.index",
 		`^` + ns + `/api/orders/\w+$`:   "orders.show",
+		`^` + ns + `/api/orders/mine$`:  "orders.show",
 	}
 }
 
