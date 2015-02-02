@@ -30,6 +30,8 @@ func regexRoutesPattern() map[string]string {
 	return map[string]string{
 		`^` + ns + `/api/products(/?)$`: "products.index", // pattern -> action
 		`^` + ns + `/api/products/\d+$`: "products.show",
+		`^` + ns + `/api/orders(/?)$`:   "orders.index",
+		`^` + ns + `/api/orders/\w+$`:   "orders.show",
 	}
 }
 
