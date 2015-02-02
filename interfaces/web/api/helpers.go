@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 
@@ -20,7 +21,8 @@ var (
 func regexRoutesPattern() map[string]string {
 	ns := configs.Get(configs.SPREE_NS)
 	if ns != "" {
-		ns = "/" + ns
+		// If namespace has '/', then remove them
+		ns = "/" + strings.Replace(ns, "/", "", -1)
 	}
 
 	return map[string]string{

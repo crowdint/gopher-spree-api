@@ -28,11 +28,6 @@ func init() {
 
 func Proxy() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !strings.Contains(c.Request.URL.Path, configs.Get(configs.SPREE_NS)+"/api/") {
-			c.Abort(404)
-			return
-		}
-
 		if shouldRedirectToOrigin(c) {
 			c.Abort(-1)
 			proxy.ServeHTTP(c.Writer, c.Request)
@@ -44,7 +39,13 @@ func Proxy() gin.HandlerFunc {
 }
 
 func shouldRedirectToOrigin(c *gin.Context) bool {
-	return c.Request.Method != "GET" || isMissingURL(c.Request.URL)
+	url := c.Request.URL
+	// TODO: After API is completed, return statement should change to this: return isNotRequestToApi(url)
+	return isNotRequestToApi(url) || c.Request.Method != "GET" || isMissingURL(url)
+}
+
+func isNotRequestToApi(url *url.URL) bool {
+	return !strings.Contains(url.Path, configs.Get(configs.SPREE_NS)+"/api/")
 }
 
 func isMissingURL(url *url.URL) bool {
