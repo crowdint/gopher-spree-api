@@ -85,7 +85,7 @@ func TestAuthorizationWhenCurrentUserIsNotAdminAndDoesNotHavePermissions(t *test
 }
 
 func TestGetCurrentAction(t *testing.T) {
-	testUrl, err := url.Parse("http://localhost:5000/store/api/products")
+	testUrl, err := url.Parse("http://localhost:5000/api/products")
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
