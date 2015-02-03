@@ -4,6 +4,14 @@ import (
 	"errors"
 )
 
+var responsePaginator *Paginator
+
+func init() {
+	if responsePaginator == nil {
+		responsePaginator = new(Paginator)
+	}
+}
+
 type ContentInteractor interface {
 	GetTotalCount() (int64, error)
 	GetResponse(int, int) (ContentResponse, error)
@@ -26,19 +34,17 @@ func NewResponseInteractor(contentInteractor ContentInteractor) *ResponseInterac
 }
 
 func (this *ResponseInteractor) GetResponse(currentPage, perPage int) (map[string]interface{}, error) {
-	paginator := new(Paginator)
-
-	err := paginator.Calculate(this.ContentInteractor, currentPage, perPage)
+	err := responsePaginator.CalculatePaginationData(this.ContentInteractor, currentPage, perPage)
 	if err != nil {
 		return nil, err
 	}
 
-	content, err := this.getContent(paginator)
+	content, err := this.getContent(responsePaginator)
 	if err != nil {
 		return nil, err
 	}
 
-	response := this.getResponse(paginator, content)
+	response := this.getResponse(responsePaginator, content)
 
 	return response, nil
 }

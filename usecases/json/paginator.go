@@ -16,7 +16,7 @@ type Paginator struct {
 	ContentInteractor ContentInteractor
 }
 
-func (this *Paginator) Calculate(contentInteractor ContentInteractor, currentPage, perPage int) error {
+func (this *Paginator) CalculatePaginationData(contentInteractor ContentInteractor, currentPage, perPage int) error {
 	this.ContentInteractor = contentInteractor
 
 	this.calculateCurrentPage(currentPage)
