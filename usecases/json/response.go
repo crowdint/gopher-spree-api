@@ -4,11 +4,18 @@ import (
 	"errors"
 )
 
-var responsePaginator *Paginator
+var (
+	responsePaginator    *Paginator
+	SpreeResponseFetcher *ResponseInteractor
+)
 
 func init() {
 	if responsePaginator == nil {
 		responsePaginator = new(Paginator)
+	}
+
+	if SpreeResponseFetcher == nil {
+		SpreeResponseFetcher = new(ResponseInteractor)
 	}
 }
 
@@ -27,13 +34,9 @@ type ResponseInteractor struct {
 	ContentInteractor ContentInteractor
 }
 
-func NewResponseInteractor(contentInteractor ContentInteractor) *ResponseInteractor {
-	return &ResponseInteractor{
-		ContentInteractor: contentInteractor,
-	}
-}
+func (this *ResponseInteractor) GetResponse(contentInteractor ContentInteractor, currentPage, perPage int) (map[string]interface{}, error) {
+	this.ContentInteractor = contentInteractor
 
-func (this *ResponseInteractor) GetResponse(currentPage, perPage int) (map[string]interface{}, error) {
 	err := responsePaginator.CalculatePaginationData(this.ContentInteractor, currentPage, perPage)
 	if err != nil {
 		return nil, err

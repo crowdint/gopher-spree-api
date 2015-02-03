@@ -17,9 +17,9 @@ func TestResponseInteractor(t *testing.T) {
 
 	productInteractor := NewProductInteractor()
 
-	interactor := NewResponseInteractor(productInteractor)
+	interactor := SpreeResponseFetcher
 
-	response, err := interactor.GetResponse(2, 0)
+	response, err := interactor.GetResponse(productInteractor, 2, 0)
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 		return
@@ -38,4 +38,6 @@ func TestResponseInteractor(t *testing.T) {
 		t.Error("Error: Empty json string")
 		return
 	}
+
+	t.Error(strJson)
 }

@@ -10,7 +10,7 @@ import (
 func TestPaginator_Calculate_User_Values(t *testing.T) {
 	paginator := new(Paginator)
 
-	err := paginator.Calculate(
+	err := paginator.CalculatePaginationData(
 		new(FakeContentInteractor),
 		2,
 		10,
@@ -40,7 +40,7 @@ func TestPaginator_Calculate_User_Values(t *testing.T) {
 func TestPaginator_Calculate_Default_Values(t *testing.T) {
 	paginator := new(Paginator)
 
-	err := paginator.Calculate(
+	err := paginator.CalculatePaginationData(
 		new(FakeContentInteractor),
 		0,
 		0,
