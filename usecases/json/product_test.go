@@ -24,7 +24,7 @@ func TestProductInteractor_GetMergedResponse(t *testing.T) {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}
 
-	if len(jsonProductSlice) < 1 {
+	if jsonProductSlice.(ContentResponse).GetCount() < 1 {
 		t.Error("Error: Invalid number of rows")
 		return
 	}

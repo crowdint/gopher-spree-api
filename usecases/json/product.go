@@ -6,6 +6,22 @@ import (
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
+type ProductResponse struct {
+	data []*json.Product
+}
+
+func (this ProductResponse) GetCount() int {
+	return len(this.data)
+}
+
+func (this ProductResponse) GetData() interface{} {
+	return this.data
+}
+
+func (this ProductResponse) GetTag() string {
+	return "products"
+}
+
 type ProductInteractor struct {
 	ProductRepo               *repositories.ProductRepo
 	VariantInteractor         *VariantInteractor
@@ -20,10 +36,10 @@ func NewProductInteractor() *ProductInteractor {
 	}
 }
 
-func (this *ProductInteractor) GetResponse(currentPage, perPage int) ([]*json.Product, error) {
+func (this *ProductInteractor) GetResponse(currentPage, perPage int) (ContentResponse, error) {
 	productModelSlice, err := this.ProductRepo.List(currentPage, perPage)
 	if err != nil {
-		return []*json.Product{}, err
+		return ProductResponse{}, err
 	}
 
 	productJsonSlice := this.modelsToJsonProductsSlice(productModelSlice)
@@ -32,19 +48,21 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int) ([]*json.Pr
 
 	variantsMap, err := this.VariantInteractor.GetJsonVariantsMap(productIds)
 	if err != nil {
-		return []*json.Product{}, err
+		return ProductResponse{}, err
 	}
 
 	productPropertiesMap, err := this.ProductPropertyInteractor.GetJsonProductPropertiesMap(productIds)
 	if err != nil {
-		return []*json.Product{}, err
+		return ProductResponse{}, err
 	}
 
 	this.mergeVariants(productJsonSlice, variantsMap)
 
 	this.mergeProductProperties(productJsonSlice, productPropertiesMap)
 
-	return productJsonSlice, nil
+	return ProductResponse{
+		data: productJsonSlice,
+	}, nil
 }
 
 func (this *ProductInteractor) getIdSlice(productSlice []*models.Product) []int64 {
