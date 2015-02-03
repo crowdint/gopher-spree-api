@@ -22,8 +22,6 @@ func TestTaxonRepo(t *testing.T) {
 
 	taxons, err := taxonRepo.FindByProductIds([]int64{1, 2})
 
-	t.Errorf("%s", taxons)
-
 	if err != nil {
 		t.Error("An error has ocurred", err)
 		return

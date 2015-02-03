@@ -80,8 +80,7 @@ func TestTaxonInteractor_toJson(t *testing.T) {
 	taxonInteractor := NewTaxonInteractor()
 
 	jsonTaxon := taxonInteractor.toJson(taxon)
-
-	if jsonTaxon.ID != 1 {
+	if jsonTaxon.ID != 11 || jsonTaxon.Name != "Rails" || jsonTaxon.PrettyName != "Brand -\u003e Rails" || jsonTaxon.Permalink != "brand/rails" || jsonTaxon.ParentID != 2 || jsonTaxon.TaxonomyID != 2 {
 		t.Error("Invalid values for json.Taxon")
 	}
 }
