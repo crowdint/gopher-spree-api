@@ -10,7 +10,7 @@ import (
 func init() {
 	orders := API().Group("/orders")
 	{
-		orders.GET("", OrdersIndex)
+		orders.GET("", authorizeOrders, OrdersIndex)
 		orders.GET("/", OrdersIndex)
 		orders.GET("/:order_number", findOrder, authorizeOrder, OrdersShow)
 	}
@@ -33,8 +33,21 @@ func findOrder(c *gin.Context) {
 }
 
 func getGinOrder(c *gin.Context) *models.Order {
-	rawOrder, _ := c.Get("Order")
-	return rawOrder.(*models.Order)
+	rawOrder, err := c.Get("Order")
+	if err == nil {
+		return rawOrder.(*models.Order)
+	}
+	return nil
+}
+
+func authorizeOrders(c *gin.Context) {
+	user := currentUser(c)
+	if !user.HasRole("admin") {
+		unauthorized(c, "You are not authorized to perfomr that action.")
+		return
+	}
+
+	c.Next()
 }
 
 func authorizeOrder(c *gin.Context) {
@@ -45,8 +58,7 @@ func authorizeOrder(c *gin.Context) {
 	}
 
 	order := getGinOrder(c)
-
-	if order.UserId == user.Id || order.GuestToken == getOrderToken(c) {
+	if order != nil && (order.UserId == user.Id || order.GuestToken == getOrderToken(c)) {
 		c.Next()
 	} else {
 		unauthorized(c, "You are not authorized to perform that action.")
