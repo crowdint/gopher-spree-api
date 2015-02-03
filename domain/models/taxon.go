@@ -22,6 +22,8 @@ type Taxon struct {
 	MetaDescription string
 	MetaKeywords    string
 	Depth           int64
+  PrettyName      string
+  ClassificationPosition int64
 }
 
 func (this Taxon) TableName() string {
