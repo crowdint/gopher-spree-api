@@ -11,7 +11,7 @@ type Asset struct {
 	AttachmentUpdatedAt   time.Time `json:"attachment_updated_at"`
 	AttachmentWidth       int64     `json:"attachment_width"`
 	AttachmentHeight      int64     `json:"attachment_height"`
-	Alt                   string    `json:"alt"`
+	Alt                   *string   `json:"alt"`
 	ViewableType          string    `json:"viewable_type"`
 	ViewableID            int64     `json:"viewable_id"`
 	MiniUrl               string    `json:"mini_url"`

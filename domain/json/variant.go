@@ -6,9 +6,9 @@ type Variant struct {
 	Sku             string        `json:"sku"`
 	Price           string        `json:"price"`
 	Weight          float64       `json:"weight"`
-	Height          float64       `json:"height"`
-	Width           float64       `json:"width"`
-	Depth           float64       `json:"depth"`
+	Height          *float64      `json:"height"`
+	Width           *float64      `json:"width"`
+	Depth           *float64      `json:"depth"`
 	IsMaster        bool          `json:"is_master"`
 	Slug            string        `json:"slug"`
 	Description     string        `json:"description"`
