@@ -2,77 +2,80 @@ package json
 
 import (
 	"errors"
-	"math"
-	"strconv"
-
-	"github.com/crowdint/gopher-spree-api/configs"
-	"github.com/crowdint/gopher-spree-api/domain/json"
 )
 
+var (
+	responsePaginator    *Paginator
+	SpreeResponseFetcher *ResponseInteractor
+)
+
+func init() {
+	if responsePaginator == nil {
+		responsePaginator = new(Paginator)
+	}
+
+	if SpreeResponseFetcher == nil {
+		SpreeResponseFetcher = new(ResponseInteractor)
+	}
+}
+
+type ContentInteractor interface {
+	GetTotalCount() (int64, error)
+	GetResponse(int, int) (ContentResponse, error)
+}
+
+type ContentResponse interface {
+	GetCount() int
+	GetData() interface{}
+	GetTag() string
+}
+
 type ResponseInteractor struct {
-	ContentInteractor *ProductInteractor
+	ContentInteractor ContentInteractor
 }
 
-func NewResponseInteractor() *ResponseInteractor {
-	return &ResponseInteractor{
-		ContentInteractor: NewProductInteractor(),
-	}
-}
+func (this *ResponseInteractor) GetResponse(contentInteractor ContentInteractor, currentPage, perPage int) (map[string]interface{}, error) {
+	this.ContentInteractor = contentInteractor
 
-func (this *ResponseInteractor) GetResponse(currentPage, perPage int) (*json.ProductResponse, error) {
-	if currentPage == 0 {
-		currentPage = 1
-	}
-
-	if perPage == 0 {
-		tmp, err := this.getPerPageDefault(10)
-		if err != nil {
-			return nil, this.getError(err)
-		}
-
-		perPage = int(tmp)
-	}
-
-	totalCount, err := this.ContentInteractor.GetTotalCount()
+	err := responsePaginator.CalculatePaginationData(this.ContentInteractor, currentPage, perPage)
 	if err != nil {
-		return nil, this.getError(err)
+		return nil, err
 	}
 
-	content, err := this.ContentInteractor.GetResponse(currentPage, int(perPage))
+	content, err := this.getContent(responsePaginator)
 	if err != nil {
-		return nil, this.getError(err)
+		return nil, err
 	}
 
-	pages := math.Ceil(float64(totalCount) / float64(perPage))
-
-	response := &json.ProductResponse{
-		TotalCount:  int(totalCount),
-		CurrentPage: currentPage,
-		PerPage:     perPage,
-		Pages:       int(pages),
-		Products:    content,
-		Count:       len(content),
-	}
+	response := this.getResponse(responsePaginator, content)
 
 	return response, nil
 }
 
-func (this *ResponseInteractor) getPerPageDefault(def int64) (int64, error) {
-	perPageStr := configs.Get(configs.PER_PAGE)
-
-	if perPageStr == "" {
-		return def, nil
-	}
-
-	var perPage int64
-
-	temp, err := strconv.Atoi(perPageStr)
-	perPage = int64(temp)
+func (this *ResponseInteractor) getContent(paginator *Paginator) (ContentResponse, error) {
+	content, err := this.ContentInteractor.GetResponse(
+		paginator.CurrentPage,
+		paginator.PerPage,
+	)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	return perPage, nil
+	return content, nil
+}
+
+func (this *ResponseInteractor) getResponse(paginator *Paginator, contentResponse ContentResponse) map[string]interface{} {
+
+	responseMap := map[string]interface{}{
+		"count":                  contentResponse.GetCount(),
+		"total_count":            paginator.TotalCount,
+		"current_page":           paginator.CurrentPage,
+		"per_page":               paginator.PerPage,
+		"pages":                  paginator.Pages,
+		contentResponse.GetTag(): contentResponse.GetData(),
+	}
+
+	return responseMap
 }
 
 func (this *ResponseInteractor) getError(err error) error {

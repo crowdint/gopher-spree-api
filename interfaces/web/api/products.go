@@ -16,7 +16,7 @@ func init() {
 }
 
 func ProductsIndex(c *gin.Context) {
-	products, err := json.NewResponseInteractor().GetResponse(1, 0)
+	products, err := json.SpreeResponseFetcher.GetResponse(json.NewProductInteractor(), 1, 0)
 
 	if err != nil {
 		c.JSON(422, gin.H{"error": err.Error()})
