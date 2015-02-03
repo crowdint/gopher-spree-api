@@ -12,7 +12,45 @@ func init() {
 	{
 		orders.GET("", OrdersIndex)
 		orders.GET("/", OrdersIndex)
-		orders.GET("/:order_number", OrdersShow)
+		orders.GET("/:order_number", findOrder, authorizeOrder, OrdersShow)
+	}
+}
+
+func findOrder(c *gin.Context) {
+	var order models.Order
+
+	err := repositories.NewDatabaseRepository().FindBy(&order, params{
+		"number": c.Params.ByName("order_number"),
+	})
+
+	if err != nil {
+		notFound(c)
+		return
+	}
+
+	c.Set("Order", &order)
+	c.Next()
+}
+
+func getGinOrder(c *gin.Context) *models.Order {
+	rawOrder, _ := c.Get("Order")
+	return rawOrder.(*models.Order)
+}
+
+func authorizeOrder(c *gin.Context) {
+	user := currentUser(c)
+	if user.HasRole("admin") {
+		c.Next()
+		return
+	}
+
+	order := getGinOrder(c)
+
+	if order.UserId == user.Id || order.GuestToken == getOrderToken(c) {
+		c.Next()
+	} else {
+		unauthorized(c, "You are not authorized to perform that action.")
+		return
 	}
 }
 
@@ -29,15 +67,11 @@ func OrdersIndex(c *gin.Context) {
 }
 
 func OrdersShow(c *gin.Context) {
-	var order models.Order
+	order, _ := c.Get("Order")
+	c.JSON(200, order.(*models.Order))
+}
 
-	err := repositories.NewDatabaseRepository().FindBy(&order, params{
-		"number": c.Params.ByName("order_number"),
-	})
-
-	if err == nil {
-		c.JSON(200, order)
-	} else {
-		c.JSON(422, gin.H{"error": err.Error()})
-	}
+func notFound(c *gin.Context) {
+	c.JSON(404, gin.H{"error": "Record Not Found"})
+	c.Abort(-1)
 }
