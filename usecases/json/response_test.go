@@ -38,6 +38,4 @@ func TestResponseInteractor(t *testing.T) {
 		t.Error("Error: Empty json string")
 		return
 	}
-
-	t.Error(strJson)
 }
