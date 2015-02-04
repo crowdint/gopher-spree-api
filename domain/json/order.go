@@ -155,9 +155,14 @@ type Shipment struct {
 	ShippingRates        []ShippingRate   `json:"shipping_rates"`
 	SelectedShippingRate ShippingRate     `json:"selected_shipping_rate"`
 	ShippingMethods      []ShippingMethod `json:"shipping_methods"`
-	// TODO:
-	// - Manifest
-	Adjustments []Adjustment `json:"adjustments"`
+	Manifest             ShipmentManifest `json:"shipment_manifest"`
+	Adjustments          []Adjustment     `json:"adjustments"`
+}
+
+type ShipmentManifest struct {
+	Quantity  int64            `json:"quantity"`
+	States    map[string]int64 `json:"states"`
+	VariantId int64            `json:"variant_id"`
 }
 
 type ShippingCategory struct {
