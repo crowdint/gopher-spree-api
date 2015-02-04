@@ -20,7 +20,7 @@ type Order struct {
 	ShipmentState             string      `json:"shipment_state"`
 	PaymentState              string      `json:"payment_state"`
 	Email                     string      `json:"email"`
-	SpecialInstructions       *string     `json:"special_instructions"`
+	SpecialInstructions       string      `json:"special_instructions"`
 	Channel                   string      `json:"channel"`
 	IncludedTaxTotal          string      `json:"included_tax_total"`
 	AdditionalTaxTotal        string      `json:"additional_tax_total"`
@@ -51,11 +51,11 @@ type Address struct {
 	City             string  `json:"city"`
 	ZipCode          string  `json:"zipcode"`
 	Phone            string  `json:"phone"`
-	Company          *string `json:"company"`
-	AlternativePhone *string `json:"alternative_phone"`
+	Company          string  `json:"company"`
+	AlternativePhone string  `json:"alternative_phone"`
 	CountryId        int64   `json:"country_id"`
 	StateId          int64   `json:"state_id"`
-	StateName        *string `json:"state_name"`
+	StateName        string  `json:"state_name"`
 	StateText        string  `json:"state_text"`
 	Country          Country `json:"country"`
 	State            State   `json:"state"`
@@ -69,7 +69,7 @@ type Adjustment struct {
 	AdjustableId   int64     `json:"adjustable_id"`
 	Amount         string    `json:"amount"`
 	Label          string    `json:"label"`
-	Mandatory      *bool     `json:"mandatory"`
+	Mandatory      bool      `json:"mandatory"`
 	Elegible       bool      `json:"elegible"`
 	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`

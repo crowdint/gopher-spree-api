@@ -53,10 +53,10 @@ func (this *VariantInteractor) toJson(variant *models.Variant) *json.Variant {
 		//Name: from product
 		Sku:      variant.Sku,
 		Price:    variant.Price,
-		Weight:   variant.Weight,
-		Height:   &variant.Height,
-		Width:    &variant.Width,
-		Depth:    &variant.Depth,
+		Weight:   json.ToS(variant.Weight),
+		Height:   json.ToS(variant.Height),
+		Width:    json.ToS(variant.Width),
+		Depth:    json.ToS(variant.Depth),
 		IsMaster: variant.IsMaster,
 		//Slug: from product
 		//Description: from product
