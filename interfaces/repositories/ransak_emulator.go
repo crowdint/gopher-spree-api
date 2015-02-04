@@ -11,13 +11,15 @@ var ransakOperators = []string{
 	"or",
 	"and",
 	"eq",
+	"matches",
 }
 
 type RansakEmulator struct {
-	current     []string
-	template    string
-	separator   string
-	placeholder string
+	current                []string
+	template               string
+	separator              string
+	placeholder            string
+	evaluatingMultiTokenOp bool
 }
 
 func NewRansakEmulator() *RansakEmulator {
@@ -58,6 +60,12 @@ func (this *RansakEmulator) appendToTemplate(item string, kind string) {
 	}
 }
 
+func (this *RansakEmulator) replaceValue(param interface{}) {
+	paramStr := fmt.Sprintf("%v", param)
+
+	this.replacePlaceholder(paramStr)
+}
+
 func (this *RansakEmulator) appendCurrentField() {
 	if len(this.current) > 0 {
 		joinedStr := strings.Join(this.current, this.separator)
@@ -75,22 +83,20 @@ func (this *RansakEmulator) appendOperator(operator string, kind string) {
 	case "cont":
 		this.replacePlaceholder("LIKE '%" + this.placeholder + "%'")
 	case "eq":
-		replaceFor := ""
-
-		if kind == "string" {
-			replaceFor = "= '" + this.placeholder + "'"
-		} else {
-			replaceFor = "= " + this.placeholder
-		}
+		replaceFor := "= " + this.getAsSqlType(this.placeholder, kind)
 
 		this.replacePlaceholder(replaceFor)
+	case "matches":
+		this.replacePlaceholder("LIKE " + this.getAsSqlType(this.placeholder, kind))
 	}
 }
 
-func (this *RansakEmulator) replaceValue(param interface{}) {
-	paramStr := fmt.Sprintf("%v", param)
+func (this *RansakEmulator) getAsSqlType(param string, kind string) string {
+	if kind == "string" {
+		return "'" + param + "'"
+	}
 
-	this.replacePlaceholder(paramStr)
+	return param
 }
 
 func (this *RansakEmulator) replacePlaceholder(replaceFor string) {
