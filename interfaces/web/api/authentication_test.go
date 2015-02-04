@@ -87,6 +87,88 @@ func TestAuthenticationWithoutToken(t *testing.T) {
 	}
 }
 
+func TestAuthenticationWithValidOrderToken(t *testing.T) {
+	if err := repositories.InitDB(); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	order := &models.Order{}
+	err := repositories.NewDatabaseRepository().FindBy(order, nil)
+	if err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	path := "/api/orders/" + order.Number
+	req, _ := http.NewRequest("GET", path, nil)
+	req.Header.Set(SPREE_ORDER_TOKEN_HEADER, order.GuestToken)
+	w := httptest.NewRecorder()
+
+	r := gin.New()
+	var user *models.User
+	r.Use(Authentication(), func(c *gin.Context) {
+		user = currentUser(c)
+	})
+	r.GET(path)
+	r.ServeHTTP(w, req)
+
+	if w.Code != 200 {
+		t.Errorf("api.Authentication response code should be 200, but was: %d", w.Code)
+	}
+
+	if user.Id != 0 {
+		t.Errorf("api.Authentication user id should be 0, but was %d", user.Id)
+	}
+}
+
+func TestAuthenticationWithInvalidOrderToken(t *testing.T) {
+	if err := repositories.InitDB(); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	path := "/api/orders/testOrderNumber"
+	req, _ := http.NewRequest("GET", path, nil)
+	req.Header.Set(SPREE_ORDER_TOKEN_HEADER, "testOrderToken")
+	w := httptest.NewRecorder()
+
+	r := gin.New()
+	r.Use(Authentication())
+	r.GET(path)
+	r.ServeHTTP(w, req)
+
+	if w.Code != 401 {
+		t.Errorf("api.Authentication response code should be 401, but was: %d", w.Code)
+	}
+}
+
+func TestAuthenticationWithValidOrderTokenAndActionIsNotOrderShow(t *testing.T) {
+	if err := repositories.InitDB(); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	order := &models.Order{}
+	err := repositories.NewDatabaseRepository().FindBy(order, nil)
+	if err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	path := "/api/orders"
+	req, _ := http.NewRequest("GET", path, nil)
+	req.Header.Set(SPREE_ORDER_TOKEN_HEADER, order.GuestToken)
+	w := httptest.NewRecorder()
+
+	r := gin.New()
+	var user *models.User
+	r.Use(Authentication(), func(c *gin.Context) {
+		user = currentUser(c)
+	})
+	r.GET(path)
+	r.ServeHTTP(w, req)
+
+	if w.Code != 401 {
+		t.Errorf("api.Authentication response code should be 401, but was: %d", w.Code)
+	}
+}
+
 func TestGetSpreeTokenWhenNotPresent(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/products", nil)
 

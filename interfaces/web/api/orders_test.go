@@ -11,6 +11,26 @@ import (
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
+func TestFindOrderWhenOrderIsInContext(t *testing.T) {
+	var ctx *gin.Context
+	r := gin.New()
+
+	method := "GET"
+	path := "/api/orders/ABC123"
+
+	order := &models.Order{Number: "ABC123"}
+	r.GET(path, func(c *gin.Context) {
+		c.Set("Order", order)
+		findOrder(c)
+		ctx = c
+	})
+	w := PerformRequest(r, method, path)
+
+	if w.Code != 200 {
+		t.Errorf("Status code should be 200, but was %d", w.Code)
+	}
+}
+
 func TestFindOrderWhenOrderExists(t *testing.T) {
 	err := repositories.InitDB()
 	if err != nil {

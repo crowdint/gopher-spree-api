@@ -17,18 +17,22 @@ func init() {
 }
 
 func findOrder(c *gin.Context) {
-	var order models.Order
+	order := getGinOrder(c)
 
-	err := repositories.NewDatabaseRepository().FindBy(&order, params{
-		"number": c.Params.ByName("order_number"),
-	})
+	if order == nil {
+		order = &models.Order{}
+		err := repositories.NewDatabaseRepository().FindBy(order, params{
+			"number": c.Params.ByName("order_number"),
+		})
 
-	if err != nil {
-		notFound(c)
-		return
+		if err != nil {
+			notFound(c)
+			return
+		}
+
+		c.Set("Order", order)
 	}
 
-	c.Set("Order", &order)
 	c.Next()
 }
 
