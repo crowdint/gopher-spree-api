@@ -20,12 +20,10 @@ func TestTaxonRepo(t *testing.T) {
 
 	taxonRepo := NewTaxonRepo()
 
-	taxons := taxonRepo.List()
+	taxons, err := taxonRepo.FindByProductIds([]int64{1, 2})
 
-	nv := len(taxons)
-
-	if nv < 1 {
-		t.Errorf("Invalid number of rows: %d", nv)
+	if err != nil {
+		t.Error("An error has ocurred", err)
 		return
 	}
 

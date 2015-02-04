@@ -26,6 +26,7 @@ type ProductInteractor struct {
 	ProductRepo               *repositories.ProductRepo
 	VariantInteractor         *VariantInteractor
 	ProductPropertyInteractor *ProductPropertyInteractor
+	ClassificationInteractor  *ClassificationInteractor
 }
 
 func NewProductInteractor() *ProductInteractor {
@@ -33,6 +34,7 @@ func NewProductInteractor() *ProductInteractor {
 		ProductRepo:               repositories.NewProductRepo(),
 		VariantInteractor:         NewVariantInteractor(),
 		ProductPropertyInteractor: NewProductPropertyInteractor(),
+		ClassificationInteractor:  NewClassificationInteractor(),
 	}
 }
 
@@ -56,9 +58,16 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int) (ContentRes
 		return ProductResponse{}, err
 	}
 
+	classificationsMap, err := this.ClassificationInteractor.GetJsonClassificationsMap(productIds)
+	if err != nil {
+		return ProductResponse{}, err
+	}
+
 	this.mergeVariants(productJsonSlice, variantsMap)
 
 	this.mergeProductProperties(productJsonSlice, productPropertiesMap)
+
+	this.mergeClassifications(productJsonSlice, classificationsMap)
 
 	return ProductResponse{
 		data: productJsonSlice,
@@ -158,6 +167,22 @@ func (this *ProductInteractor) mergeProductProperties(productSlice []*json.Produ
 
 		for _, productProperty := range productPropertiesSlice {
 			product.ProductProperties = append(product.ProductProperties, *productProperty)
+		}
+	}
+}
+
+func (this *ProductInteractor) mergeClassifications(productSlice []*json.Product, classificationsMap JsonClassificationsMap) {
+	for _, product := range productSlice {
+		product.Classifications = []json.Classification{}
+
+		classificationsSlice := classificationsMap[product.ID]
+
+		if classificationsSlice == nil {
+			continue
+		}
+
+		for _, classification := range classificationsSlice {
+			product.Classifications = append(product.Classifications, *classification)
 		}
 	}
 }
