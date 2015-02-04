@@ -1,33 +1,66 @@
 package api
 
 import (
+	"regexp"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
-const (
-	SPREE_TOKEN_HEADER = "X-Spree-Token"
-	SPREE_TOKEN        = "SpreeToken"
-)
-
 func Authentication() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		isGuestUser := false
 		spreeToken := getSpreeToken(c)
+		dbRepo := repositories.NewDatabaseRepository()
 
-		// Return if spree token is not provided
+		// If spreeToken is empty, check if orderToken is set and action is orders show
 		if spreeToken == "" {
-			unauthorized(c, "You must specify an API key.")
-			return
+			if isOrdersShowAction(c.Request.URL.Path) {
+				// Get order token
+				orderToken := getOrderToken(c)
+
+				// Return if order token is not provided
+				if orderToken == "" {
+					unauthorized(c, "You must specify an API key.")
+					return
+				}
+
+				// Find the order by guest token (order token)
+				order := &models.Order{}
+				err := dbRepo.FindBy(order, map[string]interface{}{"guest_token": orderToken})
+				if err != nil {
+					unauthorized(c, "You are not authorized to perform that action.")
+					return
+				}
+
+				// Get order number and verify if is equal to the order's number from guest token
+				orderNumber := getOrderNumber(c)
+				if order.Number != orderNumber {
+					unauthorized(c, "You are not authorized to perform that action.")
+					return
+				}
+
+				isGuestUser = true
+				c.Set("Order", order)
+			} else {
+				unauthorized(c, "You must specify an API key.")
+				return
+			}
 		}
 
 		user := &models.User{}
-		err := repositories.NewDatabaseRepository().FindBy(user, map[string]interface{}{"spree_api_key": spreeToken})
+		if !isGuestUser {
+			err := dbRepo.FindBy(user, map[string]interface{}{"spree_api_key": spreeToken})
 
-		if err != nil {
-			unauthorized(c, "Invalid API key ("+spreeToken+") specified.")
-			return
+			if err != nil {
+				unauthorized(c, "Invalid API key ("+spreeToken+") specified.")
+				return
+			}
+
+			dbRepo.UserRoles(user)
 		}
 
 		c.Set(SPREE_TOKEN, spreeToken)
@@ -36,12 +69,12 @@ func Authentication() gin.HandlerFunc {
 	}
 }
 
-func getSpreeToken(c *gin.Context) string {
-	spreeToken := c.Request.Header.Get(SPREE_TOKEN_HEADER)
+func isOrdersShowAction(path string) bool {
+	match, _ := regexp.MatchString(`^`+namespace()+`/api/orders/\w+$`, path)
+	return match
+}
 
-	if len(spreeToken) > 0 {
-		return spreeToken
-	}
-
-	return c.Request.URL.Query().Get("token")
+func getOrderNumber(c *gin.Context) string {
+	pathArray := strings.Split(c.Request.URL.Path, "/")
+	return pathArray[len(pathArray)-1]
 }

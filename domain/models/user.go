@@ -42,3 +42,13 @@ type User struct {
 func (this User) TableName() string {
 	return "spree_users"
 }
+
+func (this *User) HasRole(role string) bool {
+	for _, r := range this.Roles {
+		if r.Name == role {
+			return true
+		}
+	}
+
+	return false
+}

@@ -10,35 +10,57 @@ import (
 	"github.com/crowdint/gopher-spree-api/domain/models"
 )
 
-var (
-	routesPattern map[string]string
-	permissions   = map[string]interface{}{
-		"products.index": func(user *models.User, args ...interface{}) bool { return true },
-		"products.show":  func(user *models.User, args ...interface{}) bool { return true },
-	}
+const (
+	SPREE_TOKEN_HEADER       = "X-Spree-Token"
+	SPREE_TOKEN              = "SpreeToken"
+	SPREE_ORDER_TOKEN_HEADER = "X-Spree-Order-Token"
 )
 
-func regexRoutesPattern() map[string]string {
-	ns := configs.Get(configs.SPREE_NS)
-	if ns != "" {
-		// If namespace has '/', then remove them
-		ns = "/" + strings.Replace(ns, "/", "", -1)
-	}
+var (
+	ns *string
+)
 
-	return map[string]string{
-		`^` + ns + `/api/products(/?)$`: "products.index", // pattern -> action
-		`^` + ns + `/api/products/\d+$`: "products.show",
-	}
+type params map[string]interface{}
+
+func currentUser(c *gin.Context) *models.User {
+	currentUser, _ := c.Get("CurrentUser")
+	user := currentUser.(*models.User)
+	return user
 }
 
-func hasPermission(user *models.User, action string, args ...interface{}) bool {
-	if permissionFunc := permissions[action]; permissionFunc != nil {
-		return permissionFunc.(func(*models.User, ...interface{}) bool)(user, args...)
+func getOrderToken(c *gin.Context) string {
+	orderToken := c.Request.Header.Get(SPREE_ORDER_TOKEN_HEADER)
+
+	if orderToken != "" {
+		return orderToken
 	}
-	return false
+
+	return c.Request.URL.Query().Get("order_token")
+}
+
+func getSpreeToken(c *gin.Context) string {
+	spreeToken := c.Request.Header.Get(SPREE_TOKEN_HEADER)
+
+	if len(spreeToken) > 0 {
+		return spreeToken
+	}
+
+	return c.Request.URL.Query().Get("token")
 }
 
 func unauthorized(c *gin.Context, errMsg string) {
 	c.JSON(http.StatusUnauthorized, gin.H{"error": errMsg})
 	c.Abort(-1)
+}
+
+func namespace() string {
+	if ns == nil {
+		temp := configs.Get(configs.SPREE_NS)
+		if temp != "" {
+			temp = "/" + strings.Replace(temp, "/", "", -1)
+		}
+		ns = &temp
+	}
+
+	return *ns
 }

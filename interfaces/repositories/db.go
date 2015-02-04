@@ -62,6 +62,10 @@ func NewDatabaseRepository() *DbRepo {
 	return &DbRepo{Spree_db}
 }
 
+func (this *DbRepo) All(collection interface{}, attrs map[string]interface{}) error {
+	return this.dbHandler.Find(collection, attrs).Error
+}
+
 func (this *DbRepo) FindBy(model interface{}, attrs map[string]interface{}) error {
 	return this.dbHandler.First(model, attrs).Error
 }
