@@ -39,6 +39,8 @@ type Order struct {
 	BillAddress               Address     `json:"bill_address"`
 	ShipAddress               Address     `json:"ship_address"`
 	LineItems                 []LineItem  `json:"line_items"`
+	Payments                  []Payment   `json:"payments"`
+	Shipments                 []Shipment  `json:"shipments"`
 }
 
 type Address struct {
@@ -127,16 +129,62 @@ type PaymentMethod struct {
 }
 
 type PaymentSource struct {
-	Id                       int64   `json:"id"`
-	Month                    string  `json:"month"`
-	Year                     string  `json:"year"`
-	CCType                   string  `json:"cc_type"`
-	LastDigits               string  `json:"last_digits"`
-	Name                     string  `json:"name"`
-	GatewayCustomerProfileId string  `json:"gateway_customer_profile_id"`
-	GatewayPaymentProfileId  *string `json:"gateway_payment_profile_id"`
+	Id                       int64  `json:"id"`
+	Month                    string `json:"month"`
+	Year                     string `json:"year"`
+	CCType                   string `json:"cc_type"`
+	LastDigits               string `json:"last_digits"`
+	Name                     string `json:"name"`
+	GatewayCustomerProfileId string `json:"gateway_customer_profile_id"`
+	GatewayPaymentProfileId  string `json:"gateway_payment_profile_id"`
 }
 
 type Permissions struct {
 	CanUpdate bool `json:"can_update"`
+}
+
+type Shipment struct {
+	Id                   int64            `json:"id"`
+	Tracking             string           `json:"tracking"`
+	Number               string           `json:"number"`
+	Cost                 string           `json:"cost"`
+	ShippedAt            *time.Time       `json:"shipped_at"`
+	State                string           `json:"state"`
+	OrderId              string           `json:"order_id"`
+	StockLocationName    string           `json:"stock_location_name"`
+	ShippingRates        []ShippingRate   `json:"shipping_rates"`
+	SelectedShippingRate ShippingRate     `json:"selected_shipping_rate"`
+	ShippingMethods      []ShippingMethod `json:"shipping_methods"`
+	// TODO:
+	// - Manifest
+	Adjustments []Adjustment `json:"adjustments"`
+}
+
+type ShippingCategory struct {
+	Id   int64  `json:"id"`
+	Name string `json:"name"`
+}
+
+type ShippingMethod struct {
+	Id                 int64              `json:"id"`
+	Code               string             `json:"code"`
+	Name               string             `json:"name"`
+	Zones              []ShippingZone     `json:"zones"`
+	ShippingCategories []ShippingCategory `json:"shipping_categories"`
+}
+
+type ShippingRate struct {
+	Id                 int64   `json:"id"`
+	Name               string  `json:"name"`
+	Cost               string  `json:"cost"`
+	Selected           bool    `json:"selected"`
+	ShippingMethodId   float64 `json:"shipping_method_id"`
+	ShippingMethodCode string  `json:"shipping_method_code"`
+	DisplayCost        string  `json:"display_cost"`
+}
+
+type ShippingZone struct {
+	Id          int64  `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
