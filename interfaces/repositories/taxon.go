@@ -51,6 +51,7 @@ func (this *TaxonRepo) FindByProductIds(productIds []int64) ([]*models.Taxon, er
 		") AS pretty_name "
 
 	selectString := "taxons.*, " +
+		"spree_products_taxons.product_id, " +
 		"spree_products_taxons.position AS classification_position, " +
 		prettyNameSelectString
 
