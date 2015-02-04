@@ -140,7 +140,7 @@ type PaymentSource struct {
 }
 
 type Permissions struct {
-	CanUpdate bool `json:"can_update"`
+	CanUpdate bool `json:"can_update"` // user.HasRole("admin") || (order.UserId == user.Id)
 }
 
 type Shipment struct {
