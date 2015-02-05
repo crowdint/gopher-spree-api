@@ -160,3 +160,48 @@ func TestProductInteractor_mergeVariants(t *testing.T) {
 		t.Errorf("Incorrect variant values %d %s %b", v1.ID, v1.Name, v1.IsMaster)
 	}
 }
+
+func TestProductInteractor_mergeOptionTypes(t *testing.T) {
+	jsonProductSlice := []*jsn.Product{
+		&jsn.Product{
+			ID: 3,
+		},
+	}
+
+	jsonOptionTypesMap := JsonOptionTypesMap{
+		3: []*jsn.OptionType{
+			{
+				ID:           1,
+				Name:         "tshirt-size",
+				Presentation: "Size",
+			},
+			{
+				ID:           2,
+				Name:         "tshirt-color",
+				Presentation: "Color",
+			},
+		},
+	}
+
+	productInteractor := NewProductInteractor()
+
+	productInteractor.mergeOptionTypes(jsonProductSlice, jsonOptionTypesMap)
+
+	product := jsonProductSlice[0]
+
+	if product.OptionTypes == nil {
+		t.Error("Product OptionTypes are nil")
+		return
+	}
+
+	if len(product.OptionTypes) == 0 {
+		t.Error("No product optionTypes found")
+		return
+	}
+
+	optionType1 := product.OptionTypes[0]
+
+	if optionType1.ID != 1 || optionType1.Name != "tshirt-size" || optionType1.Presentation != "Size" {
+		t.Errorf("Incorrect optionType values: \n ID -> %d, Name -> %s, Presentation -> %d", optionType1.ID, optionType1.Name, optionType1.Presentation)
+	}
+}

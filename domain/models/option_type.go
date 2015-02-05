@@ -9,6 +9,7 @@ type OptionType struct {
 	Position     int64
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
+	ProductId    int64
 }
 
 func (this OptionType) TableName() string {

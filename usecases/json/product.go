@@ -27,6 +27,7 @@ type ProductInteractor struct {
 	VariantInteractor         *VariantInteractor
 	ProductPropertyInteractor *ProductPropertyInteractor
 	ClassificationInteractor  *ClassificationInteractor
+	OptionTypeInteractor      *OptionTypeInteractor
 }
 
 func NewProductInteractor() *ProductInteractor {
@@ -35,6 +36,7 @@ func NewProductInteractor() *ProductInteractor {
 		VariantInteractor:         NewVariantInteractor(),
 		ProductPropertyInteractor: NewProductPropertyInteractor(),
 		ClassificationInteractor:  NewClassificationInteractor(),
+		OptionTypeInteractor:      NewOptionTypeInteractor(),
 	}
 }
 
@@ -63,11 +65,18 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int) (ContentRes
 		return ProductResponse{}, err
 	}
 
+	optionTypesMap, err := this.OptionTypeInteractor.GetJsonOptionTypesMap(productIds)
+	if err != nil {
+		return ProductResponse{}, err
+	}
+
 	this.mergeVariants(productJsonSlice, variantsMap)
 
 	this.mergeProductProperties(productJsonSlice, productPropertiesMap)
 
 	this.mergeClassifications(productJsonSlice, classificationsMap)
+
+	this.mergeOptionTypes(productJsonSlice, optionTypesMap)
 
 	return ProductResponse{
 		data: productJsonSlice,
@@ -183,6 +192,22 @@ func (this *ProductInteractor) mergeClassifications(productSlice []*json.Product
 
 		for _, classification := range classificationsSlice {
 			product.Classifications = append(product.Classifications, *classification)
+		}
+	}
+}
+
+func (this *ProductInteractor) mergeOptionTypes(productSlice []*json.Product, optionTypesMap JsonOptionTypesMap) {
+	for _, product := range productSlice {
+		product.OptionTypes = []json.OptionType{}
+
+		optionTypesSlice := optionTypesMap[product.ID]
+
+		if optionTypesSlice == nil {
+			continue
+		}
+
+		for _, optionType := range optionTypesSlice {
+			product.OptionTypes = append(product.OptionTypes, *optionType)
 		}
 	}
 }
