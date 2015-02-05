@@ -89,6 +89,43 @@ var Tree = &Node{
 			},
 		},
 		&Node{
+			Name: "true",
+			Apply: func(re *RansakEmulator) {
+				re.appendField()
+				re.replacePlaceholder("= 't'")
+			},
+		},
+		&Node{
+			Name: "false",
+			Apply: func(re *RansakEmulator) {
+				re.appendField()
+				re.replacePlaceholder("= 'f'")
+			},
+		},
+		&Node{
+			Name: "present",
+			Apply: func(re *RansakEmulator) {
+				field := re.appendField()
+				re.replacePlaceholder("IS NOT NULL AND " + re.placeholder)
+				re.replacePlaceholder(field + " <> ''")
+			},
+		},
+		&Node{
+			Name: "blank",
+			Apply: func(re *RansakEmulator) {
+				field := re.appendField()
+				re.replacePlaceholder("IS NULL OR " + re.placeholder)
+				re.replacePlaceholder(field + " = ''")
+			},
+		},
+		&Node{
+			Name: "null",
+			Apply: func(re *RansakEmulator) {
+				re.appendField()
+				re.replacePlaceholder("IS NULL")
+			},
+		},
+		&Node{
 			Name: "not",
 			Nodes: []*Node{
 				&Node{
@@ -116,6 +153,34 @@ var Tree = &Node{
 					Apply: func(re *RansakEmulator) {
 						re.appendField()
 						re.replacePlaceholder("NOT LIKE '" + re.placeholder + "%'")
+					},
+				},
+				&Node{
+					Name: "end",
+					Apply: func(re *RansakEmulator) {
+						re.appendField()
+						re.replacePlaceholder("NOT LIKE '%" + re.placeholder + "'")
+					},
+				},
+				&Node{
+					Name: "true",
+					Apply: func(re *RansakEmulator) {
+						re.appendField()
+						re.replacePlaceholder("<> 't'")
+					},
+				},
+				&Node{
+					Name: "false",
+					Apply: func(re *RansakEmulator) {
+						re.appendField()
+						re.replacePlaceholder("<> 'f'")
+					},
+				},
+				&Node{
+					Name: "null",
+					Apply: func(re *RansakEmulator) {
+						re.appendField()
+						re.replacePlaceholder("IS NOT NULL")
 					},
 				},
 			},

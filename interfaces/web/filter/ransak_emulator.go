@@ -91,10 +91,11 @@ func (this *RansakEmulator) find(nodeParam *Node, pos int) (*Node, bool) {
 	return nil, false
 }
 
-func (this *RansakEmulator) appendField() {
+func (this *RansakEmulator) appendField() string {
 	field := strings.Join(this.evaluatedTokens, this.separator)
 	this.evaluatedTokens = []string{}
 	this.template += field + " " + this.placeholder + " "
+	return field
 }
 
 func (this *RansakEmulator) evaluated(token string) {

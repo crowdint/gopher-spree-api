@@ -62,6 +62,22 @@ func TestQueryParser(t *testing.T) {
 		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
 	}
 
+	//lteq
+	expected = "age <= 29"
+	sql = ransak.ToSql("age_lteq", 29)
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
+	//gteq
+	expected = "age >= 29"
+	sql = ransak.ToSql("age_gteq", 29)
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
 	//eq / or / and
 	expected = "first_name = 'cone' AND last_name = 'cone'"
 	sql = ransak.ToSql("first_name_and_last_name_eq", "cone")
@@ -92,8 +108,97 @@ func TestQueryParser(t *testing.T) {
 		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
 	}
 
-	expected = "name <> 'cone' OR last_name <> 'cone'"
-	sql = ransak.ToSql("name_or_last_name_not_eq", "cone")
+	//start
+	expected = "name LIKE 'cone%'"
+	sql = ransak.ToSql("name_start", "cone")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
+	//not_start
+	expected = "name NOT LIKE 'cone%'"
+	sql = ransak.ToSql("name_not_start", "cone")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
+	//end
+	expected = "name LIKE '%cone'"
+	sql = ransak.ToSql("name_end", "cone")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
+	//not_end
+	expected = "name NOT LIKE '%cone'"
+	sql = ransak.ToSql("name_not_end", "cone")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
+	//true
+	expected = "is_programmer = 't'"
+	sql = ransak.ToSql("is_programmer_true", "1")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
+	//not_true
+	expected = "is_programmer <> 't'"
+	sql = ransak.ToSql("is_programmer_not_true", "1")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
+	//false
+	expected = "is_programmer = 'f'"
+	sql = ransak.ToSql("is_programmer_false", "1")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
+	//not_false
+	expected = "is_programmer <> 'f'"
+	sql = ransak.ToSql("is_programmer_not_false", "1")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
+	//present
+	expected = "required_field IS NOT NULL AND required_field <> ''"
+	sql = ransak.ToSql("required_field_present", "1")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
+	//blank
+	expected = "required_field IS NULL OR required_field = ''"
+	sql = ransak.ToSql("required_field_blank", "1")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
+	//null
+	expected = "required_field IS NULL"
+	sql = ransak.ToSql("required_field_null", "1")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
+	//not_null
+	expected = "required_field IS NOT NULL"
+	sql = ransak.ToSql("required_field_not_null", "1")
 
 	if sql != expected {
 		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
