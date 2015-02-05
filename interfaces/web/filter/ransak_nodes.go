@@ -1,4 +1,4 @@
-package repositories
+package filter
 
 type OperatorFunction func(re *RansakEmulator)
 
