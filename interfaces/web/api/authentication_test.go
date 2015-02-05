@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/crowdint/gopher-spree-api/configs/spree"
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
@@ -24,6 +25,7 @@ func TestAuthenticationWithValidToken(t *testing.T) {
 	w := httptest.NewRecorder()
 	var spreeToken interface{}
 
+	spree.Set(spree.SPREE_API_AUTHENTICATION, "true")
 	r := gin.New()
 	r.Use(Authentication(), func(c *gin.Context) {
 		spreeToken, _ = c.Get(SPREE_TOKEN)
@@ -50,6 +52,7 @@ func TestAuthenticationWithInvalidToken(t *testing.T) {
 	w := httptest.NewRecorder()
 	var spreeToken interface{}
 
+	spree.Set(spree.SPREE_API_AUTHENTICATION, "true")
 	r := gin.New()
 	r.Use(Authentication(), func(c *gin.Context) {
 		spreeToken, _ = c.Get(SPREE_TOKEN)
@@ -71,6 +74,7 @@ func TestAuthenticationWithoutToken(t *testing.T) {
 	w := httptest.NewRecorder()
 	var spreeToken interface{}
 
+	spree.Set(spree.SPREE_API_AUTHENTICATION, "true")
 	r := gin.New()
 	r.Use(Authentication(), func(c *gin.Context) {
 		spreeToken, _ = c.Get(SPREE_TOKEN)
@@ -115,7 +119,7 @@ func TestAuthenticationWithValidOrderToken(t *testing.T) {
 		t.Errorf("api.Authentication response code should be 200, but was: %d", w.Code)
 	}
 
-	if user.Id != 0 {
+	if user.Id != -1 {
 		t.Errorf("api.Authentication user id should be 0, but was %d", user.Id)
 	}
 }
@@ -130,6 +134,7 @@ func TestAuthenticationWithInvalidOrderToken(t *testing.T) {
 	req.Header.Set(SPREE_ORDER_TOKEN_HEADER, "testOrderToken")
 	w := httptest.NewRecorder()
 
+	spree.Set(spree.SPREE_API_AUTHENTICATION, "true")
 	r := gin.New()
 	r.Use(Authentication())
 	r.GET(path)
@@ -156,6 +161,7 @@ func TestAuthenticationWithValidOrderTokenAndActionIsNotOrderShow(t *testing.T) 
 	req.Header.Set(SPREE_ORDER_TOKEN_HEADER, order.GuestToken)
 	w := httptest.NewRecorder()
 
+	spree.Set(spree.SPREE_API_AUTHENTICATION, "true")
 	r := gin.New()
 	var user *models.User
 	r.Use(Authentication(), func(c *gin.Context) {
@@ -166,6 +172,84 @@ func TestAuthenticationWithValidOrderTokenAndActionIsNotOrderShow(t *testing.T) 
 
 	if w.Code != 401 {
 		t.Errorf("api.Authentication response code should be 401, but was: %d", w.Code)
+	}
+}
+
+func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalse(t *testing.T) {
+	if err := repositories.InitDB(); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	path := "/api/products"
+	req, _ := http.NewRequest("GET", path, nil)
+	w := httptest.NewRecorder()
+
+	spree.Set(spree.SPREE_API_AUTHENTICATION, "false")
+	r := gin.New()
+	var user *models.User
+	r.Use(Authentication(), func(c *gin.Context) {
+		user = currentUser(c)
+	})
+	r.GET(path)
+	r.ServeHTTP(w, req)
+
+	if w.Code != 200 {
+		t.Errorf("api.Authentication response code should be 200, but was: %d", w.Code)
+	}
+}
+
+func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalseAndActionIsNotRead(t *testing.T) {
+	if err := repositories.InitDB(); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	path := "/api/products"
+	req, _ := http.NewRequest("POST", path, nil)
+	w := httptest.NewRecorder()
+
+	spree.Set(spree.SPREE_API_AUTHENTICATION, "false")
+	r := gin.New()
+	var user *models.User
+	r.Use(Authentication(), func(c *gin.Context) {
+		user = currentUser(c)
+	})
+	r.POST(path)
+	r.ServeHTTP(w, req)
+
+	if w.Code != 401 {
+		t.Errorf("api.Authentication response code should be 401, but was: %d", w.Code)
+	}
+}
+
+func TestAuthenticationWithTokenAndAuthenticationRequiredIsFalseAndActionsIsNotRead(t *testing.T) {
+	if err := repositories.InitDB(); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	user := &models.User{}
+	var currentUsr *models.User
+	dbSpreeToken := "testUser"
+	repositories.Spree_db.FirstOrCreate(user, models.User{SpreeApiKey: dbSpreeToken})
+
+	path := "/api/products"
+	req, _ := http.NewRequest("POST", path, nil)
+	req.Header.Set(SPREE_TOKEN_HEADER, dbSpreeToken)
+	w := httptest.NewRecorder()
+
+	spree.Set(spree.SPREE_API_AUTHENTICATION, "false")
+	r := gin.New()
+	r.Use(Authentication(), func(c *gin.Context) {
+		currentUsr = currentUser(c)
+	})
+	r.POST(path)
+	r.ServeHTTP(w, req)
+
+	if w.Code != 200 {
+		t.Errorf("api.Authentication response code should be 200, but was: %d", w.Code)
+	}
+
+	if user.Id != currentUsr.Id {
+		t.Errorf("api.Authentication user id should be %d, but was: %d", user.Id, currentUsr.Id)
 	}
 }
 

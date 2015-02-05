@@ -47,7 +47,7 @@ func getGinOrder(c *gin.Context) *models.Order {
 func authorizeOrders(c *gin.Context) {
 	user := currentUser(c)
 	if !user.HasRole("admin") {
-		unauthorized(c, "You are not authorized to perfomr that action.")
+		unauthorized(c, "You are not authorized to perform that action.")
 		return
 	}
 
