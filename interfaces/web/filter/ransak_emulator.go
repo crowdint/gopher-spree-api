@@ -79,9 +79,17 @@ func (this *RansakEmulator) find(nodeParam *Node, pos int) (*Node, bool) {
 	if len(nodeParam.Nodes) > 0 {
 		for _, node := range nodeParam.Nodes {
 			if foundNode, found := this.find(node, pos+1); found {
+
 				return foundNode, true
+
 			}
 		}
+
+		//none of its children nodes matched, check if is itself an operator
+		if nodeParam.IsOperator == true {
+			return nodeParam, true
+		}
+
 	} else {
 		this.pos = pos
 		return nodeParam, true
@@ -91,9 +99,14 @@ func (this *RansakEmulator) find(nodeParam *Node, pos int) (*Node, bool) {
 }
 
 func (this *RansakEmulator) appendField() string {
+	field := this.getLastField()
+	this.template += field + " " + this.placeholder + " "
+	return field
+}
+
+func (this *RansakEmulator) getLastField() string {
 	field := strings.Join(this.evaluatedTokens, this.separator)
 	this.evaluatedTokens = []string{}
-	this.template += field + " " + this.placeholder + " "
 	return field
 }
 
@@ -111,7 +124,13 @@ func (this *RansakEmulator) replacePlaceholder(replaceFor string) {
 }
 
 func (this *RansakEmulator) replaceValue() {
-	this.replacePlaceholder(this.param.StrRepresentation)
+	if len(this.param.parts) == 0 {
+		this.replacePlaceholder(this.param.StrRepresentation)
+	} else {
+		for _, value := range this.param.parts {
+			this.template = strings.Replace(this.template, this.placeholder, value, 1)
+		}
+	}
 }
 
 func (this *RansakEmulator) getCorrectSqlFormat(value string) string {

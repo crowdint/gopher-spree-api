@@ -12,11 +12,15 @@ func newRansackParam(param interface{}, kind string) *ransakParam {
 
 	arrayRx := regexp.MustCompile(`^\[[\d|,]*\]$`)
 
+	wordListRx := regexp.MustCompile(`^\%w\([a-zA-Z\s]+\)$`)
+
 	rparam := &ransakParam{
 		value:      param,
 		kind:       kind,
 		ellipsisRx: ellipsisRx,
 		arrayRx:    arrayRx,
+		wordListRx: wordListRx,
+		parts:      []string{},
 	}
 
 	rparam.findStrRepresentation()
@@ -30,6 +34,8 @@ type ransakParam struct {
 	StrRepresentation string
 	ellipsisRx        *regexp.Regexp
 	arrayRx           *regexp.Regexp
+	wordListRx        *regexp.Regexp
+	parts             []string
 }
 
 func (this *ransakParam) findStrRepresentation() {
@@ -41,6 +47,11 @@ func (this *ransakParam) findStrRepresentation() {
 	}
 
 	if str, isArray := this.getFromArray(paramStr); isArray {
+		this.StrRepresentation = str
+		return
+	}
+
+	if str, isWordList := this.getFromWordList(paramStr); isWordList {
 		this.StrRepresentation = str
 		return
 	}
@@ -75,6 +86,19 @@ func (this *ransakParam) getFromArray(param string) (string, bool) {
 		param = r.ReplaceAllString(param, "")
 
 		return strings.Trim(param, ","), true
+	}
+	return "", false
+}
+
+func (this *ransakParam) getFromWordList(param string) (string, bool) {
+	if this.wordListRx.MatchString(param) {
+		param = strings.Replace(param, "%w", "", 1)
+
+		r := regexp.MustCompile(`[\(|\)]`)
+
+		param = r.ReplaceAllString(param, "")
+
+		this.parts = strings.Split(param, " ")
 	}
 	return "", false
 }

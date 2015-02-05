@@ -3,9 +3,10 @@ package filter
 type OperatorFunction func(re *RansakEmulator)
 
 type Node struct {
-	Name  string
-	Nodes []*Node
-	Apply OperatorFunction
+	Name       string
+	Nodes      []*Node
+	Apply      OperatorFunction
+	IsOperator bool
 }
 
 var Tree = &Node{
@@ -51,6 +52,26 @@ var Tree = &Node{
 			Apply: func(re *RansakEmulator) {
 				re.appendField()
 				re.replacePlaceholder("LIKE '%" + re.placeholder + "%'")
+			},
+			IsOperator: true,
+			Nodes: []*Node{
+				&Node{
+					Name: "any",
+					Apply: func(re *RansakEmulator) {
+						field := re.getLastField()
+
+						values := re.param.parts
+						times := len(values) - 1
+
+						statement := field + " LIKE '%" + re.placeholder + "%'"
+
+						re.template += statement
+
+						for i := 0; i < (times); i++ {
+							re.template += " OR " + statement
+						}
+					},
+				},
 			},
 		},
 		&Node{
