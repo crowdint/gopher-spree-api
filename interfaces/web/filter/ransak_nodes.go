@@ -33,6 +33,13 @@ var Tree = &Node{
 			},
 		},
 		&Node{
+			Name: "in",
+			Apply: func(re *RansakEmulator) {
+				re.appendField()
+				re.replacePlaceholder("IN (" + re.placeholder + ")")
+			},
+		},
+		&Node{
 			Name: "matches",
 			Apply: func(re *RansakEmulator) {
 				re.appendField()
@@ -139,6 +146,7 @@ var Tree = &Node{
 					Name: "in",
 					Apply: func(re *RansakEmulator) {
 						re.appendField()
+						re.replacePlaceholder("NOT IN (" + re.placeholder + ")")
 					},
 				},
 				&Node{

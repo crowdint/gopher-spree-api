@@ -1,7 +1,6 @@
 package filter
 
 import (
-	"fmt"
 	"reflect"
 	"strings"
 )
@@ -19,8 +18,8 @@ type RansakEmulator struct {
 	template        string
 	separator       string
 	placeholder     string
-	paramKind       string
 	pos             int
+	param           *ransakParam
 }
 
 func (this *RansakEmulator) ToSql(input string, param interface{}) string {
@@ -28,7 +27,7 @@ func (this *RansakEmulator) ToSql(input string, param interface{}) string {
 
 	this.tokenize(input)
 
-	this.paramKind = reflect.TypeOf(param).String()
+	this.param = newRansackParam(param, reflect.TypeOf(param).String())
 
 	for this.pos = 0; this.pos < len(this.toEvaluate); this.pos++ {
 		token := this.toEvaluate[this.pos]
@@ -50,7 +49,7 @@ func (this *RansakEmulator) ToSql(input string, param interface{}) string {
 		}
 	}
 
-	this.replaceValue(param)
+	this.replaceValue()
 
 	return strings.Trim(this.template, " ")
 }
@@ -59,7 +58,7 @@ func (this *RansakEmulator) reset() {
 	this.toEvaluate = []string{}
 	this.evaluatedTokens = []string{}
 	this.template = ""
-	this.paramKind = ""
+	this.param = nil
 }
 
 func (this *RansakEmulator) tokenize(input string) {
@@ -111,14 +110,12 @@ func (this *RansakEmulator) replacePlaceholder(replaceFor string) {
 	)
 }
 
-func (this *RansakEmulator) replaceValue(value interface{}) {
-	strValue := fmt.Sprintf("%v", value)
-
-	this.replacePlaceholder(strValue)
+func (this *RansakEmulator) replaceValue() {
+	this.replacePlaceholder(this.param.StrRepresentation)
 }
 
 func (this *RansakEmulator) getCorrectSqlFormat(value string) string {
-	if this.paramKind == "string" {
+	if this.param.kind == "string" {
 		return "'" + value + "'"
 	}
 	return value

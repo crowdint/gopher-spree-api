@@ -204,6 +204,21 @@ func TestQueryParser(t *testing.T) {
 		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
 	}
 
+	//in
+	expected = "age IN (28,29,30)"
+	sql = ransak.ToSql("age_in", "28..30")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
+	expected = "age IN (28,29,30)"
+	sql = ransak.ToSql("age_in", "[28,29,30]")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
 	//Has word "not" but is not "not_equal" nor "not_in"
 	//so it must be part of the field's name
 	expected = "field_not_operator = 29"
