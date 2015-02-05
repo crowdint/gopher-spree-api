@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"net/http"
 	"regexp"
 	"strings"
@@ -21,7 +22,6 @@ var (
 
 func Authentication() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		isGuestUser := false
 		user := &models.User{}
 		authRequired := spree.IsAuthenticationRequired()
 
@@ -32,57 +32,82 @@ func Authentication() gin.HandlerFunc {
 			nextHandler(c, user)
 			return
 		} else {
-			spreeToken := getSpreeToken(c)
-			dbRepo := repositories.NewDatabaseRepository()
-
-			// If spreeToken is empty, check if orderToken is set and action is orders show
-			if spreeToken == "" {
-				if isOrdersShowAction(c.Request.URL.Path) {
-					// Get order token
-					orderToken := getOrderToken(c)
-
-					// Return if order token is not provided
-					if orderToken == "" {
-						unauthorizedAuthRequiredMsg(c, authRequired)
-						return
-					}
-
-					// Find the order by guest token (order token)
-					order := &models.Order{}
-					err := dbRepo.FindBy(order, map[string]interface{}{"guest_token": orderToken})
-					if err != nil {
-						unauthorized(c, "You are not authorized to perform that action.")
-						return
-					}
-
-					// Get order number (from path) and verify if it's equal to the order's number (from guest token)
-					orderNumber := getOrderNumber(c.Request.URL.Path)
-					if order.Number != orderNumber {
-						unauthorized(c, "You are not authorized to perform that action.")
-						return
-					}
-
-					isGuestUser = true
-					c.Set("Order", order)
-				} else {
-					unauthorizedAuthRequiredMsg(c, authRequired)
-					return
-				}
+			if err := verifySpreeTokenAccess(c, user, authRequired); err != nil {
+				return
 			}
-
-			if !isGuestUser {
-				if err := findUserBySpreeApiKey(c, dbRepo, user, spreeToken); err != nil {
-					return
-				}
-			} else {
-				user.Id = -1
-			}
-
-			c.Set(SPREE_TOKEN, spreeToken)
 		}
 
 		nextHandler(c, user)
 	}
+}
+
+func verifySpreeTokenAccess(c *gin.Context, user *models.User, authRequired bool) error {
+	var err error
+	isGuestUser := false
+	spreeToken := getSpreeToken(c)
+	dbRepo := repositories.NewDatabaseRepository()
+
+	// If spreeToken is empty, check if orderToken is set and action is orders show
+	if spreeToken == "" {
+		if isGuestUser, err = verifyOrderTokenAndAction(c, dbRepo, authRequired); err != nil {
+			return err
+		}
+	}
+
+	// if user is not guest then find him by spree token
+	if !isGuestUser {
+		if err = findUserBySpreeApiKey(c, dbRepo, user, spreeToken); err != nil {
+			return err
+		}
+	} else {
+		user.Id = -1
+	}
+
+	c.Set(SPREE_TOKEN, spreeToken)
+	return nil
+}
+
+func verifyOrderTokenAndAction(c *gin.Context, dbRepo *repositories.DbRepo, authRequired bool) (bool, error) {
+	if isOrdersShowAction(c.Request.URL.Path) {
+		if err := verifyOrderTokenAccess(c, dbRepo, authRequired); err != nil {
+			return false, err
+		}
+
+		return true, nil
+	} else {
+		unauthorizedAuthRequiredMsg(c, authRequired)
+		return false, errors.New("Unathorized to perform that action.")
+	}
+
+}
+
+func verifyOrderTokenAccess(c *gin.Context, dbRepo *repositories.DbRepo, authRequired bool) error {
+	// Get order token
+	orderToken := getOrderToken(c)
+
+	// Return if order token is not provided
+	if orderToken == "" {
+		unauthorizedAuthRequiredMsg(c, authRequired)
+		return errors.New("Order Token is not present")
+	}
+
+	// Find the order by guest token (order token)
+	order := &models.Order{}
+	err := dbRepo.FindBy(order, map[string]interface{}{"guest_token": orderToken})
+	if err != nil {
+		unauthorized(c, "You are not authorized to perform that action.")
+		return err
+	}
+
+	// Get order number (from path) and verify if it's equal to the order's number (from guest token)
+	orderNumber := getOrderNumber(c.Request.URL.Path)
+	if order.Number != orderNumber {
+		unauthorized(c, "You are not authorized to perform that action.")
+		return errors.New("The order number param is not equal to order's number")
+	}
+
+	c.Set("Order", order)
+	return nil
 }
 
 func unauthorizedAuthRequiredMsg(c *gin.Context, authRequired bool) {
