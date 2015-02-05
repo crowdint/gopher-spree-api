@@ -20,7 +20,11 @@ func TestAuthenticationWithValidToken(t *testing.T) {
 	dbSpreeToken := "testUser"
 	repositories.Spree_db.FirstOrCreate(&models.User{}, models.User{SpreeApiKey: dbSpreeToken})
 
-	req, _ := http.NewRequest("GET", "/products", nil)
+	req, err := http.NewRequest("GET", "/products", nil)
+	if err != nil {
+		t.Error("An error occurred:", err.Error())
+	}
+
 	req.Header.Set(SPREE_TOKEN_HEADER, dbSpreeToken)
 	w := httptest.NewRecorder()
 	var spreeToken interface{}
@@ -47,7 +51,11 @@ func TestAuthenticationWithInvalidToken(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	req, _ := http.NewRequest("GET", "/products", nil)
+	req, err := http.NewRequest("GET", "/products", nil)
+	if err != nil {
+		t.Error("An error occurred:", err.Error())
+	}
+
 	req.Header.Set(SPREE_TOKEN_HEADER, "fooTest")
 	w := httptest.NewRecorder()
 	var spreeToken interface{}
@@ -70,7 +78,11 @@ func TestAuthenticationWithInvalidToken(t *testing.T) {
 }
 
 func TestAuthenticationWithoutToken(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/products", nil)
+	req, err := http.NewRequest("GET", "/products", nil)
+	if err != nil {
+		t.Error("An error occurred:", err.Error())
+	}
+
 	w := httptest.NewRecorder()
 	var spreeToken interface{}
 
@@ -103,7 +115,11 @@ func TestAuthenticationWithValidOrderToken(t *testing.T) {
 	}
 
 	path := "/api/orders/" + order.Number
-	req, _ := http.NewRequest("GET", path, nil)
+	req, err := http.NewRequest("GET", path, nil)
+	if err != nil {
+		t.Error("An error occurred:", err.Error())
+	}
+
 	req.Header.Set(SPREE_ORDER_TOKEN_HEADER, order.GuestToken)
 	w := httptest.NewRecorder()
 
@@ -130,7 +146,11 @@ func TestAuthenticationWithInvalidOrderToken(t *testing.T) {
 	}
 
 	path := "/api/orders/testOrderNumber"
-	req, _ := http.NewRequest("GET", path, nil)
+	req, err := http.NewRequest("GET", path, nil)
+	if err != nil {
+		t.Error("An error occurred:", err.Error())
+	}
+
 	req.Header.Set(SPREE_ORDER_TOKEN_HEADER, "testOrderToken")
 	w := httptest.NewRecorder()
 
@@ -157,7 +177,11 @@ func TestAuthenticationWithValidOrderTokenAndActionIsNotOrderShow(t *testing.T) 
 	}
 
 	path := "/api/orders"
-	req, _ := http.NewRequest("GET", path, nil)
+	req, err := http.NewRequest("GET", path, nil)
+	if err != nil {
+		t.Error("An error occurred:", err.Error())
+	}
+
 	req.Header.Set(SPREE_ORDER_TOKEN_HEADER, order.GuestToken)
 	w := httptest.NewRecorder()
 
@@ -181,7 +205,11 @@ func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalse(t *testing.T
 	}
 
 	path := "/api/products"
-	req, _ := http.NewRequest("GET", path, nil)
+	req, err := http.NewRequest("GET", path, nil)
+	if err != nil {
+		t.Error("An error occurred:", err.Error())
+	}
+
 	w := httptest.NewRecorder()
 
 	spree.Set(spree.SPREE_API_AUTHENTICATION, "false")
@@ -204,7 +232,11 @@ func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalseAndActionIsNo
 	}
 
 	path := "/api/products"
-	req, _ := http.NewRequest("POST", path, nil)
+	req, err := http.NewRequest("POST", path, nil)
+	if err != nil {
+		t.Error("An error occurred:", err.Error())
+	}
+
 	w := httptest.NewRecorder()
 
 	spree.Set(spree.SPREE_API_AUTHENTICATION, "false")
@@ -232,7 +264,11 @@ func TestAuthenticationWithTokenAndAuthenticationRequiredIsFalseAndActionsIsNotR
 	repositories.Spree_db.FirstOrCreate(user, models.User{SpreeApiKey: dbSpreeToken})
 
 	path := "/api/products"
-	req, _ := http.NewRequest("POST", path, nil)
+	req, err := http.NewRequest("POST", path, nil)
+	if err != nil {
+		t.Error("An error occurred:", err.Error())
+	}
+
 	req.Header.Set(SPREE_TOKEN_HEADER, dbSpreeToken)
 	w := httptest.NewRecorder()
 
@@ -254,7 +290,10 @@ func TestAuthenticationWithTokenAndAuthenticationRequiredIsFalseAndActionsIsNotR
 }
 
 func TestGetSpreeTokenWhenNotPresent(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/products", nil)
+	req, err := http.NewRequest("GET", "/products", nil)
+	if err != nil {
+		t.Error("An error occurred:", err.Error())
+	}
 
 	context := &gin.Context{Request: req}
 
@@ -264,7 +303,11 @@ func TestGetSpreeTokenWhenNotPresent(t *testing.T) {
 }
 
 func TestGetSpreeTokenFromHeader(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/products", nil)
+	req, err := http.NewRequest("GET", "/products", nil)
+	if err != nil {
+		t.Error("An error occurred:", err.Error())
+	}
+
 	req.Header.Set(SPREE_TOKEN_HEADER, "spree123")
 
 	context := &gin.Context{Request: req}
@@ -275,7 +318,10 @@ func TestGetSpreeTokenFromHeader(t *testing.T) {
 }
 
 func TestGetSpreeTokenFromURL(t *testing.T) {
-	req, _ := http.NewRequest("GET", "/products?token=spree123", nil)
+	req, err := http.NewRequest("GET", "/products?token=spree123", nil)
+	if err != nil {
+		t.Error("An error occurred:", err.Error())
+	}
 
 	context := &gin.Context{Request: req}
 
