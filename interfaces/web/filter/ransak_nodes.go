@@ -176,6 +176,26 @@ var Tree = &Node{
 						re.appendField()
 						re.replacePlaceholder("NOT LIKE '%" + re.placeholder + "%'")
 					},
+					IsOperator: true,
+					Nodes: []*Node{
+						&Node{
+							Name: "any",
+							Apply: func(re *RansakEmulator) {
+								field := re.getLastField()
+
+								values := re.param.parts
+								times := len(values) - 1
+
+								statement := field + " NOT LIKE '%" + re.placeholder + "%'"
+
+								re.template += statement
+
+								for i := 0; i < (times); i++ {
+									re.template += " AND " + statement
+								}
+							},
+						},
+					},
 				},
 				&Node{
 					Name: "start",

@@ -87,6 +87,7 @@ func (this *RansakEmulator) find(nodeParam *Node, pos int) (*Node, bool) {
 
 		//none of its children nodes matched, check if is itself an operator
 		if nodeParam.IsOperator == true {
+			this.pos = pos
 			return nodeParam, true
 		}
 

@@ -227,6 +227,14 @@ func TestQueryParser(t *testing.T) {
 		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
 	}
 
+	//not_cont_any
+	expected = "user_name NOT LIKE '%cone%' AND user_name NOT LIKE '%carlos%'"
+	sql = ransak.ToSql("user_name_not_cont_any", "%w(cone carlos)")
+
+	if sql != expected {
+		t.Errorf("Mismatch Error:\nGot: %s \nWanted: %s", sql, expected)
+	}
+
 	//Has word "not" but is not "not_equal" nor "not_in"
 	//so it must be part of the field's name
 	expected = "field_not_operator = 29"
