@@ -22,27 +22,25 @@ var (
 
 func Authentication() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		user := &models.User{}
 		authRequired := spree.IsAuthenticationRequired()
 
 		// GET + authentication (false) + readAction => next
 		// POST + authentication (false) + token (spreeToken) => next
 		// authentication (true) + token (spreeToken || orderToken) => next
 		if isReadAction(c.Request) && !authRequired {
-			nextHandler(c, user)
+			nextHandler(c, &models.User{})
 			return
 		} else {
-			if err := verifySpreeTokenAccess(c, user, authRequired); err != nil {
+			if err := verifySpreeTokenAccess(c, authRequired); err != nil {
 				return
 			}
 		}
-
-		nextHandler(c, user)
 	}
 }
 
-func verifySpreeTokenAccess(c *gin.Context, user *models.User, authRequired bool) error {
+func verifySpreeTokenAccess(c *gin.Context, authRequired bool) error {
 	var err error
+	user := &models.User{}
 	isGuestUser := false
 	spreeToken := getSpreeToken(c)
 	dbRepo := repositories.NewDatabaseRepository()
@@ -64,6 +62,7 @@ func verifySpreeTokenAccess(c *gin.Context, user *models.User, authRequired bool
 	}
 
 	c.Set(SPREE_TOKEN, spreeToken)
+	nextHandler(c, user)
 	return nil
 }
 
