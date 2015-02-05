@@ -26,10 +26,10 @@ type Order struct {
 	AdditionalTaxTotal        float64     `json:"additional_tax_total,string"`
 	DisplayIncludedTaxTotal   string      `json:"display_included_tax_total"`
 	DisplayAdditionalTaxTotal string      `json:"display_additional_tax_total"`
-	TaxTotal                  float32     `json:"tax_total,string"`
+	TaxTotal                  float64     `json:"tax_total,string"`
 	Currency                  string      `json:"currency"`
 	DisplayItemTotal          string      `json:"display_item_total"`
-	TotalQuantity             int32       `json:"total_quantity"`
+	TotalQuantity             int64       `json:"total_quantity"`
 	DisplayTotal              string      `json:"display_total"`
 	DisplayShipTotal          string      `json:"display_ship_total"`
 	DisplayTaxTotal           string      `json:"display_tax_total"`
