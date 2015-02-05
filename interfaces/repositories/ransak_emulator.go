@@ -9,9 +9,9 @@ import (
 type OperatorFunction func(re *RansakEmulator)
 
 type Node struct {
-	Name     string
-	Nodes    []Node
-	Function OperatorFunction
+	Name  string
+	Nodes []*Node
+	Apply OperatorFunction
 }
 
 func NewRansakEmulator() *RansakEmulator {
@@ -29,7 +29,6 @@ type RansakEmulator struct {
 	placeholder     string
 	paramKind       string
 	pos             int
-	currentOperator []string
 }
 
 func (this *RansakEmulator) ToSql(input string, param interface{}) string {
@@ -42,24 +41,31 @@ func (this *RansakEmulator) ToSql(input string, param interface{}) string {
 	for this.pos = 0; this.pos < len(this.toEvaluate); this.pos++ {
 		token := this.toEvaluate[this.pos]
 
-		if node, matched := isOperator(token); matched {
-			if !this.find(node, this.pos) {
+		if node, isCandidate := isCandidateToOperator(token); isCandidate {
+			if foundNode, found := this.find(node, this.pos); found {
+
+				foundNode.Apply(this)
+
+			} else {
+
 				this.evaluated(token)
+
 			}
 		} else {
+
 			this.evaluated(token)
+
 		}
 	}
 
 	this.replaceValue(param)
 
-	return this.template
+	return strings.Trim(this.template, " ")
 }
 
 func (this *RansakEmulator) reset() {
 	this.toEvaluate = []string{}
 	this.evaluatedTokens = []string{}
-	this.currentOperator = []string{}
 	this.template = ""
 	this.paramKind = ""
 }
@@ -68,30 +74,29 @@ func (this *RansakEmulator) tokenize(input string) {
 	this.toEvaluate = strings.Split(input, this.separator)
 }
 
-func (this *RansakEmulator) find(nodeParam Node, pos int) bool {
+func (this *RansakEmulator) find(nodeParam *Node, pos int) (*Node, bool) {
 	if pos >= len(this.toEvaluate) {
-		return false
+		return nil, false
 	}
 
 	next := this.toEvaluate[pos]
 
 	if nodeParam.Name != next {
-		return false
+		return nil, false
 	}
 
 	if len(nodeParam.Nodes) > 0 {
 		for _, node := range nodeParam.Nodes {
-			if this.find(node, pos+1) {
-				return true
+			if foundNode, found := this.find(node, pos+1); found {
+				return foundNode, true
 			}
 		}
 	} else {
 		this.pos = pos
-		nodeParam.Function(this)
-		return true
+		return nodeParam, true
 	}
 
-	return false
+	return nil, false
 }
 
 func (this *RansakEmulator) appendField() {
@@ -126,67 +131,140 @@ func (this *RansakEmulator) getCorrectSqlFormat(value string) string {
 	return value
 }
 
-func isOperator(item string) (Node, bool) {
+func isCandidateToOperator(item string) (*Node, bool) {
 	for _, node := range Tree.Nodes {
 		if node.Name == item {
 			return node, true
 		}
 	}
-	return Node{}, false
+	return &Node{}, false
 }
 
-var Tree = Node{
+var Tree = &Node{
 	Name: "Operators",
-	Nodes: []Node{
-		Node{
+	Nodes: []*Node{
+		&Node{
 			Name: "or",
-			Function: func(re *RansakEmulator) {
+			Apply: func(re *RansakEmulator) {
 				re.appendField()
 				re.template += "OR "
 			},
 		},
-		Node{
+		&Node{
 			Name: "and",
-			Function: func(re *RansakEmulator) {
+			Apply: func(re *RansakEmulator) {
 				re.appendField()
 				re.template += "AND "
 			},
 		},
-		Node{
+		&Node{
 			Name: "eq",
-			Function: func(re *RansakEmulator) {
+			Apply: func(re *RansakEmulator) {
 				re.appendField()
 				re.replacePlaceholder("= " + re.getCorrectSqlFormat(re.placeholder))
 			},
 		},
-		Node{
+		&Node{
 			Name: "matches",
-			Function: func(re *RansakEmulator) {
+			Apply: func(re *RansakEmulator) {
 				re.appendField()
 				re.replacePlaceholder("LIKE '" + re.placeholder + "'")
 			},
 		},
-		Node{
+		&Node{
 			Name: "cont",
-			Function: func(re *RansakEmulator) {
+			Apply: func(re *RansakEmulator) {
 				re.appendField()
 				re.replacePlaceholder("LIKE '%" + re.placeholder + "%'")
 			},
 		},
-		Node{
+		&Node{
+			Name: "lt",
+			Apply: func(re *RansakEmulator) {
+				re.appendField()
+				re.replacePlaceholder("< " + re.getCorrectSqlFormat(re.placeholder))
+			},
+		},
+		&Node{
+			Name: "lteq",
+			Apply: func(re *RansakEmulator) {
+				re.appendField()
+				re.replacePlaceholder("<= " + re.getCorrectSqlFormat(re.placeholder))
+			},
+		},
+		&Node{
+			Name: "gt",
+			Apply: func(re *RansakEmulator) {
+				re.appendField()
+				re.replacePlaceholder("> " + re.getCorrectSqlFormat(re.placeholder))
+			},
+		},
+		&Node{
+			Name: "gteq",
+			Apply: func(re *RansakEmulator) {
+				re.appendField()
+				re.replacePlaceholder(">= " + re.getCorrectSqlFormat(re.placeholder))
+			},
+		},
+		&Node{
+			Name: "start",
+			Apply: func(re *RansakEmulator) {
+				re.appendField()
+				re.replacePlaceholder("LIKE '" + re.placeholder + "%'")
+			},
+		},
+		&Node{
+			Name: "end",
+			Apply: func(re *RansakEmulator) {
+				re.appendField()
+				re.replacePlaceholder("LIKE '%" + re.placeholder + "'")
+			},
+		},
+		&Node{
 			Name: "not",
-			Nodes: []Node{
-				{
+			Nodes: []*Node{
+				&Node{
 					Name: "eq",
-					Function: func(re *RansakEmulator) {
+					Apply: func(re *RansakEmulator) {
 						re.appendField()
 						re.replacePlaceholder("<> " + re.getCorrectSqlFormat(re.placeholder))
 					},
 				},
-				{
+				&Node{
 					Name: "in",
-					Function: func(re *RansakEmulator) {
+					Apply: func(re *RansakEmulator) {
 						re.appendField()
+					},
+				},
+				&Node{
+					Name: "cont",
+					Apply: func(re *RansakEmulator) {
+						re.appendField()
+						re.replacePlaceholder("NOT LIKE '%" + re.placeholder + "%'")
+					},
+				},
+				&Node{
+					Name: "start",
+					Apply: func(re *RansakEmulator) {
+						re.appendField()
+						re.replacePlaceholder("NOT LIKE '" + re.placeholder + "%'")
+					},
+				},
+			},
+		},
+		&Node{
+			Name: "does",
+			Nodes: []*Node{
+				&Node{
+					Name: "not",
+					Nodes: []*Node{
+						&Node{
+							Name: "match",
+							Apply: func(re *RansakEmulator) {
+								re.appendField()
+								re.replacePlaceholder("NOT LIKE '" + re.placeholder + "'")
+							},
+						},
 					},
 				},
 			},
