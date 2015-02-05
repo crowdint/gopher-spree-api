@@ -41,7 +41,7 @@ type Order struct {
 	Store                 int64
 	Total                 float64
 	UpdatedAt             time.Time
-	UserId                int64
+	UserId                *int64
 }
 
 func (o Order) TableName() string {

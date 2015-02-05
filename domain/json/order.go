@@ -7,40 +7,40 @@ import (
 type Order struct {
 	Id                        int64       `json:"id"`
 	Number                    string      `json:"number"`
-	ItemTotal                 string      `json:"item_total"`
-	Total                     string      `json:"total"`
-	ShipTotal                 string      `json:"ship_total"`
+	ItemTotal                 float64     `json:"item_total,string"`
+	Total                     float64     `json:"total,string"`
+	ShipTotal                 float64     `json:"ship_total,string"`
 	State                     string      `json:"state"`
-	AdjustmentTotal           string      `json:"adjustment_total"`
+	AdjustmentTotal           float64     `json:"adjustment_total,string"`
 	UserId                    *int64      `json:"user_id"`
 	CreatedAt                 time.Time   `json:"created_at"`
 	UpdatedAt                 time.Time   `json:"updated_at"`
 	CompletedAt               time.Time   `json:"completed_at"`
-	PaymentTotal              string      `json:"payment_total"`
+	PaymentTotal              float64     `json:"payment_total,string"`
 	ShipmentState             string      `json:"shipment_state"`
 	PaymentState              string      `json:"payment_state"`
 	Email                     string      `json:"email"`
 	SpecialInstructions       string      `json:"special_instructions"`
 	Channel                   string      `json:"channel"`
-	IncludedTaxTotal          string      `json:"included_tax_total"`
-	AdditionalTaxTotal        string      `json:"additional_tax_total"`
+	IncludedTaxTotal          float64     `json:"included_tax_total,string"`
+	AdditionalTaxTotal        float64     `json:"additional_tax_total,string"`
 	DisplayIncludedTaxTotal   string      `json:"display_included_tax_total"`
 	DisplayAdditionalTaxTotal string      `json:"display_additional_tax_total"`
-	TaxTotal                  string      `json:"tax_total"`
+	TaxTotal                  float32     `json:"tax_total,string"`
 	Currency                  string      `json:"currency"`
 	DisplayItemTotal          string      `json:"display_item_total"`
-	TotalQuantity             int64       `json:"total_quantity"`
+	TotalQuantity             int32       `json:"total_quantity"`
 	DisplayTotal              string      `json:"display_total"`
 	DisplayShipTotal          string      `json:"display_ship_total"`
 	DisplayTaxTotal           string      `json:"display_tax_total"`
 	Token                     string      `json:"token"`
 	CheckoutSteps             []string    `json:"checkout_steps"`
 	Permissions               Permissions `json:"permissions"`
-	BillAddress               Address     `json:"bill_address"`
-	ShipAddress               Address     `json:"ship_address"`
-	LineItems                 []LineItem  `json:"line_items"`
-	Payments                  []Payment   `json:"payments"`
-	Shipments                 []Shipment  `json:"shipments"`
+	//BillAddress               Address     `json:"bill_address"`
+	//ShipAddress               Address     `json:"ship_address"`
+	LineItems []LineItem `json:"line_items"`
+	Payments  []Payment  `json:"payments"`
+	Shipments []Shipment `json:"shipments"`
 }
 
 type Address struct {

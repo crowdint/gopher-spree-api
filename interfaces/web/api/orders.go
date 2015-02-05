@@ -5,6 +5,7 @@ import (
 
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/crowdint/gopher-spree-api/usecases/json"
 )
 
 func init() {
@@ -62,7 +63,7 @@ func authorizeOrder(c *gin.Context) {
 	}
 
 	order := getGinOrder(c)
-	if order != nil && (order.UserId == user.Id || order.GuestToken == getOrderToken(c)) {
+	if order != nil && (*order.UserId == user.Id || order.GuestToken == getOrderToken(c)) {
 		c.Next()
 	} else {
 		unauthorized(c, "You are not authorized to perform that action.")
@@ -71,9 +72,7 @@ func authorizeOrder(c *gin.Context) {
 }
 
 func OrdersIndex(c *gin.Context) {
-	var orders []models.Order
-
-	err := repositories.NewDatabaseRepository().All(&orders, nil)
+	orders, err := json.SpreeResponseFetcher.GetResponse(json.NewOrderInteractor(), 1, 0)
 
 	if err == nil {
 		c.JSON(200, orders)

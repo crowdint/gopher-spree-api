@@ -242,7 +242,7 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderBelongsToHim(t *testing.T) {
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	order.UserId = user.Id
+	order.UserId = &user.Id
 
 	var ctx *gin.Context
 	r := gin.New()
@@ -283,7 +283,8 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderDoesNotBelongToHim(t *testing.T
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	order.UserId = 0
+	userId := int64(0)
+	order.UserId = &userId
 
 	var ctx *gin.Context
 	r := gin.New()

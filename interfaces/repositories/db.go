@@ -69,7 +69,21 @@ func NewDatabaseRepository() *DbRepo {
 }
 
 func (this *DbRepo) All(collection interface{}, attrs map[string]interface{}) error {
-	return this.dbHandler.Find(collection, attrs).Error
+	var limit, offset int
+
+	if attrs["per_page"] != nil && attrs["current_page"] != nil {
+		limit = attrs["per_page"].(int)
+		delete(attrs, "per_page")
+		offset = (attrs["current_page"].(int) - 1) * limit
+		delete(attrs, "current_page")
+	}
+
+	return this.dbHandler.Offset(offset).Limit(limit).Find(collection, attrs).Error
+}
+
+func (this *DbRepo) Count(model interface{}) (count int64, err error) {
+	err = this.dbHandler.Model(model).Count(&count).Error
+	return
 }
 
 func (this *DbRepo) FindBy(model interface{}, attrs map[string]interface{}) error {
