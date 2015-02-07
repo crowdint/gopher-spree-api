@@ -25,6 +25,16 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int) (ContentRespo
 		return &OrderResponse{}, err
 	}
 
+	var orderIds []int64
+	for _, order := range orders {
+		orderIds = append(orderIds, order.Id)
+	}
+
+	quantities, err := this.Repository.SumLineItemsQuantityByOrderIds(orderIds)
+	for index, order := range orders {
+		orders[index].Quantity = quantities[order.Id]
+	}
+
 	copier.Copy(&ordersJson, &orders)
 
 	return &OrderResponse{data: &ordersJson}, nil

@@ -89,3 +89,25 @@ func (this *DbRepo) Count(model interface{}) (count int64, err error) {
 func (this *DbRepo) FindBy(model interface{}, attrs map[string]interface{}) error {
 	return this.dbHandler.First(model, attrs).Error
 }
+
+func (this *DbRepo) SumLineItemsQuantityByOrderIds(ids []int64) (map[int64]int64, error) {
+	orderQuantities := []struct {
+		Id  int64
+		Sum int64
+	}{}
+
+	err := this.dbHandler.
+		Table("spree_line_items").
+		Select("order_id AS id, SUM(quantity) AS sum").
+		Where("order_id IN (?)", ids).
+		Group("order_id").
+		Scan(&orderQuantities).
+		Error
+
+	orderQuantitiesMap := map[int64]int64{}
+	for _, oq := range orderQuantities {
+		orderQuantitiesMap[oq.Id] = oq.Sum
+	}
+
+	return orderQuantitiesMap, err
+}

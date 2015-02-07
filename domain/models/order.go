@@ -44,6 +44,8 @@ type Order struct {
 	ShippingMethodId      int64
 	StateLockVersion      int64
 	StoreId               int64
+
+	Quantity int64
 }
 
 func (this Order) TableName() string {
