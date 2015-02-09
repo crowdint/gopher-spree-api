@@ -2,7 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/copier"
 
+	djson "github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/crowdint/gopher-spree-api/usecases/json"
@@ -82,8 +84,29 @@ func OrdersIndex(c *gin.Context) {
 }
 
 func OrdersShow(c *gin.Context) {
-	order, _ := c.Get("Order")
-	c.JSON(200, order.(*models.Order))
+	order := getGinOrder(c)
+	orderJson := djson.Order{}
+	isAdmin := currentUser(c).HasRole("admin")
+	r := repositories.NewDatabaseRepository()
+
+	quantities, _ := r.SumLineItemsQuantityByOrderIds([]int64{order.Id})
+	order.Quantity = quantities[order.Id]
+	copier.Copy(&orderJson, order)
+
+	orderJson.BillAddress = &djson.Address{}
+	r.Association(&orderJson, orderJson.BillAddress, "BillAddressId")
+
+	orderJson.BillAddress.Country = &djson.Country{}
+	r.Association(orderJson.BillAddress, orderJson.BillAddress.Country, "CountryId")
+
+	orderJson.BillAddress.State = &djson.State{}
+	r.Association(orderJson.BillAddress, orderJson.BillAddress.State, "StateId")
+	orderJson.BillAddress.StateName = orderJson.BillAddress.State.Name
+	orderJson.BillAddress.StateText = orderJson.BillAddress.State.Abbr
+
+	orderJson.Permissions = &djson.Permissions{CanUpdate: &isAdmin}
+
+	c.JSON(200, orderJson)
 }
 
 func notFound(c *gin.Context) {

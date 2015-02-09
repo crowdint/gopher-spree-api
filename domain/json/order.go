@@ -1,6 +1,7 @@
 package json
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -37,6 +38,7 @@ type Order struct {
 	CheckoutSteps             []string     `json:"checkout_steps"`
 	Permissions               *Permissions `json:"permissions,omitempty"`
 	BillAddress               *Address     `json:"bill_address,omitempty"`
+	BillAddressId             int64        `json:"-"`
 	ShipAddress               *Address     `json:"ship_address,omitempty"`
 	LineItems                 []LineItem   `json:"line_items,omitempty"`
 	Payments                  []Payment    `json:"payments,omitempty"`
@@ -44,23 +46,32 @@ type Order struct {
 }
 
 type Address struct {
-	Id               int64   `json:"id"`
-	FirstName        string  `json:"firstname"`
-	LastName         string  `json:"lastname"`
-	FullName         string  `json:"full_name"`
-	Address1         string  `json:"address1"`
-	Address2         string  `json:"address2"`
-	City             string  `json:"city"`
-	ZipCode          string  `json:"zipcode"`
-	Phone            string  `json:"phone"`
-	Company          string  `json:"company"`
-	AlternativePhone string  `json:"alternative_phone"`
-	CountryId        int64   `json:"country_id"`
-	StateId          int64   `json:"state_id"`
-	StateName        string  `json:"state_name"`
-	StateText        string  `json:"state_text"`
-	Country          Country `json:"country"`
-	State            State   `json:"state"`
+	Id               int64    `json:"id"`
+	Firstname        string   `json:"firstname"`
+	Lastname         string   `json:"lastname"`
+	FullName         string   `json:"full_name"`
+	Address1         string   `json:"address1"`
+	Address2         string   `json:"address2"`
+	City             string   `json:"city"`
+	Zipcode          string   `json:"zipcode"`
+	Phone            string   `json:"phone"`
+	Company          string   `json:"company"`
+	AlternativePhone string   `json:"alternative_phone"`
+	CountryId        int64    `json:"country_id"`
+	StateId          int64    `json:"state_id"`
+	StateName        string   `json:"state_name"`
+	StateText        string   `json:"state_text"`
+	Country          *Country `json:"country"`
+	State            *State   `json:"state"`
+}
+
+func (this *Address) AfterFind() (err error) {
+	this.FullName = fmt.Sprintf("%s %s", this.Firstname, this.Lastname)
+	return
+}
+
+func (this Address) TableName() string {
+	return "spree_addresses"
 }
 
 type Adjustment struct {
@@ -80,11 +91,15 @@ type Adjustment struct {
 
 type Country struct {
 	Id      int64  `json:"id"`
-	ISOName string `json:"iso_name"`
-	ISO     string `json:"iso"`
-	ISO3    string `json:"iso3"`
+	IsoName string `json:"iso_name"`
+	Iso     string `json:"iso"`
+	Iso3    string `json:"iso3"`
 	Name    string `json:"name"`
-	NumCode int64  `json:"numcode"`
+	Numcode int64  `json:"numcode"`
+}
+
+func (this Country) TableName() string {
+	return "spree_countries"
 }
 
 type LineItem struct {
@@ -104,6 +119,10 @@ type State struct {
 	Name      string `json:"name"`
 	Abbr      string `json:"abbr"`
 	CountryId int64  `json:"country_id"`
+}
+
+func (this State) TableName() string {
+	return "spree_states"
 }
 
 type Payment struct {

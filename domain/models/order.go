@@ -45,13 +45,16 @@ type Order struct {
 	StateLockVersion      int64
 	StoreId               int64
 
+	//Computed
 	Quantity int64
+	TaxTotal float64
 }
 
 func (this Order) TableName() string {
 	return "spree_orders"
 }
 
-func (this Order) TaxTotal() float64 {
-	return this.IncludedTaxTotal + this.AdditionalTaxTotal
+func (this *Order) AfterFind() (err error) {
+	this.TaxTotal = this.IncludedTaxTotal + this.AdditionalTaxTotal
+	return
 }
