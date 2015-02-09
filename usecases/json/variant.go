@@ -38,7 +38,6 @@ func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*models.Va
 		return JsonVariantsMap{}
 	}
 
-
 	jsonVariantsMap := JsonVariantsMap{}
 
 	for _, variant := range variantSlice {
@@ -93,5 +92,3 @@ func (this *VariantInteractor) getIdSlice(variantSlice []*models.Variant) []int6
 
 	return variantIds
 }
-
-

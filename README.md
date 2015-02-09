@@ -16,15 +16,18 @@ specific configurations, the following variables will override them:
 
 ```
 # Database
-DATABASE_DEBUG  = true                             # Logging enabled
-DATABASE_ENGINE = postgres                         # Engine name
-DATABASE_URL    = dbname=spree_dev sslmode=disable # Connection string/URL
-MAX_IDLE_CONNS  = 2                                # Max iddle connections
-MAX_OPEN_CONNS  = 5                                # Max open connections
+DATABASE_DEBUG        = true                                               # Logging enabled
+DATABASE_ENGINE       = postgres                                           # Engine name
+DATABASE_URL          = dbname=spree_dev sslmode=disable                   # Connection string/URL
+MAX_IDLE_CONNS        = 2                                                  # Max iddle connections
+MAX_OPEN_CONNS        = 5                                                  # Max open connections
 
 # Spree
-SPREE_NAMESPACE = ''                               # Mounted at location (without slashes)
-SPREE_URL       = http://localhost:5100            # Host and port
+SPREE_NAMESPACE       = ''                                                 # Mounted at location (without slashes)
+SPREE_URL             = http://localhost:5100                              # Host and port
+SPREE_ASSET_PATH      = ":host/spree/products/:asset_id/:style/:filename"  # Assets default path
+SPREE_ASSET_HOST      = ""                                                 # Assets host
+SPREE_DEFAULT_STYLES  = "mini,small,product,large"                         # Assets default styles
 ```
 
 ## Dependencies
