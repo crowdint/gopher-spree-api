@@ -11,6 +11,6 @@ func TestAsset_assetUrl(t *testing.T) {
 	assetUrl := asset.AssetUrl("waka")
 
 	if assetUrl != "/spree/products/1/waka/image.jpg" {
-		t.Error("Wrong asset url string")
+		t.Error("Wrong asset url string", assetUrl)
 	}
 }

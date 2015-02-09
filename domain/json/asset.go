@@ -1,3 +1,3 @@
 package json
 
-type Asset map[string]interface {}
+type Asset map[string]interface{}
