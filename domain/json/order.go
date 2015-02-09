@@ -40,6 +40,7 @@ type Order struct {
 	BillAddress               *Address     `json:"bill_address,omitempty"`
 	BillAddressId             int64        `json:"-"`
 	ShipAddress               *Address     `json:"ship_address,omitempty"`
+	ShipAddressId             int64        `json:"-"`
 	LineItems                 []LineItem   `json:"line_items,omitempty"`
 	Payments                  []Payment    `json:"payments,omitempty"`
 	Shipments                 []Shipment   `json:"shipments,omitempty"`

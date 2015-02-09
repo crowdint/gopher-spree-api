@@ -93,6 +93,8 @@ func OrdersShow(c *gin.Context) {
 	order.Quantity = quantities[order.Id]
 	copier.Copy(&orderJson, order)
 
+	orderJson.Permissions = &djson.Permissions{CanUpdate: &isAdmin}
+
 	orderJson.BillAddress = &djson.Address{}
 	r.Association(&orderJson, orderJson.BillAddress, "BillAddressId")
 
@@ -104,7 +106,16 @@ func OrdersShow(c *gin.Context) {
 	orderJson.BillAddress.StateName = orderJson.BillAddress.State.Name
 	orderJson.BillAddress.StateText = orderJson.BillAddress.State.Abbr
 
-	orderJson.Permissions = &djson.Permissions{CanUpdate: &isAdmin}
+	orderJson.ShipAddress = &djson.Address{}
+	r.Association(&orderJson, orderJson.ShipAddress, "ShipAddressId")
+
+	orderJson.ShipAddress.Country = &djson.Country{}
+	r.Association(orderJson.ShipAddress, orderJson.ShipAddress.Country, "CountryId")
+
+	orderJson.ShipAddress.State = &djson.State{}
+	r.Association(orderJson.ShipAddress, orderJson.ShipAddress.State, "StateId")
+	orderJson.ShipAddress.StateName = orderJson.ShipAddress.State.Name
+	orderJson.ShipAddress.StateText = orderJson.ShipAddress.State.Abbr
 
 	c.JSON(200, orderJson)
 }
