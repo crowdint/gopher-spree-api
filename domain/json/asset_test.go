@@ -16,7 +16,7 @@ func TestAssetStructure(t *testing.T) {
 	someTime := time.Date(2015, 1, 1, 0, 0, 0, 0, time.UTC)
 
 	asset := Asset{
-		ID:                    24,
+		Id:                    24,
 		Position:              1,
 		AttachmentContentType: "image/jpeg",
 		AttachmentFileName:    "image.jpeg",

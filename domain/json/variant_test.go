@@ -30,7 +30,7 @@ func TestVariantStructure(t *testing.T) {
 		TotalOnHand:     90,
 		IsDestroyed:     false,
 		OptionValues:    []OptionValue{},
-		Images:          []Asset{},
+		Images:          []*Asset{},
 	}
 
 	AssertEqualJson(t, variant, expected)

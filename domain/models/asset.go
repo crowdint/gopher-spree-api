@@ -22,3 +22,23 @@ type Asset struct {
 func (this Asset) TableName() string {
 	return "spree_assets"
 }
+
+func (this Asset) assetUrl(style string) string {
+  return "/" + style + "/" + this.AttachmentFileName
+}
+
+func (this Asset) MiniUrl() string {
+  return this.assetUrl("mini")
+}
+
+func (this Asset) SmallUrl() string {
+  return this.assetUrl("small")
+}
+
+func (this Asset) ProductUrl() string {
+  return this.assetUrl("product")
+}
+
+func (this *Asset) LargeUrl() string {
+  return this.assetUrl("large")
+}

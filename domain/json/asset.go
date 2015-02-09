@@ -3,7 +3,7 @@ package json
 import "time"
 
 type Asset struct {
-	ID                    int64     `json:"id"`
+	Id                    int64     `json:"id"`
 	Position              int64     `json:"position"`
 	AttachmentContentType string    `json:"attachment_content_type"`
 	AttachmentFileName    string    `json:"attachment_file_name"`
