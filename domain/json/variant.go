@@ -21,5 +21,5 @@ type Variant struct {
 	TotalOnHand     int64         `json:"total_on_hand"`
 	IsDestroyed     bool          `json:"is_destroyed"`
 	OptionValues    []OptionValue `json:"option_values"`
-	Images          []Asset       `json:"images"`
+	Images          []*Asset      `json:"images"`
 }

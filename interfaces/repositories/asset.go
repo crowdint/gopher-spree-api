@@ -10,10 +10,12 @@ func NewAssetRepo() *AssetRepo {
 	}
 }
 
-func (this *AssetRepo) FindByViewableIds(viewableIds []int64) []*models.Asset {
+func (this *AssetRepo) FindByViewableIds(viewableIds []int64) ([]*models.Asset, error) {
 	var assets []*models.Asset
 
-	this.dbHandler.Where("viewable_id in (?)", viewableIds).Find(&assets)
+	query := this.dbHandler.
+		Where("viewable_id in (?)", viewableIds).
+		Find(&assets)
 
-	return assets
+	return assets, query.Error
 }

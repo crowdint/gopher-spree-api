@@ -7,19 +7,20 @@ import (
 )
 
 type VariantInteractor struct {
-	Repo *repositories.VariantRepo
+	Repo            *repositories.VariantRepo
+	AssetInteractor *AssetInteractor
 }
 
 func NewVariantInteractor() *VariantInteractor {
 	return &VariantInteractor{
-		Repo: repositories.NewVariantRepo(),
+		Repo:            repositories.NewVariantRepo(),
+		AssetInteractor: NewAssetInteractor(),
 	}
 }
 
 type JsonVariantsMap map[int64][]*json.Variant
 
 func (this *VariantInteractor) GetJsonVariantsMap(productIds []int64) (JsonVariantsMap, error) {
-
 	variants, err := this.Repo.FindByProductIds(productIds)
 	if err != nil {
 		return JsonVariantsMap{}, err
@@ -31,10 +32,18 @@ func (this *VariantInteractor) GetJsonVariantsMap(productIds []int64) (JsonVaria
 }
 
 func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*models.Variant) JsonVariantsMap {
+	variantIds := this.getIdSlice(variantSlice)
+	jsonAssetsMap, err := this.AssetInteractor.GetJsonAssetsMap(variantIds)
+	if err != nil {
+		return JsonVariantsMap{}
+	}
+
 	jsonVariantsMap := JsonVariantsMap{}
 
 	for _, variant := range variantSlice {
 		variantJson := this.toJson(variant)
+
+		variantJson.Images = jsonAssetsMap[variant.Id]
 
 		if _, exists := jsonVariantsMap[variant.ProductId]; !exists {
 			jsonVariantsMap[variant.ProductId] = []*json.Variant{}
@@ -72,4 +81,14 @@ func (this *VariantInteractor) toJson(variant *models.Variant) *json.Variant {
 		//Images:
 	}
 	return variantJson
+}
+
+func (this *VariantInteractor) getIdSlice(variantSlice []*models.Variant) []int64 {
+	variantIds := []int64{}
+
+	for _, variant := range variantSlice {
+		variantIds = append(variantIds, variant.Id)
+	}
+
+	return variantIds
 }

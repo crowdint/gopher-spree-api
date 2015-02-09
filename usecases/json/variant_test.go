@@ -41,6 +41,13 @@ func TestVariantInteractor_GetJsonVariantsMap(t *testing.T) {
 }
 
 func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
+	err := repositories.InitDB()
+	if err != nil {
+		t.Error("Error: An error has ocurred:", err.Error())
+	}
+
+	defer repositories.Spree_db.Close()
+
 	variantSlice := []*models.Variant{
 		&models.Variant{
 			Id:        1,

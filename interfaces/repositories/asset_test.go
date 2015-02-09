@@ -20,7 +20,10 @@ func TestAssetRepo(t *testing.T) {
 
 	assetRepo := NewAssetRepo()
 
-	assets := assetRepo.FindByViewableIds([]int64{11})
+	assets, err := assetRepo.FindByViewableIds([]int64{11})
+	if err != nil {
+		t.Error("There was an error", err)
+	}
 
 	nv := len(assets)
 

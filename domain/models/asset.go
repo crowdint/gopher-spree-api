@@ -1,9 +1,14 @@
 package models
 
-import "time"
+import (
+	"github.com/crowdint/gopher-spree-api/configs"
+	"strconv"
+	"strings"
+	"time"
+)
 
 type Asset struct {
-	Id                    int64
+	Id                    int
 	ViewableId            int64
 	ViewableType          string
 	AttachmentWidth       int64
@@ -21,4 +26,16 @@ type Asset struct {
 
 func (this Asset) TableName() string {
 	return "spree_assets"
+}
+
+func (this Asset) AssetUrl(style string) string {
+	assetHost := configs.Get(configs.SPREE_ASSET_HOST)
+	assetUrl := configs.Get(configs.SPREE_ASSET_PATH)
+	//Default :host/spree/products/:asset_id/:style/:filename
+	assetUrl = strings.Replace(assetUrl, ":host", assetHost, 1)
+	assetUrl = strings.Replace(assetUrl, ":asset_id", strconv.Itoa(this.Id), 1)
+	assetUrl = strings.Replace(assetUrl, ":style", style, 1)
+	assetUrl = strings.Replace(assetUrl, ":filename", this.AttachmentFileName, 1)
+
+	return assetUrl
 }

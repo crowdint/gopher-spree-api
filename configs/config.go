@@ -14,6 +14,10 @@ const (
 	SPREE_URL = "SPREE_URL"
 	SPREE_NS  = "SPREE_NAMESPACE"
 
+	SPREE_ASSET_PATH     = "SPREE_ASSET_PATH"
+	SPREE_ASSET_HOST     = "SPREE_ASSET_HOST"
+	SPREE_DEFAULT_STYLES = "SPREE_DEFAULT_STYLES"
+
 	PER_PAGE = "PER_PAGE"
 )
 
@@ -28,6 +32,10 @@ var defaultSettings = map[string]string{
 	// Spree Settings
 	SPREE_URL: getEnvOrDefault(SPREE_URL, "http://localhost:5100"),
 	SPREE_NS:  getEnvOrDefault(SPREE_NS, ""),
+	//Spree Assets Default Settings
+	SPREE_ASSET_PATH:     getEnvOrDefault(SPREE_ASSET_PATH, ":host/spree/products/:asset_id/:style/:filename"),
+	SPREE_ASSET_HOST:     getEnvOrDefault(SPREE_ASSET_HOST, ""),
+	SPREE_DEFAULT_STYLES: getEnvOrDefault(SPREE_DEFAULT_STYLES, "mini,small,product,large"),
 
 	//Response Settings
 	PER_PAGE: getEnvOrDefault(PER_PAGE, "10"),
