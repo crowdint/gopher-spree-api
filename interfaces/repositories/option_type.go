@@ -12,7 +12,9 @@ func NewOptionTypeRepo() *OptionTypeRepo {
 
 func (this *OptionTypeRepo) FindByProductIds(productIds []int64) ([]*models.OptionType, error) {
 	var optionTypes []*models.OptionType
-
+	if len(productIds) == 0 {
+		return optionTypes, nil
+	}
 	query := this.dbHandler.
 		Table("spree_option_types").
 		Select("spree_option_types.id, spree_option_types.name, spree_option_types.presentation, spree_option_types.position, spree_product_option_types.product_id").

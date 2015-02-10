@@ -183,6 +183,7 @@ func (this *ProductInteractor) mergeProductProperties(productSlice []*json.Produ
 
 func (this *ProductInteractor) mergeClassifications(productSlice []*json.Product, classificationsMap JsonClassificationsMap) {
 	for _, product := range productSlice {
+		product.TaxonIds = []int{}
 		product.Classifications = []json.Classification{}
 
 		classificationsSlice := classificationsMap[product.ID]
@@ -193,6 +194,7 @@ func (this *ProductInteractor) mergeClassifications(productSlice []*json.Product
 
 		for _, classification := range classificationsSlice {
 			product.Classifications = append(product.Classifications, *classification)
+			product.TaxonIds = append(product.TaxonIds, int(classification.TaxonId))
 		}
 	}
 }

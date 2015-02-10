@@ -205,3 +205,57 @@ func TestProductInteractor_mergeOptionTypes(t *testing.T) {
 		t.Errorf("Incorrect optionType values: \n ID -> %d, Name -> %s, Presentation -> %d", optionType1.ID, optionType1.Name, optionType1.Presentation)
 	}
 }
+
+func TestProductInteractor_mergeClassifications(t *testing.T) {
+	jsonProductSlice := []*jsn.Product{
+		&jsn.Product{
+			ID: 3,
+		},
+		&jsn.Product{
+			ID: 5,
+		},
+	}
+
+	jsonOptionTypesMap := JsonClassificationsMap{
+		3: []*jsn.Classification{
+			{
+				TaxonId:  1,
+				Position: 5,
+				Taxon: jsn.Taxon{
+					ID:   1,
+					Name: "taxonName",
+				},
+			},
+		},
+	}
+
+	productInteractor := NewProductInteractor()
+
+	productInteractor.mergeClassifications(jsonProductSlice, jsonOptionTypesMap)
+
+	product1 := jsonProductSlice[0]
+	product2 := jsonProductSlice[1]
+
+	if product1.Classifications == nil || product2.Classifications == nil {
+		t.Error("Something went wrong")
+	}
+
+	classification := product1.Classifications[0]
+
+	if classification.TaxonId != 1 || classification.Taxon.ID != 1 {
+		t.Error("Wrong assignment of classifications")
+	}
+
+	if len(product2.Classifications) > 0 {
+		t.Error("Wrong assignment of classficiations")
+	}
+
+	if product1.TaxonIds[0] != 1 {
+		t.Error("Wrong assignment of taxon ids")
+	}
+
+	if len(product2.TaxonIds) != 0 {
+		t.Error("Wrong assignment of taxon ids")
+	}
+
+}

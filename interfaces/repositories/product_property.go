@@ -12,7 +12,9 @@ func NewProductPropertyRepo() *ProductPropertyRepo {
 
 func (this *ProductPropertyRepo) FindByProductIds(productIds []int64) ([]*models.ProductProperty, error) {
 	var productProperties []*models.ProductProperty
-
+	if len(productIds) == 0 {
+		return productProperties, nil
+	}
 	query := this.dbHandler.
 		Table("spree_product_properties").
 		Select("spree_product_properties.*, spree_properties.name AS property_name").
