@@ -90,40 +90,48 @@ func OrdersShow(c *gin.Context) {
 	isAdmin := currentUser(c).HasRole("admin")
 	r := repositories.NewDatabaseRepository()
 
+	// Order quantity
 	quantities, _ := r.SumLineItemsQuantityByOrderIds([]int64{order.Id})
 	order.Quantity = quantities[order.Id]
+
+	// Copy all db assigned fields from order to orderJson
 	copier.Copy(&orderJson, order)
 
+	// Build permissions hash
 	orderJson.Permissions = &djson.Permissions{CanUpdate: &isAdmin}
 
+	// Load bill address
 	orderJson.BillAddress = &djson.Address{}
 	r.Association(&orderJson, orderJson.BillAddress, "BillAddressId")
-
+	// Load bill address country
 	orderJson.BillAddress.Country = &djson.Country{}
 	r.Association(orderJson.BillAddress, orderJson.BillAddress.Country, "CountryId")
-
+	// Load bill address state
 	orderJson.BillAddress.State = &djson.State{}
 	r.Association(orderJson.BillAddress, orderJson.BillAddress.State, "StateId")
 	orderJson.BillAddress.StateName = orderJson.BillAddress.State.Name
 	orderJson.BillAddress.StateText = orderJson.BillAddress.State.Abbr
 
+	// Load ship address
 	orderJson.ShipAddress = &djson.Address{}
 	r.Association(&orderJson, orderJson.ShipAddress, "ShipAddressId")
-
+	// Load ship address country
 	orderJson.ShipAddress.Country = &djson.Country{}
 	r.Association(orderJson.ShipAddress, orderJson.ShipAddress.Country, "CountryId")
 
+	// Load bill address state
 	orderJson.ShipAddress.State = &djson.State{}
 	r.Association(orderJson.ShipAddress, orderJson.ShipAddress.State, "StateId")
 	orderJson.ShipAddress.StateName = orderJson.ShipAddress.State.Name
 	orderJson.ShipAddress.StateText = orderJson.ShipAddress.State.Abbr
 
+	// Load line items
 	orderJson.LineItems = &[]djson.LineItem{}
 	r.Association(&orderJson, orderJson.LineItems, "OrderId")
 
+	// Load line items variants
 	var variantIds []int64
 	var lineItems []*djson.LineItem
-
 	for i, lineItem := range *orderJson.LineItems {
 		variantIds = append(variantIds, lineItem.VariantId)
 		lineItems = append(lineItems, &(*orderJson.LineItems)[i])
@@ -140,6 +148,8 @@ func OrdersShow(c *gin.Context) {
 	for _, lineItem := range lineItems {
 		lineItem.Variant = variantsMap[lineItem.VariantId]
 	}
+
+	// Load line vitems variants product details
 
 	c.JSON(200, orderJson)
 }
