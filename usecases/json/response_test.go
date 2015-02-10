@@ -19,7 +19,9 @@ func TestResponseInteractor(t *testing.T) {
 
 	interactor := SpreeResponseFetcher
 
-	response, err := interactor.GetResponse(productInteractor, 2, 0)
+	params := newDummyResponseParams(2, 0, "")
+
+	response, err := interactor.GetResponse(productInteractor, params)
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 		return

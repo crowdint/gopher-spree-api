@@ -65,7 +65,11 @@ func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
 
 	variantInteractor := NewVariantInteractor()
 
-	jsonVariantMap := variantInteractor.modelsToJsonVariantsMap(variantSlice)
+	jsonVariantMap, err := variantInteractor.modelsToJsonVariantsMap(variantSlice)
+
+	if err != nil {
+		t.Error("Error: something went wrong", err.Error)
+	}
 
 	v1 := jsonVariantMap[10][0]
 	v2 := jsonVariantMap[20][0]

@@ -40,8 +40,8 @@ func NewProductInteractor() *ProductInteractor {
 	}
 }
 
-func (this *ProductInteractor) GetResponse(currentPage, perPage int) (ContentResponse, error) {
-	productModelSlice, err := this.ProductRepo.List(currentPage, perPage)
+func (this *ProductInteractor) GetResponse(currentPage, perPage int, query string) (ContentResponse, error) {
+	productModelSlice, err := this.ProductRepo.List(currentPage, perPage, query)
 	if err != nil {
 		return ProductResponse{}, err
 	}
