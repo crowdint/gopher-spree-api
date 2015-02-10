@@ -39,6 +39,10 @@ func (this *ParameterParser) Parse(r *http.Request) error {
 func getIntParameter(params url.Values, key string) (int, error) {
 	str := params.Get(key)
 
+	if str == "" {
+		return 0, nil
+	}
+
 	number, err := strconv.Atoi(str)
 	if err != nil {
 		return 0, err
