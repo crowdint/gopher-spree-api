@@ -96,6 +96,22 @@ func TestProductInteractor_modelsToJsonProductsSlice(t *testing.T) {
 	}
 }
 
+func TestProductInteractor_toJson(t *testing.T) {
+	product := &models.Product{
+		Id:          1,
+		Name:        "name1",
+		Description: "desc1",
+	}
+
+	productInteractor := NewProductInteractor()
+
+	jsonProduct := productInteractor.toJson(product)
+
+	if jsonProduct.ID != 1 || jsonProduct.Name != "name1" || jsonProduct.Description != "desc1" {
+		t.Error("incorrect json.Product values")
+	}
+}
+
 func TestProductInteractor_mergeVariants(t *testing.T) {
 	jsonProductSlice := []*jsn.Product{
 		&jsn.Product{
