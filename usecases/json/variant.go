@@ -28,21 +28,24 @@ func (this *VariantInteractor) GetJsonVariantsMap(productIds []int64) (JsonVaria
 		return JsonVariantsMap{}, err
 	}
 
-	variantsJson := this.modelsToJsonVariantsMap(variants)
+	variantsJson, err := this.modelsToJsonVariantsMap(variants)
+	if err != nil {
+		return variantsJson, err
+	}
 
 	return variantsJson, nil
 }
 
-func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*models.Variant) JsonVariantsMap {
+func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*models.Variant) (JsonVariantsMap, error) {
 	variantIds := this.getIdSlice(variantSlice)
 	jsonAssetsMap, err := this.AssetInteractor.GetJsonAssetsMap(variantIds)
 	if err != nil {
-		return JsonVariantsMap{}
+		return JsonVariantsMap{}, err
 	}
 
 	jsonOptionValuesMap, err := this.OptionValueInteractor.GetJsonOptionValuesMap(variantIds)
 	if err != nil {
-		return JsonVariantsMap{}
+		return JsonVariantsMap{}, err
 	}
 
 	jsonVariantsMap := JsonVariantsMap{}
@@ -61,7 +64,7 @@ func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*models.Va
 
 	}
 
-	return jsonVariantsMap
+	return jsonVariantsMap, nil
 }
 
 func (this *VariantInteractor) toJson(variant *models.Variant) *json.Variant {
