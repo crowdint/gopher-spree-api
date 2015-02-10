@@ -237,7 +237,7 @@ func TestProductInteractor_mergeClassifications(t *testing.T) {
 	product2 := jsonProductSlice[1]
 
 	if product1.Classifications == nil || product2.Classifications == nil {
-		t.Error("Something went wrong")
+		t.Error("Product.Classifications should be and empty slice [] at least")
 	}
 
 	classification := product1.Classifications[0]
