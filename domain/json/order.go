@@ -2,6 +2,7 @@ package json
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -41,7 +42,7 @@ type Order struct {
 	BillAddressId             int64        `json:"-"`
 	ShipAddress               *Address     `json:"ship_address,omitempty"`
 	ShipAddressId             int64        `json:"-"`
-	LineItems                 []LineItem   `json:"line_items,omitempty"`
+	LineItems                 *[]LineItem  `json:"line_items,omitempty"`
 	Payments                  []Payment    `json:"payments,omitempty"`
 	Shipments                 []Shipment   `json:"shipments,omitempty"`
 }
@@ -105,14 +106,32 @@ func (this Country) TableName() string {
 
 type LineItem struct {
 	Id                  int64        `json:"id"`
-	Quantity            int64        `json:"quantity'`
-	Price               string       `json:"price"`
+	Quantity            int64        `json:"quantity"`
+	Price               float64      `json:"price,string"`
 	VariantId           int64        `json:"variant_id"`
-	SingleDisplayAmount string       `json:"singe_display_amount"`
+	SingleDisplayAmount string       `json:"single_display_amount"`
 	DisplayAmount       string       `json:"display_amount"`
 	Total               string       `json:"total"`
-	Variant             Variant      `json:"variant"`
+	Variant             *Variant     `json:"variant"`
 	Adjustments         []Adjustment `json:"adjustments"`
+
+	Amount int64 `json:"-"`
+
+	OrderId         int64   `json:"-"`
+	AdjustmentTotal float64 `json:"-"`
+}
+
+func (this *LineItem) AfterFind() (err error) {
+	// Compute Total
+	amount := this.Price * float64(this.Quantity)
+	finalAmount := amount + this.AdjustmentTotal
+	this.Total = strconv.FormatFloat(finalAmount, 'f', 2, 64)
+
+	return
+}
+
+func (this LineItem) TableName() string {
+	return "spree_line_items"
 }
 
 type State struct {

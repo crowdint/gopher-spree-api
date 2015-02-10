@@ -86,6 +86,7 @@ func OrdersIndex(c *gin.Context) {
 func OrdersShow(c *gin.Context) {
 	order := getGinOrder(c)
 	orderJson := djson.Order{}
+
 	isAdmin := currentUser(c).HasRole("admin")
 	r := repositories.NewDatabaseRepository()
 
@@ -116,6 +117,9 @@ func OrdersShow(c *gin.Context) {
 	r.Association(orderJson.ShipAddress, orderJson.ShipAddress.State, "StateId")
 	orderJson.ShipAddress.StateName = orderJson.ShipAddress.State.Name
 	orderJson.ShipAddress.StateText = orderJson.ShipAddress.State.Abbr
+
+	orderJson.LineItems = &[]djson.LineItem{}
+	r.Association(&orderJson, orderJson.LineItems, "OrderId")
 
 	c.JSON(200, orderJson)
 }
