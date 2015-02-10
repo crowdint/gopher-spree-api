@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
 
+	"github.com/crowdint/gopher-spree-api/configs/spree"
 	djson "github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
@@ -138,7 +139,7 @@ func OrdersShow(c *gin.Context) {
 	}
 
 	var variants []djson.Variant
-	r.AllBy(&variants, "id", variantIds)
+	r.AllBy(&variants, "id", variantIds, nil)
 
 	variantsMap := map[int64]*djson.Variant{}
 	var productIds []int64
@@ -150,9 +151,20 @@ func OrdersShow(c *gin.Context) {
 	// Load line items variants products
 	var products []djson.Product
 	productsMap := map[int64]*djson.Product{}
-	r.AllBy(&products, "id", productIds)
+	r.AllBy(&products, "id", productIds, nil)
 	for _, product := range products {
 		productsMap[product.Id] = &product
+	}
+
+	currency := spree.Get(spree.SPREE_CURRENCY)
+
+	var prices []models.Price
+	r.AllBy(&prices, "variant_id", variantIds, repositories.Query{
+		"currency": currency,
+	})
+	pricesMap := map[int64]*models.Price{}
+	for _, price := range prices {
+		pricesMap[price.VariantId] = &price
 	}
 
 	for _, lineItem := range lineItems {
@@ -160,6 +172,7 @@ func OrdersShow(c *gin.Context) {
 		v.Name = productsMap[v.ProductId].Name
 		v.Description = productsMap[v.ProductId].Description
 		v.Slug = productsMap[v.ProductId].Slug
+		v.Price = pricesMap[v.Id].Amount
 
 		lineItem.Variant = v
 	}

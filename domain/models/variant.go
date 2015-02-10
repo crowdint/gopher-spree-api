@@ -9,7 +9,7 @@ type VariantRepository interface {
 type Variant struct {
 	Id                  int64
 	Sku                 string
-	Price               string
+	Price               float64
 	Weight              float64
 	Height              float64
 	Width               float64

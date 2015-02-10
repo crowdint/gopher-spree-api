@@ -3,6 +3,7 @@ package json
 import (
 	"errors"
 	"fmt"
+    "strconv"
 
 	"github.com/jinzhu/copier"
 
@@ -202,7 +203,7 @@ func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, varia
 
 			if variant.IsMaster {
 				product.Master = *variant
-				product.Price = variant.Price
+				product.Price = strconv.FormatFloat(variant.Price, 'f', 2, 64)
 			} else {
 				product.Variants = append(product.Variants, *variant)
 			}
