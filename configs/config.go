@@ -33,7 +33,7 @@ var defaultSettings = map[string]string{
 	SPREE_URL: getEnvOrDefault(SPREE_URL, "http://localhost:5100"),
 	SPREE_NS:  getEnvOrDefault(SPREE_NS, ""),
 	//Spree Assets Default Settings
-	SPREE_ASSET_PATH:     getEnvOrDefault(SPREE_ASSET_PATH, ":host/spree/products/:asset_id/:style/:filename"),
+	SPREE_ASSET_PATH:     getEnvOrDefault(SPREE_ASSET_PATH, ":host/spree/products/:id/:style/:filename"),
 	SPREE_ASSET_HOST:     getEnvOrDefault(SPREE_ASSET_HOST, ""),
 	SPREE_DEFAULT_STYLES: getEnvOrDefault(SPREE_DEFAULT_STYLES, "mini,small,product,large"),
 

@@ -2,8 +2,8 @@ package models
 
 import (
 	"github.com/crowdint/gopher-spree-api/configs"
+	"regexp"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -28,14 +28,25 @@ func (this Asset) TableName() string {
 	return "spree_assets"
 }
 
-func (this Asset) AssetUrl(style string) string {
-	assetHost := configs.Get(configs.SPREE_ASSET_HOST)
+func (this Asset) AssetConfig(style string) (string, map[string]string) {
 	assetUrl := configs.Get(configs.SPREE_ASSET_PATH)
-	//Default :host/spree/products/:asset_id/:style/:filename
-	assetUrl = strings.Replace(assetUrl, ":host", assetHost, 1)
-	assetUrl = strings.Replace(assetUrl, ":asset_id", strconv.Itoa(this.Id), 1)
-	assetUrl = strings.Replace(assetUrl, ":style", style, 1)
-	assetUrl = strings.Replace(assetUrl, ":filename", this.AttachmentFileName, 1)
+
+	assetConfig := map[string]string{
+		":host":     configs.Get(configs.SPREE_ASSET_HOST),
+		":id":       strconv.Itoa(this.Id),
+		":style":    style,
+		":filename": this.AttachmentFileName,
+	}
+	return assetUrl, assetConfig
+}
+
+func (this Asset) AssetUrl(style string) string {
+	url, config := this.AssetConfig(style)
+	regExp := regexp.MustCompile(":([a-zA-Z]*)")
+
+	assetUrl := regExp.ReplaceAllStringFunc(url, func(m string) string {
+		return config[m]
+	})
 
 	return assetUrl
 }
