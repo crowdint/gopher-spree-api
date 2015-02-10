@@ -115,24 +115,24 @@ func TestProductInteractor_toJson(t *testing.T) {
 func TestProductInteractor_mergeVariants(t *testing.T) {
 	jsonProductSlice := []*jsn.Product{
 		&jsn.Product{
-			ID: 1,
+			ID:   99991,
+			Name: "Product1",
 		},
 		&jsn.Product{
-			ID: 2,
+			ID:   99992,
+			Name: "Product2",
 		},
 	}
 
 	jsonVariantsMap := JsonVariantsMap{
-		1: []*jsn.Variant{
+		99991: []*jsn.Variant{
 			{
-				ID:   1,
-				Name: "variant1",
+				ID: 99991,
 			},
 		},
-		2: []*jsn.Variant{
+		99992: []*jsn.Variant{
 			{
-				ID:       2,
-				Name:     "variant2",
+				ID:       99992,
 				IsMaster: true,
 			},
 		},
@@ -156,7 +156,7 @@ func TestProductInteractor_mergeVariants(t *testing.T) {
 
 	v1 := p2.Variants[0]
 
-	if v1.ID != 1 || v1.Name != "variant1" || v1.IsMaster {
+	if v1.ID != 99991 || v1.Name != "Product1" || v1.IsMaster {
 		t.Errorf("Incorrect variant values %d %s %b", v1.ID, v1.Name, v1.IsMaster)
 	}
 }
