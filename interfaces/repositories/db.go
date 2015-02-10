@@ -81,8 +81,8 @@ func (this *DbRepo) All(collection interface{}, attrs map[string]interface{}) er
 	return this.dbHandler.Offset(offset).Limit(limit).Find(collection, attrs).Error
 }
 
-func (this *DbRepo) AllByIds(collection interface{}, ids []int64) error {
-	return this.dbHandler.Find(collection, "id IN (?)", ids).Error
+func (this *DbRepo) AllBy(collection interface{}, attr string, values interface{}) error {
+	return this.dbHandler.Find(collection, attr+" IN (?)", values).Error
 }
 
 func (this *DbRepo) Association(model interface{}, association interface{}, attribute string) {

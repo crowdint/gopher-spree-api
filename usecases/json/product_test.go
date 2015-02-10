@@ -107,7 +107,7 @@ func TestProductInteractor_toJson(t *testing.T) {
 
 	jsonProduct := productInteractor.toJson(product)
 
-	if jsonProduct.ID != 1 || jsonProduct.Name != "name1" || jsonProduct.Description != "desc1" {
+	if jsonProduct.Id != 1 || jsonProduct.Name != "name1" || jsonProduct.Description != "desc1" {
 		t.Error("incorrect json.Product values")
 	}
 }

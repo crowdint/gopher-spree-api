@@ -138,18 +138,31 @@ func OrdersShow(c *gin.Context) {
 	}
 
 	var variants []djson.Variant
-	r.AllByIds(&variants, variantIds)
+	r.AllBy(&variants, "id", variantIds)
 
 	variantsMap := map[int64]*djson.Variant{}
+	var productIds []int64
 	for _, variant := range variants {
 		variantsMap[variant.Id] = &variant
+		productIds = append(productIds, variant.ProductId)
+	}
+
+	// Load line items variants products
+	var products []djson.Product
+	productsMap := map[int64]*djson.Product{}
+	r.AllBy(&products, "id", productIds)
+	for _, product := range products {
+		productsMap[product.Id] = &product
 	}
 
 	for _, lineItem := range lineItems {
-		lineItem.Variant = variantsMap[lineItem.VariantId]
-	}
+		v := variantsMap[lineItem.VariantId]
+		v.Name = productsMap[v.ProductId].Name
+		v.Description = productsMap[v.ProductId].Description
+		v.Slug = productsMap[v.ProductId].Slug
 
-	// Load line vitems variants product details
+		lineItem.Variant = v
+	}
 
 	c.JSON(200, orderJson)
 }

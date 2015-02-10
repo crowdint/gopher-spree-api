@@ -22,6 +22,8 @@ type Variant struct {
 	IsDestroyed     bool          `json:"is_destroyed"`
 	OptionValues    []*OptionValue `json:"option_values"`
 	Images          []*Asset      `json:"images"`
+
+	ProductId int64 `json:"-"`
 }
 
 func (this Variant) TableName() string {
