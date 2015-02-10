@@ -29,7 +29,7 @@ func TestVariantStructure(t *testing.T) {
 		IsBackorderable: false,
 		TotalOnHand:     90,
 		IsDestroyed:     false,
-		OptionValues:    []OptionValue{},
+		OptionValues:    []*OptionValue{},
 		Images:          []*Asset{},
 	}
 
