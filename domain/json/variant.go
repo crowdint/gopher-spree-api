@@ -23,3 +23,7 @@ type Variant struct {
 	OptionValues    []*OptionValue `json:"option_values"`
 	Images          []*Asset      `json:"images"`
 }
+
+func (this Variant) TableName() string {
+	return "spree_variants"
+}

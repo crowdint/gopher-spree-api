@@ -121,6 +121,26 @@ func OrdersShow(c *gin.Context) {
 	orderJson.LineItems = &[]djson.LineItem{}
 	r.Association(&orderJson, orderJson.LineItems, "OrderId")
 
+	var variantIds []int64
+	var lineItems []*djson.LineItem
+
+	for i, lineItem := range *orderJson.LineItems {
+		variantIds = append(variantIds, lineItem.VariantId)
+		lineItems = append(lineItems, &(*orderJson.LineItems)[i])
+	}
+
+	var variants []djson.Variant
+	r.AllByIds(&variants, variantIds)
+
+	variantsMap := map[int64]*djson.Variant{}
+	for _, variant := range variants {
+		variantsMap[variant.Id] = &variant
+	}
+
+	for _, lineItem := range lineItems {
+		lineItem.Variant = variantsMap[lineItem.VariantId]
+	}
+
 	c.JSON(200, orderJson)
 }
 

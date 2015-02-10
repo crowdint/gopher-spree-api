@@ -108,11 +108,11 @@ type LineItem struct {
 	Id                  int64        `json:"id"`
 	Quantity            int64        `json:"quantity"`
 	Price               float64      `json:"price,string"`
-	VariantId           int64        `json:"variant_id"`
 	SingleDisplayAmount string       `json:"single_display_amount"`
 	DisplayAmount       string       `json:"display_amount"`
 	Total               string       `json:"total"`
 	Variant             *Variant     `json:"variant"`
+	VariantId           int64        `json:"variant_id"`
 	Adjustments         []Adjustment `json:"adjustments"`
 
 	Amount int64 `json:"-"`
