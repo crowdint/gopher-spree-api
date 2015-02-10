@@ -8,11 +8,11 @@ func TestOptionValueStructure(t *testing.T) {
 		`"option_type_id":1,"option_type_presentation":"ot presentation"}`
 
 	optionValue := OptionValue{
-		ID:                     1,
+		Id:                     1,
 		Name:                   "option val1",
 		Presentation:           "presentation",
 		OptionTypeName:         "option1",
-		OptionTypeID:           1,
+		OptionTypeId:           1,
 		OptionTypePresentation: "ot presentation",
 	}
 
