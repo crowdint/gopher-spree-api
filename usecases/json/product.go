@@ -142,6 +142,10 @@ func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, varia
 		}
 
 		for _, variant := range variantSlice {
+			variant.Description = product.Description
+			variant.Slug = product.Slug
+			variant.Name = product.Name
+
 			if variant.IsMaster {
 				product.Master = *variant
 				product.Price = variant.Price
@@ -151,9 +155,6 @@ func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, varia
 
 			totalOnHand += variant.TotalOnHand
 
-			variant.Description = product.Description
-			variant.Slug = product.Slug
-			variant.Name = product.Name
 		}
 
 		product.TotalOnHand = totalOnHand
