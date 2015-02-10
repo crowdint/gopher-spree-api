@@ -8,36 +8,35 @@ import (
 	. "github.com/crowdint/gransak/filter"
 )
 
-type ParameterParser struct {
+func NewRequestParameters(r *http.Request) *RequestParameters {
+	return &RequestParameters{
+		request:  r,
+		queryMap: r.URL.Query(),
+	}
+}
+
+type RequestParameters struct {
 	currentPage  int
 	perPage      int
 	gransakQuery string
+	request      *http.Request
+	queryMap     url.Values
 }
 
-func (this *ParameterParser) Parse(r *http.Request) error {
-	params := r.URL.Query()
-
-	currentPage, err := getIntParameter(params, "page")
-	if err != nil {
-		return err
-	}
-
-	this.currentPage = currentPage
-
-	perPage, err := getIntParameter(params, "per_page")
-	if err != nil {
-		return err
-	}
-
-	this.perPage = perPage
-
-	this.gransakQuery = Gransak.FromRequest(r)
-
-	return nil
+func (this *RequestParameters) GetCurrentPage() (int, error) {
+	return getIntParameter(this.queryMap, "page")
 }
 
-func getIntParameter(params url.Values, key string) (int, error) {
-	str := params.Get(key)
+func (this *RequestParameters) GetPerPage() (int, error) {
+	return getIntParameter(this.queryMap, "per_page")
+}
+
+func (this *RequestParameters) GetGransakQuery() (string, error) {
+	return Gransak.FromRequest(this.request), nil
+}
+
+func getIntParameter(queryMap url.Values, key string) (int, error) {
+	str := queryMap.Get(key)
 
 	if str == "" {
 		return 0, nil

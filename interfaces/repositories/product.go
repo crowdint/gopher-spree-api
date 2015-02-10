@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/jinzhu/gorm"
 )
 
 type ProductRepo DbRepo
@@ -22,12 +23,18 @@ func (this *ProductRepo) FindById(id int64) (*models.Product, error) {
 	return product, query.Error
 }
 
-func (this *ProductRepo) List(currentPage, perPage int) ([]*models.Product, error) {
+func (this *ProductRepo) List(currentPage, perPage int, gransakQuery string) ([]*models.Product, error) {
 	var products []*models.Product
 
 	offset := (currentPage - 1) * perPage
 
-	query := this.dbHandler.Offset(offset).Limit(perPage).Order("created_at desc").Find(&products)
+	var query *gorm.DB
+
+	if gransakQuery == "" {
+		query = this.dbHandler.Offset(offset).Limit(perPage).Order("created_at desc").Find(&products)
+	} else {
+		query = this.dbHandler.Where(gransakQuery).Offset(offset).Limit(perPage).Order("created_at desc").Find(&products)
+	}
 
 	return products, query.Error
 }

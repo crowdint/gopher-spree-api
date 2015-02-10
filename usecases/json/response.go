@@ -20,15 +20,14 @@ func init() {
 }
 
 type ResponseParameters interface {
-	GetCurrentPage() int
-	GetPerPage() int
-	GetGransakQuery() string
-	GetInteractor() ContentInteractor
+	GetCurrentPage() (int, error)
+	GetPerPage() (int, error)
+	GetGransakQuery() (string, error)
 }
 
 type ContentInteractor interface {
 	GetTotalCount() (int64, error)
-	GetResponse(int, int) (ContentResponse, error)
+	GetResponse(int, int, string) (ContentResponse, error)
 }
 
 type ContentResponse interface {
@@ -41,15 +40,30 @@ type ResponseInteractor struct {
 	ContentInteractor ContentInteractor
 }
 
-func (this *ResponseInteractor) GetResponse(contentInteractor ContentInteractor, currentPage, perPage int) (map[string]interface{}, error) {
+func (this *ResponseInteractor) GetResponse(contentInteractor ContentInteractor, params ResponseParameters) (map[string]interface{}, error) {
 	this.ContentInteractor = contentInteractor
 
-	err := responsePaginator.CalculatePaginationData(this.ContentInteractor, currentPage, perPage)
+	currentPage, err := params.GetCurrentPage()
 	if err != nil {
 		return nil, err
 	}
 
-	content, err := this.getContent(responsePaginator)
+	perPage, err := params.GetPerPage()
+	if err != nil {
+		return nil, err
+	}
+
+	err = responsePaginator.CalculatePaginationData(this.ContentInteractor, currentPage, perPage)
+	if err != nil {
+		return nil, err
+	}
+
+	query, err := params.GetGransakQuery()
+	if err != nil {
+		return nil, err
+	}
+
+	content, err := this.getContent(responsePaginator, query)
 	if err != nil {
 		return nil, err
 	}
@@ -59,10 +73,11 @@ func (this *ResponseInteractor) GetResponse(contentInteractor ContentInteractor,
 	return response, nil
 }
 
-func (this *ResponseInteractor) getContent(paginator *Paginator) (ContentResponse, error) {
+func (this *ResponseInteractor) getContent(paginator *Paginator, query string) (ContentResponse, error) {
 	content, err := this.ContentInteractor.GetResponse(
 		paginator.CurrentPage,
 		paginator.PerPage,
+		query,
 	)
 	if err != nil {
 		return nil, err

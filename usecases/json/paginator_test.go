@@ -73,6 +73,6 @@ func (this *FakeContentInteractor) GetTotalCount() (int64, error) {
 	return 16, nil
 }
 
-func (this *FakeContentInteractor) GetResponse(a, b int) (ContentResponse, error) {
+func (this *FakeContentInteractor) GetResponse(a, b int, query string) (ContentResponse, error) {
 	return &ProductResponse{}, nil
 }
