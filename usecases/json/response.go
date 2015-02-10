@@ -19,6 +19,13 @@ func init() {
 	}
 }
 
+type ResponseParameters interface {
+	GetCurrentPage() int
+	GetPerPage() int
+	GetGransakQuery() string
+	GetInteractor() ContentInteractor
+}
+
 type ContentInteractor interface {
 	GetTotalCount() (int64, error)
 	GetResponse(int, int) (ContentResponse, error)
