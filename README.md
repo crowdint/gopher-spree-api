@@ -22,6 +22,11 @@ DATABASE_URL          = dbname=spree_dev sslmode=disable                   # Con
 MAX_IDLE_CONNS        = 2                                                  # Max iddle connections
 MAX_OPEN_CONNS        = 5                                                  # Max open connections
 
+
+# New Relic
+NEWRELIC_API_KEY      = ''                                                 # API Key
+NEWRELIC_APP_NAME     = ''                                                 # Application name
+
 # Spree
 SPREE_NAMESPACE       = ''                                                 # Mounted at location (without slashes)
 SPREE_URL             = http://localhost:5100                              # Host and port
