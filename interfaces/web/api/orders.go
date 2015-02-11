@@ -156,16 +156,22 @@ func OrdersShow(c *gin.Context) {
 		productsMap[product.Id] = &product
 	}
 
+	// Load line items variant prices
 	currency := spree.Get(spree.SPREE_CURRENCY)
 
 	var prices []models.Price
 	r.AllBy(&prices, "variant_id", variantIds, repositories.Query{
 		"currency": currency,
 	})
+
 	pricesMap := map[int64]*models.Price{}
 	for _, price := range prices {
 		pricesMap[price.VariantId] = &price
 	}
+
+	//stockItems
+	var stockItems []models.StockItem
+	r.AllBy(&stockItems, "variant_id", variantIds, nil)
 
 	for _, lineItem := range lineItems {
 		v := variantsMap[lineItem.VariantId]
