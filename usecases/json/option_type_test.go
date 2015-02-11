@@ -60,11 +60,11 @@ func TestOptionTypeInteractor_modelsToJsonOptionTypesMap(t *testing.T) {
 		t.Error("Error: nil value on map")
 	}
 
-	if optionType1.ID != 1 || optionType1.Name != "tshirt-size" || optionType1.Presentation != "Size" || optionType1.Position != 1 {
+	if optionType1.Id != 1 || optionType1.Name != "tshirt-size" || optionType1.Presentation != "Size" || optionType1.Position != 1 {
 		t.Error("Invalid values for first option type")
 	}
 
-	if optionType2.ID != 2 || optionType2.Name != "tshirt-color" || optionType2.Presentation != "Color" || optionType2.Position != 2 {
+	if optionType2.Id != 2 || optionType2.Name != "tshirt-color" || optionType2.Presentation != "Color" || optionType2.Position != 2 {
 		t.Error("Invalid values for second option type")
 	}
 
@@ -83,7 +83,7 @@ func TestOptionTypeInteractor_toJson(t *testing.T) {
 
 	jsonOptionType := optionTypeInteractor.toJson(optionType)
 
-	if jsonOptionType.ID != 2 || jsonOptionType.Name != "tshirt-color" || jsonOptionType.Presentation != "Color" || jsonOptionType.Position != 2 {
+	if jsonOptionType.Id != 2 || jsonOptionType.Name != "tshirt-color" || jsonOptionType.Presentation != "Color" || jsonOptionType.Position != 2 {
 		t.Error("Invalid values for first option type")
 	}
 }

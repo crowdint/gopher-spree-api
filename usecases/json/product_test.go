@@ -91,35 +91,19 @@ func TestProductInteractor_modelsToJsonProductsSlice(t *testing.T) {
 
 	p1 := jsonProducts[0]
 
-	if p1.ID != 1 || p1.Name != "name1" {
+	if p1.Id != 1 || p1.Name != "name1" {
 		t.Error("Incorrect product values")
-	}
-}
-
-func TestProductInteractor_toJson(t *testing.T) {
-	product := &models.Product{
-		Id:          1,
-		Name:        "name1",
-		Description: "desc1",
-	}
-
-	productInteractor := NewProductInteractor()
-
-	jsonProduct := productInteractor.toJson(product)
-
-	if jsonProduct.ID != 1 || jsonProduct.Name != "name1" || jsonProduct.Description != "desc1" {
-		t.Error("incorrect json.Product values")
 	}
 }
 
 func TestProductInteractor_mergeVariants(t *testing.T) {
 	jsonProductSlice := []*jsn.Product{
 		&jsn.Product{
-			ID:   99991,
+			Id:   99991,
 			Name: "Product1",
 		},
 		&jsn.Product{
-			ID:   99992,
+			Id:   99992,
 			Name: "Product2",
 		},
 	}
@@ -127,12 +111,12 @@ func TestProductInteractor_mergeVariants(t *testing.T) {
 	jsonVariantsMap := JsonVariantsMap{
 		99991: []*jsn.Variant{
 			{
-				ID: 99991,
+				Id: 99991,
 			},
 		},
 		99992: []*jsn.Variant{
 			{
-				ID:       99992,
+				Id:       99992,
 				IsMaster: true,
 			},
 		},
@@ -156,27 +140,27 @@ func TestProductInteractor_mergeVariants(t *testing.T) {
 
 	v1 := p2.Variants[0]
 
-	if v1.ID != 99991 || v1.Name != "Product1" || v1.IsMaster {
-		t.Errorf("Incorrect variant values %d %s %b", v1.ID, v1.Name, v1.IsMaster)
+	if v1.Id != 99991 || v1.Name != "Product1" || v1.IsMaster {
+		t.Errorf("Incorrect variant values %d %s %b", v1.Id, v1.Name, v1.IsMaster)
 	}
 }
 
 func TestProductInteractor_mergeOptionTypes(t *testing.T) {
 	jsonProductSlice := []*jsn.Product{
 		&jsn.Product{
-			ID: 3,
+			Id: 3,
 		},
 	}
 
 	jsonOptionTypesMap := JsonOptionTypesMap{
 		3: []*jsn.OptionType{
 			{
-				ID:           1,
+				Id:           1,
 				Name:         "tshirt-size",
 				Presentation: "Size",
 			},
 			{
-				ID:           2,
+				Id:           2,
 				Name:         "tshirt-color",
 				Presentation: "Color",
 			},
@@ -201,18 +185,18 @@ func TestProductInteractor_mergeOptionTypes(t *testing.T) {
 
 	optionType1 := product.OptionTypes[0]
 
-	if optionType1.ID != 1 || optionType1.Name != "tshirt-size" || optionType1.Presentation != "Size" {
-		t.Errorf("Incorrect optionType values: \n ID -> %d, Name -> %s, Presentation -> %d", optionType1.ID, optionType1.Name, optionType1.Presentation)
+	if optionType1.Id != 1 || optionType1.Name != "tshirt-size" || optionType1.Presentation != "Size" {
+		t.Errorf("Incorrect optionType values: \n Id -> %d, Name -> %s, Presentation -> %d", optionType1.Id, optionType1.Name, optionType1.Presentation)
 	}
 }
 
 func TestProductInteractor_mergeClassifications(t *testing.T) {
 	jsonProductSlice := []*jsn.Product{
 		&jsn.Product{
-			ID: 3,
+			Id: 3,
 		},
 		&jsn.Product{
-			ID: 5,
+			Id: 5,
 		},
 	}
 
@@ -222,7 +206,7 @@ func TestProductInteractor_mergeClassifications(t *testing.T) {
 				TaxonId:  1,
 				Position: 5,
 				Taxon: jsn.Taxon{
-					ID:   1,
+					Id:   1,
 					Name: "taxonName",
 				},
 			},
@@ -242,7 +226,7 @@ func TestProductInteractor_mergeClassifications(t *testing.T) {
 
 	classification := product1.Classifications[0]
 
-	if classification.TaxonId != 1 || classification.Taxon.ID != 1 {
+	if classification.TaxonId != 1 || classification.Taxon.Id != 1 {
 		t.Error("Wrong assignment of classifications")
 	}
 

@@ -15,7 +15,7 @@ type Product struct {
 	Slug               string
 	MetaDescription    string
 	MetaKeyWords       string
-	TaxCategoryID      int64
+	TaxCategoryId      int64
 	ShippingCategoryId int64
 	CreatedAt          time.Time
 	UpdatedAt          time.Time

@@ -1,7 +1,7 @@
 package json
 
 type Variant struct {
-	ID              int64          `json:"id"`
+	Id              int64          `json:"id"`
 	Name            string         `json:"name"`
 	Sku             string         `json:"sku"`
 	Price           string         `json:"price"`

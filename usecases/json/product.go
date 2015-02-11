@@ -4,6 +4,7 @@ import (
 	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/jinzhu/copier"
 )
 
 type ProductResponse struct {
@@ -97,7 +98,8 @@ func (this *ProductInteractor) modelsToJsonProductsSlice(productSlice []*models.
 	jsonProductsSlice := []*json.Product{}
 
 	for _, product := range productSlice {
-		productJson := this.toJson(product)
+		productJson := &json.Product{}
+		copier.Copy(productJson, product)
 
 		jsonProductsSlice = append(jsonProductsSlice, productJson)
 	}
@@ -105,37 +107,12 @@ func (this *ProductInteractor) modelsToJsonProductsSlice(productSlice []*models.
 	return jsonProductsSlice
 }
 
-func (this *ProductInteractor) toJson(product *models.Product) *json.Product {
-	productJson := &json.Product{
-		ID:          product.Id,
-		Name:        product.Name,
-		Description: product.Description,
-		//Price: from master variant
-		//DisplayPrice:
-		AvailableOn:     product.AvailableOn,
-		Slug:            product.Slug,
-		MetaDescription: product.MetaDescription,
-		MetaKeyWords:    product.MetaDescription,
-		//ShippingCategoryId
-		//TaxonIds
-		//TotalOnHand: from variants
-		//HasVariants: form variants
-		//Master: master variant
-		//Variants: from JsonVariantsMap
-		//OptionTypes
-		//ProductProperties
-		//Classifications
-	}
-
-	return productJson
-}
-
 func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, variantsMap JsonVariantsMap) {
 	for _, product := range productSlice {
 		product.Variants = []json.Variant{}
 		var totalOnHand int64
 
-		variantSlice := variantsMap[product.ID]
+		variantSlice := variantsMap[product.Id]
 
 		if variantSlice == nil {
 			continue
@@ -169,7 +146,7 @@ func (this *ProductInteractor) mergeProductProperties(productSlice []*json.Produ
 	for _, product := range productSlice {
 		product.ProductProperties = []json.ProductProperty{}
 
-		productPropertiesSlice := productPropertiesMap[product.ID]
+		productPropertiesSlice := productPropertiesMap[product.Id]
 
 		if productPropertiesSlice == nil {
 			continue
@@ -186,7 +163,7 @@ func (this *ProductInteractor) mergeClassifications(productSlice []*json.Product
 		product.TaxonIds = []int{}
 		product.Classifications = []json.Classification{}
 
-		classificationsSlice := classificationsMap[product.ID]
+		classificationsSlice := classificationsMap[product.Id]
 
 		if classificationsSlice == nil {
 			continue
@@ -203,7 +180,7 @@ func (this *ProductInteractor) mergeOptionTypes(productSlice []*json.Product, op
 	for _, product := range productSlice {
 		product.OptionTypes = []json.OptionType{}
 
-		optionTypesSlice := optionTypesMap[product.ID]
+		optionTypesSlice := optionTypesMap[product.Id]
 
 		if optionTypesSlice == nil {
 			continue

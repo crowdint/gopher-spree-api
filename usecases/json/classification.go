@@ -58,12 +58,12 @@ func (this *ClassificationInteractor) taxonToJsonClassification(taxon *models.Ta
 
 func (this *ClassificationInteractor) taxonToJson(taxon *models.Taxon) *json.Taxon {
 	taxonJson := &json.Taxon{
-		ID:         taxon.Id,
+		Id:         taxon.Id,
 		Name:       taxon.Name,
 		PrettyName: taxon.PrettyName,
 		Permalink:  taxon.Permalink,
-		ParentID:   taxon.ParentId,
-		TaxonomyID: taxon.TaxonomyId,
+		ParentId:   taxon.ParentId,
+		TaxonomyId: taxon.TaxonomyId,
 	}
 
 	return taxonJson

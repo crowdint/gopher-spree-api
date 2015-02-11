@@ -49,7 +49,7 @@ func (this *OptionTypeInteractor) modelsToJsonOptionTypesMap(optionTypeSlice []*
 
 func (this *OptionTypeInteractor) toJson(optionType *models.OptionType) *json.OptionType {
 	optionTypeJson := &json.OptionType{
-		ID:           optionType.Id,
+		Id:           optionType.Id,
 		Name:         optionType.Name,
 		Presentation: optionType.Presentation,
 		Position:     optionType.Position,
