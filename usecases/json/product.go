@@ -4,6 +4,7 @@ import (
 	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/jinzhu/copier"
 )
 
 type ProductResponse struct {
@@ -97,37 +98,13 @@ func (this *ProductInteractor) modelsToJsonProductsSlice(productSlice []*models.
 	jsonProductsSlice := []*json.Product{}
 
 	for _, product := range productSlice {
-		productJson := this.toJson(product)
+		productJson := &json.Product{}
+		copier.Copy(productJson, product)
 
 		jsonProductsSlice = append(jsonProductsSlice, productJson)
 	}
 
 	return jsonProductsSlice
-}
-
-func (this *ProductInteractor) toJson(product *models.Product) *json.Product {
-	productJson := &json.Product{
-		Id:          product.Id,
-		Name:        product.Name,
-		Description: product.Description,
-		//Price: from master variant
-		//DisplayPrice:
-		AvailableOn:     product.AvailableOn,
-		Slug:            product.Slug,
-		MetaDescription: product.MetaDescription,
-		MetaKeyWords:    product.MetaDescription,
-		//ShippingCategoryId
-		//TaxonIds
-		//TotalOnHand: from variants
-		//HasVariants: form variants
-		//Master: master variant
-		//Variants: from JsonVariantsMap
-		//OptionTypes
-		//ProductProperties
-		//Classifications
-	}
-
-	return productJson
 }
 
 func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, variantsMap JsonVariantsMap) {
