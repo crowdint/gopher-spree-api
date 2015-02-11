@@ -87,8 +87,8 @@ func TestProductPropertyInteractor_toJson(t *testing.T) {
 
 	jsonProductProperty := productPropertyInteractor.toJson(productProperty)
 
-	if jsonProductProperty.Id != 66 || jsonProductProperty.ProductID !=
-		10 || jsonProductProperty.PropertyID != 3 || jsonProductProperty.Value != "Men's" || jsonProductProperty.PropertyName != "Gender" {
+	if jsonProductProperty.Id != 66 || jsonProductProperty.ProductId !=
+		10 || jsonProductProperty.PropertyId != 3 || jsonProductProperty.Value != "Men's" || jsonProductProperty.PropertyName != "Gender" {
 		t.Error("Invalid values json.ProductProperty")
 	}
 }

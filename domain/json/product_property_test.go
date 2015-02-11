@@ -7,8 +7,8 @@ func TestProductPropertyStructure(t *testing.T) {
 
 	productProperty := ProductProperty{
 		Id:           1,
-		ProductID:    1,
-		PropertyID:   1,
+		ProductId:    1,
+		PropertyId:   1,
 		Value:        "some value",
 		PropertyName: "some name",
 	}

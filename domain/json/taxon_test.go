@@ -12,16 +12,16 @@ func TestTaxonStructure(t *testing.T) {
 		Name:       "taxon1",
 		PrettyName: "a name",
 		Permalink:  "http://someurl.com",
-		ParentID:   1,
-		TaxonomyID: 10,
+		ParentId:   1,
+		TaxonomyId: 10,
 		Taxons: []Taxon{
 			{
 				Id:         2,
 				Name:       "taxon2",
 				PrettyName: "a name",
 				Permalink:  "http://someurl.com",
-				ParentID:   2,
-				TaxonomyID: 10,
+				ParentId:   2,
+				TaxonomyId: 10,
 			},
 		},
 	}

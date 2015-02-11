@@ -16,8 +16,8 @@ func TestClassificationStructure(t *testing.T) {
 			Name:       "taxon",
 			PrettyName: "a name",
 			Permalink:  "http://someurl.com",
-			ParentID:   1,
-			TaxonomyID: 10,
+			ParentId:   1,
+			TaxonomyId: 10,
 		},
 	}
 	AssertEqualJson(t, classification, expected)
