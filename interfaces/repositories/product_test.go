@@ -54,7 +54,7 @@ func TestProductRepo(t *testing.T) {
 		t.Error("Invalid type", t)
 	}
 
-	count, err := productRepo.CountAll()
+	count, err := productRepo.CountAll("")
 	if err != nil {
 		t.Error("dbHandler error:", err)
 	}
@@ -99,7 +99,7 @@ func TestProductRepo_WithGransakQuery(t *testing.T) {
 		t.Error("Invalid type", t)
 	}
 
-	count, err := productRepo.CountAll()
+	count, err := productRepo.CountAll("")
 	if err != nil {
 		t.Error("dbHandler error:", err)
 	}
