@@ -7,7 +7,7 @@ func TestVariantStructure(t *testing.T) {
 		`"height":"20","width":"21","depth":"23.1","is_master":true,"slug":"var1",` +
 		`"description":"variant 1","track_inventory":true,"cost_price":"1.9",` +
 		`"display_price":"$10.1","options_text":"opt 1","in_stock":true,"is_backorderable":false,` +
-		`"total_on_hand":90,"is_destroyed":false,"option_values":[],"images":[]}`
+		`"total_on_hand":90,"is_destroyed":false,"option_values":[],"images":[],"product_id":0}`
 
 	variant := Variant{
 		Id:              1,

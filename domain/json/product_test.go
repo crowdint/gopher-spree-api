@@ -13,7 +13,7 @@ func TestProductStructure(t *testing.T) {
 		`"sku":"","price":"0","weight":"0","height":"0","width":"0","depth":"0","is_master":false,"slug":"",` +
 		`"description":"","track_inventory":false,"cost_price":"","display_price":"","options_text":"",` +
 		`"in_stock":false,"is_backorderable":false,"total_on_hand":0,"is_destroyed":false,` +
-		`"option_values":null,"images":null},"variants":[],"option_types":[],` +
+		`"option_values":null,"images":null,"product_id":0},"variants":[],"option_types":[],` +
 		`"product_properties":[],"classifications":[]}`
 
 	someTime := time.Date(2013, 10, 10, 0, 0, 0, 0, time.UTC)
