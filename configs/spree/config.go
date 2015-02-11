@@ -11,6 +11,7 @@ const (
 	SPREE_COUNTRY_ID         = "spree/app_configuration/default_country_id"
 	SPREE_CURRENCY           = "spree/app_configuration/currency"
 	SPREE_API_AUTHENTICATION = "spree/api_configuration/requires_authentication"
+	TRACK_INVENTORY_LEVELS   = "spree/app_configuration/track_inventory_levels"
 )
 
 var (
@@ -19,6 +20,7 @@ var (
 		SPREE_COUNTRY_ID:         getDbOrDefault(SPREE_COUNTRY_ID, "232"),
 		SPREE_CURRENCY:           getDbOrDefault(SPREE_CURRENCY, "USD"),
 		SPREE_API_AUTHENTICATION: getDbOrDefault(SPREE_API_AUTHENTICATION, "true"),
+		TRACK_INVENTORY_LEVELS:   getDbOrDefault(TRACK_INVENTORY_LEVELS, "true"),
 	}
 )
 
@@ -53,6 +55,16 @@ func SetAndSave(key, value string) error {
 
 	Set(key, value)
 	return nil
+}
+
+func IsInventoryTrackingEnabled() bool {
+	value, err := strconv.ParseBool(spreeConfig[TRACK_INVENTORY_LEVELS])
+
+	if err != nil {
+		return true
+	}
+
+	return value
 }
 
 func IsAuthenticationRequired() bool {
