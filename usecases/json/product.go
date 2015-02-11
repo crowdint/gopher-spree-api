@@ -107,7 +107,7 @@ func (this *ProductInteractor) modelsToJsonProductsSlice(productSlice []*models.
 
 func (this *ProductInteractor) toJson(product *models.Product) *json.Product {
 	productJson := &json.Product{
-		ID:          product.Id,
+		Id:          product.Id,
 		Name:        product.Name,
 		Description: product.Description,
 		//Price: from master variant
@@ -135,7 +135,7 @@ func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, varia
 		product.Variants = []json.Variant{}
 		var totalOnHand int64
 
-		variantSlice := variantsMap[product.ID]
+		variantSlice := variantsMap[product.Id]
 
 		if variantSlice == nil {
 			continue
@@ -169,7 +169,7 @@ func (this *ProductInteractor) mergeProductProperties(productSlice []*json.Produ
 	for _, product := range productSlice {
 		product.ProductProperties = []json.ProductProperty{}
 
-		productPropertiesSlice := productPropertiesMap[product.ID]
+		productPropertiesSlice := productPropertiesMap[product.Id]
 
 		if productPropertiesSlice == nil {
 			continue
@@ -186,7 +186,7 @@ func (this *ProductInteractor) mergeClassifications(productSlice []*json.Product
 		product.TaxonIds = []int{}
 		product.Classifications = []json.Classification{}
 
-		classificationsSlice := classificationsMap[product.ID]
+		classificationsSlice := classificationsMap[product.Id]
 
 		if classificationsSlice == nil {
 			continue
@@ -203,7 +203,7 @@ func (this *ProductInteractor) mergeOptionTypes(productSlice []*json.Product, op
 	for _, product := range productSlice {
 		product.OptionTypes = []json.OptionType{}
 
-		optionTypesSlice := optionTypesMap[product.ID]
+		optionTypesSlice := optionTypesMap[product.Id]
 
 		if optionTypesSlice == nil {
 			continue

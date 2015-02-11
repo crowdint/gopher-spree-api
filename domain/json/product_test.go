@@ -20,7 +20,7 @@ func TestProductStructure(t *testing.T) {
 
 	product := Product{
 		Name:               "Product1",
-		ID:                 1,
+		Id:                 1,
 		Description:        "A prodcut",
 		Slug:               "product1",
 		MetaDescription:    "...",

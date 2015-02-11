@@ -8,7 +8,7 @@ func TestTaxonStructure(t *testing.T) {
 		`"permalink":"http://someurl.com","parent_id":2,"taxonomy_id":10,"taxons":null}]}`
 
 	taxon := Taxon{
-		ID:         1,
+		Id:         1,
 		Name:       "taxon1",
 		PrettyName: "a name",
 		Permalink:  "http://someurl.com",
@@ -16,7 +16,7 @@ func TestTaxonStructure(t *testing.T) {
 		TaxonomyID: 10,
 		Taxons: []Taxon{
 			{
-				ID:         2,
+				Id:         2,
 				Name:       "taxon2",
 				PrettyName: "a name",
 				Permalink:  "http://someurl.com",

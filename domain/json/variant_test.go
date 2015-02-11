@@ -10,7 +10,7 @@ func TestVariantStructure(t *testing.T) {
 		`"total_on_hand":90,"is_destroyed":false,"option_values":[],"images":[]}`
 
 	variant := Variant{
-		ID:              1,
+		Id:              1,
 		Name:            "var1",
 		Sku:             "A1234",
 		Price:           "10.0",

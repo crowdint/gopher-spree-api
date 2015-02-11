@@ -12,7 +12,7 @@ func TestClassificationStructure(t *testing.T) {
 		TaxonId:  1,
 		Position: 20,
 		Taxon: Taxon{
-			ID:         1,
+			Id:         1,
 			Name:       "taxon",
 			PrettyName: "a name",
 			Permalink:  "http://someurl.com",

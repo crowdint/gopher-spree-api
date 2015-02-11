@@ -49,7 +49,7 @@ func (this *ProductPropertyInteractor) modelsToJsonProductPropertiesMap(productP
 
 func (this *ProductPropertyInteractor) toJson(productProperty *models.ProductProperty) *json.ProductProperty {
 	productPropertyJson := &json.ProductProperty{
-		ID:           productProperty.Id,
+		Id:           productProperty.Id,
 		ProductID:    productProperty.ProductId,
 		PropertyID:   productProperty.PropertyId,
 		Value:        productProperty.Value,

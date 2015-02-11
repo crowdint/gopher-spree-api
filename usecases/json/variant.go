@@ -69,7 +69,7 @@ func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*models.Va
 
 func (this *VariantInteractor) toJson(variant *models.Variant) *json.Variant {
 	variantJson := &json.Variant{
-		ID: variant.Id,
+		Id: variant.Id,
 		//Name: from product
 		Sku:      variant.Sku,
 		Price:    variant.Price,

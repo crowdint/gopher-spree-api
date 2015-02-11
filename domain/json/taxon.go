@@ -1,7 +1,7 @@
 package json
 
 type Taxon struct {
-	ID         int64   `json:"id"`
+	Id         int64   `json:"id"`
 	Name       string  `json:"name"`
 	PrettyName string  `json:"pretty_name"`
 	Permalink  string  `json:"permalink"`
