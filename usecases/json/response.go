@@ -26,7 +26,7 @@ type ResponseParameters interface {
 }
 
 type ContentInteractor interface {
-	GetTotalCount() (int64, error)
+	GetTotalCount(string) (int64, error)
 	GetResponse(int, int, string) (ContentResponse, error)
 }
 
@@ -53,12 +53,12 @@ func (this *ResponseInteractor) GetResponse(contentInteractor ContentInteractor,
 		return nil, err
 	}
 
-	err = responsePaginator.CalculatePaginationData(this.ContentInteractor, currentPage, perPage)
+	query, err := params.GetGransakQuery()
 	if err != nil {
 		return nil, err
 	}
 
-	query, err := params.GetGransakQuery()
+	err = responsePaginator.CalculatePaginationData(this.ContentInteractor, currentPage, perPage, query)
 	if err != nil {
 		return nil, err
 	}

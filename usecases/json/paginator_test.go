@@ -14,6 +14,7 @@ func TestPaginator_Calculate_User_Values(t *testing.T) {
 		new(FakeContentInteractor),
 		2,
 		10,
+		"",
 	)
 
 	if err != nil {
@@ -44,6 +45,7 @@ func TestPaginator_Calculate_Default_Values(t *testing.T) {
 		new(FakeContentInteractor),
 		0,
 		0,
+		"",
 	)
 
 	if err != nil {
@@ -69,7 +71,7 @@ func TestPaginator_Calculate_Default_Values(t *testing.T) {
 
 type FakeContentInteractor struct{}
 
-func (this *FakeContentInteractor) GetTotalCount() (int64, error) {
+func (this *FakeContentInteractor) GetTotalCount(query string) (int64, error) {
 	return 16, nil
 }
 

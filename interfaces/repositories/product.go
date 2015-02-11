@@ -39,11 +39,15 @@ func (this *ProductRepo) List(currentPage, perPage int, gransakQuery string) ([]
 	return products, query.Error
 }
 
-func (this *ProductRepo) CountAll() (int64, error) {
-	var products []*models.Product
+func (this *ProductRepo) CountAll(queryFilter string) (int64, error) {
 	var count int64
 
-	query := this.dbHandler.Find(&products).Count(&count)
+	var query *gorm.DB
+	if queryFilter == "" {
+		query = this.dbHandler.Model(models.Product{}).Count(&count)
+	} else {
+		query = this.dbHandler.Model(models.Product{}).Where(queryFilter).Count(&count)
+	}
 
 	return count, query.Error
 }

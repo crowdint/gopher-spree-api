@@ -215,6 +215,6 @@ func (this *ProductInteractor) mergeOptionTypes(productSlice []*json.Product, op
 	}
 }
 
-func (this *ProductInteractor) GetTotalCount() (int64, error) {
-	return this.ProductRepo.CountAll()
+func (this *ProductInteractor) GetTotalCount(query string) (int64, error) {
+	return this.ProductRepo.CountAll(query)
 }
