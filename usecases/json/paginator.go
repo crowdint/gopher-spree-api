@@ -14,7 +14,7 @@ type Paginator struct {
 	PerPage           int
 	Pages             int
 	ContentInteractor ContentInteractor
-	filterQuery				string
+	filterQuery       string
 }
 
 func (this *Paginator) CalculatePaginationData(contentInteractor ContentInteractor, currentPage, perPage int, filterQuery string) error {
