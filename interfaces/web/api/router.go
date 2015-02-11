@@ -1,9 +1,6 @@
 package api
 
 import (
-	"os"
-
-	"github.com/brandfolder/gin-gorelic"
 	"github.com/gin-gonic/gin"
 
 	"github.com/crowdint/gopher-spree-api/configs"
@@ -42,8 +39,8 @@ func Router() *gin.Engine {
 
 	if router == nil {
 		router = gin.Default()
-		gorelic.InitNewrelicAgent(os.Getenv("NEWRELIC_API_KEY"), os.Getenv("NEWRELIC_APP_NAME"), true)
-		router.Use(Proxy(), Authentication(), gorelic.Handler)
+
+		router.Use(Monitor(), Proxy(), Authentication())
 	}
 
 	return router
