@@ -70,15 +70,18 @@ func NewDatabaseRepository() *DbRepo {
 
 func (this *DbRepo) All(collection interface{}, attrs map[string]interface{}) error {
 	var limit, offset int
+	var condition string
 
 	if attrs["per_page"] != nil && attrs["current_page"] != nil {
 		limit = attrs["per_page"].(int)
 		delete(attrs, "per_page")
 		offset = (attrs["current_page"].(int) - 1) * limit
 		delete(attrs, "current_page")
+		condition = (attrs["condition"]).(string)
+		delete(attrs, "condition")
 	}
 
-	return this.dbHandler.Offset(offset).Limit(limit).Find(collection, attrs).Error
+	return this.dbHandler.Offset(offset).Limit(limit).Where(condition).Find(collection, attrs).Error
 }
 
 func (this *DbRepo) AllBy(collection interface{}, attr string, values interface{}, attrs map[string]interface{}) error {
