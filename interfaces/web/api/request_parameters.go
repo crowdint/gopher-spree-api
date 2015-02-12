@@ -25,7 +25,7 @@ func (this *RequestParameters) GetIntParam(key string) (int, error) {
 	var param string
 
 	if key == rsp.ID_PARAM {
-		param = this.context.Params.ByName("id")
+		param = this.context.Params.ByName("product_id")
 	} else {
 		param = this.context.Request.Form.Get(key)
 	}
