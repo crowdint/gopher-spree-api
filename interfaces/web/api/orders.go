@@ -142,7 +142,7 @@ func OrdersShow(c *gin.Context) {
 	}
 
 	var variants []djson.Variant
-	r.AllBy(&variants, "id", variantIds, nil)
+	r.AllBy(&variants, nil, "id IN(?)", variantIds)
 
 	variantsMap := map[int64]*djson.Variant{}
 	var productIds []int64
@@ -154,7 +154,7 @@ func OrdersShow(c *gin.Context) {
 	// Load line items variants products
 	var products []djson.Product
 	productsMap := map[int64]*djson.Product{}
-	r.AllBy(&products, "id", productIds, nil)
+	r.AllBy(&products, nil, "id IN(?)", productIds)
 	for _, product := range products {
 		productsMap[product.Id] = &product
 	}
@@ -163,27 +163,28 @@ func OrdersShow(c *gin.Context) {
 	currency := spree.Get(spree.SPREE_CURRENCY)
 
 	var prices []models.Price
-	r.AllBy(&prices, "variant_id", variantIds, repositories.Query{
-		"currency": currency,
-	})
+	r.AllBy(&prices, repositories.Q{"currency": currency}, "variant_id IN(?)", variantIds)
 
 	pricesMap := map[int64]*models.Price{}
 	for _, price := range prices {
 		pricesMap[price.VariantId] = &price
 	}
 
+	var stockLocationIds []int64
+	var stockLocations []djson.StockLocation
+	r.All(&stockLocations, repositories.Q{"active": true})
+	for _, stockLocation := range stockLocations {
+		stockLocationIds = append(stockLocationIds, stockLocation.Id)
+	}
+
 	//stockItems
 	var stockItems []djson.StockItem
-	//TODO: Should preload and filter by active stock locations
-	r.AllBy(&stockItems, "variant_id", variantIds, nil)
+	r.AllBy(&stockItems, nil, "variant_id IN(?) AND stock_location_id IN(?)", variantIds, stockLocationIds)
 
 	stockItemsMap := map[int64][]*djson.StockItem{}
 	for _, stockItem := range stockItems {
 		stockItemsMap[stockItem.VariantId] = append(stockItemsMap[stockItem.VariantId], &stockItem)
 	}
-
-	optionValues := map[int64]*djson.OptionValue{}
-	r.AllBy(&optionValues, "variant_id", variantIds, nil)
 
 	for _, lineItem := range lineItems {
 		v := variantsMap[lineItem.VariantId]

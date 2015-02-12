@@ -92,7 +92,7 @@ func getDbOrDefault(key string, defaultValue string) string {
 
 func findPreferenceByKey(key string) (*Preference, error) {
 	p := &Preference{}
-	err := dbRepo.FindBy(p, map[string]interface{}{"key": key})
+	err := dbRepo.FindBy(p, repositories.Q{"key": key})
 	return p, err
 }
 

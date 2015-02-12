@@ -1,3 +1,3 @@
 package repositories
 
-type Query map[string]interface{}
+type Q map[string]interface{}

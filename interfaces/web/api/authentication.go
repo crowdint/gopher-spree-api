@@ -92,7 +92,7 @@ func verifyOrderTokenAccess(c *gin.Context, dbRepo *repositories.DbRepo, authReq
 
 	// Find the order by guest token (order token)
 	order := &models.Order{}
-	err := dbRepo.FindBy(order, map[string]interface{}{"guest_token": orderToken})
+	err := dbRepo.FindBy(order, repositories.Q{"guest_token": orderToken})
 	if err != nil {
 		unauthorized(c, "You are not authorized to perform that action.")
 		return err
@@ -123,7 +123,7 @@ func nextHandler(c *gin.Context, user *models.User) {
 }
 
 func findUserBySpreeApiKey(c *gin.Context, dbRepo *repositories.DbRepo, user *models.User, spreeToken string) error {
-	err := dbRepo.FindBy(user, map[string]interface{}{"spree_api_key": spreeToken})
+	err := dbRepo.FindBy(user, repositories.Q{"spree_api_key": spreeToken})
 
 	if err != nil {
 		unauthorized(c, "Invalid API key ("+spreeToken+") specified.")

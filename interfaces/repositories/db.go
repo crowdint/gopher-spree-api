@@ -61,11 +61,11 @@ func NewDatabaseRepository() *DbRepo {
 }
 
 func extractOptions(attrs map[string]interface{}) (limit, offset int, query string) {
-	if attrs["pp"] != nil && attrs["cp"] != nil {
-		limit = attrs["pp"].(int)
-		delete(attrs, "pp")
-		offset = (attrs["cp"].(int) - 1) * limit
-		delete(attrs, "cp")
+	if attrs["per_page"] != nil && attrs["current_page"] != nil {
+		limit = attrs["per_page"].(int)
+		delete(attrs, "per_page")
+		offset = (attrs["current_page"].(int) - 1) * limit
+		delete(attrs, "current_page")
 	}
 
 	if attrs["q"] != nil {
@@ -86,11 +86,16 @@ func getIntegerOrDefault(value string, def int) int {
 
 func (this *DbRepo) All(collection interface{}, attrs map[string]interface{}) error {
 	limit, offset, query := extractOptions(attrs)
+
+	if limit == 0 {
+		return this.dbHandler.Where(query).Find(collection, attrs).Error
+	}
+
 	return this.dbHandler.Offset(offset).Limit(limit).Where(query).Find(collection, attrs).Error
 }
 
-func (this *DbRepo) AllBy(collection interface{}, attr string, values interface{}, attrs map[string]interface{}) error {
-	return this.dbHandler.Where(attrs).Find(collection, attr+" IN (?)", values).Error
+func (this *DbRepo) AllBy(collection interface{}, attrs map[string]interface{}, query string, values ...interface{}) error {
+	return this.dbHandler.Where(attrs).Where(query, values...).Find(collection).Error
 }
 
 func (this *DbRepo) Association(model interface{}, association interface{}, attribute string) {
