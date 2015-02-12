@@ -79,6 +79,6 @@ func (this *FakeContentInteractor) GetResponse(a, b int, query string) (ContentR
 	return &ProductResponse{}, nil
 }
 
-func (this *FakeContentInteractor) GetShowResponse(a interface{}) (interface{}, error) {
+func (this *FakeContentInteractor) GetShowResponse(a ResponseParameters) (interface{}, error) {
 	return struct{}{}, nil
 }

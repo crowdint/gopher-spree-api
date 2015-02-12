@@ -34,7 +34,7 @@ type ResponseParameters interface {
 type ContentInteractor interface {
 	GetTotalCount(string) (int64, error)
 	GetResponse(int, int, string) (ContentResponse, error)
-	GetShowResponse(interface{}) (interface{}, error)
+	GetShowResponse(ResponseParameters) (interface{}, error)
 }
 
 type ContentResponse interface {
@@ -81,14 +81,7 @@ func (this *ResponseInteractor) GetResponse(contentInteractor ContentInteractor,
 }
 
 func (this *ResponseInteractor) GetShowResponse(contentInteractor ContentInteractor, params ResponseParameters) (interface{}, error) {
-	id, err := params.GetIntParam(ID_PARAM)
-	if err != nil {
-		return struct{}{}, err
-	}
-
-	int64Id := int64(id)
-
-	return contentInteractor.GetShowResponse(int64Id)
+	return contentInteractor.GetShowResponse(params)
 }
 
 func (this *ResponseInteractor) getContent(paginator *Paginator, query string) (ContentResponse, error) {

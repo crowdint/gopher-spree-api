@@ -1,14 +1,14 @@
 package json
 
 import (
+	"errors"
+	"fmt"
+
+	"github.com/jinzhu/copier"
+
 	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-	"github.com/jinzhu/copier"
-
-	"errors"
-	"fmt"
-	"reflect"
 )
 
 type ProductResponse struct {
@@ -61,14 +61,15 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int, query strin
 	}, nil
 }
 
-func (this *ProductInteractor) GetShowResponse(param interface{}) (interface{}, error) {
-	kind := reflect.TypeOf(param).Kind()
-	if kind != reflect.Int64 {
-		strKind := fmt.Sprintf("%v", kind)
-		return struct{}{}, errors.New("Invalid parameter type: " + strKind)
+func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (interface{}, error) {
+	id, err := params.GetIntParam(ID_PARAM)
+
+	if err != nil {
+		return struct{}{}, errors.New("Invalid parameter type: " + fmt.Sprintf("%v", id))
 	}
 
-	product, err := this.ProductRepo.FindById(param.(int64))
+	product, err := this.ProductRepo.FindById(int64(id))
+
 	if err != nil {
 		return nil, err
 	}
