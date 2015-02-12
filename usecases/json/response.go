@@ -88,7 +88,7 @@ func (this *ResponseInteractor) GetShowResponse(contentInteractor ContentInterac
 
 	int64Id := int64(id)
 
-	return this.ContentInteractor.GetShowResponse(int64Id)
+	return contentInteractor.GetShowResponse(int64Id)
 }
 
 func (this *ResponseInteractor) getContent(paginator *Paginator, query string) (ContentResponse, error) {
