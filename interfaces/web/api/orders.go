@@ -1,6 +1,8 @@
 package api
 
 import (
+	"math"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
 
@@ -75,7 +77,8 @@ func authorizeOrder(c *gin.Context) {
 }
 
 func OrdersIndex(c *gin.Context) {
-	orders, err := json.SpreeResponseFetcher.GetResponse(json.NewOrderInteractor(), 1, 0)
+	params := NewRequestParameters(c.Request)
+	orders, err := json.SpreeResponseFetcher.GetResponse(json.NewOrderInteractor(), params)
 
 	if err == nil {
 		c.JSON(200, orders)
@@ -170,8 +173,17 @@ func OrdersShow(c *gin.Context) {
 	}
 
 	//stockItems
-	var stockItems []models.StockItem
+	var stockItems []djson.StockItem
+	//TODO: Should preload and filter by active stock locations
 	r.AllBy(&stockItems, "variant_id", variantIds, nil)
+
+	stockItemsMap := map[int64][]*djson.StockItem{}
+	for _, stockItem := range stockItems {
+		stockItemsMap[stockItem.VariantId] = append(stockItemsMap[stockItem.VariantId], &stockItem)
+	}
+
+	optionValues := map[int64]*djson.OptionValue{}
+	r.AllBy(&optionValues, "variant_id", variantIds, nil)
 
 	for _, lineItem := range lineItems {
 		v := variantsMap[lineItem.VariantId]
@@ -179,6 +191,8 @@ func OrdersShow(c *gin.Context) {
 		v.Description = productsMap[v.ProductId].Description
 		v.Slug = productsMap[v.ProductId].Slug
 		v.Price = pricesMap[v.Id].Amount
+		v.StockItems = stockItemsMap[v.Id]
+		CalculateInventory(v)
 
 		lineItem.Variant = v
 	}
@@ -186,7 +200,17 @@ func OrdersShow(c *gin.Context) {
 	c.JSON(200, orderJson)
 }
 
-func notFound(c *gin.Context) {
-	c.JSON(404, gin.H{"error": "Record Not Found"})
-	c.Abort()
+func CalculateInventory(variant *djson.Variant) {
+	if variant.ShouldTrackInventory() {
+		for _, stockItem := range variant.StockItems {
+			variant.TotalOnHand = variant.TotalOnHand + stockItem.CountOnHand
+			if stockItem.Backorderable {
+				variant.IsBackorderable = true
+			}
+		}
+	} else {
+		variant.TotalOnHand = int64(math.Inf(0))
+	}
+
+	variant.InStock = variant.TotalOnHand > 0
 }

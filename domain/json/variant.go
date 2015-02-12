@@ -1,5 +1,11 @@
 package json
 
+import (
+	"time"
+
+	"github.com/crowdint/gopher-spree-api/configs/spree"
+)
+
 type Variant struct {
 	Id              int64          `json:"id"`
 	Name            string         `json:"name"`
@@ -23,6 +29,17 @@ type Variant struct {
 	OptionValues    []*OptionValue `json:"option_values"`
 	Images          []*Asset       `json:"images"`
 	ProductId       int64          `json:"product_id"`
+	StockItems      []*StockItem   `json:"-"`
+	DeletedAt       time.Time      `json:"-"`
+}
+
+func (this *Variant) AfterFind() (err error) {
+	this.IsDestroyed = !this.DeletedAt.IsZero()
+	return
+}
+
+func (this *Variant) ShouldTrackInventory() bool {
+	return this.TrackInventory && spree.IsInventoryTrackingEnabled()
 }
 
 func (this Variant) TableName() string {

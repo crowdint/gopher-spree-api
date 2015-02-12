@@ -48,11 +48,6 @@ func getSpreeToken(c *gin.Context) string {
 	return c.Request.URL.Query().Get("token")
 }
 
-func unauthorized(c *gin.Context, errMsg string) {
-	c.JSON(http.StatusUnauthorized, gin.H{"error": errMsg})
-	c.Abort()
-}
-
 func namespace() string {
 	if ns == nil {
 		temp := configs.Get(configs.SPREE_NS)
@@ -63,4 +58,14 @@ func namespace() string {
 	}
 
 	return *ns
+}
+
+func notFound(c *gin.Context) {
+	c.JSON(404, gin.H{"error": "Record Not Found"})
+	c.Abort()
+}
+
+func unauthorized(c *gin.Context, errMsg string) {
+	c.JSON(http.StatusUnauthorized, gin.H{"error": errMsg})
+	c.Abort()
 }

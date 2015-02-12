@@ -12,7 +12,7 @@ type OrderInteractor struct {
 	Repository *repositories.DbRepo
 }
 
-func (this *OrderInteractor) GetResponse(currentPage, perPage int) (ContentResponse, error) {
+func (this *OrderInteractor) GetResponse(currentPage, perPage int, query string) (ContentResponse, error) {
 	orders := []models.Order{}
 	ordersJson := []json.Order{}
 
@@ -40,7 +40,7 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int) (ContentRespo
 	return &OrderResponse{data: &ordersJson}, nil
 }
 
-func (this *OrderInteractor) GetTotalCount() (int64, error) {
+func (this *OrderInteractor) GetTotalCount(query string) (int64, error) {
 	return this.Repository.Count(&models.Order{})
 }
 
