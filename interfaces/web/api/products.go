@@ -18,7 +18,7 @@ func init() {
 }
 
 func ProductsIndex(c *gin.Context) {
-	params := NewRequestParameters(c.Request)
+	params := NewRequestParameters(c)
 
 	if products, err := json.SpreeResponseFetcher.GetResponse(json.NewProductInteractor(), params); err != nil && err.Error() != "Record Not Found" {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -28,5 +28,11 @@ func ProductsIndex(c *gin.Context) {
 }
 
 func ProductsShow(c *gin.Context) {
-	c.JSON(200, struct{}{})
+	params := NewRequestParameters(c)
+
+	if product, err := json.SpreeResponseFetcher.GetShowResponse(json.NewProductInteractor(), params); err != nil && err.Error() != "Record Not Found" {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	} else {
+		c.JSON(200, product)
+	}
 }

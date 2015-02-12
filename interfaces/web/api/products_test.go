@@ -43,9 +43,4 @@ func TestProductsShow(t *testing.T) {
 	if w.Code != http.StatusOK {
 		t.Errorf("Status code should be %d, but was %d", http.StatusOK, w.Code)
 	}
-
-	bodyExpected := "{}"
-	if NotEqualFromJSONString(&bodyExpected, w.Body.String()) {
-		t.Errorf("Body should be %s, but was %s", bodyExpected, w.Body.String())
-	}
 }

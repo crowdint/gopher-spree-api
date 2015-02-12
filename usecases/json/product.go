@@ -5,6 +5,10 @@ import (
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/jinzhu/copier"
+
+	"errors"
+	"fmt"
+	"reflect"
 )
 
 type ProductResponse struct {
@@ -47,28 +51,72 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int, query strin
 		return ProductResponse{}, err
 	}
 
+	productJsonSlice, err := this.transformToJsonResponse(productModelSlice)
+	if err != nil {
+		return ProductResponse{}, err
+	}
+
+	return ProductResponse{
+		data: productJsonSlice,
+	}, nil
+}
+
+func (this *ProductInteractor) GetShowResponse(param interface{}) (interface{}, error) {
+	kind := reflect.TypeOf(param).Kind()
+	if kind != reflect.Int64 {
+		strKind := fmt.Sprintf("%v", kind)
+		return struct{}{}, errors.New("Invalid parameter type: " + strKind)
+	}
+
+	product, err := this.ProductRepo.FindById(param.(int64))
+	if err != nil {
+		return nil, err
+	}
+
+	productModelSlice := []*models.Product{}
+
+	productModelSlice = append(productModelSlice, product)
+
+	productJsonSlice, err := this.transformToJsonResponse(productModelSlice)
+	if err != nil {
+		return nil, err
+	}
+
+	return productJsonSlice[0], nil
+}
+
+func (this *ProductInteractor) transformToJsonResponse(productModelSlice []*models.Product) ([]*json.Product, error) {
 	productJsonSlice := this.modelsToJsonProductsSlice(productModelSlice)
 
 	productIds := this.getIdSlice(productModelSlice)
 
+	err := this.mergeComplementaryValues(productIds, productJsonSlice)
+	if err != nil {
+		return []*json.Product{}, err
+	}
+
+	return productJsonSlice, nil
+}
+
+func (this *ProductInteractor) mergeComplementaryValues(productIds []int64, productJsonSlice []*json.Product) error {
 	variantsMap, err := this.VariantInteractor.GetJsonVariantsMap(productIds)
 	if err != nil {
-		return ProductResponse{}, err
+		return errors.New("Error getting variants: " + err.Error())
 	}
 
 	productPropertiesMap, err := this.ProductPropertyInteractor.GetJsonProductPropertiesMap(productIds)
 	if err != nil {
-		return ProductResponse{}, err
+		return errors.New("Error getting product properties: " + err.Error())
 	}
 
 	classificationsMap, err := this.ClassificationInteractor.GetJsonClassificationsMap(productIds)
 	if err != nil {
-		return ProductResponse{}, err
+		return errors.New("Error getting classifications: " + err.Error())
 	}
 
 	optionTypesMap, err := this.OptionTypeInteractor.GetJsonOptionTypesMap(productIds)
 	if err != nil {
-		return ProductResponse{}, err
+		return errors.New("Error getting option types: " + err.Error())
 	}
 
 	this.mergeVariants(productJsonSlice, variantsMap)
@@ -79,9 +127,7 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int, query strin
 
 	this.mergeOptionTypes(productJsonSlice, optionTypesMap)
 
-	return ProductResponse{
-		data: productJsonSlice,
-	}, nil
+	return nil
 }
 
 func (this *ProductInteractor) getIdSlice(productSlice []*models.Product) []int64 {
