@@ -56,6 +56,26 @@ func InitDB() error {
 	return nil
 }
 
+func NewDatabaseRepository() *DbRepo {
+	return &DbRepo{Spree_db}
+}
+
+func extractOptions(attrs map[string]interface{}) (limit, offset int, query string) {
+	if attrs["pp"] != nil && attrs["cp"] != nil {
+		limit = attrs["pp"].(int)
+		delete(attrs, "pp")
+		offset = (attrs["cp"].(int) - 1) * limit
+		delete(attrs, "cp")
+	}
+
+	if attrs["q"] != nil {
+		query = (attrs["q"]).(string)
+		delete(attrs, "q")
+	}
+
+	return
+}
+
 func getIntegerOrDefault(value string, def int) int {
 	number, err := strconv.Atoi(value)
 	if err != nil {
@@ -64,24 +84,9 @@ func getIntegerOrDefault(value string, def int) int {
 	return number
 }
 
-func NewDatabaseRepository() *DbRepo {
-	return &DbRepo{Spree_db}
-}
-
 func (this *DbRepo) All(collection interface{}, attrs map[string]interface{}) error {
-	var limit, offset int
-	var condition string
-
-	if attrs["per_page"] != nil && attrs["current_page"] != nil {
-		limit = attrs["per_page"].(int)
-		delete(attrs, "per_page")
-		offset = (attrs["current_page"].(int) - 1) * limit
-		delete(attrs, "current_page")
-		condition = (attrs["condition"]).(string)
-		delete(attrs, "condition")
-	}
-
-	return this.dbHandler.Offset(offset).Limit(limit).Where(condition).Find(collection, attrs).Error
+	limit, offset, query := extractOptions(attrs)
+	return this.dbHandler.Offset(offset).Limit(limit).Where(query).Find(collection, attrs).Error
 }
 
 func (this *DbRepo) AllBy(collection interface{}, attr string, values interface{}, attrs map[string]interface{}) error {

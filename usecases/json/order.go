@@ -17,9 +17,9 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, query string)
 	ordersJson := []json.Order{}
 
 	err := this.Repository.All(&orders, repositories.Query{
-		"current_page": currentPage,
-		"per_page":     perPage,
-		"condition":    query,
+		"cp": currentPage,
+		"pp": perPage,
+		"q":  query,
 	})
 
 	if err != nil {
