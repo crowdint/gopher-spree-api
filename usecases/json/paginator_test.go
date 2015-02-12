@@ -78,3 +78,7 @@ func (this *FakeContentInteractor) GetTotalCount(query string) (int64, error) {
 func (this *FakeContentInteractor) GetResponse(a, b int, query string) (ContentResponse, error) {
 	return &ProductResponse{}, nil
 }
+
+func (this *FakeContentInteractor) GetShowResponse(a interface{}) (interface{}, error) {
+	return struct{}{}, nil
+}

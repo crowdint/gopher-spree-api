@@ -33,7 +33,7 @@ func TestProductsShow(t *testing.T) {
 	r := gin.New()
 
 	method := "GET"
-	path := "/api/products/1"
+	path := "/api/products/15"
 
 	r.GET("/api/products/:id", func(c *gin.Context) {
 		ProductsShow(c)

@@ -5,6 +5,10 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+
+	rsp "github.com/crowdint/gopher-spree-api/usecases/json"
+
+	"github.com/gin-gonic/gin"
 )
 
 func TestParameterParser(t *testing.T) {
@@ -16,9 +20,13 @@ func TestParameterParser(t *testing.T) {
 		URL: url,
 	}
 
-	params := NewRequestParameters(request)
+	context := &gin.Context{
+		Request: request,
+	}
 
-	query, err := params.GetGransakQuery()
+	params := NewRequestParameters(context)
+
+	query, err := params.GetStrParam(rsp.GRANSAK_QUERY_PARAM)
 	if err != nil {
 		t.Error("An error has ocurred:", err)
 	}

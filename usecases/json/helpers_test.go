@@ -6,16 +6,18 @@ type DummyResponseParams struct {
 	gransakQuery string
 }
 
-func (this *DummyResponseParams) GetCurrentPage() (int, error) {
-	return this.currentPage, nil
-}
-
-func (this *DummyResponseParams) GetPerPage() (int, error) {
+func (this *DummyResponseParams) GetIntParam(key string) (int, error) {
+	if key == PAGE_PARAM {
+		return this.currentPage, nil
+	}
 	return this.perPage, nil
 }
 
-func (this *DummyResponseParams) GetGransakQuery() (string, error) {
-	return this.gransakQuery, nil
+func (this *DummyResponseParams) GetStrParam(key string) (string, error) {
+	if key == GRANSAK_QUERY_PARAM {
+		return this.gransakQuery, nil
+	}
+	return "", nil
 }
 
 func newDummyResponseParams(currentPage, perPage int, gransakQuery string) *DummyResponseParams {
