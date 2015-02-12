@@ -10,6 +10,8 @@ import (
 )
 
 func NewRequestParameters(context *gin.Context) *RequestParameters {
+	context.Request.ParseForm()
+
 	return &RequestParameters{
 		context: context,
 	}
@@ -25,7 +27,7 @@ func (this *RequestParameters) GetIntParam(key string) (int, error) {
 	if key == rsp.ID_PARAM {
 		param = this.context.Params.ByName("id")
 	} else {
-		param = this.fromRequest(key)
+		param = this.context.Request.Form.Get(key)
 	}
 
 	return getInt(param)
@@ -37,10 +39,6 @@ func (this *RequestParameters) GetStrParam(key string) (string, error) {
 	}
 
 	return this.context.Params.ByName(key), nil
-}
-
-func (this *RequestParameters) fromRequest(key string) string {
-	return this.context.Request.URL.Query().Get(key)
 }
 
 func getInt(str string) (int, error) {

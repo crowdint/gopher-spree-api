@@ -33,7 +33,7 @@ func TestProductsShow(t *testing.T) {
 	r := gin.New()
 
 	method := "GET"
-	path := "/api/products/15"
+	path := "/api/products/1"
 
 	r.GET("/api/products/:id", func(c *gin.Context) {
 		ProductsShow(c)
@@ -42,10 +42,5 @@ func TestProductsShow(t *testing.T) {
 
 	if w.Code != http.StatusOK {
 		t.Errorf("Status code should be %d, but was %d", http.StatusOK, w.Code)
-	}
-
-	bodyExpected := "{}"
-	if NotEqualFromJSONString(&bodyExpected, w.Body.String()) {
-		t.Errorf("Body should be %s, but was %s", bodyExpected, w.Body.String())
 	}
 }
