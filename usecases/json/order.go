@@ -12,6 +12,10 @@ type OrderInteractor struct {
 	Repository *repositories.DbRepo
 }
 
+func (this *OrderInteractor) GetShowResponse(params ResponseParameters) (interface{}, error) {
+	return nil, nil
+}
+
 func (this *OrderInteractor) GetResponse(currentPage, perPage int, query string) (ContentResponse, error) {
 	orders := []models.Order{}
 	ordersJson := []json.Order{}

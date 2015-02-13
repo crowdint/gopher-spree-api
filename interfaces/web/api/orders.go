@@ -79,7 +79,7 @@ func authorizeOrder(c *gin.Context) {
 }
 
 func OrdersIndex(c *gin.Context) {
-	params := NewRequestParameters(c.Request)
+	params := NewRequestParameters(c)
 	orders, err := json.SpreeResponseFetcher.GetResponse(json.NewOrderInteractor(), params)
 
 	if err == nil {

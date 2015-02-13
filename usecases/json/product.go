@@ -3,7 +3,7 @@ package json
 import (
 	"errors"
 	"fmt"
-    "strconv"
+	"strconv"
 
 	"github.com/jinzhu/copier"
 
