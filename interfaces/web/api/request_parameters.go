@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	rsp "github.com/crowdint/gopher-spree-api/usecases/json"
-	. "github.com/crowdint/gransak/filter"
+	. "github.com/crowdint/gransak"
 
 	"github.com/gin-gonic/gin"
 )
