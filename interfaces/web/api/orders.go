@@ -17,7 +17,7 @@ func init() {
 	orders := API().Group("/orders")
 	{
 		orders.GET("", authorizeOrders, OrdersIndex)
-		orders.GET("/", OrdersIndex)
+		orders.GET("/", authorizeOrders, OrdersIndex)
 		orders.GET("/:order_number", findOrder, authorizeOrder, OrdersShow)
 	}
 }
