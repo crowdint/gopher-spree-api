@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	. "github.com/crowdint/gransak/filter"
+	. "github.com/crowdint/gransak"
 )
 
 func TestProductRepo(t *testing.T) {
