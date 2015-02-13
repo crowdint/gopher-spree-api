@@ -10,6 +10,8 @@ func NewTaxonRepo() *TaxonRepo {
 	}
 }
 
+var queryConfig = map[string]string{}
+
 func (this *TaxonRepo) FindById(id int64) *models.Taxon {
 	taxon := &models.Taxon{
 		Id: id,
@@ -29,32 +31,32 @@ func (this *TaxonRepo) List() []*models.Taxon {
 }
 
 func (this *TaxonRepo) FindByProductIds(productIds []int64) ([]*models.Taxon, error) {
-	selectString := "taxons.*, " +
+	queryConfig["selectString"] = "taxons.*, " +
 		"spree_products_taxons.product_id, " +
 		"spree_products_taxons.position AS classification_position, "
 
-	joinString := "INNER JOIN spree_products_taxons " +
+	queryConfig["joinString"] = "INNER JOIN spree_products_taxons " +
 		"ON taxons.id = spree_products_taxons.taxon_id "
 
-	whereClause := "spree_products_taxons.product_id IN (?)"
+	queryConfig["queryString"] = "spree_products_taxons.product_id IN (?)"
 
-	return this.findByResourceIds(productIds, selectString, joinString, whereClause)
+	return this.findByResourceIds(productIds)
 }
 
 func (this *TaxonRepo) FindByTaxonomyIds(taxonomyIds []int64) ([]*models.Taxon, error) {
-	selectString := "taxons.*, " +
+	queryConfig["selectString"] = "taxons.*, " +
 		"spree_taxonomies.id, " +
-		"spree_taxonomies.name AS taxonomy_name "
+		"spree_taxonomies.name AS taxonomy_name, "
 
-	joinString := "INNER JOIN spree_products_taxons " +
-		"ON taxons.id = spree_products_taxons.taxon_id "
+	queryConfig["joinString"] = "INNER JOIN spree_taxonomies " +
+		"ON taxons.taxonomy_id = spree_taxonomies.id "
 
-	whereClause := "spree_taxonomies.id IN (?)"
+	queryConfig["queryString"] = "spree_taxonomies.id IN (?)"
 
-	return this.findByResourceIds(taxonomyIds, selectString, joinString, whereClause)
+	return this.findByResourceIds(taxonomyIds)
 }
 
-func (this *TaxonRepo) findByResourceIds(resourceIds []int64, selectString, joinString, whereClause string) ([]*models.Taxon, error) {
+func (this *TaxonRepo) findByResourceIds(resourceIds []int64) ([]*models.Taxon, error) {
 	taxons := []*models.Taxon{}
 
 	if len(resourceIds) == 0 {
@@ -75,9 +77,9 @@ func (this *TaxonRepo) findByResourceIds(resourceIds []int64, selectString, join
 
 	query := this.dbHandler.
 		Table("spree_taxons taxons").
-		Select(selectString+prettyNameSelectString).
-		Joins(joinString).
-		Where(whereClause, resourceIds).
+		Select(queryConfig["selectString"]+prettyNameSelectString).
+		Joins(queryConfig["joinString"]).
+		Where(queryConfig["queryString"], resourceIds).
 		Scan(&taxons)
 
 	return taxons, query.Error
