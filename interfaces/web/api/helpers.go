@@ -50,7 +50,7 @@ func getSpreeToken(c *gin.Context) string {
 
 func unauthorized(c *gin.Context, errMsg string) {
 	c.JSON(http.StatusUnauthorized, gin.H{"error": errMsg})
-	c.Abort(-1)
+	c.Abort()
 }
 
 func namespace() string {
