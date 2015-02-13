@@ -4,6 +4,7 @@ import (
 	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/jinzhu/copier"
 )
 
 type ClassificationInteractor struct {
@@ -47,24 +48,14 @@ func (this *ClassificationInteractor) taxonsToClassificationMap(taxonsSlice []*m
 }
 
 func (this *ClassificationInteractor) taxonToJsonClassification(taxon *models.Taxon) *json.Classification {
+	jsonTaxon := &json.Taxon{}
+	copier.Copy(jsonTaxon, taxon)
+
 	classificationJson := &json.Classification{
 		TaxonId:  taxon.Id,
 		Position: taxon.ClassificationPosition,
-		Taxon:    *this.taxonToJson(taxon),
+		Taxon:    *jsonTaxon,
 	}
 
 	return classificationJson
-}
-
-func (this *ClassificationInteractor) taxonToJson(taxon *models.Taxon) *json.Taxon {
-	taxonJson := &json.Taxon{
-		Id:         taxon.Id,
-		Name:       taxon.Name,
-		PrettyName: taxon.PrettyName,
-		Permalink:  taxon.Permalink,
-		ParentId:   taxon.ParentId,
-		TaxonomyId: taxon.TaxonomyId,
-	}
-
-	return taxonJson
 }
