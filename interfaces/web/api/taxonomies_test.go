@@ -28,4 +28,3 @@ func TestTaxonomiesIndex(t *testing.T) {
 		t.Errorf("Status code should be %d, but was %d", http.StatusOK, w.Code)
 	}
 }
-
