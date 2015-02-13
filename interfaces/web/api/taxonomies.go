@@ -11,12 +11,12 @@ import (
 func init() {
 	taxonomies := API().Group("/taxonomies")
 	{
-		taxonomies.GET("", taxonomiesIndex)
-		taxonomies.GET("/", taxonomiesIndex)
+		taxonomies.GET("", TaxonomiesIndex)
+		taxonomies.GET("/", TaxonomiesIndex)
 	}
 }
 
-func taxonomiesIndex(c *gin.Context) {
+func TaxonomiesIndex(c *gin.Context) {
 	params := NewRequestParameters(c)
 
 	if taxonomies, err := json.SpreeResponseFetcher.GetResponse(json.NewTaxonomyInteractor(), params); err != nil && err.Error() != "Record Not Found" {
