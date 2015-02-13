@@ -36,6 +36,7 @@ func findOrder(c *gin.Context) {
 			return
 		} else {
 			internalServerError(c, err.Error())
+			return
 		}
 
 		c.Set("Order", order)
