@@ -1,8 +1,6 @@
 package repositories
 
-import (
-	"github.com/crowdint/gopher-spree-api/domain/models"
-)
+import "github.com/crowdint/gopher-spree-api/domain/models"
 
 type TaxonRepo DbRepo
 
@@ -31,10 +29,35 @@ func (this *TaxonRepo) List() []*models.Taxon {
 }
 
 func (this *TaxonRepo) FindByProductIds(productIds []int64) ([]*models.Taxon, error) {
+	selectString := "taxons.*, " +
+		"spree_products_taxons.product_id, " +
+		"spree_products_taxons.position AS classification_position, "
 
+	joinString := "INNER JOIN spree_products_taxons " +
+		"ON taxons.id = spree_products_taxons.taxon_id "
+
+	whereClause := "spree_products_taxons.product_id IN (?)"
+
+	return this.findByResourceIds(productIds, selectString, joinString, whereClause)
+}
+
+func (this *TaxonRepo) FindByTaxonomyIds(taxonomyIds []int64) ([]*models.Taxon, error) {
+	selectString := "taxons.*, " +
+		"spree_taxonomies.id, " +
+		"spree_taxonomies.name AS taxonomy_name "
+
+	joinString := "INNER JOIN spree_products_taxons " +
+		"ON taxons.id = spree_products_taxons.taxon_id "
+
+	whereClause := "spree_taxonomies.id IN (?)"
+
+	return this.findByResourceIds(taxonomyIds, selectString, joinString, whereClause)
+}
+
+func (this *TaxonRepo) findByResourceIds(resourceIds []int64, selectString, joinString, whereClause string) ([]*models.Taxon, error) {
 	taxons := []*models.Taxon{}
 
-	if len(productIds) == 0 {
+	if len(resourceIds) == 0 {
 		return taxons, nil
 	}
 
@@ -50,19 +73,11 @@ func (this *TaxonRepo) FindByProductIds(productIds []int64) ([]*models.Taxon, er
 		") AS tree_path " +
 		") AS pretty_name "
 
-	selectString := "taxons.*, " +
-		"spree_products_taxons.product_id, " +
-		"spree_products_taxons.position AS classification_position, " +
-		prettyNameSelectString
-
-	productsTaxonsJoinString := "INNER JOIN spree_products_taxons " +
-		"ON taxons.id = spree_products_taxons.taxon_id "
-
 	query := this.dbHandler.
 		Table("spree_taxons taxons").
-		Select(selectString).
-		Joins(productsTaxonsJoinString).
-		Where("spree_products_taxons.product_id IN (?)", productIds).
+		Select(selectString+prettyNameSelectString).
+		Joins(joinString).
+		Where(whereClause, resourceIds).
 		Scan(&taxons)
 
 	return taxons, query.Error
