@@ -1,8 +1,6 @@
 package repositories
 
 import (
-	"errors"
-
 	"github.com/jinzhu/gorm"
 
 	"github.com/crowdint/gopher-spree-api/domain/models"
@@ -20,7 +18,7 @@ func (this *ProductRepo) FindById(id int64) (*models.Product, error) {
 	product := &models.Product{Id: id}
 
 	if id == 0 {
-		return product, errors.New("Record Not Found")
+		return product, gorm.RecordNotFound
 	}
 
 	query := this.dbHandler.Find(product)
