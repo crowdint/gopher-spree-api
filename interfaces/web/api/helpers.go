@@ -48,6 +48,11 @@ func getSpreeToken(c *gin.Context) string {
 	return c.Request.URL.Query().Get("token")
 }
 
+func internalServerError(c *gin.Context, errMsg string) {
+	c.JSON(500, gin.H{"error": errMsg})
+	c.Abort()
+}
+
 func namespace() string {
 	if ns == nil {
 		temp := configs.Get(configs.SPREE_NS)

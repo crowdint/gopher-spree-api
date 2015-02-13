@@ -31,9 +31,11 @@ func findOrder(c *gin.Context) {
 			"number": c.Params.ByName("order_number"),
 		})
 
-		if err != nil {
+		if err != nil && err.Error() == "Record Not Found" {
 			notFound(c)
 			return
+		} else {
+			internalServerError(c, err.Error())
 		}
 
 		c.Set("Order", order)
