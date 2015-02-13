@@ -1,8 +1,11 @@
 package repositories
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"errors"
+
 	"github.com/jinzhu/gorm"
+
+	"github.com/crowdint/gopher-spree-api/domain/models"
 )
 
 type ProductRepo DbRepo
@@ -14,11 +17,13 @@ func NewProductRepo() *ProductRepo {
 }
 
 func (this *ProductRepo) FindById(id int64) (*models.Product, error) {
-	product := &models.Product{
-		Id: id,
+	product := &models.Product{Id: id}
+
+	if id == 0 {
+		return product, errors.New("Record Not Found")
 	}
 
-	query := this.dbHandler.First(product)
+	query := this.dbHandler.Find(product)
 
 	return product, query.Error
 }

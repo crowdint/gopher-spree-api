@@ -35,7 +35,7 @@ func TestProductsShow(t *testing.T) {
 	method := "GET"
 	path := "/api/products/1"
 
-	r.GET("/api/products/:id", func(c *gin.Context) {
+	r.GET("/api/products/:product_id", func(c *gin.Context) {
 		ProductsShow(c)
 	})
 	w := PerformRequest(r, method, path)
