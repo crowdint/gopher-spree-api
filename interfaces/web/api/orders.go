@@ -89,5 +89,5 @@ func OrdersShow(c *gin.Context) {
 
 func notFound(c *gin.Context) {
 	c.JSON(404, gin.H{"error": "Record Not Found"})
-	c.Abort(-1)
+	c.Abort()
 }

@@ -29,7 +29,7 @@ func init() {
 func Proxy() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if shouldRedirectToOrigin(c) {
-			c.Abort(-1)
+			c.Abort()
 			proxy.ServeHTTP(c.Writer, c.Request)
 			return
 		}
