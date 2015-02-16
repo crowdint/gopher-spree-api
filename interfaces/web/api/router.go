@@ -48,9 +48,10 @@ func Router() *gin.Engine {
 
 func regexRoutesPattern() map[string]string {
 	return map[string]string{
-		`^` + namespace() + `/api/products(/?)$`: "products.index", // pattern -> action
-		`^` + namespace() + `/api/products/\d+$`: "products.show",
-		`^` + namespace() + `/api/orders(/?)$`:   "orders.index",
-		`^` + namespace() + `/api/orders/\w+$`:   "orders.show",
+		`^` + namespace() + `/api/products(/?)$`:   "products.index", // pattern -> action
+		`^` + namespace() + `/api/products/\d+$`:   "products.show",
+		`^` + namespace() + `/api/orders(/?)$`:     "orders.index",
+		`^` + namespace() + `/api/orders/\w+$`:     "orders.show",
+		`^` + namespace() + `/api/taxonomies(/?)$`: "taxonomies.index",
 	}
 }
