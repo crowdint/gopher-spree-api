@@ -30,13 +30,13 @@ func TestParameterParser(t *testing.T) {
 		t.Error("An error has ocurred:", err)
 	}
 
-	expected := "name = $1"
+	expected := "name "
 
 	if !strings.Contains(query, expected) {
 		t.Errorf("Mismatch, string: %s does not contain: %s", query, expected)
 	}
 
-	expected = "last_name = $1"
+	expected = "last_name "
 
 	if !strings.Contains(query, expected) {
 		t.Errorf("Mismatch, string: %s does not contain: %s", query, expected)
