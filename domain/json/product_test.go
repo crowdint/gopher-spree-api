@@ -12,7 +12,7 @@ func TestProductStructure(t *testing.T) {
 		`"taxon_ids":[1,10],"total_on_hand":10,"has_variants":true,"master":{"id":0,"name":"",` +
 		`"sku":"","price":"0","weight":"0","height":"0","width":"0","depth":"0","is_master":false,"slug":"",` +
 		`"description":"","track_inventory":false,"cost_price":"","display_price":"","options_text":"",` +
-		`"in_stock":false,"is_backorderable":false,"total_on_hand":0,"is_destroyed":false,` +
+		`"in_stock":false,"is_backorderable":false,"total_on_hand":null,"is_destroyed":false,` +
 		`"option_values":null,"images":null,"product_id":0},"variants":[],"option_types":[],` +
 		`"product_properties":[],"classifications":[]}`
 

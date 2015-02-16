@@ -86,7 +86,7 @@ func (this *VariantInteractor) toJson(variant *models.Variant) *json.Variant {
 		//OptionsText:
 		InStock:         variant.RealStockItemsCount > 0,
 		IsBackorderable: variant.Backorderable,
-		TotalOnHand:     variant.RealStockItemsCount,
+		TotalOnHand:     &variant.RealStockItemsCount,
 		IsDestroyed:     !variant.DeletedAt.IsZero(),
 		//OptionValues:
 		//Images:

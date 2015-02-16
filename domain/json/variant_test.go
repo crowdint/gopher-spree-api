@@ -9,6 +9,7 @@ func TestVariantStructure(t *testing.T) {
 		`"display_price":"$10.1","options_text":"opt 1","in_stock":true,"is_backorderable":false,` +
 		`"total_on_hand":90,"is_destroyed":false,"option_values":[],"images":[],"product_id":0}`
 
+	var totalOnHand int64 = 90
 	variant := Variant{
 		Id:              1,
 		Name:            "var1",
@@ -27,7 +28,7 @@ func TestVariantStructure(t *testing.T) {
 		OptionsText:     "opt 1",
 		InStock:         true,
 		IsBackorderable: false,
-		TotalOnHand:     90,
+		TotalOnHand:     &totalOnHand,
 		IsDestroyed:     false,
 		OptionValues:    []*OptionValue{},
 		Images:          []*Asset{},

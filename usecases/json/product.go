@@ -208,8 +208,9 @@ func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, varia
 				product.Variants = append(product.Variants, *variant)
 			}
 
-			totalOnHand += variant.TotalOnHand
-
+			if variant.TotalOnHand != nil {
+				totalOnHand += *variant.TotalOnHand
+			}
 		}
 
 		product.TotalOnHand = totalOnHand
