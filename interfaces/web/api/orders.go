@@ -38,9 +38,9 @@ func findOrder(c *gin.Context) {
 }
 
 func currentOrder(c *gin.Context) *models.Order {
-	rawOrder, err := c.Get("Order")
+	order, err := c.Get("Order")
 	if err == nil {
-		return rawOrder.(*models.Order)
+		return order.(*models.Order)
 	}
 	return nil
 }
