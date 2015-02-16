@@ -40,7 +40,7 @@ func (this *OrderInteractor) getPermissions(order *json.Order, user *models.User
 
 func (this *OrderInteractor) getLineItems(order *json.Order) *[]json.LineItem {
 	lineItems := &[]json.LineItem{}
-	this.Repository.Association(&order, lineItems, "OrderId")
+	this.Repository.Association(order, lineItems, "OrderId")
 	return lineItems
 }
 
