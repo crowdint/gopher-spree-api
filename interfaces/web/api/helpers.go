@@ -28,6 +28,14 @@ func currentUser(c *gin.Context) *models.User {
 	return user
 }
 
+func fail(c *gin.Context, err error) {
+	if err.Error() == "Record Not Found" {
+		notFound(c)
+	} else {
+		internalServerError(c, err.Error())
+	}
+}
+
 func getOrderToken(c *gin.Context) string {
 	orderToken := c.Request.Header.Get(SPREE_ORDER_TOKEN_HEADER)
 
