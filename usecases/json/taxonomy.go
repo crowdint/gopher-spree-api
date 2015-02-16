@@ -33,9 +33,13 @@ func NewTaxonomyInteractor() *TaxonomyInteractor {
 	}
 }
 
-func (this *TaxonomyInteractor) GetResponse(currentPage, perPage int, query string) (ContentResponse, error) {
+func (this *TaxonomyInteractor) GetResponse(currentPage, perPage int, params ResponseParameters) (ContentResponse, error) {
+	query, gparams, err := params.GetGransakParams()
+	if err != nil {
+		return TaxonomyResponse{}, err
+	}
 
-	taxonomyModelSlice, err := this.TaxonomyRepo.List(currentPage, perPage, query)
+	taxonomyModelSlice, err := this.TaxonomyRepo.List(currentPage, perPage, query, gparams)
 	if err != nil {
 		return TaxonomyResponse{}, err
 	}
@@ -50,7 +54,7 @@ func (this *TaxonomyInteractor) GetResponse(currentPage, perPage int, query stri
 	}, nil
 }
 
-func (this *TaxonomyInteractor) GetShowResponse(param interface{}) (interface{}, error) {
+func (this *TaxonomyInteractor) GetShowResponse(param ResponseParameters) (interface{}, error) {
 	return true, nil
 }
 
@@ -85,6 +89,10 @@ func (this *TaxonomyInteractor) modelsToJsonTaxonomiesSlice(taxonomySlice []*mod
 	return jsonTaxonomySlice
 }
 
-func (this *TaxonomyInteractor) GetTotalCount(query string) (int64, error) {
-	return this.TaxonomyRepo.CountAll(query)
+func (this *TaxonomyInteractor) GetTotalCount(param ResponseParameters) (int64, error) {
+	query, gparams, err := param.GetGransakParams()
+	if err != nil {
+		return 0, err
+	}
+	return this.TaxonomyRepo.CountAll(query, gparams)
 }

@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	. "github.com/crowdint/gransak/filter"
+	. "github.com/crowdint/gransak"
 )
 
 func TestTaxonomyRepo(t *testing.T) {
@@ -22,7 +22,7 @@ func TestTaxonomyRepo(t *testing.T) {
 
 	taxonomyRepo := NewTaxonomyRepo()
 
-	taxonomieslice, err := taxonomyRepo.List(1, 10, "")
+	taxonomieslice, err := taxonomyRepo.List(1, 10, "", []interface{}{})
 	if err != nil {
 		t.Error("dbHandler error:", err)
 	}
@@ -40,7 +40,7 @@ func TestTaxonomyRepo(t *testing.T) {
 		t.Error("Invalid type", t)
 	}
 
-	count, err := taxonomyRepo.CountAll("")
+	count, err := taxonomyRepo.CountAll("", []interface{}{})
 	if err != nil {
 		t.Error("dbHandler error:", err)
 	}
@@ -65,9 +65,9 @@ func TestTaxonomyRepo_WithGransakQuery(t *testing.T) {
 
 	taxonomyRepo := NewTaxonomyRepo()
 
-	whereStr := Gransak.ToSql("name_cont", "Categories")
+	whereStr, params := Gransak.ToSql("name_cont", "Categories")
 
-	taxonomieslice, err := taxonomyRepo.List(1, 10, whereStr)
+	taxonomieslice, err := taxonomyRepo.List(1, 10, whereStr, params)
 	if err != nil {
 		t.Error("dbHandler error:", err)
 	}
@@ -85,7 +85,7 @@ func TestTaxonomyRepo_WithGransakQuery(t *testing.T) {
 		t.Error("Invalid type", t)
 	}
 
-	count, err := taxonomyRepo.CountAll("")
+	count, err := taxonomyRepo.CountAll("", []interface{}{})
 	if err != nil {
 		t.Error("dbHandler error:", err)
 	}

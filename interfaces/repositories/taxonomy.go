@@ -13,7 +13,7 @@ func NewTaxonomyRepo() *TaxonomyRepo {
 	}
 }
 
-func (this *TaxonomyRepo) List(currentPage, perPage int, gransakQuery string) ([]*models.Taxonomy, error) {
+func (this *TaxonomyRepo) List(currentPage, perPage int, gransakQuery string, params []interface{}) ([]*models.Taxonomy, error) {
 	var taxonomies []*models.Taxonomy
 
 	offset := (currentPage - 1) * perPage
@@ -23,20 +23,20 @@ func (this *TaxonomyRepo) List(currentPage, perPage int, gransakQuery string) ([
 	if gransakQuery == "" {
 		query = this.dbHandler.Offset(offset).Limit(perPage).Order("created_at desc").Find(&taxonomies)
 	} else {
-		query = this.dbHandler.Where(gransakQuery).Offset(offset).Limit(perPage).Order("created_at desc").Find(&taxonomies)
+		query = this.dbHandler.Where(gransakQuery, params).Offset(offset).Limit(perPage).Order("created_at desc").Find(&taxonomies)
 	}
 
 	return taxonomies, query.Error
 }
 
-func (this *TaxonomyRepo) CountAll(queryFilter string) (int64, error) {
+func (this *TaxonomyRepo) CountAll(queryFilter string, params []interface{}) (int64, error) {
 	var count int64
 
 	var query *gorm.DB
 	if queryFilter == "" {
 		query = this.dbHandler.Model(models.Taxonomy{}).Count(&count)
 	} else {
-		query = this.dbHandler.Model(models.Taxonomy{}).Where(queryFilter).Count(&count)
+		query = this.dbHandler.Model(models.Taxonomy{}).Where(queryFilter, params).Count(&count)
 	}
 
 	return count, query.Error

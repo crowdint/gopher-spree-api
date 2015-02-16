@@ -1,19 +1,18 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
 	"testing"
-
-	rsp "github.com/crowdint/gopher-spree-api/usecases/json"
 
 	"github.com/gin-gonic/gin"
 )
 
 func TestParameterParser(t *testing.T) {
 	url := &url.URL{
-		RawQuery: "q[name_eq]=cone&q[last_name_eq]=Gutierrez",
+		RawQuery: "q[name_eq]=name&q[last_name_eq]=lastName",
 	}
 
 	request := &http.Request{
@@ -26,20 +25,33 @@ func TestParameterParser(t *testing.T) {
 
 	params := NewRequestParameters(context)
 
-	query, err := params.GetStrParam(rsp.GRANSAK_QUERY_PARAM)
+	query, gparams, err := params.GetGransakParams()
 	if err != nil {
 		t.Error("An error has ocurred:", err)
 	}
 
-	expected := "name = 'cone'"
+	expected := "name = $1"
 
 	if !strings.Contains(query, expected) {
 		t.Errorf("Mismatch, string: %s does not contain: %s", query, expected)
 	}
 
-	expected = "last_name = 'Gutierrez'"
+	expected = "last_name = $1"
 
 	if !strings.Contains(query, expected) {
 		t.Errorf("Mismatch, string: %s does not contain: %s", query, expected)
+	}
+
+	gparamsStr := fmt.Sprintf("%v", gparams)
+	expected = "name"
+
+	if !strings.Contains(gparamsStr, expected) {
+		t.Errorf("Mismatch, string: %s does not contain: %s", gparamsStr, expected)
+	}
+
+	expected = "lastName"
+
+	if !strings.Contains(gparamsStr, expected) {
+		t.Errorf("Mismatch, string: %s does not contain: %s", gparamsStr, expected)
 	}
 }

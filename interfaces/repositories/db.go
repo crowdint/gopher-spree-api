@@ -8,6 +8,7 @@ import (
 	_ "github.com/lib/pq"
 
 	"github.com/crowdint/gopher-spree-api/configs"
+	gsk "github.com/crowdint/gransak"
 )
 
 var Spree_db *gorm.DB
@@ -19,6 +20,11 @@ type DbRepo struct {
 func InitDB() error {
 	dbUrl := configs.Get(configs.DB_URL)
 	dbEngine := configs.Get(configs.DB_ENGINE)
+
+	if dbEngine == "postgres" {
+		//By default it uses MySQL
+		gsk.Gransak.SetEngine("postgresql")
+	}
 
 	if dbUrl == "" {
 		return errors.New(configs.DB_URL + " environment variable not found")

@@ -34,11 +34,16 @@ func (this *RequestParameters) GetIntParam(key string) (int, error) {
 }
 
 func (this *RequestParameters) GetStrParam(key string) (string, error) {
-	if key == rsp.GRANSAK_QUERY_PARAM {
-		return Gransak.FromRequest(this.context.Request), nil
+	param := this.context.Params.ByName(key)
+	if param == "" {
+		return this.context.Request.Form.Get(key), nil
 	}
+	return param, nil
+}
 
-	return this.context.Params.ByName(key), nil
+func (this *RequestParameters) GetGransakParams() (string, []interface{}, error) {
+	query, params := Gransak.FromRequest(this.context.Request)
+	return query, params, nil
 }
 
 func getInt(str string) (int, error) {
