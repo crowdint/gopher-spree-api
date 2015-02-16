@@ -1,13 +1,8 @@
 package api
 
 import (
-	"math"
-
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/copier"
 
-	"github.com/crowdint/gopher-spree-api/configs/spree"
-	djson "github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/crowdint/gopher-spree-api/usecases/json"
@@ -91,130 +86,11 @@ func OrdersIndex(c *gin.Context) {
 }
 
 func OrdersShow(c *gin.Context) {
-	order := getGinOrder(c)
-	orderJson := djson.Order{}
+	order, err := json.NewOrderInteractor().Show(currentOrder(c), currentUser(c))
 
-	isAdmin := currentUser(c).HasRole("admin")
-	r := repositories.NewDatabaseRepository()
-
-	// Order quantity
-	quantities, _ := r.SumLineItemsQuantityByOrderIds([]int64{order.Id})
-	order.Quantity = quantities[order.Id]
-
-	// Copy all db assigned fields from order to orderJson
-	copier.Copy(&orderJson, order)
-
-	// Build permissions hash
-	orderJson.Permissions = &djson.Permissions{CanUpdate: &isAdmin}
-
-	// Load bill address
-	orderJson.BillAddress = &djson.Address{}
-	r.Association(&orderJson, orderJson.BillAddress, "BillAddressId")
-	// Load bill address country
-	orderJson.BillAddress.Country = &djson.Country{}
-	r.Association(orderJson.BillAddress, orderJson.BillAddress.Country, "CountryId")
-	// Load bill address state
-	orderJson.BillAddress.State = &djson.State{}
-	r.Association(orderJson.BillAddress, orderJson.BillAddress.State, "StateId")
-	orderJson.BillAddress.StateName = orderJson.BillAddress.State.Name
-	orderJson.BillAddress.StateText = orderJson.BillAddress.State.Abbr
-
-	// Load ship address
-	orderJson.ShipAddress = &djson.Address{}
-	r.Association(&orderJson, orderJson.ShipAddress, "ShipAddressId")
-	// Load ship address country
-	orderJson.ShipAddress.Country = &djson.Country{}
-	r.Association(orderJson.ShipAddress, orderJson.ShipAddress.Country, "CountryId")
-
-	// Load bill address state
-	orderJson.ShipAddress.State = &djson.State{}
-	r.Association(orderJson.ShipAddress, orderJson.ShipAddress.State, "StateId")
-	orderJson.ShipAddress.StateName = orderJson.ShipAddress.State.Name
-	orderJson.ShipAddress.StateText = orderJson.ShipAddress.State.Abbr
-
-	// Load line items
-	orderJson.LineItems = &[]djson.LineItem{}
-	r.Association(&orderJson, orderJson.LineItems, "OrderId")
-
-	// Load line items variants
-	var variantIds []int64
-	var lineItems []*djson.LineItem
-	for i, lineItem := range *orderJson.LineItems {
-		variantIds = append(variantIds, lineItem.VariantId)
-		lineItems = append(lineItems, &(*orderJson.LineItems)[i])
-	}
-
-	var variants []djson.Variant
-	r.AllBy(&variants, nil, "id IN(?)", variantIds)
-
-	variantsMap := map[int64]*djson.Variant{}
-	var productIds []int64
-	for _, variant := range variants {
-		variantsMap[variant.Id] = &variant
-		productIds = append(productIds, variant.ProductId)
-	}
-
-	// Load line items variants products
-	var products []djson.Product
-	productsMap := map[int64]*djson.Product{}
-	r.AllBy(&products, nil, "id IN(?)", productIds)
-	for _, product := range products {
-		productsMap[product.Id] = &product
-	}
-
-	// Load line items variant prices
-	currency := spree.Get(spree.SPREE_CURRENCY)
-
-	var prices []models.Price
-	r.AllBy(&prices, repositories.Q{"currency": currency}, "variant_id IN(?)", variantIds)
-
-	pricesMap := map[int64]*models.Price{}
-	for _, price := range prices {
-		pricesMap[price.VariantId] = &price
-	}
-
-	var stockLocationIds []int64
-	var stockLocations []djson.StockLocation
-	r.All(&stockLocations, repositories.Q{"active": true})
-	for _, stockLocation := range stockLocations {
-		stockLocationIds = append(stockLocationIds, stockLocation.Id)
-	}
-
-	//stockItems
-	var stockItems []djson.StockItem
-	r.AllBy(&stockItems, nil, "variant_id IN(?) AND stock_location_id IN(?)", variantIds, stockLocationIds)
-
-	stockItemsMap := map[int64][]*djson.StockItem{}
-	for _, stockItem := range stockItems {
-		stockItemsMap[stockItem.VariantId] = append(stockItemsMap[stockItem.VariantId], &stockItem)
-	}
-
-	for _, lineItem := range lineItems {
-		v := variantsMap[lineItem.VariantId]
-		v.Name = productsMap[v.ProductId].Name
-		v.Description = productsMap[v.ProductId].Description
-		v.Slug = productsMap[v.ProductId].Slug
-		v.Price = pricesMap[v.Id].Amount
-		v.StockItems = stockItemsMap[v.Id]
-		CalculateInventory(v)
-
-		lineItem.Variant = v
-	}
-
-	c.JSON(200, orderJson)
-}
-
-func CalculateInventory(variant *djson.Variant) {
-	if variant.ShouldTrackInventory() {
-		for _, stockItem := range variant.StockItems {
-			variant.TotalOnHand = variant.TotalOnHand + stockItem.CountOnHand
-			if stockItem.Backorderable {
-				variant.IsBackorderable = true
-			}
-		}
+	if err == nil {
+		c.JSON(200, order)
 	} else {
-		variant.TotalOnHand = int64(math.Inf(0))
+		internalServerError(c, err.Error())
 	}
-
-	variant.InStock = variant.TotalOnHand > 0
 }

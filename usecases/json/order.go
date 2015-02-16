@@ -12,6 +12,49 @@ type OrderInteractor struct {
 	Repository *repositories.DbRepo
 }
 
+func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order, error) {
+	order := json.Order{}
+
+	// Copy from order model to order json
+	copier.Copy(&order, o)
+
+	// Permissions
+	updatePermission := u.HasRole("admin") || (*o.UserId == u.Id)
+	order.Permissions = &json.Permissions{CanUpdate: &updatePermission}
+
+	// Quantity
+	quantities, _ := this.Repository.SumLineItemsQuantityByOrderIds([]int64{order.Id})
+	order.Quantity = quantities[order.Id]
+
+	// Bill address
+	order.BillAddress = this.assignAddress(&order, "BillAddressId")
+
+	// Ship address
+	order.ShipAddress = this.assignAddress(&order, "ShipAddressId")
+
+	// Line items
+	order.LineItems = &[]json.LineItem{}
+	this.Repository.Association(&order, order.LineItems, "OrderId")
+
+	return &order, nil
+}
+
+func (this *OrderInteractor) assignAddress(order *json.Order, id string) *json.Address {
+	address := &json.Address{}
+
+	this.Repository.Association(order, address, id)
+
+	address.Country = &json.Country{}
+	this.Repository.Association(address, address.Country, "CountryId")
+
+	address.State = &json.State{}
+	this.Repository.Association(address, address.State, "StateId")
+	address.StateName = address.State.Name
+	address.StateText = address.State.Abbr
+
+	return address
+}
+
 func (this *OrderInteractor) GetShowResponse(params ResponseParameters) (interface{}, error) {
 	return nil, nil
 }
