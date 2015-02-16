@@ -23,7 +23,7 @@ func init() {
 }
 
 func findOrder(c *gin.Context) {
-	order := getGinOrder(c)
+	order := currentOrder(c)
 
 	if order == nil {
 		order = &models.Order{}
@@ -45,7 +45,7 @@ func findOrder(c *gin.Context) {
 	c.Next()
 }
 
-func getGinOrder(c *gin.Context) *models.Order {
+func currentOrder(c *gin.Context) *models.Order {
 	rawOrder, err := c.Get("Order")
 	if err == nil {
 		return rawOrder.(*models.Order)
@@ -70,7 +70,7 @@ func authorizeOrder(c *gin.Context) {
 		return
 	}
 
-	order := getGinOrder(c)
+	order := currentOrder(c)
 	if order != nil && (*order.UserId == user.Id || order.GuestToken == getOrderToken(c)) {
 		c.Next()
 	} else {

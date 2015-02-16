@@ -104,7 +104,7 @@ func TestGetGinOrderWhenOrderIsInContext(t *testing.T) {
 
 	ctx := &gin.Context{Request: req}
 	ctx.Set("Order", &models.Order{})
-	order := getGinOrder(ctx)
+	order := currentOrder(ctx)
 
 	if order == nil {
 		t.Error("Order should not be nil, but it was")
@@ -118,7 +118,7 @@ func TestGinOrderWhenOrderIsNotInContext(t *testing.T) {
 	}
 
 	ctx := &gin.Context{Request: req}
-	order := getGinOrder(ctx)
+	order := currentOrder(ctx)
 
 	if order != nil {
 		t.Errorf("Order should be nil, but it was %v", order)
