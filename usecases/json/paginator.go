@@ -14,12 +14,14 @@ type Paginator struct {
 	PerPage           int
 	Pages             int
 	ContentInteractor ContentInteractor
-	filterQuery       string
+	responseParams    ResponseParameters
 }
 
-func (this *Paginator) CalculatePaginationData(contentInteractor ContentInteractor, currentPage, perPage int, filterQuery string) error {
+func (this *Paginator) CalculatePaginationData(contentInteractor ContentInteractor, currentPage, perPage int, params ResponseParameters) error {
 	this.ContentInteractor = contentInteractor
-	this.filterQuery = filterQuery
+
+	this.responseParams = params
+
 	this.calculateCurrentPage(currentPage)
 
 	calculatedPerPage, err := this.calculatePerPage(perPage)
@@ -75,7 +77,7 @@ func (this *Paginator) getPerPageDefault(def int) (int, error) {
 }
 
 func (this *Paginator) calculateTotalCount() (int, error) {
-	totalCount, err := this.ContentInteractor.GetTotalCount(this.filterQuery)
+	totalCount, err := this.ContentInteractor.GetTotalCount(this.responseParams)
 	if err != nil {
 		return 0, this.getError(err)
 	}

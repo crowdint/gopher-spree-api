@@ -36,7 +36,7 @@ func TestProductRepo(t *testing.T) {
 		t.Error("dbHandler error:", err)
 	}
 
-	productSlice, err := productRepo.List(1, 10, "")
+	productSlice, err := productRepo.List(1, 10, "", []interface{}{})
 	if err != nil {
 		t.Error("dbHandler error:", err)
 	}
@@ -54,7 +54,7 @@ func TestProductRepo(t *testing.T) {
 		t.Error("Invalid type", t)
 	}
 
-	count, err := productRepo.CountAll("")
+	count, err := productRepo.CountAll("", []interface{}{})
 	if err != nil {
 		t.Error("dbHandler error:", err)
 	}
@@ -79,9 +79,9 @@ func TestProductRepo_WithGransakQuery(t *testing.T) {
 
 	productRepo := NewProductRepo()
 
-	whereStr := Gransak.ToSql("name_cont", "Ruby")
+	whereStr, params := Gransak.ToSql("name_cont", "Ruby")
 
-	productSlice, err := productRepo.List(1, 10, whereStr)
+	productSlice, err := productRepo.List(1, 10, whereStr, params)
 	if err != nil {
 		t.Error("dbHandler error:", err)
 	}
@@ -99,7 +99,7 @@ func TestProductRepo_WithGransakQuery(t *testing.T) {
 		t.Error("Invalid type", t)
 	}
 
-	count, err := productRepo.CountAll("")
+	count, err := productRepo.CountAll("", []interface{}{})
 	if err != nil {
 		t.Error("dbHandler error:", err)
 	}

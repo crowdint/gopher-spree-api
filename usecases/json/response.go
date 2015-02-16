@@ -29,11 +29,12 @@ func init() {
 type ResponseParameters interface {
 	GetIntParam(string) (int, error)
 	GetStrParam(string) (string, error)
+	GetGransakParams() (string, []interface{}, error)
 }
 
 type ContentInteractor interface {
-	GetTotalCount(string) (int64, error)
-	GetResponse(int, int, string) (ContentResponse, error)
+	GetTotalCount(ResponseParameters) (int64, error)
+	GetResponse(int, int, ResponseParameters) (ContentResponse, error)
 	GetShowResponse(ResponseParameters) (interface{}, error)
 }
 
@@ -60,17 +61,12 @@ func (this *ResponseInteractor) GetResponse(contentInteractor ContentInteractor,
 		return nil, err
 	}
 
-	query, err := params.GetStrParam(GRANSAK_QUERY_PARAM)
+	err = responsePaginator.CalculatePaginationData(this.ContentInteractor, currentPage, perPage, params)
 	if err != nil {
 		return nil, err
 	}
 
-	err = responsePaginator.CalculatePaginationData(this.ContentInteractor, currentPage, perPage, query)
-	if err != nil {
-		return nil, err
-	}
-
-	content, err := this.getContent(responsePaginator, query)
+	content, err := this.getContent(responsePaginator, params)
 	if err != nil {
 		return nil, err
 	}
@@ -84,11 +80,11 @@ func (this *ResponseInteractor) GetShowResponse(contentInteractor ContentInterac
 	return contentInteractor.GetShowResponse(params)
 }
 
-func (this *ResponseInteractor) getContent(paginator *Paginator, query string) (ContentResponse, error) {
+func (this *ResponseInteractor) getContent(paginator *Paginator, params ResponseParameters) (ContentResponse, error) {
 	content, err := this.ContentInteractor.GetResponse(
 		paginator.CurrentPage,
 		paginator.PerPage,
-		query,
+		params,
 	)
 	if err != nil {
 		return nil, err

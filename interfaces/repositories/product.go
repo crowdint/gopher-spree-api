@@ -26,7 +26,7 @@ func (this *ProductRepo) FindById(id int64) (*models.Product, error) {
 	return product, query.Error
 }
 
-func (this *ProductRepo) List(currentPage, perPage int, gransakQuery string) ([]*models.Product, error) {
+func (this *ProductRepo) List(currentPage, perPage int, gransakQuery string, params []interface{}) ([]*models.Product, error) {
 	var products []*models.Product
 
 	offset := (currentPage - 1) * perPage
@@ -36,20 +36,20 @@ func (this *ProductRepo) List(currentPage, perPage int, gransakQuery string) ([]
 	if gransakQuery == "" {
 		query = this.dbHandler.Offset(offset).Limit(perPage).Order("created_at desc").Find(&products)
 	} else {
-		query = this.dbHandler.Where(gransakQuery).Offset(offset).Limit(perPage).Order("created_at desc").Find(&products)
+		query = this.dbHandler.Where(gransakQuery, params).Offset(offset).Limit(perPage).Order("created_at desc").Find(&products)
 	}
 
 	return products, query.Error
 }
 
-func (this *ProductRepo) CountAll(queryFilter string) (int64, error) {
+func (this *ProductRepo) CountAll(queryFilter string, params []interface{}) (int64, error) {
 	var count int64
 
 	var query *gorm.DB
 	if queryFilter == "" {
 		query = this.dbHandler.Model(models.Product{}).Count(&count)
 	} else {
-		query = this.dbHandler.Model(models.Product{}).Where(queryFilter).Count(&count)
+		query = this.dbHandler.Model(models.Product{}).Where(queryFilter, params).Count(&count)
 	}
 
 	return count, query.Error

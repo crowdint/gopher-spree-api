@@ -20,6 +20,10 @@ func (this *DummyResponseParams) GetStrParam(key string) (string, error) {
 	return "", nil
 }
 
+func (this *DummyResponseParams) GetGransakParams() (string, []interface{}, error) {
+	return "", []interface{}{}, nil
+}
+
 func newDummyResponseParams(currentPage, perPage int, gransakQuery string) *DummyResponseParams {
 	return &DummyResponseParams{
 		currentPage:  currentPage,
