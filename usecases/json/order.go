@@ -18,28 +18,33 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 	// Copy from order model to order json
 	copier.Copy(&order, o)
 
-	// Permissions
-	updatePermission := u.HasRole("admin") || (*o.UserId == u.Id)
-	order.Permissions = &json.Permissions{CanUpdate: &updatePermission}
-
-	// Quantity
-	quantities, _ := this.Repository.SumLineItemsQuantityByOrderIds([]int64{order.Id})
-	order.Quantity = quantities[order.Id]
-
-	// Bill address
-	order.BillAddress = this.assignAddress(&order, "BillAddressId")
-
-	// Ship address
-	order.ShipAddress = this.assignAddress(&order, "ShipAddressId")
-
-	// Line items
-	order.LineItems = &[]json.LineItem{}
-	this.Repository.Association(&order, order.LineItems, "OrderId")
+	order.Permissions = this.getPermissions(&order, u)
+	order.Quantity = this.getQuantity(&order)
+	order.BillAddress = this.getAddress(&order, "BillAddressId")
+	order.ShipAddress = this.getAddress(&order, "ShipAddressId")
+	order.LineItems = this.getLineItems(&order)
 
 	return &order, nil
 }
 
-func (this *OrderInteractor) assignAddress(order *json.Order, id string) *json.Address {
+func (this *OrderInteractor) getQuantity(order *json.Order) int64 {
+	quantities, _ := this.Repository.SumLineItemsQuantityByOrderIds([]int64{order.Id})
+	return quantities[order.Id]
+}
+
+func (this *OrderInteractor) getPermissions(order *json.Order, user *models.User) *json.Permissions {
+	updatePermission := user.HasRole("admin") || (*order.UserId == user.Id)
+	permissions := &json.Permissions{CanUpdate: &updatePermission}
+	return permissions
+}
+
+func (this *OrderInteractor) getLineItems(order *json.Order) *[]json.LineItem {
+	lineItems := &[]json.LineItem{}
+	this.Repository.Association(&order, lineItems, "OrderId")
+	return lineItems
+}
+
+func (this *OrderInteractor) getAddress(order *json.Order, id string) *json.Address {
 	address := &json.Address{}
 
 	this.Repository.Association(order, address, id)
