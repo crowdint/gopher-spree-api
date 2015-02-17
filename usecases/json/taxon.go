@@ -47,6 +47,8 @@ func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params Respon
 
 	taxonJsonSlice := this.modelsToJsonTaxonsSlice(taxonModelSlice)
 
+	toTaxonTree(taxonJsonSlice)
+
 	return TaxonResponse{
 		data: taxonJsonSlice,
 	}, nil
@@ -56,9 +58,11 @@ func (this *TaxonInteractor) modelsToJsonTaxonsSlice(taxonSlice []*models.Taxon)
 	jsonTaxonsSlice := []*json.Taxon{}
 
 	for _, taxon := range taxonSlice {
-		taxonJson := &json.Taxon{}
-		copier.Copy(taxonJson, taxon)
+		taxonJson := &json.Taxon{
+			Taxons: []*json.Taxon{},
+		}
 
+		copier.Copy(taxonJson, taxon)
 		jsonTaxonsSlice = append(jsonTaxonsSlice, taxonJson)
 	}
 
