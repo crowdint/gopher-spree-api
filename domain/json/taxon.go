@@ -7,5 +7,8 @@ type Taxon struct {
 	Permalink  string  `json:"permalink"`
 	ParentId   int64   `json:"parent_id"`
 	TaxonomyId int64   `json:"taxonomy_id"`
+	Lft        int64   `json:"-"`
+	Rgt        int64   `json:"-"`
+	Depth      int64   `json:"-"`
 	Taxons     []Taxon `json:"taxons"`
 }
