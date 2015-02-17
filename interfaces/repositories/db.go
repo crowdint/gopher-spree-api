@@ -95,10 +95,10 @@ func (this *DbRepo) All(collection interface{}, attrs map[string]interface{}) er
 }
 
 func (this *DbRepo) AllBy(collection interface{}, attrs map[string]interface{}, query string, values ...interface{}) error {
-	limit, offset, query := extractOptions(attrs)
+	limit, offset, _ := extractOptions(attrs)
 
 	if limit == 0 {
-		return this.dbHandler.Where(attrs).Where(query, values).Find(collection).Error
+		return this.dbHandler.Where(attrs).Where(query, values...).Find(collection).Error
 	}
 
 	return this.dbHandler.Offset(offset).Limit(limit).Where(attrs).Where(query, values...).Find(collection).Error

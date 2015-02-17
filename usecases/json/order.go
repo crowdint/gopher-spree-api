@@ -47,7 +47,7 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 	pricesMap := ToMap(prices, "VariantId", false)
 	stockItemsMap := ToMap(stockItems, "VariantId", true)
 
-	for _, lineItem := range *order.LineItems {
+	for i, lineItem := range *order.LineItems {
 		variant := variantsMap[lineItem.VariantId].(json.Variant)
 		product := productsMap[variant.Id].(json.Product)
 		price := pricesMap[variant.Id].(models.Price)
@@ -63,6 +63,7 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 		}
 
 		variant.SetInventoryValues()
+		(*order.LineItems)[i].Variant = &variant
 	}
 
 	return &order, nil
