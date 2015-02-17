@@ -146,7 +146,7 @@ func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, er
 		return 0, err
 	}
 
-	return this.Repository.Count(&models.Order{}, query, gparams)
+	return this.Repository.Count(models.Order{}, query, gparams)
 }
 
 func NewOrderInteractor() *OrderInteractor {

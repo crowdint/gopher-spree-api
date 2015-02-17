@@ -109,7 +109,7 @@ func (this *DbRepo) Association(model interface{}, association interface{}, attr
 }
 
 func (this *DbRepo) Count(model interface{}, query string, params []interface{}) (count int64, err error) {
-	err = this.dbHandler.Model(&model).Where(query, params).Count(&count).Error
+	err = this.dbHandler.Model(model).Where(query, params).Count(&count).Error
 	return
 }
 
