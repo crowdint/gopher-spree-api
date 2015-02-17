@@ -105,15 +105,20 @@ func (this *OrderInteractor) GetShowResponse(params ResponseParameters) (interfa
 	return nil, nil
 }
 
-func (this *OrderInteractor) GetResponse(currentPage, perPage int, query string) (ContentResponse, error) {
+func (this *OrderInteractor) GetResponse(currentPage, perPage int, params ResponseParameters) (ContentResponse, error) {
 	orders := []models.Order{}
 	ordersJson := []json.Order{}
 
-	err := this.Repository.All(&orders, repositories.Q{
+	query, gparams, err := params.GetGransakParams()
+
+	if err != nil {
+		return &OrderResponse{}, err
+	}
+
+	err = this.Repository.AllBy(&orders, repositories.Q{
 		"current_page": currentPage,
 		"per_page":     perPage,
-		"q":            query,
-	})
+	}, query, gparams)
 
 	if err != nil {
 		return &OrderResponse{}, err
@@ -134,8 +139,14 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, query string)
 	return &OrderResponse{data: &ordersJson}, nil
 }
 
-func (this *OrderInteractor) GetTotalCount(query string) (int64, error) {
-	return this.Repository.Count(&models.Order{})
+func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, error) {
+	query, gparams, err := params.GetGransakParams()
+
+	if err != nil {
+		return 0, err
+	}
+
+	return this.Repository.Count(&models.Order{}, query, gparams)
 }
 
 func NewOrderInteractor() *OrderInteractor {

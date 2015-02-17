@@ -95,15 +95,21 @@ func (this *DbRepo) All(collection interface{}, attrs map[string]interface{}) er
 }
 
 func (this *DbRepo) AllBy(collection interface{}, attrs map[string]interface{}, query string, values ...interface{}) error {
-	return this.dbHandler.Where(attrs).Where(query, values...).Find(collection).Error
+	limit, offset, query := extractOptions(attrs)
+
+	if limit == 0 {
+		return this.dbHandler.Where(attrs).Where(query, values).Find(collection).Error
+	}
+
+	return this.dbHandler.Offset(offset).Limit(limit).Where(attrs).Where(query, values...).Find(collection).Error
 }
 
 func (this *DbRepo) Association(model interface{}, association interface{}, attribute string) {
 	this.dbHandler.Model(model).Related(association, attribute)
 }
 
-func (this *DbRepo) Count(model interface{}) (count int64, err error) {
-	err = this.dbHandler.Model(model).Count(&count).Error
+func (this *DbRepo) Count(model interface{}, query string, params []interface{}) (count int64, err error) {
+	err = this.dbHandler.Model(&model).Where(query, params).Count(&count).Error
 	return
 }
 
