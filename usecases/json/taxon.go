@@ -72,3 +72,11 @@ func (this *TaxonInteractor) GetTotalCount(params ResponseParameters) (int64, er
 	}
 	return this.TaxonRepo.CountAll(query, gparams)
 }
+
+func (this *TaxonInteractor) GetShowResponse(params ResponseParameters) (interface{}, error) {
+	taxonModelSlice := []*models.Taxon{}
+
+	//DUMMY UNTIL TAXON SHOW IS IMPLEMENTED
+
+	return taxonModelSlice[0], nil
+}
