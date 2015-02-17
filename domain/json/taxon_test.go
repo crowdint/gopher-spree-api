@@ -14,8 +14,8 @@ func TestTaxonStructure(t *testing.T) {
 		Permalink:  "http://someurl.com",
 		ParentId:   1,
 		TaxonomyId: 10,
-		Taxons: []Taxon{
-			{
+		Taxons: []*Taxon{
+			&Taxon{
 				Id:         2,
 				Name:       "taxon2",
 				PrettyName: "a name",
