@@ -16,8 +16,6 @@ type OrderInteractor struct {
 
 func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order, error) {
 	order := json.Order{}
-
-	// Copy from order model to order json
 	copier.Copy(&order, o)
 
 	order.Permissions = this.getPermissions(&order, u)
@@ -43,6 +41,29 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 
 	var stockItems []json.StockItem
 	this.Repository.AllBy(&stockItems, nil, "variant_id IN(?) AND stock_location_id IN(?)", variantIds, stockLocationIds)
+
+	variantsMap := ToMap(variants, "Id", false)
+	productsMap := ToMap(products, "Id", false)
+	pricesMap := ToMap(prices, "VariantId", false)
+	stockItemsMap := ToMap(stockItems, "VariantId", true)
+
+	for _, lineItem := range *order.LineItems {
+		variant := variantsMap[lineItem.VariantId].(json.Variant)
+		product := productsMap[variant.Id].(json.Product)
+		price := pricesMap[variant.Id].(models.Price)
+
+		variant.Name = product.Name
+		variant.Description = product.Description
+		variant.Slug = product.Slug
+		variant.Price = price.Amount
+
+		for _, stockItem := range stockItemsMap[variant.Id].([]interface{}) {
+			si := stockItem.(json.StockItem)
+			variant.StockItems = append(variant.StockItems, &si)
+		}
+
+		variant.SetInventoryValues()
+	}
 
 	return &order, nil
 }
