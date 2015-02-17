@@ -42,6 +42,30 @@ func (this *Variant) ShouldTrackInventory() bool {
 	return this.TrackInventory && spree.IsInventoryTrackingEnabled()
 }
 
+func (this *Variant) SetInventoryValues() {
+	if this.ShouldTrackInventory() {
+		for _, stockItem := range this.StockItems {
+			var totalOnHand int64
+
+			if this.TotalOnHand != nil {
+				totalOnHand = (*this.TotalOnHand + stockItem.CountOnHand)
+			} else {
+				totalOnHand = stockItem.CountOnHand
+			}
+
+			this.TotalOnHand = &totalOnHand
+
+			if stockItem.Backorderable {
+				this.IsBackorderable = true
+			}
+		}
+		this.InStock = *this.TotalOnHand > 0
+	} else {
+		this.IsBackorderable = true
+		this.InStock = true
+	}
+}
+
 func (this Variant) TableName() string {
 	return "spree_variants"
 }
