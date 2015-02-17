@@ -117,8 +117,8 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, params Respon
 	}
 
 	err = this.Repository.AllBy(&orders, repositories.Q{
-		"current_page": currentPage,
-		"per_page":     perPage,
+		"limit":  perPage,
+		"offset": currentPage,
 	}, query, gparams)
 
 	if err != nil {

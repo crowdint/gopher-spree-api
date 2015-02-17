@@ -27,7 +27,7 @@ func TestAll(t *testing.T) {
 
 	p := &[]models.Product{}
 
-	err := r.All(p, Q{"per_page": 10, "current_page": 1})
+	err := r.All(p, Q{"limit": 10, "offset": 1})
 
 	if err != nil {
 		t.Errorf("DB.All %s", err)
@@ -45,7 +45,7 @@ func TestAllWithConditions(t *testing.T) {
 
 	p := &[]models.Product{}
 
-	err := r.All(p, Q{"id": 1, "per_page": 10, "current_page": 1})
+	err := r.All(p, Q{"id": 1, "limit": 10, "offset": 1})
 
 	if err != nil {
 		t.Errorf("DB.All %s", err)
