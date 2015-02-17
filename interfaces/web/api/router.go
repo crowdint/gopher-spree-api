@@ -53,5 +53,6 @@ func regexRoutesPattern() map[string]string {
 		`^` + namespace() + `/api/orders(/?)$`:     "orders.index",
 		`^` + namespace() + `/api/orders/\w+$`:     "orders.show",
 		`^` + namespace() + `/api/taxonomies(/?)$`: "taxonomies.index",
+		`^` + namespace() + `/api/taxons(/?)$`:     "taxons.index",
 	}
 }
