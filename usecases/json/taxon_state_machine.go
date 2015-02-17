@@ -11,13 +11,12 @@ const (
 	RIGHT = "right"
 )
 
-var root *json.Taxon
-
-var current *json.Taxon
-
-var childTaxons = map[int64][]*json.Taxon{}
-
-var toEvaluate = []*json.Taxon{}
+var (
+	root        *json.Taxon
+	current     *json.Taxon
+	childTaxons = map[int64][]*json.Taxon{}
+	toEvaluate  = []*json.Taxon{}
+)
 
 type StateFunc func() StateFunc
 

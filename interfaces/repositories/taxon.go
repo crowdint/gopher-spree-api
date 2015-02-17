@@ -1,8 +1,9 @@
 package repositories
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/jinzhu/gorm"
+
+	"github.com/crowdint/gopher-spree-api/domain/models"
 )
 
 type TaxonRepo DbRepo
