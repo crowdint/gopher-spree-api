@@ -1,6 +1,9 @@
 package repositories
 
-import "github.com/crowdint/gopher-spree-api/domain/models"
+import (
+	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/jinzhu/gorm"
+)
 
 type TaxonRepo DbRepo
 
@@ -22,12 +25,20 @@ func (this *TaxonRepo) FindById(id int64) *models.Taxon {
 	return taxon
 }
 
-func (this *TaxonRepo) List() []*models.Taxon {
+func (this *TaxonRepo) List(currentPage, perPage int, gransakQuery string, params []interface{}) ([]*models.Taxon, error) {
 	var taxons []*models.Taxon
 
-	this.dbHandler.Find(&taxons)
+	offset := (currentPage - 1) * perPage
 
-	return taxons
+	var query *gorm.DB
+
+	if gransakQuery == "" {
+		query = this.dbHandler.Offset(offset).Limit(perPage).Order("created_at desc").Find(&taxons)
+	} else {
+		query = this.dbHandler.Where(gransakQuery, params).Offset(offset).Limit(perPage).Order("created_at desc").Find(&taxons)
+	}
+
+	return taxons, query.Error
 }
 
 func (this *TaxonRepo) FindByProductIds(productIds []int64) ([]*models.Taxon, error) {
@@ -83,4 +94,17 @@ func (this *TaxonRepo) findByResourceIds(resourceIds []int64) ([]*models.Taxon, 
 		Scan(&taxons)
 
 	return taxons, query.Error
+}
+
+func (this *TaxonRepo) CountAll(queryFilter string, params []interface{}) (int64, error) {
+	var count int64
+
+	var query *gorm.DB
+	if queryFilter == "" {
+		query = this.dbHandler.Model(models.Taxon{}).Count(&count)
+	} else {
+		query = this.dbHandler.Model(models.Taxon{}).Where(queryFilter, params).Count(&count)
+	}
+
+	return count, query.Error
 }
