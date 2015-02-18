@@ -26,21 +26,21 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 
 	variantIds := Collect(*order.LineItems, "VariantId")
 	var variants []json.Variant
-	this.Repository.AllBy(&variants, nil, "id IN(?)", variantIds)
+	this.Repository.All(&variants, nil, "id IN(?)", variantIds)
 
 	productIds := Collect(variants, "ProductId")
 	var products []json.Product
-	this.Repository.AllBy(&products, nil, "id IN(?)", productIds)
+	this.Repository.All(&products, nil, "id IN(?)", productIds)
 
 	var prices []models.Price
-	this.Repository.AllBy(&prices, repositories.Q{"currency": spree.Get(spree.SPREE_CURRENCY)}, "variant_id IN(?)", variantIds)
+	this.Repository.All(&prices, nil, "currency = ? AND variant_id IN(?)", spree.Get(spree.SPREE_CURRENCY), variantIds)
 
 	var stockLocations []json.StockLocation
-	this.Repository.All(&stockLocations, repositories.Q{"active": true})
+	this.Repository.All(&stockLocations, nil, map[string]interface{}{"active": true})
 	stockLocationIds := Collect(stockLocations, "Id")
 
 	var stockItems []json.StockItem
-	this.Repository.AllBy(&stockItems, nil, "variant_id IN(?) AND stock_location_id IN(?)", variantIds, stockLocationIds)
+	this.Repository.All(&stockItems, nil, "variant_id IN(?) AND stock_location_id IN(?)", variantIds, stockLocationIds)
 
 	variantsMap := ToMap(variants, "Id", false)
 	productsMap := ToMap(products, "Id", false)
@@ -116,10 +116,7 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, params Respon
 		return &OrderResponse{}, err
 	}
 
-	err = this.Repository.AllBy(&orders, repositories.Q{
-		"limit":  perPage,
-		"offset": currentPage,
-	}, query, gparams)
+	err = this.Repository.All(&orders, map[string]interface{}{"limit": perPage, "offset": currentPage}, query, gparams)
 
 	if err != nil {
 		return &OrderResponse{}, err

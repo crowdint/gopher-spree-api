@@ -27,7 +27,7 @@ func TestAll(t *testing.T) {
 
 	p := &[]models.Product{}
 
-	err := r.All(p, Q{"limit": 10, "offset": 1})
+	err := r.All(p, map[string]interface{}{"limit": 10, "offset": 1}, nil)
 
 	if err != nil {
 		t.Errorf("DB.All %s", err)
@@ -45,13 +45,13 @@ func TestAllWithConditions(t *testing.T) {
 
 	p := &[]models.Product{}
 
-	err := r.All(p, Q{"id": 1, "limit": 10, "offset": 1})
+	err := r.All(p, map[string]interface{}{"limit": 10, "offset": 1}, map[string]interface{}{"id": 1})
 
 	if err != nil {
 		t.Errorf("DB.All %s", err)
 	}
 
-	if len(*p) != 1 {
+	if len(*p) > 1 {
 		t.Errorf("DB.All should not have found more than one result")
 	}
 }
@@ -77,7 +77,7 @@ func TestFindByWithConditions(t *testing.T) {
 
 	p := &models.Product{}
 
-	err := r.FindBy(p, Q{"id": 1})
+	err := r.FindBy(p, map[string]interface{}{"id": 1})
 
 	if err != nil {
 		t.Errorf("DB.All %s", err)

@@ -79,24 +79,14 @@ func getIntegerOrDefault(value string, def int) int {
 	return number
 }
 
-func (this *DbRepo) All(collection interface{}, attrs map[string]interface{}) error {
-	limit, offset := extractPaginationValues(attrs)
+func (this *DbRepo) All(collection interface{}, options map[string]interface{}, query interface{}, values ...interface{}) error {
+	limit, offset := extractPaginationValues(options)
 
 	if limit == 0 {
-		return this.dbHandler.Find(collection, attrs).Error
+		return this.dbHandler.Where(query, values...).Find(collection).Error
 	}
 
-	return this.dbHandler.Offset(offset).Limit(limit).Find(collection, attrs).Error
-}
-
-func (this *DbRepo) AllBy(collection interface{}, attrs map[string]interface{}, query string, values ...interface{}) error {
-	limit, offset := extractPaginationValues(attrs)
-
-	if limit == 0 {
-		return this.dbHandler.Where(attrs).Where(query, values...).Find(collection).Error
-	}
-
-	return this.dbHandler.Offset(offset).Limit(limit).Where(attrs).Where(query, values...).Find(collection).Error
+	return this.dbHandler.Offset(offset).Limit(limit).Where(query, values...).Find(collection).Error
 }
 
 func (this *DbRepo) Association(model interface{}, association interface{}, attribute string) {
