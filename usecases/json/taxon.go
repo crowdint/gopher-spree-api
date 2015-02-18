@@ -89,6 +89,7 @@ func (this *TaxonInteractor) toTaxonTree(nodes []*json.Taxon) {
 	for _, node := range nodes {
 		for _, childNode := range nodes {
 			if node.Lft < childNode.Rgt && node.Rgt > childNode.Rgt && (node.Depth+1) == childNode.Depth {
+				childNode.PrettyName = node.PrettyName + " -> " + childNode.PrettyName
 				node.Taxons = append(node.Taxons, childNode)
 			}
 		}
