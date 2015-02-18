@@ -60,12 +60,17 @@ func NewDatabaseRepository() *DbRepo {
 	return &DbRepo{Spree_db}
 }
 
-func extractPaginationValues(attrs map[string]interface{}) (limit, offset int) {
+func extractPaginationValues(attrs map[string]interface{}) (limit, offset int, orderBy string) {
 	if attrs["limit"] != nil && attrs["offset"] != nil {
 		limit = attrs["limit"].(int)
 		delete(attrs, "limit")
 		offset = (attrs["offset"].(int) - 1) * limit
 		delete(attrs, "offset")
+	}
+
+	if attrs["order"] != nil {
+		orderBy = attrs["order"].(string)
+		delete(attrs, "order")
 	}
 
 	return
@@ -80,13 +85,18 @@ func getIntegerOrDefault(value string, def int) int {
 }
 
 func (this *DbRepo) All(collection interface{}, options map[string]interface{}, query interface{}, values ...interface{}) error {
-	limit, offset := extractPaginationValues(options)
+	limit, offset, orderBy := extractPaginationValues(options)
+	dbHandler := this.dbHandler
 
-	if limit == 0 {
-		return this.dbHandler.Where(query, values...).Find(collection).Error
+	if limit > 0 {
+		dbHandler = dbHandler.Limit(limit).Offset(offset)
 	}
 
-	return this.dbHandler.Offset(offset).Limit(limit).Where(query, values...).Find(collection).Error
+	if orderBy != "" {
+		dbHandler = dbHandler.Order(orderBy)
+	}
+
+	return dbHandler.Where(query, values...).Find(collection).Error
 }
 
 func (this *DbRepo) Association(model interface{}, association interface{}, attribute string) {
