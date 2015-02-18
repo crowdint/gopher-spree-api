@@ -8,19 +8,19 @@ import (
 )
 
 const (
-	SPREE_COUNTRY_ID         = "spree/app_configuration/default_country_id"
-	SPREE_CURRENCY           = "spree/app_configuration/currency"
-	SPREE_API_AUTHENTICATION = "spree/api_configuration/requires_authentication"
-	TRACK_INVENTORY_LEVELS   = "spree/app_configuration/track_inventory_levels"
+	COUNTRY_ID             = "spree/app_configuration/default_country_id"
+	CURRENCY               = "spree/app_configuration/currency"
+	API_AUTHENTICATION     = "spree/api_configuration/requires_authentication"
+	TRACK_INVENTORY_LEVELS = "spree/app_configuration/track_inventory_levels"
 )
 
 var (
 	dbRepo      *repositories.DbRepo
 	spreeConfig = map[string]string{
-		SPREE_COUNTRY_ID:         getDbOrDefault(SPREE_COUNTRY_ID, "232"),
-		SPREE_CURRENCY:           getDbOrDefault(SPREE_CURRENCY, "USD"),
-		SPREE_API_AUTHENTICATION: getDbOrDefault(SPREE_API_AUTHENTICATION, "true"),
-		TRACK_INVENTORY_LEVELS:   getDbOrDefault(TRACK_INVENTORY_LEVELS, "true"),
+		COUNTRY_ID:             getDbOrDefault(COUNTRY_ID, "232"),
+		CURRENCY:               getDbOrDefault(CURRENCY, "USD"),
+		API_AUTHENTICATION:     getDbOrDefault(API_AUTHENTICATION, "true"),
+		TRACK_INVENTORY_LEVELS: getDbOrDefault(TRACK_INVENTORY_LEVELS, "true"),
 	}
 )
 
@@ -68,7 +68,7 @@ func IsInventoryTrackingEnabled() bool {
 }
 
 func IsAuthenticationRequired() bool {
-	value, err := strconv.ParseBool(spreeConfig[SPREE_API_AUTHENTICATION])
+	value, err := strconv.ParseBool(spreeConfig[API_AUTHENTICATION])
 	if err != nil {
 		return true // because by default authentication is true in spree
 	}

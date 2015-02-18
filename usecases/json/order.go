@@ -33,7 +33,7 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 	this.Repository.All(&products, nil, "id IN(?)", productIds)
 
 	var prices []models.Price
-	this.Repository.All(&prices, nil, "currency = ? AND variant_id IN(?)", spree.Get(spree.SPREE_CURRENCY), variantIds)
+	this.Repository.All(&prices, nil, "currency = ? AND variant_id IN(?)", spree.Get(spree.CURRENCY), variantIds)
 
 	var stockLocations []json.StockLocation
 	this.Repository.All(&stockLocations, nil, map[string]interface{}{"active": true})
