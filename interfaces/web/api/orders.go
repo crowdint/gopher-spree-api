@@ -75,7 +75,7 @@ func OrdersIndex(c *gin.Context) {
 	params := NewRequestParameters(c)
 	orders, err := json.SpreeResponseFetcher.GetResponse(json.NewOrderInteractor(), params)
 
-	if err == nil {
+	if err == nil || len(orders) == 0 {
 		c.JSON(200, orders)
 	} else {
 		c.JSON(422, gin.H{"error": err.Error()})

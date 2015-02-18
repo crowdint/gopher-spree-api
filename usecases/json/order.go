@@ -122,6 +122,10 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, params Respon
 		return &OrderResponse{}, err
 	}
 
+	if len(orders) == 0 {
+		return &OrderResponse{data: &ordersJson}, nil
+	}
+
 	var orderIds []int64
 	for _, order := range orders {
 		orderIds = append(orderIds, order.Id)
