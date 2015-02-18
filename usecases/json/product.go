@@ -160,31 +160,6 @@ func (this *ProductInteractor) modelsToJsonProductsSlice(productSlice []*models.
 	return jsonProductsSlice
 }
 
-func (this *ProductInteractor) toJson(product *models.Product) *json.Product {
-	productJson := &json.Product{
-		Id:          product.Id,
-		Name:        product.Name,
-		Description: product.Description,
-		//Price: from master variant
-		//DisplayPrice:
-		AvailableOn:     product.AvailableOn,
-		Slug:            product.Slug,
-		MetaDescription: product.MetaDescription,
-		MetaKeyWords:    product.MetaDescription,
-		//ShippingCategoryId
-		//TaxonIds
-		//TotalOnHand: from variants
-		//HasVariants: form variants
-		//Master: master variant
-		//Variants: from JsonVariantsMap
-		//OptionTypes
-		//ProductProperties
-		//Classifications
-	}
-
-	return productJson
-}
-
 func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, variantsMap JsonVariantsMap) {
 	for _, product := range productSlice {
 		product.Variants = []json.Variant{}
