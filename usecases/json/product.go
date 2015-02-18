@@ -29,7 +29,7 @@ func (this ProductResponse) GetTag() string {
 }
 
 type ProductInteractor struct {
-	ProductRepo               *repositories.ProductRepo
+	BaseRepository            *repositories.DbRepo
 	VariantInteractor         *VariantInteractor
 	ProductPropertyInteractor *ProductPropertyInteractor
 	ClassificationInteractor  *ClassificationInteractor
@@ -38,7 +38,7 @@ type ProductInteractor struct {
 
 func NewProductInteractor() *ProductInteractor {
 	return &ProductInteractor{
-		ProductRepo:               repositories.NewProductRepo(),
+		BaseRepository:            repositories.NewDatabaseRepository(),
 		VariantInteractor:         NewVariantInteractor(),
 		ProductPropertyInteractor: NewProductPropertyInteractor(),
 		ClassificationInteractor:  NewClassificationInteractor(),
@@ -52,7 +52,13 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int, params Resp
 		return ProductResponse{}, err
 	}
 
-	productModelSlice, err := this.ProductRepo.List(currentPage, perPage, query, gparams)
+	var productModelSlice []*models.Product
+	err = this.BaseRepository.All(&productModelSlice, map[string]interface{}{
+		"limit":  perPage,
+		"offset": currentPage,
+		"order":  "created_at desc",
+	}, query, gparams)
+
 	if err != nil {
 		return ProductResponse{}, err
 	}
@@ -74,8 +80,8 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 		return struct{}{}, errors.New("Invalid parameter type: " + fmt.Sprintf("%v", id))
 	}
 
-	product, err := this.ProductRepo.FindById(int64(id))
-
+	product := &models.Product{}
+	err = this.BaseRepository.FindBy(product, map[string]interface{}{"id": id})
 	if err != nil {
 		return nil, err
 	}
@@ -251,5 +257,5 @@ func (this *ProductInteractor) GetTotalCount(params ResponseParameters) (int64, 
 	if err != nil {
 		return 0, err
 	}
-	return this.ProductRepo.CountAll(query, gparams)
+	return this.BaseRepository.Count(&models.Product{}, query, gparams)
 }
