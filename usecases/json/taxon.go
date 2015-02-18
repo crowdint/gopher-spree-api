@@ -47,7 +47,7 @@ func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params Respon
 
 	taxonJsonSlice := this.modelsToJsonTaxonsSlice(taxonModelSlice)
 
-	toTaxonTree(taxonJsonSlice)
+	this.toTaxonTree(taxonJsonSlice)
 
 	return TaxonResponse{
 		data: taxonJsonSlice,
@@ -83,4 +83,14 @@ func (this *TaxonInteractor) GetShowResponse(params ResponseParameters) (interfa
 	//DUMMY UNTIL TAXON SHOW IS IMPLEMENTED
 
 	return taxonModelSlice[0], nil
+}
+
+func (this *TaxonInteractor) toTaxonTree(nodes []*json.Taxon) {
+	for _, node := range nodes {
+		for _, childNode := range nodes {
+			if node.Lft < childNode.Rgt && node.Rgt > childNode.Rgt && (node.Depth+1) == childNode.Depth {
+				node.Taxons = append(node.Taxons, childNode)
+			}
+		}
+	}
 }
