@@ -29,7 +29,7 @@ func TestAuthenticationWithValidToken(t *testing.T) {
 	w := httptest.NewRecorder()
 	var spreeToken interface{}
 
-	spree.Set(spree.SPREE_API_AUTHENTICATION, "true")
+	spree.Set(spree.API_AUTHENTICATION, "true")
 	r := gin.New()
 	r.Use(Authentication(), func(c *gin.Context) {
 		spreeToken, _ = c.Get(SPREE_TOKEN)
@@ -60,7 +60,7 @@ func TestAuthenticationWithInvalidToken(t *testing.T) {
 	w := httptest.NewRecorder()
 	var spreeToken interface{}
 
-	spree.Set(spree.SPREE_API_AUTHENTICATION, "true")
+	spree.Set(spree.API_AUTHENTICATION, "true")
 	r := gin.New()
 	r.Use(Authentication(), func(c *gin.Context) {
 		spreeToken, _ = c.Get(SPREE_TOKEN)
@@ -86,7 +86,7 @@ func TestAuthenticationWithoutToken(t *testing.T) {
 	w := httptest.NewRecorder()
 	var spreeToken interface{}
 
-	spree.Set(spree.SPREE_API_AUTHENTICATION, "true")
+	spree.Set(spree.API_AUTHENTICATION, "true")
 	r := gin.New()
 	r.Use(Authentication(), func(c *gin.Context) {
 		spreeToken, _ = c.Get(SPREE_TOKEN)
@@ -109,7 +109,7 @@ func TestAuthenticationWithValidOrderToken(t *testing.T) {
 	}
 
 	order := &models.Order{}
-	err := repositories.NewDatabaseRepository().FindBy(order, nil)
+	err := repositories.NewDatabaseRepository().FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error has ocurred", err)
 	}
@@ -154,7 +154,7 @@ func TestAuthenticationWithInvalidOrderToken(t *testing.T) {
 	req.Header.Set(SPREE_ORDER_TOKEN_HEADER, "testOrderToken")
 	w := httptest.NewRecorder()
 
-	spree.Set(spree.SPREE_API_AUTHENTICATION, "true")
+	spree.Set(spree.API_AUTHENTICATION, "true")
 	r := gin.New()
 	r.Use(Authentication())
 	r.GET(path)
@@ -171,7 +171,7 @@ func TestAuthenticationWithValidOrderTokenAndActionIsNotOrderShow(t *testing.T) 
 	}
 
 	order := &models.Order{}
-	err := repositories.NewDatabaseRepository().FindBy(order, nil)
+	err := repositories.NewDatabaseRepository().FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error has ocurred", err)
 	}
@@ -185,7 +185,7 @@ func TestAuthenticationWithValidOrderTokenAndActionIsNotOrderShow(t *testing.T) 
 	req.Header.Set(SPREE_ORDER_TOKEN_HEADER, order.GuestToken)
 	w := httptest.NewRecorder()
 
-	spree.Set(spree.SPREE_API_AUTHENTICATION, "true")
+	spree.Set(spree.API_AUTHENTICATION, "true")
 	r := gin.New()
 	var user *models.User
 	r.Use(Authentication(), func(c *gin.Context) {
@@ -212,7 +212,7 @@ func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalse(t *testing.T
 
 	w := httptest.NewRecorder()
 
-	spree.Set(spree.SPREE_API_AUTHENTICATION, "false")
+	spree.Set(spree.API_AUTHENTICATION, "false")
 	r := gin.New()
 	var user *models.User
 	r.Use(Authentication(), func(c *gin.Context) {
@@ -239,7 +239,7 @@ func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalseAndActionIsNo
 
 	w := httptest.NewRecorder()
 
-	spree.Set(spree.SPREE_API_AUTHENTICATION, "false")
+	spree.Set(spree.API_AUTHENTICATION, "false")
 	r := gin.New()
 	var user *models.User
 	r.Use(Authentication(), func(c *gin.Context) {
@@ -272,7 +272,7 @@ func TestAuthenticationWithTokenAndAuthenticationRequiredIsFalseAndActionsIsNotR
 	req.Header.Set(SPREE_TOKEN_HEADER, dbSpreeToken)
 	w := httptest.NewRecorder()
 
-	spree.Set(spree.SPREE_API_AUTHENTICATION, "false")
+	spree.Set(spree.API_AUTHENTICATION, "false")
 	r := gin.New()
 	r.Use(Authentication(), func(c *gin.Context) {
 		currentUsr = currentUser(c)

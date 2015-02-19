@@ -28,6 +28,14 @@ func currentUser(c *gin.Context) *models.User {
 	return user
 }
 
+func fail(c *gin.Context, err error) {
+	if err.Error() == "Record Not Found" {
+		notFound(c)
+	} else {
+		internalServerError(c, err.Error())
+	}
+}
+
 func getOrderToken(c *gin.Context) string {
 	orderToken := c.Request.Header.Get(SPREE_ORDER_TOKEN_HEADER)
 
@@ -48,8 +56,8 @@ func getSpreeToken(c *gin.Context) string {
 	return c.Request.URL.Query().Get("token")
 }
 
-func unauthorized(c *gin.Context, errMsg string) {
-	c.JSON(http.StatusUnauthorized, gin.H{"error": errMsg})
+func internalServerError(c *gin.Context, errMsg string) {
+	c.JSON(500, gin.H{"error": errMsg})
 	c.Abort()
 }
 
@@ -63,4 +71,14 @@ func namespace() string {
 	}
 
 	return *ns
+}
+
+func notFound(c *gin.Context) {
+	c.JSON(404, gin.H{"error": "Record Not Found"})
+	c.Abort()
+}
+
+func unauthorized(c *gin.Context, errMsg string) {
+	c.JSON(http.StatusUnauthorized, gin.H{"error": errMsg})
+	c.Abort()
 }

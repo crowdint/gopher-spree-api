@@ -22,3 +22,7 @@ type Product struct {
 	ProductProperties  []ProductProperty `json:"product_properties"`
 	Classifications    []Classification  `json:"classifications"`
 }
+
+func (this Product) TableName() string {
+	return "spree_products"
+}

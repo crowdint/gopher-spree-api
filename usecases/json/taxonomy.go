@@ -24,12 +24,12 @@ func (this TaxonomyResponse) GetTag() string {
 }
 
 type TaxonomyInteractor struct {
-	TaxonomyRepo *repositories.TaxonomyRepo
+	BaseRepository *repositories.DbRepo
 }
 
 func NewTaxonomyInteractor() *TaxonomyInteractor {
 	return &TaxonomyInteractor{
-		TaxonomyRepo: repositories.NewTaxonomyRepo(),
+		BaseRepository: repositories.NewDatabaseRepository(),
 	}
 }
 
@@ -39,7 +39,12 @@ func (this *TaxonomyInteractor) GetResponse(currentPage, perPage int, params Res
 		return TaxonomyResponse{}, err
 	}
 
-	taxonomyModelSlice, err := this.TaxonomyRepo.List(currentPage, perPage, query, gparams)
+	var taxonomyModelSlice []*models.Taxonomy
+	this.BaseRepository.All(&taxonomyModelSlice, map[string]interface{}{
+		"limit":  perPage,
+		"offset": currentPage,
+		"order":  "created_at desc",
+	}, query, gparams)
 	if err != nil {
 		return TaxonomyResponse{}, err
 	}
@@ -94,5 +99,5 @@ func (this *TaxonomyInteractor) GetTotalCount(param ResponseParameters) (int64, 
 	if err != nil {
 		return 0, err
 	}
-	return this.TaxonomyRepo.CountAll(query, gparams)
+	return this.BaseRepository.Count(models.Taxonomy{}, query, gparams)
 }

@@ -32,12 +32,6 @@ func TestVariantInteractor_GetJsonVariantsMap(t *testing.T) {
 	if len(varray1) < 1 {
 		t.Error("No variants found")
 	}
-
-	v1 := varray1[0]
-
-	if v1.Price == "" {
-		t.Error("Variant has no price")
-	}
 }
 
 func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
@@ -52,13 +46,13 @@ func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
 		&models.Variant{
 			Id:        1,
 			Sku:       "sku0001",
-			Price:     "9.99",
+			Price:     9.99,
 			ProductId: 10,
 		},
 		&models.Variant{
 			Id:        2,
 			Sku:       "sku0002",
-			Price:     "10.99",
+			Price:     10.99,
 			ProductId: 20,
 		},
 	}
@@ -78,11 +72,11 @@ func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
 		t.Error("Error: nil value on map")
 	}
 
-	if v1.Id != 1 || v1.Sku != "sku0001" || v1.Price != "9.99" {
+	if v1.Id != 1 || v1.Sku != "sku0001" || v1.Price != 9.99 {
 		t.Error("Invalid values for first variant")
 	}
 
-	if v2.Id != 2 || v2.Sku != "sku0002" || v2.Price != "10.99" {
+	if v2.Id != 2 || v2.Sku != "sku0002" || v2.Price != 10.99 {
 		t.Error("Invalid values for second variant")
 	}
 }
@@ -91,7 +85,7 @@ func TestVariantInteractor_toJson(t *testing.T) {
 	variant := &models.Variant{
 		Id:        1,
 		Sku:       "sku0001",
-		Price:     "9.99",
+		Price:     9.99,
 		ProductId: 10,
 	}
 
@@ -99,7 +93,7 @@ func TestVariantInteractor_toJson(t *testing.T) {
 
 	jsonVariant := variantInteractor.toJson(variant)
 
-	if jsonVariant.Id != 1 || jsonVariant.Sku != "sku0001" || jsonVariant.Price != "9.99" {
+	if jsonVariant.Id != 1 || jsonVariant.Sku != "sku0001" || jsonVariant.Price != 9.99 {
 		t.Error("Invalid values for second json.Variant")
 	}
 }

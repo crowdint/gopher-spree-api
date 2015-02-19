@@ -5,45 +5,56 @@ import (
 )
 
 type Order struct {
-	Id int64
+	Id        int64
+	Number    string
+	ItemTotal float64
+	Total     float64
 
-	AdditionalTaxTotal    float64
-	AdjustmentTotal       float64
+	State               string
+	AdjustmentTotal     float64
+	UserId              *int64
+	CreatedAt           time.Time
+	UpdatedAt           time.Time
+	CompletedAt         time.Time
+	PaymentTotal        float64
+	ShipmentState       string
+	Email               string
+	SpecialInstructions string
+	Channel             string
+	IncludedTaxTotal    float64
+	AdditionalTaxTotal  float64
+
+	Currency   string
+	GuestToken string
+
 	ApprovedAt            time.Time
-	Approver              int64
-	BillAddress           int64
+	ApproverId            int64
+	BillAddressId         int64
 	CanceledAt            time.Time
-	Canceler              int64
-	Channel               string
-	CompletedAt           time.Time
+	CancelerId            int64
 	ConfirmationDelivered bool
 	ConsideredRisky       bool
-	CreatedAt             time.Time
 	CreatedBy             int64
-	Currency              string
-	Email                 string
-	GuestToken            string
-	IncludedTaxTotal      float64
 	ItemCount             int64
-	ItemTotal             float64
 	LastIpAddress         string
-	Number                string
 	PaymentState          string
-	PaymentTotal          float64
 	PromoTotal            float64
-	ShipAddress           int64
-	ShipmentState         string
+	ShipAddressId         int64
 	ShipmentTotal         float64
-	ShippingMethod        int64
-	SpecialInstructions   string
-	State                 string
+	ShippingMethodId      int64
 	StateLockVersion      int64
-	Store                 int64
-	Total                 float64
-	UpdatedAt             time.Time
-	UserId                int64
+	StoreId               int64
+
+	//Computed
+	Quantity int64
+	TaxTotal float64
 }
 
-func (o Order) TableName() string {
+func (this Order) TableName() string {
 	return "spree_orders"
+}
+
+func (this *Order) AfterFind() (err error) {
+	this.TaxTotal = this.IncludedTaxTotal + this.AdditionalTaxTotal
+	return
 }

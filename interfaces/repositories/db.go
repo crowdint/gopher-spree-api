@@ -17,6 +17,11 @@ type DbRepo struct {
 	dbHandler *gorm.DB
 }
 
+type Not struct {
+	Key    string
+	Values []interface{}
+}
+
 func InitDB() error {
 	dbUrl := configs.Get(configs.DB_URL)
 	dbEngine := configs.Get(configs.DB_ENGINE)
@@ -56,6 +61,21 @@ func InitDB() error {
 	return nil
 }
 
+func NewDatabaseRepository() *DbRepo {
+	return &DbRepo{Spree_db}
+}
+
+func extractPaginationValues(attrs map[string]interface{}) (limit, offset int) {
+	if attrs["limit"] != nil && attrs["offset"] != nil {
+		limit = attrs["limit"].(int)
+		delete(attrs, "limit")
+		offset = (attrs["offset"].(int) - 1) * limit
+		delete(attrs, "offset")
+	}
+
+	return
+}
+
 func getIntegerOrDefault(value string, def int) int {
 	number, err := strconv.Atoi(value)
 	if err != nil {
@@ -64,14 +84,49 @@ func getIntegerOrDefault(value string, def int) int {
 	return number
 }
 
-func NewDatabaseRepository() *DbRepo {
-	return &DbRepo{Spree_db}
+func (this *DbRepo) All(collection interface{}, options map[string]interface{}, query interface{}, values ...interface{}) error {
+	limit, offset := extractPaginationValues(options)
+	dbHandler := this.dbHandler
+
+	if limit > 0 {
+		dbHandler = dbHandler.Limit(limit).Offset(offset)
+	}
+
+	dbHandler = orderByIfPresent(dbHandler, options)
+	dbHandler = notIfPresent(dbHandler, options)
+
+	return dbHandler.Where(query, values...).Find(collection).Error
 }
 
-func (this *DbRepo) All(collection interface{}, attrs map[string]interface{}) error {
-	return this.dbHandler.Find(collection, attrs).Error
+func (this *DbRepo) Association(model interface{}, association interface{}, attribute string) {
+	this.dbHandler.Model(model).Related(association, attribute)
 }
 
-func (this *DbRepo) FindBy(model interface{}, attrs map[string]interface{}) error {
-	return this.dbHandler.First(model, attrs).Error
+func (this *DbRepo) Count(model interface{}, query string, params []interface{}) (count int64, err error) {
+	err = this.dbHandler.Model(model).Where(query, params).Count(&count).Error
+	return
+}
+
+func (this *DbRepo) FindBy(model interface{}, options map[string]interface{}, where map[string]interface{}) error {
+	dbHandler := this.dbHandler
+	dbHandler = notIfPresent(dbHandler, options)
+	return dbHandler.First(model, where).Error
+}
+
+func orderByIfPresent(dbHandler *gorm.DB, options map[string]interface{}) *gorm.DB {
+	if options["order"] != nil {
+		orderBy := options["order"].(string)
+		if orderBy != "" {
+			dbHandler = dbHandler.Order(orderBy)
+		}
+	}
+	return dbHandler
+}
+
+func notIfPresent(dbHandler *gorm.DB, options map[string]interface{}) *gorm.DB {
+	if options["not"] != nil {
+		not := options["not"].(Not)
+		dbHandler = dbHandler.Not(not.Key, not.Values)
+	}
+	return dbHandler
 }

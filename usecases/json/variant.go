@@ -73,10 +73,10 @@ func (this *VariantInteractor) toJson(variant *models.Variant) *json.Variant {
 		//Name: from product
 		Sku:      variant.Sku,
 		Price:    variant.Price,
-		Weight:   json.ToS(variant.Weight),
-		Height:   json.ToS(variant.Height),
-		Width:    json.ToS(variant.Width),
-		Depth:    json.ToS(variant.Depth),
+		Weight:   variant.Weight,
+		Height:   variant.Height,
+		Width:    variant.Width,
+		Depth:    variant.Depth,
 		IsMaster: variant.IsMaster,
 		//Slug: from product
 		//Description: from product
@@ -86,7 +86,7 @@ func (this *VariantInteractor) toJson(variant *models.Variant) *json.Variant {
 		//OptionsText:
 		InStock:         variant.RealStockItemsCount > 0,
 		IsBackorderable: variant.Backorderable,
-		TotalOnHand:     variant.RealStockItemsCount,
+		TotalOnHand:     &variant.RealStockItemsCount,
 		IsDestroyed:     !variant.DeletedAt.IsZero(),
 		//OptionValues:
 		//Images:

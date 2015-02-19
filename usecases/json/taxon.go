@@ -25,12 +25,14 @@ func (this TaxonResponse) GetTag() string {
 }
 
 type TaxonInteractor struct {
-	TaxonRepo *repositories.TaxonRepo
+	BaseRepository *repositories.DbRepo
+	TaxonRepo      *repositories.TaxonRepo
 }
 
 func NewTaxonInteractor() *TaxonInteractor {
 	return &TaxonInteractor{
-		TaxonRepo: repositories.NewTaxonRepo(),
+		BaseRepository: repositories.NewDatabaseRepository(),
+		TaxonRepo:      repositories.NewTaxonRepo(),
 	}
 }
 
@@ -40,7 +42,13 @@ func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params Respon
 		return TaxonResponse{}, err
 	}
 
-	taxonModelSlice, err := this.TaxonRepo.List(currentPage, perPage, query, gparams)
+	var taxonModelSlice []*models.Taxon
+
+	err = this.BaseRepository.All(&taxonModelSlice, map[string]interface{}{
+		"limit":  perPage,
+		"offset": currentPage,
+		"order":  "created_at desc",
+	}, query, gparams)
 	if err != nil {
 		return TaxonResponse{}, err
 	}
@@ -74,7 +82,7 @@ func (this *TaxonInteractor) GetTotalCount(params ResponseParameters) (int64, er
 	if err != nil {
 		return 0, err
 	}
-	return this.TaxonRepo.CountAll(query, gparams)
+	return this.BaseRepository.Count(models.Taxon{}, query, gparams)
 }
 
 func (this *TaxonInteractor) GetShowResponse(params ResponseParameters) (interface{}, error) {

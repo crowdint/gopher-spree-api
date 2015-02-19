@@ -5,28 +5,29 @@ import (
 
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/crowdint/gopher-spree-api/usecases/json"
 )
 
 func init() {
 	orders := API().Group("/orders")
 	{
 		orders.GET("", authorizeOrders, OrdersIndex)
-		orders.GET("/", OrdersIndex)
+		orders.GET("/", authorizeOrders, OrdersIndex)
 		orders.GET("/:order_number", findOrder, authorizeOrder, OrdersShow)
 	}
 }
 
 func findOrder(c *gin.Context) {
-	order := getGinOrder(c)
+	order := currentOrder(c)
 
 	if order == nil {
 		order = &models.Order{}
-		err := repositories.NewDatabaseRepository().FindBy(order, params{
+		err := repositories.NewDatabaseRepository().FindBy(order, nil, params{
 			"number": c.Params.ByName("order_number"),
 		})
 
 		if err != nil {
-			notFound(c)
+			fail(c, err)
 			return
 		}
 
@@ -36,10 +37,10 @@ func findOrder(c *gin.Context) {
 	c.Next()
 }
 
-func getGinOrder(c *gin.Context) *models.Order {
-	rawOrder, err := c.Get("Order")
+func currentOrder(c *gin.Context) *models.Order {
+	order, err := c.Get("Order")
 	if err == nil {
-		return rawOrder.(*models.Order)
+		return order.(*models.Order)
 	}
 	return nil
 }
@@ -61,8 +62,8 @@ func authorizeOrder(c *gin.Context) {
 		return
 	}
 
-	order := getGinOrder(c)
-	if order != nil && (order.UserId == user.Id || order.GuestToken == getOrderToken(c)) {
+	order := currentOrder(c)
+	if order != nil && (*order.UserId == user.Id || order.GuestToken == getOrderToken(c)) {
 		c.Next()
 	} else {
 		unauthorized(c, "You are not authorized to perform that action.")
@@ -71,11 +72,10 @@ func authorizeOrder(c *gin.Context) {
 }
 
 func OrdersIndex(c *gin.Context) {
-	var orders []models.Order
+	params := NewRequestParameters(c)
+	orders, err := json.SpreeResponseFetcher.GetResponse(json.NewOrderInteractor(), params)
 
-	err := repositories.NewDatabaseRepository().All(&orders, nil)
-
-	if err == nil {
+	if err == nil || len(orders) == 0 {
 		c.JSON(200, orders)
 	} else {
 		c.JSON(422, gin.H{"error": err.Error()})
@@ -83,11 +83,11 @@ func OrdersIndex(c *gin.Context) {
 }
 
 func OrdersShow(c *gin.Context) {
-	order, _ := c.Get("Order")
-	c.JSON(200, order.(*models.Order))
-}
+	order, err := json.NewOrderInteractor().Show(currentOrder(c), currentUser(c))
 
-func notFound(c *gin.Context) {
-	c.JSON(404, gin.H{"error": "Record Not Found"})
-	c.Abort()
+	if err == nil {
+		c.JSON(200, order)
+	} else {
+		internalServerError(c, err.Error())
+	}
 }
