@@ -2,7 +2,6 @@ package json
 
 import (
 	"fmt"
-	"strconv"
 	"time"
 )
 
@@ -105,28 +104,36 @@ func (this Country) TableName() string {
 }
 
 type LineItem struct {
-	Id                  int64        `json:"id"`
-	Quantity            int64        `json:"quantity"`
-	Price               float64      `json:"price,string"`
-	SingleDisplayAmount string       `json:"single_display_amount"`
-	DisplayAmount       string       `json:"display_amount"`
-	Total               string       `json:"total"`
-	Variant             *Variant     `json:"variant"`
-	VariantId           int64        `json:"variant_id"`
-	Adjustments         []Adjustment `json:"adjustments"`
+	Id                 int64     `json:"id"`
+	AdditionalTaxTotal float64   `json:"-"`
+	AdjustmentTotal    float64   `json:"-"`
+	CostPrice          float64   `json:"-"`
+	Currency           string    `json:"-"`
+	IncludedTaxTotal   float64   `json:"-"`
+	PreTaxAmount       float64   `json:"-"`
+	OrderId            int64     `json:"-"`
+	Price              float64   `json:"price,string"`
+	PromoTotal         float64   `json:"-"`
+	Quantity           int64     `json:"quantity"`
+	TaxCategoryId      int64     `json:"-"`
+	VariantId          int64     `json:"-"`
+	CreatedAt          time.Time `json:"-"`
+	UpdatedAt          time.Time `json:"-"`
 
-	Amount int64 `json:"-"`
+	// Computed
+	Amount              float64 `json:"-"`
+	DisplayAmount       string  `json:"display_amount"` //TODO: implement
+	FinalAmount         float64 `json:"total,string"`
+	SingleDisplayAmount string  `json:"single_display_amount"` //TODO: implement
 
-	OrderId         int64   `json:"-"`
-	AdjustmentTotal float64 `json:"-"`
+	// Associations
+	Adjustments []Adjustment `json:"adjustments"`
+	Variant     *Variant     `json:"variant"`
 }
 
 func (this *LineItem) AfterFind() (err error) {
-	// Compute Total
-	amount := this.Price * float64(this.Quantity)
-	finalAmount := amount + this.AdjustmentTotal
-	this.Total = strconv.FormatFloat(finalAmount, 'f', 2, 64)
-
+	this.Amount = this.Price * float64(this.Quantity)
+	this.FinalAmount = this.Amount + this.AdjustmentTotal
 	return
 }
 
