@@ -81,7 +81,7 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 	}
 
 	product := &models.Product{}
-	err = this.BaseRepository.FindBy(product, map[string]interface{}{"id": id})
+	err = this.BaseRepository.FindBy(product, nil, map[string]interface{}{"id": id})
 	if err != nil {
 		return nil, err
 	}

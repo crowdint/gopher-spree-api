@@ -109,7 +109,7 @@ func TestAuthenticationWithValidOrderToken(t *testing.T) {
 	}
 
 	order := &models.Order{}
-	err := repositories.NewDatabaseRepository().FindBy(order, nil)
+	err := repositories.NewDatabaseRepository().FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error has ocurred", err)
 	}
@@ -171,7 +171,7 @@ func TestAuthenticationWithValidOrderTokenAndActionIsNotOrderShow(t *testing.T) 
 	}
 
 	order := &models.Order{}
-	err := repositories.NewDatabaseRepository().FindBy(order, nil)
+	err := repositories.NewDatabaseRepository().FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error has ocurred", err)
 	}

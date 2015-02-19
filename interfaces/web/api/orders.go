@@ -22,7 +22,7 @@ func findOrder(c *gin.Context) {
 
 	if order == nil {
 		order = &models.Order{}
-		err := repositories.NewDatabaseRepository().FindBy(order, params{
+		err := repositories.NewDatabaseRepository().FindBy(order, nil, params{
 			"number": c.Params.ByName("order_number"),
 		})
 

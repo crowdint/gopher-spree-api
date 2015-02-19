@@ -63,7 +63,7 @@ func TestFindBy(t *testing.T) {
 
 	p := &models.Product{}
 
-	err := r.FindBy(p, nil)
+	err := r.FindBy(p, nil, nil)
 
 	if err != nil {
 		t.Errorf("DB.All %s", err)
@@ -77,7 +77,23 @@ func TestFindByWithConditions(t *testing.T) {
 
 	p := &models.Product{}
 
-	err := r.FindBy(p, map[string]interface{}{"id": 1})
+	err := r.FindBy(p, nil, map[string]interface{}{"id": 1})
+
+	if err != nil {
+		t.Errorf("DB.All %s", err)
+	}
+}
+
+func TestFindByWithOptions(t *testing.T) {
+	InitDB()
+
+	r := NewDatabaseRepository()
+
+	p := &models.Product{}
+
+	err := r.FindBy(p, map[string]interface{}{
+		"not": Not{Key: "tax_category_id", Values: []interface{}{0}},
+	}, nil)
 
 	if err != nil {
 		t.Errorf("DB.All %s", err)

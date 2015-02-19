@@ -39,7 +39,7 @@ func TestFindOrderWhenOrderExists(t *testing.T) {
 	}
 
 	order := &models.Order{}
-	err = repositories.NewDatabaseRepository().FindBy(order, nil)
+	err = repositories.NewDatabaseRepository().FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
@@ -135,7 +135,7 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsAdmin(t *testing.T) {
 	user.Roles = []models.Role{
 		models.Role{Name: "admin"},
 	}
-	err = repositories.NewDatabaseRepository().FindBy(user, nil)
+	err = repositories.NewDatabaseRepository().FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
@@ -165,7 +165,7 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsNotAdmin(t *testing.T) {
 	}
 
 	user := &models.User{}
-	err = repositories.NewDatabaseRepository().FindBy(user, nil)
+	err = repositories.NewDatabaseRepository().FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
@@ -198,7 +198,7 @@ func TestAuthorizeOrderWhenUserIsSetAndIsAdmin(t *testing.T) {
 	user.Roles = []models.Role{
 		models.Role{Name: "admin"},
 	}
-	err = repositories.NewDatabaseRepository().FindBy(user, nil)
+	err = repositories.NewDatabaseRepository().FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
@@ -232,13 +232,13 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderBelongsToHim(t *testing.T) {
 	dbRepo := repositories.NewDatabaseRepository()
 
 	user := &models.User{}
-	err = dbRepo.FindBy(user, nil)
+	err = dbRepo.FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
 
 	order := &models.Order{}
-	err = dbRepo.FindBy(order, nil)
+	err = dbRepo.FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
@@ -273,13 +273,13 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderDoesNotBelongToHim(t *testing.T
 	dbRepo := repositories.NewDatabaseRepository()
 
 	user := &models.User{}
-	err = dbRepo.FindBy(user, nil)
+	err = dbRepo.FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
 
 	order := &models.Order{}
-	err = dbRepo.FindBy(order, nil)
+	err = dbRepo.FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
