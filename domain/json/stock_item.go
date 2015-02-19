@@ -6,12 +6,12 @@ import (
 
 type StockItem struct {
 	Id              int64
+	Backorderable   bool
+	CountOnHand     int64
 	StockLocationId int64
 	VariantId       int64
-	CountOnHand     int64
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
-	Backorderable   bool
 }
 
 func (this StockItem) TableName() string {
