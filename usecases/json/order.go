@@ -19,34 +19,9 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 	order := json.Order{}
 	copier.Copy(&order, o)
 
-	order.Permissions = this.getPermissions(&order, u)
-	order.Quantity = this.getQuantity(&order)
-	order.BillAddress = this.getAddress(&order, "BillAddressId")
-	order.ShipAddress = this.getAddress(&order, "ShipAddressId")
-	order.LineItems = this.getLineItems(&order)
+	this.setComputedValues(&order, u)
 
-	variantIds := Collect(*order.LineItems, "VariantId")
-	var variants []json.Variant
-	this.BaseRepository.All(&variants, nil, "id IN(?)", variantIds)
-
-	productIds := Collect(variants, "ProductId")
-	var products []json.Product
-	this.BaseRepository.All(&products, nil, "id IN(?)", productIds)
-
-	var prices []models.Price
-	this.BaseRepository.All(&prices, nil, "currency = ? AND variant_id IN(?)", spree.Get(spree.CURRENCY), variantIds)
-
-	var stockLocations []json.StockLocation
-	this.BaseRepository.All(&stockLocations, nil, map[string]interface{}{"active": true})
-	stockLocationIds := Collect(stockLocations, "Id")
-
-	var stockItems []json.StockItem
-	this.BaseRepository.All(&stockItems, nil, "variant_id IN(?) AND stock_location_id IN(?)", variantIds, stockLocationIds)
-
-	variantsMap := ToMap(variants, "Id", false)
-	productsMap := ToMap(products, "Id", false)
-	pricesMap := ToMap(prices, "VariantId", false)
-	stockItemsMap := ToMap(stockItems, "VariantId", true)
+	variantsMap, productsMap, pricesMap, stockItemsMap := this.getAssociationMaps(&order)
 
 	for i, lineItem := range *order.LineItems {
 		variant := variantsMap[lineItem.VariantId].(json.Variant)
@@ -68,43 +43,6 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 	}
 
 	return &order, nil
-}
-
-func (this *OrderInteractor) getQuantity(order *json.Order) int64 {
-	quantities, _ := this.OrderRepository.SumLineItemsQuantityByOrderIds([]int64{order.Id})
-	return quantities[order.Id]
-}
-
-func (this *OrderInteractor) getPermissions(order *json.Order, user *models.User) *json.Permissions {
-	updatePermission := user.HasRole("admin") || (*order.UserId == user.Id)
-	permissions := &json.Permissions{CanUpdate: &updatePermission}
-	return permissions
-}
-
-func (this *OrderInteractor) getLineItems(order *json.Order) *[]json.LineItem {
-	lineItems := &[]json.LineItem{}
-	this.BaseRepository.Association(order, lineItems, "OrderId")
-	return lineItems
-}
-
-func (this *OrderInteractor) getAddress(order *json.Order, id string) *json.Address {
-	address := &json.Address{}
-
-	this.BaseRepository.Association(order, address, id)
-
-	address.Country = &json.Country{}
-	this.BaseRepository.Association(address, address.Country, "CountryId")
-
-	address.State = &json.State{}
-	this.BaseRepository.Association(address, address.State, "StateId")
-	address.StateName = address.State.Name
-	address.StateText = address.State.Abbr
-
-	return address
-}
-
-func (this *OrderInteractor) GetShowResponse(params ResponseParameters) (interface{}, error) {
-	return nil, nil
 }
 
 func (this *OrderInteractor) GetResponse(currentPage, perPage int, params ResponseParameters) (ContentResponse, error) {
@@ -142,6 +80,10 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, params Respon
 	return &OrderResponse{data: &ordersJson}, nil
 }
 
+func (this *OrderInteractor) GetShowResponse(params ResponseParameters) (interface{}, error) {
+	return nil, nil
+}
+
 func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, error) {
 	query, gparams, err := params.GetGransakParams()
 
@@ -152,11 +94,71 @@ func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, er
 	return this.BaseRepository.Count(models.Order{}, query, gparams)
 }
 
-func NewOrderInteractor() *OrderInteractor {
-	return &OrderInteractor{
-		BaseRepository:  repositories.NewDatabaseRepository(),
-		OrderRepository: repositories.NewOrderRepository(),
-	}
+func (this *OrderInteractor) getAddress(order *json.Order, id string) *json.Address {
+	address := &json.Address{}
+
+	this.BaseRepository.Association(order, address, id)
+
+	address.Country = &json.Country{}
+	this.BaseRepository.Association(address, address.Country, "CountryId")
+
+	address.State = &json.State{}
+	this.BaseRepository.Association(address, address.State, "StateId")
+	address.StateName = address.State.Name
+	address.StateText = address.State.Abbr
+
+	return address
+}
+
+func (this *OrderInteractor) getAssociationMaps(order *json.Order) (varm, prom, prim, stim map[int64]interface{}) {
+	variantIds := Collect(*order.LineItems, "VariantId")
+	var variants []json.Variant
+	this.BaseRepository.All(&variants, nil, "id IN(?)", variantIds)
+	varm = ToMap(variants, "Id", false)
+
+	productIds := Collect(variants, "ProductId")
+	var products []json.Product
+	this.BaseRepository.All(&products, nil, "id IN(?)", productIds)
+	prom = ToMap(products, "Id", false)
+
+	var prices []models.Price
+	this.BaseRepository.All(&prices, nil, "currency = ? AND variant_id IN(?)", spree.Get(spree.CURRENCY), variantIds)
+	prim = ToMap(prices, "VariantId", false)
+
+	var stockLocations []json.StockLocation
+	this.BaseRepository.All(&stockLocations, nil, map[string]interface{}{"active": true})
+	stockLocationIds := Collect(stockLocations, "Id")
+
+	var stockItems []json.StockItem
+	this.BaseRepository.All(&stockItems, nil, "variant_id IN(?) AND stock_location_id IN(?)", variantIds, stockLocationIds)
+	stim = ToMap(stockItems, "VariantId", true)
+
+	return
+}
+
+func (this *OrderInteractor) getLineItems(order *json.Order) *[]json.LineItem {
+	lineItems := &[]json.LineItem{}
+	this.BaseRepository.Association(order, lineItems, "OrderId")
+	return lineItems
+}
+
+func (this *OrderInteractor) getPermissions(order *json.Order, user *models.User) *json.Permissions {
+	updatePermission := user.HasRole("admin") || (*order.UserId == user.Id)
+	permissions := &json.Permissions{CanUpdate: &updatePermission}
+	return permissions
+}
+
+func (this *OrderInteractor) getQuantity(order *json.Order) int64 {
+	quantities, _ := this.OrderRepository.SumLineItemsQuantityByOrderIds([]int64{order.Id})
+	return quantities[order.Id]
+}
+
+func (this *OrderInteractor) setComputedValues(order *json.Order, user *models.User) {
+	order.Permissions = this.getPermissions(order, user)
+	order.Quantity = this.getQuantity(order)
+	order.BillAddress = this.getAddress(order, "BillAddressId")
+	order.ShipAddress = this.getAddress(order, "ShipAddressId")
+	order.LineItems = this.getLineItems(order)
 }
 
 type OrderResponse struct {
@@ -173,4 +175,11 @@ func (this *OrderResponse) GetData() interface{} {
 
 func (this OrderResponse) GetTag() string {
 	return "orders"
+}
+
+func NewOrderInteractor() *OrderInteractor {
+	return &OrderInteractor{
+		BaseRepository:  repositories.NewDatabaseRepository(),
+		OrderRepository: repositories.NewOrderRepository(),
+	}
 }
