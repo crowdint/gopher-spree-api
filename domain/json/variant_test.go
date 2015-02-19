@@ -3,11 +3,11 @@ package json
 import "testing"
 
 func TestVariantStructure(t *testing.T) {
-	expected := `{"id":1,"name":"var1","sku":"A1234","price":"10.1","weight":"11.1",` +
-		`"height":"20","width":"21","depth":"23.1","is_master":true,"slug":"var1",` +
-		`"description":"variant 1","track_inventory":true,"cost_price":"1.9",` +
-		`"display_price":"$10.1","options_text":"opt 1","in_stock":true,"is_backorderable":false,` +
-		`"total_on_hand":90,"is_destroyed":false,"option_values":[],"images":[],"product_id":0}`
+	expected := `{"id":1,"cost_price":"1.9","depth":"23.1","height":"20","is_master":true,` +
+		`"options_text":"opt 1","price":"10.1","product_id":0,"sku":"A1234","weight":"11.1",` +
+		`"width":"21","description":"variant 1","display_price":"$10.1","in_stock":true,` +
+		`"is_backorderable":false,"is_destroyed":false,"name":"var1","slug":"var1","total_on_hand":90,` +
+		`"track_inventory":true,"images":[],"option_values":[]}`
 
 	var totalOnHand int64 = 90
 	variant := Variant{
