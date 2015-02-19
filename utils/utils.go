@@ -6,11 +6,12 @@ import (
 
 func Collect(collection interface{}, fieldName string) (result []interface{}) {
 	slice := reflect.ValueOf(collection)
-
-	for i := 0; i < slice.Len(); i++ {
-		if field := slice.Index(i).FieldByName(fieldName); field.IsValid() {
-			value := field.Interface()
-			result = append(result, value)
+	if slice.Kind() == reflect.Slice {
+		for i := 0; i < slice.Len(); i++ {
+			if field := slice.Index(i).FieldByName(fieldName); field.IsValid() {
+				value := field.Interface()
+				result = append(result, value)
+			}
 		}
 	}
 	return
@@ -18,23 +19,26 @@ func Collect(collection interface{}, fieldName string) (result []interface{}) {
 
 func ToMap(collection interface{}, key string, multiple bool) map[int64]interface{} {
 	slice := reflect.ValueOf(collection)
-
 	result := make(map[int64]interface{})
 
-	for i := 0; i < slice.Len(); i++ {
-		key := slice.Index(i).FieldByName(key).Int()
+	if slice.Kind() == reflect.Slice {
+		for i := 0; i < slice.Len(); i++ {
+			if field := slice.Index(i).FieldByName(key); field.IsValid() {
+				key := field.Int()
 
-		if multiple {
-			newValue := slice.Index(i)
+				if multiple {
+					newValue := slice.Index(i)
 
-			if result[key] == nil {
-				result[key] = []interface{}{newValue.Interface()}
-			} else {
-				result[key] = append(result[key].([]interface{}), newValue.Interface())
+					if result[key] == nil {
+						result[key] = []interface{}{newValue.Interface()}
+					} else {
+						result[key] = append(result[key].([]interface{}), newValue.Interface())
+					}
+
+				} else {
+					result[key] = slice.Index(i).Interface()
+				}
 			}
-
-		} else {
-			result[key] = slice.Index(i).Interface()
 		}
 	}
 
