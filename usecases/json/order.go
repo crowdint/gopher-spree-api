@@ -11,7 +11,8 @@ import (
 )
 
 type OrderInteractor struct {
-	Repository *repositories.DbRepo
+	BaseRepository  *repositories.DbRepo
+	OrderRepository *repositories.OrderRepository
 }
 
 func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order, error) {
@@ -26,21 +27,21 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 
 	variantIds := Collect(*order.LineItems, "VariantId")
 	var variants []json.Variant
-	this.Repository.All(&variants, nil, "id IN(?)", variantIds)
+	this.BaseRepository.All(&variants, nil, "id IN(?)", variantIds)
 
 	productIds := Collect(variants, "ProductId")
 	var products []json.Product
-	this.Repository.All(&products, nil, "id IN(?)", productIds)
+	this.BaseRepository.All(&products, nil, "id IN(?)", productIds)
 
 	var prices []models.Price
-	this.Repository.All(&prices, nil, "currency = ? AND variant_id IN(?)", spree.Get(spree.CURRENCY), variantIds)
+	this.BaseRepository.All(&prices, nil, "currency = ? AND variant_id IN(?)", spree.Get(spree.CURRENCY), variantIds)
 
 	var stockLocations []json.StockLocation
-	this.Repository.All(&stockLocations, nil, map[string]interface{}{"active": true})
+	this.BaseRepository.All(&stockLocations, nil, map[string]interface{}{"active": true})
 	stockLocationIds := Collect(stockLocations, "Id")
 
 	var stockItems []json.StockItem
-	this.Repository.All(&stockItems, nil, "variant_id IN(?) AND stock_location_id IN(?)", variantIds, stockLocationIds)
+	this.BaseRepository.All(&stockItems, nil, "variant_id IN(?) AND stock_location_id IN(?)", variantIds, stockLocationIds)
 
 	variantsMap := ToMap(variants, "Id", false)
 	productsMap := ToMap(products, "Id", false)
@@ -70,7 +71,7 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 }
 
 func (this *OrderInteractor) getQuantity(order *json.Order) int64 {
-	quantities, _ := this.Repository.SumLineItemsQuantityByOrderIds([]int64{order.Id})
+	quantities, _ := this.OrderRepository.SumLineItemsQuantityByOrderIds([]int64{order.Id})
 	return quantities[order.Id]
 }
 
@@ -82,20 +83,20 @@ func (this *OrderInteractor) getPermissions(order *json.Order, user *models.User
 
 func (this *OrderInteractor) getLineItems(order *json.Order) *[]json.LineItem {
 	lineItems := &[]json.LineItem{}
-	this.Repository.Association(order, lineItems, "OrderId")
+	this.BaseRepository.Association(order, lineItems, "OrderId")
 	return lineItems
 }
 
 func (this *OrderInteractor) getAddress(order *json.Order, id string) *json.Address {
 	address := &json.Address{}
 
-	this.Repository.Association(order, address, id)
+	this.BaseRepository.Association(order, address, id)
 
 	address.Country = &json.Country{}
-	this.Repository.Association(address, address.Country, "CountryId")
+	this.BaseRepository.Association(address, address.Country, "CountryId")
 
 	address.State = &json.State{}
-	this.Repository.Association(address, address.State, "StateId")
+	this.BaseRepository.Association(address, address.State, "StateId")
 	address.StateName = address.State.Name
 	address.StateText = address.State.Abbr
 
@@ -116,7 +117,7 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, params Respon
 		return &OrderResponse{}, err
 	}
 
-	err = this.Repository.All(&orders, map[string]interface{}{"limit": perPage, "offset": currentPage}, query, gparams)
+	err = this.BaseRepository.All(&orders, map[string]interface{}{"limit": perPage, "offset": currentPage}, query, gparams)
 
 	if err != nil {
 		return &OrderResponse{}, err
@@ -131,7 +132,7 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, params Respon
 		orderIds = append(orderIds, order.Id)
 	}
 
-	quantities, err := this.Repository.SumLineItemsQuantityByOrderIds(orderIds)
+	quantities, err := this.OrderRepository.SumLineItemsQuantityByOrderIds(orderIds)
 	for index, order := range orders {
 		orders[index].Quantity = quantities[order.Id]
 	}
@@ -148,12 +149,13 @@ func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, er
 		return 0, err
 	}
 
-	return this.Repository.Count(models.Order{}, query, gparams)
+	return this.BaseRepository.Count(models.Order{}, query, gparams)
 }
 
 func NewOrderInteractor() *OrderInteractor {
 	return &OrderInteractor{
-		Repository: repositories.NewDatabaseRepository(),
+		BaseRepository:  repositories.NewDatabaseRepository(),
+		OrderRepository: repositories.NewOrderRepository(),
 	}
 }
 
