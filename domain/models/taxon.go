@@ -22,11 +22,14 @@ type Taxon struct {
 	MetaDescription        string
 	MetaKeywords           string
 	Depth                  int64
-	PrettyName             string
 	ClassificationPosition int64
 	ProductId              int64
 }
 
 func (this Taxon) TableName() string {
 	return "spree_taxons"
+}
+
+func (this Taxon) PrettyName() string {
+	return this.Name
 }
