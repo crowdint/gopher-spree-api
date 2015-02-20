@@ -1,11 +1,12 @@
 package json
 
 import (
+	"strings"
+
 	"github.com/crowdint/gopher-spree-api/configs"
 	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-	"strings"
 )
 
 type AssetInteractor struct {
@@ -61,7 +62,8 @@ func (this *AssetInteractor) toJson(asset *models.Asset) *json.Asset {
 		"attachment_content_type": asset.AttachmentContentType,
 		"attachment_file_name":    asset.AttachmentFileName,
 		"attachment_updated_at":   asset.AttachmentUpdatedAt,
-		"alt": asset.Alt,
+		"type":                    asset.Type,
+		"alt":                     asset.Alt,
 	}
 
 	defaultStyles := configs.Get(configs.SPREE_DEFAULT_STYLES)

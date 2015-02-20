@@ -11,6 +11,7 @@ import (
 )
 
 type OrderInteractor struct {
+	AssetInteractor *AssetInteractor
 	BaseRepository  *repositories.DbRepo
 	OrderRepository *repositories.OrderRepository
 }
@@ -39,6 +40,7 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 		}
 
 		variant.SetInventoryValues()
+		variant.Images = this.getVariantImages(variant.Id)
 
 		(*order.LineItems)[i].Variant = &variant
 		(*order.LineItems)[i].Adjustments = this.getAdjustments(lineItem.Id)
@@ -94,6 +96,23 @@ func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, er
 	}
 
 	return this.BaseRepository.Count(models.Order{}, query, gparams)
+}
+
+func (this *OrderInteractor) getVariantImages(viewableId int64) []*json.Asset {
+	modelImages := []*models.Asset{}
+	jsonImages := []*json.Asset{}
+
+	err := this.BaseRepository.All(&modelImages, map[string]interface{}{
+		"order": "position ASC",
+	}, "type IN ('Spree::Image') AND viewable_id = ? AND viewable_type = ?", viewableId, "Spree::Variant")
+
+	if err == nil {
+		for _, modelImage := range modelImages {
+			jsonImages = append(jsonImages, this.AssetInteractor.toJson(modelImage))
+		}
+	}
+
+	return jsonImages
 }
 
 func (this *OrderInteractor) getAdjustments(adjustableId int64) []json.Adjustment {
@@ -187,6 +206,7 @@ func (this OrderResponse) GetTag() string {
 
 func NewOrderInteractor() *OrderInteractor {
 	return &OrderInteractor{
+		AssetInteractor: NewAssetInteractor(),
 		BaseRepository:  repositories.NewDatabaseRepository(),
 		OrderRepository: repositories.NewOrderRepository(),
 	}
