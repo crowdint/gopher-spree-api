@@ -48,6 +48,8 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 		(*order.LineItems)[i].Adjustments = this.getAdjustments(lineItem.Id)
 	}
 
+	this.setPayments(&order)
+
 	return &order, nil
 }
 
@@ -98,6 +100,14 @@ func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, er
 	}
 
 	return this.BaseRepository.Count(models.Order{}, query, gparams)
+}
+
+func (this *OrderInteractor) setPayments(order *json.Order) {
+	payments := []json.Payment{}
+	this.BaseRepository.All(&payments, map[string]interface{}{
+		"order": "created_at",
+	}, "order_id = ?", order.Id)
+	order.Payments = payments
 }
 
 func (this *OrderInteractor) getVariantImages(variantId int64) []*json.Asset {

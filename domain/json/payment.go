@@ -19,3 +19,7 @@ type Payment struct {
 	CreatedAt       time.Time     `json:"created_at"`
 	UpdatedAt       time.Time     `json:"updated_at"`
 }
+
+func (this Payment) TableName() string {
+	return "spree_payments"
+}

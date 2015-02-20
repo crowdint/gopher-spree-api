@@ -44,7 +44,7 @@ type Order struct {
 	// Associations
 	BillAddress *Address    `json:"bill_address,omitempty"`
 	LineItems   *[]LineItem `json:"line_items,omitempty"`
-	Payments    []Payment   `json:"payments,omitempty"`
+	Payments    []Payment   `json:"payments"`
 	ShipAddress *Address    `json:"ship_address,omitempty"`
 	Shipments   []Shipment  `json:"shipments,omitempty"`
 }
