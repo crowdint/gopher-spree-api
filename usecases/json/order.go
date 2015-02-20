@@ -12,9 +12,9 @@ import (
 
 type OrderInteractor struct {
 	AssetInteractor       *AssetInteractor
-	BaseRepository        *repositories.DbRepo
+	BaseRepository        *repositories.DbRepository
 	OrderRepository       *repositories.OrderRepository
-	OptionValueRepository *repositories.OptionValueRepo
+	OptionValueRepository *repositories.OptionValueRepository
 }
 
 func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order, error) {

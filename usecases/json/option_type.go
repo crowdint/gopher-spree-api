@@ -7,7 +7,7 @@ import (
 )
 
 type OptionTypeInteractor struct {
-	Repo *repositories.OptionTypeRepo
+	Repo *repositories.OptionTypeRepository
 }
 
 func NewOptionTypeInteractor() *OptionTypeInteractor {

@@ -1,20 +1,19 @@
 package repositories
 
 import (
-	//	"github.com/davecgh/go-spew/spew"
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/jinzhu/gorm"
 )
 
-type VariantRepo DbRepo
+type VariantRepository DbRepository
 
-func NewVariantRepo() *VariantRepo {
-	return &VariantRepo{
+func NewVariantRepo() *VariantRepository {
+	return &VariantRepository{
 		dbHandler: Spree_db,
 	}
 }
 
-func (this *VariantRepo) FindByProductIds(productIds []int64) ([]*models.Variant, error) {
+func (this *VariantRepository) FindByProductIds(productIds []int64) ([]*models.Variant, error) {
 
 	variants := []*models.Variant{}
 

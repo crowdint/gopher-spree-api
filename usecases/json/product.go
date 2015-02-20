@@ -29,7 +29,7 @@ func (this ProductResponse) GetTag() string {
 }
 
 type ProductInteractor struct {
-	BaseRepository            *repositories.DbRepo
+	BaseRepository            *repositories.DbRepository
 	VariantInteractor         *VariantInteractor
 	ProductPropertyInteractor *ProductPropertyInteractor
 	ClassificationInteractor  *ClassificationInteractor

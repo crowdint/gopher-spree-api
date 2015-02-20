@@ -2,17 +2,17 @@ package repositories
 
 import "github.com/crowdint/gopher-spree-api/domain/models"
 
-type TaxonRepo DbRepo
+type TaxonRepository DbRepository
 
-func NewTaxonRepo() *TaxonRepo {
-	return &TaxonRepo{
+func NewTaxonRepo() *TaxonRepository {
+	return &TaxonRepository{
 		dbHandler: Spree_db,
 	}
 }
 
 var queryConfig = map[string]string{}
 
-func (this *TaxonRepo) FindByProductIds(productIds []int64) ([]*models.Taxon, error) {
+func (this *TaxonRepository) FindByProductIds(productIds []int64) ([]*models.Taxon, error) {
 	queryConfig["selectString"] = "taxons.*, " +
 		"spree_products_taxons.product_id, " +
 		"spree_products_taxons.position AS classification_position "
@@ -25,7 +25,7 @@ func (this *TaxonRepo) FindByProductIds(productIds []int64) ([]*models.Taxon, er
 	return this.findByResourceIds(productIds)
 }
 
-func (this *TaxonRepo) FindByTaxonomyIds(taxonomyIds []int64) ([]*models.Taxon, error) {
+func (this *TaxonRepository) FindByTaxonomyIds(taxonomyIds []int64) ([]*models.Taxon, error) {
 	queryConfig["selectString"] = "taxons.*, " +
 		"spree_taxonomies.id, " +
 		"spree_taxonomies.name AS taxonomy_name "
@@ -38,7 +38,7 @@ func (this *TaxonRepo) FindByTaxonomyIds(taxonomyIds []int64) ([]*models.Taxon, 
 	return this.findByResourceIds(taxonomyIds)
 }
 
-func (this *TaxonRepo) findByResourceIds(resourceIds []int64) ([]*models.Taxon, error) {
+func (this *TaxonRepository) findByResourceIds(resourceIds []int64) ([]*models.Taxon, error) {
 	taxons := []*models.Taxon{}
 
 	if len(resourceIds) == 0 {

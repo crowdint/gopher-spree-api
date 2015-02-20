@@ -2,15 +2,15 @@ package repositories
 
 import "github.com/crowdint/gopher-spree-api/domain/models"
 
-type OptionTypeRepo DbRepo
+type OptionTypeRepository DbRepository
 
-func NewOptionTypeRepo() *OptionTypeRepo {
-	return &OptionTypeRepo{
+func NewOptionTypeRepo() *OptionTypeRepository {
+	return &OptionTypeRepository{
 		dbHandler: Spree_db,
 	}
 }
 
-func (this *OptionTypeRepo) FindByProductIds(productIds []int64) ([]*models.OptionType, error) {
+func (this *OptionTypeRepository) FindByProductIds(productIds []int64) ([]*models.OptionType, error) {
 	var optionTypes []*models.OptionType
 
 	if len(productIds) == 0 {

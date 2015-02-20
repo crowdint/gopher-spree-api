@@ -7,7 +7,7 @@ import (
 )
 
 type VariantInteractor struct {
-	Repo                  *repositories.VariantRepo
+	Repo                  *repositories.VariantRepository
 	AssetInteractor       *AssetInteractor
 	OptionValueInteractor *OptionValueInteractor
 }

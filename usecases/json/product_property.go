@@ -7,7 +7,7 @@ import (
 )
 
 type ProductPropertyInteractor struct {
-	Repo *repositories.ProductPropertyRepo
+	Repo *repositories.ProductPropertyRepository
 }
 
 func NewProductPropertyInteractor() *ProductPropertyInteractor {

@@ -10,7 +10,7 @@ import (
 )
 
 type AssetInteractor struct {
-	Repo *repositories.AssetRepo
+	Repo *repositories.AssetRepository
 }
 
 func NewAssetInteractor() *AssetInteractor {

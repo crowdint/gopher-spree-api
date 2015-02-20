@@ -2,15 +2,15 @@ package repositories
 
 import "github.com/crowdint/gopher-spree-api/domain/models"
 
-type ProductPropertyRepo DbRepo
+type ProductPropertyRepository DbRepository
 
-func NewProductPropertyRepo() *ProductPropertyRepo {
-	return &ProductPropertyRepo{
+func NewProductPropertyRepo() *ProductPropertyRepository {
+	return &ProductPropertyRepository{
 		dbHandler: Spree_db,
 	}
 }
 
-func (this *ProductPropertyRepo) FindByProductIds(productIds []int64) ([]*models.ProductProperty, error) {
+func (this *ProductPropertyRepository) FindByProductIds(productIds []int64) ([]*models.ProductProperty, error) {
 	var productProperties []*models.ProductProperty
 
 	if len(productIds) == 0 {
