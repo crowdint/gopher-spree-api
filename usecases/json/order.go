@@ -100,18 +100,12 @@ func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, er
 	return this.BaseRepository.Count(models.Order{}, query, gparams)
 }
 
-func (this *OrderInteractor) getVariantImages(viewableId int64) []*json.Asset {
-	modelImages := []*models.Asset{}
+func (this *OrderInteractor) getVariantImages(variantId int64) []*json.Asset {
 	jsonImages := []*json.Asset{}
 
-	err := this.BaseRepository.All(&modelImages, map[string]interface{}{
-		"order": "position ASC",
-	}, "type IN ('Spree::Image') AND viewable_id = ? AND viewable_type = ?", viewableId, "Spree::Variant")
-
+	modelImages, err := this.AssetInteractor.Repo.AllImagesByVariantId(variantId)
 	if err == nil {
-		for _, modelImage := range modelImages {
-			jsonImages = append(jsonImages, this.AssetInteractor.toJson(modelImage))
-		}
+		jsonImages = this.AssetInteractor.toJsonAssets(modelImages)
 	}
 
 	return jsonImages

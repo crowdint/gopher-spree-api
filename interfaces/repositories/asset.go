@@ -1,12 +1,16 @@
 package repositories
 
-import "github.com/crowdint/gopher-spree-api/domain/models"
+import (
+	"github.com/crowdint/gopher-spree-api/domain/models"
+)
 
-type AssetRepo DbRepo
+type AssetRepo struct {
+	DbRepo
+}
 
 func NewAssetRepo() *AssetRepo {
 	return &AssetRepo{
-		dbHandler: Spree_db,
+		DbRepo{dbHandler: Spree_db},
 	}
 }
 
@@ -22,4 +26,12 @@ func (this *AssetRepo) FindByViewableIds(viewableIds []int64) ([]*models.Asset, 
 		Find(&assets)
 
 	return assets, query.Error
+}
+
+func (this *AssetRepo) AllImagesByVariantId(variantId int64) ([]*models.Asset, error) {
+	modelImages := []*models.Asset{}
+	err := this.All(&modelImages, map[string]interface{}{
+		"order": "position ASC",
+	}, "type IN ('Spree::Image') AND viewable_id = ? AND viewable_type = ?", variantId, "Spree::Variant")
+	return modelImages, err
 }

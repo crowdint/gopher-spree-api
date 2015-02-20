@@ -50,6 +50,14 @@ func (this *AssetInteractor) modelsToJsonAssetsMap(assetSlice []*models.Asset) J
 	return jsonAssetsMap
 }
 
+func (this *AssetInteractor) toJsonAssets(modelAssets []*models.Asset) []*json.Asset {
+	jsonAsstes := []*json.Asset{}
+	for _, modelAsset := range modelAssets {
+		jsonAsstes = append(jsonAsstes, this.toJson(modelAsset))
+	}
+	return jsonAsstes
+}
+
 func (this *AssetInteractor) toJson(asset *models.Asset) *json.Asset {
 	assetJson := json.Asset{
 		"id":                      asset.Id,
