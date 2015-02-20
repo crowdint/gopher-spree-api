@@ -39,7 +39,9 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 		}
 
 		variant.SetInventoryValues()
+
 		(*order.LineItems)[i].Variant = &variant
+		(*order.LineItems)[i].Adjustments = this.getAdjustments(lineItem.Id)
 	}
 
 	return &order, nil
@@ -92,6 +94,12 @@ func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, er
 	}
 
 	return this.BaseRepository.Count(models.Order{}, query, gparams)
+}
+
+func (this *OrderInteractor) getAdjustments(adjustableId int64) []json.Adjustment {
+	adjustments := []json.Adjustment{}
+	this.BaseRepository.All(&adjustments, nil, "adjustable_id = ? AND adjustable_type = ?", adjustableId, "Spree::LineItem")
+	return adjustments
 }
 
 func (this *OrderInteractor) getAddress(order *json.Order, id string) *json.Address {
