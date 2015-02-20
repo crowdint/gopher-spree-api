@@ -11,9 +11,10 @@ import (
 )
 
 type OrderInteractor struct {
-	AssetInteractor *AssetInteractor
-	BaseRepository  *repositories.DbRepo
-	OrderRepository *repositories.OrderRepository
+	AssetInteractor       *AssetInteractor
+	BaseRepository        *repositories.DbRepo
+	OrderRepository       *repositories.OrderRepository
+	OptionValueRepository *repositories.OptionValueRepo
 }
 
 func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order, error) {
@@ -41,6 +42,7 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 
 		variant.SetInventoryValues()
 		variant.Images = this.getVariantImages(variant.Id)
+		variant.OptionValues = this.OptionValueRepository.AllByVariantAssociation(&variant)
 
 		(*order.LineItems)[i].Variant = &variant
 		(*order.LineItems)[i].Adjustments = this.getAdjustments(lineItem.Id)
@@ -206,8 +208,9 @@ func (this OrderResponse) GetTag() string {
 
 func NewOrderInteractor() *OrderInteractor {
 	return &OrderInteractor{
-		AssetInteractor: NewAssetInteractor(),
-		BaseRepository:  repositories.NewDatabaseRepository(),
-		OrderRepository: repositories.NewOrderRepository(),
+		AssetInteractor:       NewAssetInteractor(),
+		BaseRepository:        repositories.NewDatabaseRepository(),
+		OrderRepository:       repositories.NewOrderRepository(),
+		OptionValueRepository: repositories.NewOptionValueRepo(),
 	}
 }

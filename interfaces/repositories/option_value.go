@@ -1,13 +1,24 @@
 package repositories
 
-import "github.com/crowdint/gopher-spree-api/domain/models"
+import (
+	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain/models"
+)
 
-type OptionValueRepo DbRepo
+type OptionValueRepo struct {
+	DbRepo
+}
 
 func NewOptionValueRepo() *OptionValueRepo {
 	return &OptionValueRepo{
-		dbHandler: Spree_db,
+		DbRepo{dbHandler: Spree_db},
 	}
+}
+
+func (this *OptionValueRepo) AllByVariantAssociation(variant *json.Variant) []models.OptionValue {
+	optionValues := []models.OptionValue{}
+	this.Association(variant, &optionValues, "OptionValues")
+	return optionValues
 }
 
 func (this *OptionValueRepo) FindByVariantIds(variantIds []int64) ([]*models.OptionValue, error) {

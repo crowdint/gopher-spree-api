@@ -1,10 +1,8 @@
 package json
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-	"github.com/jinzhu/copier"
 )
 
 type OptionValueInteractor struct {
@@ -17,7 +15,7 @@ func NewOptionValueInteractor() *OptionValueInteractor {
 	}
 }
 
-type JsonOptionValuesMap map[int64][]*json.OptionValue
+type JsonOptionValuesMap map[int64][]models.OptionValue
 
 func (this *OptionValueInteractor) GetJsonOptionValuesMap(variantIds []int64) (JsonOptionValuesMap, error) {
 
@@ -35,15 +33,12 @@ func (this *OptionValueInteractor) modelsToJsonOptionValuesMap(optionValueSlice 
 	jsonOptionValuesMap := JsonOptionValuesMap{}
 
 	for _, optionValue := range optionValueSlice {
-		optionValueJson := &json.OptionValue{}
-		copier.Copy(optionValueJson, optionValue)
-
 		if _, exists := jsonOptionValuesMap[optionValue.VariantId]; !exists {
-			jsonOptionValuesMap[optionValue.VariantId] = []*json.OptionValue{}
+			jsonOptionValuesMap[optionValue.VariantId] = []models.OptionValue{}
 		}
 
 		jsonOptionValuesMap[optionValue.VariantId] =
-			append(jsonOptionValuesMap[optionValue.VariantId], optionValueJson)
+			append(jsonOptionValuesMap[optionValue.VariantId], *optionValue)
 
 	}
 
