@@ -81,12 +81,6 @@ SPREE_ASSET_HOST      = ""                                                 # Ass
 SPREE_DEFAULT_STYLES  = "mini,small,product,large"                         # Assets default styles
 ```
 
-## Dependencies
-
-To install project dependencies (packages):
-
-    $ go get ./...
-
 ## Build
 
 To build run the entire project:
@@ -95,12 +89,8 @@ To build run the entire project:
 
 ## Run
 
-We use [forego](http://github.com/ddollar/forego) to run the app,
-install it by simply running:
-
-    $ go get github.com/ddollar/forego
-
-Then, to run:
+We use [forego](http://github.com/ddollar/forego) to run the app and
+its services by simply running:
 
     $ forego start
 
