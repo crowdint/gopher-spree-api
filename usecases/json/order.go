@@ -124,12 +124,6 @@ func (this *OrderInteractor) getVariantImages(variantId int64) []*json.Asset {
 	return jsonImages
 }
 
-func (this *OrderInteractor) getAdjustments(adjustableId int64) []json.Adjustment {
-	adjustments := []json.Adjustment{}
-	this.BaseRepository.All(&adjustments, nil, "adjustable_id = ? AND adjustable_type = ?", adjustableId, "Spree::LineItem")
-	return adjustments
-}
-
 func (this *OrderInteractor) getAddress(order *json.Order, id string) *json.Address {
 	address := &json.Address{}
 
