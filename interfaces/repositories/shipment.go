@@ -37,7 +37,7 @@ func (this *ShipmentRepository) AllByOrder(order *json.Order) []json.Shipment {
 		}
 
 		adjustmentRepository := NewAdjustmentRepository()
-		shipments[i].Adjustments = adjustmentRepository.AllByAdjustable(shipments[i].Id, "Spree::Shipment")
+		shipments[i].Adjustments = adjustmentRepository.AllByAdjustable(shipments[i].Id, shipments[i].SpreeClass())
 	}
 	return shipments
 }

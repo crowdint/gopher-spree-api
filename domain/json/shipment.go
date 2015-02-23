@@ -27,3 +27,7 @@ type Shipment struct {
 func (this Shipment) TableName() string {
 	return "spree_shipments"
 }
+
+func (this *Shipment) SpreeClass() string {
+	return "Spree::Shipment"
+}

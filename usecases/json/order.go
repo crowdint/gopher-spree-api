@@ -47,11 +47,12 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 		variant.OptionValues = this.OptionValueRepository.AllByVariantAssociation(&variant)
 
 		(*order.LineItems)[i].Variant = &variant
-		(*order.LineItems)[i].Adjustments = this.AdjustmentRepository.AllByAdjustable(lineItem.Id, "Spree::LineItem")
+		(*order.LineItems)[i].Adjustments = this.AdjustmentRepository.AllByAdjustable(lineItem.Id, lineItem.SpreeClass())
 	}
 
 	this.setPayments(&order)
 	order.Shipments = this.ShipmentRepository.AllByOrder(&order)
+	order.Adjustments = this.AdjustmentRepository.AllByAdjustable(order.Id, order.SpreeClass())
 
 	return &order, nil
 }

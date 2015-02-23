@@ -42,9 +42,14 @@ type Order struct {
 	Quantity                  int64        `json:"total_quantity"`
 
 	// Associations
-	BillAddress *Address    `json:"bill_address,omitempty"`
-	LineItems   *[]LineItem `json:"line_items,omitempty"`
-	Payments    []Payment   `json:"payments"`
-	ShipAddress *Address    `json:"ship_address,omitempty"`
-	Shipments   []Shipment  `json:"shipments,omitempty"`
+	BillAddress *Address     `json:"bill_address,omitempty"`
+	LineItems   *[]LineItem  `json:"line_items,omitempty"`
+	Payments    []Payment    `json:"payments"`
+	ShipAddress *Address     `json:"ship_address,omitempty"`
+	Shipments   []Shipment   `json:"shipments,omitempty"`
+	Adjustments []Adjustment `json:"adjustments"`
+}
+
+func (this *Order) SpreeClass() string {
+	return "Spree::Order"
 }
