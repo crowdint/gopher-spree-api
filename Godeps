@@ -1,0 +1,13 @@
+github.com/brandfolder/gin-gorelic         b3200fd6d4c7c434fd4d4d7ecb39a3c43aa8253c
+github.com/crowdint/gransak                ee0d161c0301cf8ae1c75f955c86d3cffb49bb29
+github.com/gin-gonic/gin                   v0.5
+github.com/jinzhu/copier                   6e12de4f75d99030d1d4f40d78025562b068d26d
+github.com/jinzhu/gorm                     3e9c2d581fc8f470bcda02e45ae6ee2707af6767
+github.com/julienschmidt/httprouter        bde5c16eb82ff15a1734a3818d9b9547065f65b1
+github.com/lib/pq                          go1.0-cutoff
+github.com/yvasiyarov/gorelic              v0.0.6
+github.com/yvasiyarov/go-metrics           c25f46c4b94079672242ec48a545e7ca9ebe3aec
+github.com/yvasiyarov/newrelic_platform_go 13d5af9721f4455a501db543c93827447089bab3
+
+# Tools
+github.com/ddollar/forego                  v0.16.1

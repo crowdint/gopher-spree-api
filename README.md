@@ -2,12 +2,58 @@
 
 Experimental implementation of the Spree API on steroids.
 
-## Getting started
-
-### Prerequisites
+## Prerequisites
 
 - An up and running spree app
 - A go installation
+
+## Getting started
+
+First of all install [gpm](https://github.com/pote/gpm) and
+[gvp](https://github.com/pote/gvp):
+
+    $ brew install gpm
+    $ brew install gvp
+
+In order to allow `gpm` to install our package dependencies
+you will need a personal github token configured for your workstation,
+if you already did it for another project that will do it, if not, just
+follow [gpm instructions](https://github.com/pote/gpm#private-repos).
+
+## Workflow
+
+### Always and for every shell session
+
+Source gvp into your shell session:
+
+    $ source gvp in
+
+### Installing dependencies
+
+Install dependencies by running:
+
+    $ gpm install
+
+
+### Adding new dependencies
+
+Add dependencies by appending them to the Godeps file in the following
+format:
+
+    # Git repos
+    github.com/nu7hatch/gotrail             v0.0.2
+    github.com/replicon/fast-archiver       v1.02
+
+    # Subpackages
+    github.com/garyburd/redigo/redis        a6a0a737c00caf4d4c2bb589941ace0d688168bb
+
+    # Bazaar Repo
+    launchpad.net/gocheck                   r2013.03.03
+
+    # Mercurial Repo
+    code.google.com/p/go.example/hello/...  ae081cd1d6cc
+
+And install dependencies again.
 
 ### Configuration
 
@@ -35,12 +81,6 @@ SPREE_ASSET_HOST      = ""                                                 # Ass
 SPREE_DEFAULT_STYLES  = "mini,small,product,large"                         # Assets default styles
 ```
 
-## Dependencies
-
-To install project dependencies (packages):
-
-    $ go get ./...
-
 ## Build
 
 To build run the entire project:
@@ -49,12 +89,8 @@ To build run the entire project:
 
 ## Run
 
-We use [forego](http://github.com/ddollar/forego) to run the app,
-install it by simply running:
-
-    $ go get github.com/ddollar/forego
-
-Then, to run:
+We use [forego](http://github.com/ddollar/forego) to run the app and
+its services by simply running:
 
     $ forego start
 
