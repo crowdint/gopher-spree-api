@@ -12,9 +12,11 @@ import (
 
 type OrderInteractor struct {
 	AssetInteractor       *AssetInteractor
+	AdjustmentRepository  *repositories.AdjustmentRepository
 	BaseRepository        *repositories.DbRepository
 	OrderRepository       *repositories.OrderRepository
 	OptionValueRepository *repositories.OptionValueRepository
+	ShipmentRepository    *repositories.ShipmentRepository
 }
 
 func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order, error) {
@@ -45,10 +47,11 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 		variant.OptionValues = this.OptionValueRepository.AllByVariantAssociation(&variant)
 
 		(*order.LineItems)[i].Variant = &variant
-		(*order.LineItems)[i].Adjustments = this.getAdjustments(lineItem.Id)
+		(*order.LineItems)[i].Adjustments = this.AdjustmentRepository.AllByAdjustable(lineItem.Id, "Spree::LineItem")
 	}
 
 	this.setPayments(&order)
+	order.Shipments = this.ShipmentRepository.AllByOrder(&order)
 
 	return &order, nil
 }
@@ -213,8 +216,10 @@ func (this OrderResponse) GetTag() string {
 func NewOrderInteractor() *OrderInteractor {
 	return &OrderInteractor{
 		AssetInteractor:       NewAssetInteractor(),
+		AdjustmentRepository:  repositories.NewAdjustmentRepository(),
 		BaseRepository:        repositories.NewDatabaseRepository(),
 		OrderRepository:       repositories.NewOrderRepository(),
 		OptionValueRepository: repositories.NewOptionValueRepo(),
+		ShipmentRepository:    repositories.NewShipmentRepository(),
 	}
 }

@@ -12,14 +12,18 @@ type Shipment struct {
 	SelectedShippingRate ShippingRate `json:"selected_shipping_rate"`
 	State                string       `json:"state"`
 	StockLocationName    string       `json:"stock_location_name"`
-	Tracking             string       `json:"tracking"`
+	StockLocationId      int64        `json:"-"`
+	Tracking             *string      `json:"tracking"`
 	ShippedAt            *time.Time   `json:"shipped_at"`
 
-	//Computed
-	Manifest ShipmentManifest `json:"shipment_manifest"` //TODO: Implement
-
 	// Associations
+	StockLocation   StockLocation    `json:"-"`
 	Adjustments     []Adjustment     `json:"adjustments"`
 	ShippingMethods []ShippingMethod `json:"shipping_methods"`
 	ShippingRates   []ShippingRate   `json:"shipping_rates"`
+	Manifest        []InventoryUnit  `json:"shipment_manifest"`
+}
+
+func (this Shipment) TableName() string {
+	return "spree_shipments"
 }
