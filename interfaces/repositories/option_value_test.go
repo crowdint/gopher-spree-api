@@ -8,7 +8,7 @@ import (
 )
 
 func TestOptionValueRepo(t *testing.T) {
-	err := InitDB()
+	err := InitDB(true)
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
@@ -42,7 +42,7 @@ func TestOptionValueRepo(t *testing.T) {
 }
 
 func TestOptionValueRepository_AllByVariantAssociation(t *testing.T) {
-	err := InitDB()
+	err := InitDB(true)
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
