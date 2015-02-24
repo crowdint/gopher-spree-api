@@ -8,12 +8,12 @@ import (
 )
 
 type ClassificationInteractor struct {
-	TaxonRepo *repositories.TaxonRepo
+	TaxonRepository *repositories.TaxonRepository
 }
 
 func NewClassificationInteractor() *ClassificationInteractor {
 	return &ClassificationInteractor{
-		TaxonRepo: repositories.NewTaxonRepo(),
+		TaxonRepository: repositories.NewTaxonRepo(),
 	}
 }
 
@@ -21,7 +21,7 @@ type JsonClassificationsMap map[int64][]*json.Classification
 
 func (this *ClassificationInteractor) GetJsonClassificationsMap(productIds []int64) (JsonClassificationsMap, error) {
 
-	taxons, err := this.TaxonRepo.FindByProductIds(productIds)
+	taxons, err := this.TaxonRepository.FindByProductIds(productIds)
 	if err != nil {
 		return JsonClassificationsMap{}, err
 	}

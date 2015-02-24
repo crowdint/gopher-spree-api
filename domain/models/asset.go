@@ -1,10 +1,11 @@
 package models
 
 import (
-	"github.com/crowdint/gopher-spree-api/configs"
 	"regexp"
 	"strconv"
 	"time"
+
+	"github.com/crowdint/gopher-spree-api/configs"
 )
 
 type Asset struct {
@@ -19,7 +20,7 @@ type Asset struct {
 	AttachmentFileName    string
 	Type                  string
 	AttachmentUpdatedAt   time.Time
-	Alt                   string
+	Alt                   *string
 	CreatedAt             time.Time
 	UpdatedAt             time.Time
 }

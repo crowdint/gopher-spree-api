@@ -1,8 +1,9 @@
 package json
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"testing"
+
+	"github.com/crowdint/gopher-spree-api/domain/models"
 )
 
 func TestAssetInteractor_modelsToJsonAssetsMap(t *testing.T) {
@@ -27,5 +28,42 @@ func TestAssetInteractor_modelsToJsonAssetsMap(t *testing.T) {
 
 	if a1["mini_url"] != "/spree/products/1/mini/asset1.jpg" {
 		t.Error("Wrong assignment of values")
+	}
+}
+
+func TestAssetInteractor_toJsonAssets(t *testing.T) {
+	modelAssets := []*models.Asset{
+		&models.Asset{
+			Id:                 1,
+			ViewableId:         1,
+			AttachmentFileName: "asset1.jpg",
+		},
+		&models.Asset{
+			Id:                 2,
+			ViewableId:         3,
+			AttachmentFileName: "asset2.jpg",
+		},
+	}
+
+	assetInteractor := NewAssetInteractor()
+	jsonAsstes := assetInteractor.toJsonAssets(modelAssets)
+
+	if len(jsonAsstes) == 0 {
+		t.Error("Json Assets len should be 2, but was 0")
+	}
+
+	for i, jsonAsset := range jsonAsstes {
+		modelAsset := modelAssets[i]
+		if (*jsonAsset)["id"].(int) != modelAsset.Id {
+			t.Errorf("Json Asset Id should be %d, but was %d", modelAsset.Id, (*jsonAsset)["id"])
+		}
+
+		if (*jsonAsset)["viewable_id"].(int64) != modelAsset.ViewableId {
+			t.Errorf("Json Asset Id should be %d, but was %d", modelAsset.ViewableId, (*jsonAsset)["viewable_id"])
+		}
+
+		if (*jsonAsset)["attachment_file_name"].(string) != modelAsset.AttachmentFileName {
+			t.Errorf("Json Asset Id should be %d, but was %d", modelAsset.AttachmentFileName, (*jsonAsset)["attachment_file_name"])
+		}
 	}
 }

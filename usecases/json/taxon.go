@@ -25,14 +25,14 @@ func (this TaxonResponse) GetTag() string {
 }
 
 type TaxonInteractor struct {
-	BaseRepository *repositories.DbRepo
-	TaxonRepo      *repositories.TaxonRepo
+	BaseRepository  *repositories.DbRepository
+	TaxonRepository *repositories.TaxonRepository
 }
 
 func NewTaxonInteractor() *TaxonInteractor {
 	return &TaxonInteractor{
-		BaseRepository: repositories.NewDatabaseRepository(),
-		TaxonRepo:      repositories.NewTaxonRepo(),
+		BaseRepository:  repositories.NewDatabaseRepository(),
+		TaxonRepository: repositories.NewTaxonRepo(),
 	}
 }
 

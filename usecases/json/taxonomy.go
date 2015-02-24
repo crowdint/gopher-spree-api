@@ -24,7 +24,7 @@ func (this TaxonomyResponse) GetTag() string {
 }
 
 type TaxonomyInteractor struct {
-	BaseRepository *repositories.DbRepo
+	BaseRepository *repositories.DbRepository
 }
 
 func NewTaxonomyInteractor() *TaxonomyInteractor {

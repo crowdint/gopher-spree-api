@@ -13,7 +13,7 @@ import (
 
 var Spree_db *gorm.DB
 
-type DbRepo struct {
+type DbRepository struct {
 	dbHandler *gorm.DB
 }
 
@@ -61,8 +61,8 @@ func InitDB() error {
 	return nil
 }
 
-func NewDatabaseRepository() *DbRepo {
-	return &DbRepo{Spree_db}
+func NewDatabaseRepository() *DbRepository {
+	return &DbRepository{Spree_db}
 }
 
 func extractPaginationValues(attrs map[string]interface{}) (limit, offset int) {
@@ -84,7 +84,7 @@ func getIntegerOrDefault(value string, def int) int {
 	return number
 }
 
-func (this *DbRepo) All(collection interface{}, options map[string]interface{}, query interface{}, values ...interface{}) error {
+func (this *DbRepository) All(collection interface{}, options map[string]interface{}, query interface{}, values ...interface{}) error {
 	limit, offset := extractPaginationValues(options)
 	dbHandler := this.dbHandler
 
@@ -98,16 +98,16 @@ func (this *DbRepo) All(collection interface{}, options map[string]interface{}, 
 	return dbHandler.Where(query, values...).Find(collection).Error
 }
 
-func (this *DbRepo) Association(model interface{}, association interface{}, attribute string) {
+func (this *DbRepository) Association(model interface{}, association interface{}, attribute string) {
 	this.dbHandler.Model(model).Related(association, attribute)
 }
 
-func (this *DbRepo) Count(model interface{}, query string, params []interface{}) (count int64, err error) {
+func (this *DbRepository) Count(model interface{}, query string, params []interface{}) (count int64, err error) {
 	err = this.dbHandler.Model(model).Where(query, params).Count(&count).Error
 	return
 }
 
-func (this *DbRepo) FindBy(model interface{}, options map[string]interface{}, where map[string]interface{}) error {
+func (this *DbRepository) FindBy(model interface{}, options map[string]interface{}, where map[string]interface{}) error {
 	dbHandler := this.dbHandler
 	dbHandler = notIfPresent(dbHandler, options)
 	return dbHandler.First(model, where).Error

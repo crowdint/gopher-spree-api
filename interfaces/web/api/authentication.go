@@ -66,7 +66,7 @@ func verifySpreeTokenAccess(c *gin.Context, authRequired bool) error {
 	return nil
 }
 
-func verifyOrderTokenAndAction(c *gin.Context, dbRepo *repositories.DbRepo, authRequired bool) (bool, error) {
+func verifyOrderTokenAndAction(c *gin.Context, dbRepo *repositories.DbRepository, authRequired bool) (bool, error) {
 	if isOrdersShowAction(c.Request.URL.Path) {
 		if err := verifyOrderTokenAccess(c, dbRepo, authRequired); err != nil {
 			return false, err
@@ -80,7 +80,7 @@ func verifyOrderTokenAndAction(c *gin.Context, dbRepo *repositories.DbRepo, auth
 
 }
 
-func verifyOrderTokenAccess(c *gin.Context, dbRepo *repositories.DbRepo, authRequired bool) error {
+func verifyOrderTokenAccess(c *gin.Context, dbRepo *repositories.DbRepository, authRequired bool) error {
 	// Get order token
 	orderToken := getOrderToken(c)
 
@@ -122,7 +122,7 @@ func nextHandler(c *gin.Context, user *models.User) {
 	c.Next()
 }
 
-func findUserBySpreeApiKey(c *gin.Context, dbRepo *repositories.DbRepo, user *models.User, spreeToken string) error {
+func findUserBySpreeApiKey(c *gin.Context, dbRepo *repositories.DbRepository, user *models.User, spreeToken string) error {
 	err := dbRepo.FindBy(user, nil, map[string]interface{}{"spree_api_key": spreeToken})
 
 	if err != nil {

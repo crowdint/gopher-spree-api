@@ -41,3 +41,7 @@ func (this *LineItem) AfterFind() (err error) {
 func (this LineItem) TableName() string {
 	return "spree_line_items"
 }
+
+func (this *LineItem) SpreeClass() string {
+	return "Spree::LineItem"
+}

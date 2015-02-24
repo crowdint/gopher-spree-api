@@ -1,20 +1,21 @@
 package json
 
 import (
+	"strings"
+
 	"github.com/crowdint/gopher-spree-api/configs"
 	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-	"strings"
 )
 
 type AssetInteractor struct {
-	Repo *repositories.AssetRepo
+	Repository *repositories.AssetRepository
 }
 
 func NewAssetInteractor() *AssetInteractor {
 	return &AssetInteractor{
-		Repo: repositories.NewAssetRepo(),
+		Repository: repositories.NewAssetRepo(),
 	}
 }
 
@@ -22,7 +23,7 @@ type JsonAssetsMap map[int64][]*json.Asset
 
 func (this *AssetInteractor) GetJsonAssetsMap(viewableIds []int64) (JsonAssetsMap, error) {
 
-	assets, err := this.Repo.FindByViewableIds(viewableIds)
+	assets, err := this.Repository.FindByViewableIds(viewableIds)
 	if err != nil {
 		return JsonAssetsMap{}, err
 	}
@@ -49,6 +50,14 @@ func (this *AssetInteractor) modelsToJsonAssetsMap(assetSlice []*models.Asset) J
 	return jsonAssetsMap
 }
 
+func (this *AssetInteractor) toJsonAssets(modelAssets []*models.Asset) []*json.Asset {
+	jsonAssets := []*json.Asset{}
+	for _, modelAsset := range modelAssets {
+		jsonAssets = append(jsonAssets, this.toJson(modelAsset))
+	}
+	return jsonAssets
+}
+
 func (this *AssetInteractor) toJson(asset *models.Asset) *json.Asset {
 	assetJson := json.Asset{
 		"id":                      asset.Id,
@@ -61,7 +70,8 @@ func (this *AssetInteractor) toJson(asset *models.Asset) *json.Asset {
 		"attachment_content_type": asset.AttachmentContentType,
 		"attachment_file_name":    asset.AttachmentFileName,
 		"attachment_updated_at":   asset.AttachmentUpdatedAt,
-		"alt": asset.Alt,
+		"type":                    asset.Type,
+		"alt":                     asset.Alt,
 	}
 
 	defaultStyles := configs.Get(configs.SPREE_DEFAULT_STYLES)

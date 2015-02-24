@@ -11,8 +11,12 @@ import (
 )
 
 type OrderInteractor struct {
-	BaseRepository  *repositories.DbRepo
-	OrderRepository *repositories.OrderRepository
+	AssetInteractor       *AssetInteractor
+	AdjustmentRepository  *repositories.AdjustmentRepository
+	BaseRepository        *repositories.DbRepository
+	OrderRepository       *repositories.OrderRepository
+	OptionValueRepository *repositories.OptionValueRepository
+	ShipmentRepository    *repositories.ShipmentRepository
 }
 
 func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order, error) {
@@ -39,8 +43,16 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 		}
 
 		variant.SetInventoryValues()
+		variant.Images = this.getVariantImages(variant.Id)
+		variant.OptionValues = this.OptionValueRepository.AllByVariantAssociation(&variant)
+
 		(*order.LineItems)[i].Variant = &variant
+		(*order.LineItems)[i].Adjustments = this.AdjustmentRepository.AllByAdjustable(lineItem.Id, lineItem.SpreeClass())
 	}
+
+	this.setPayments(&order)
+	order.Shipments = this.ShipmentRepository.AllByOrder(&order)
+	order.Adjustments = this.AdjustmentRepository.AllByAdjustable(order.Id, order.SpreeClass())
 
 	return &order, nil
 }
@@ -92,6 +104,25 @@ func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, er
 	}
 
 	return this.BaseRepository.Count(models.Order{}, query, gparams)
+}
+
+func (this *OrderInteractor) setPayments(order *json.Order) {
+	payments := []json.Payment{}
+	this.BaseRepository.All(&payments, map[string]interface{}{
+		"order": "created_at",
+	}, "order_id = ?", order.Id)
+	order.Payments = payments
+}
+
+func (this *OrderInteractor) getVariantImages(variantId int64) []*json.Asset {
+	jsonImages := []*json.Asset{}
+
+	modelImages, err := this.AssetInteractor.Repository.AllImagesByVariantId(variantId)
+	if err == nil {
+		jsonImages = this.AssetInteractor.toJsonAssets(modelImages)
+	}
+
+	return jsonImages
 }
 
 func (this *OrderInteractor) getAddress(order *json.Order, id string) *json.Address {
@@ -179,7 +210,11 @@ func (this OrderResponse) GetTag() string {
 
 func NewOrderInteractor() *OrderInteractor {
 	return &OrderInteractor{
-		BaseRepository:  repositories.NewDatabaseRepository(),
-		OrderRepository: repositories.NewOrderRepository(),
+		AssetInteractor:       NewAssetInteractor(),
+		AdjustmentRepository:  repositories.NewAdjustmentRepository(),
+		BaseRepository:        repositories.NewDatabaseRepository(),
+		OrderRepository:       repositories.NewOrderRepository(),
+		OptionValueRepository: repositories.NewOptionValueRepo(),
+		ShipmentRepository:    repositories.NewShipmentRepository(),
 	}
 }

@@ -4,7 +4,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/jinzhu/gorm"
+
+	"github.com/crowdint/gopher-spree-api/configs"
 )
 
 const (
@@ -15,7 +17,7 @@ const (
 )
 
 var (
-	dbRepo      *repositories.DbRepo
+	dbHandler   *gorm.DB
 	spreeConfig = map[string]string{
 		COUNTRY_ID:             getDbOrDefault(COUNTRY_ID, "232"),
 		CURRENCY:               getDbOrDefault(CURRENCY, "USD"),
@@ -48,7 +50,7 @@ func SetAndSave(key, value string) error {
 		return err
 	}
 	p.Value = serialize(value)
-	err = repositories.Spree_db.Save(p).Error
+	err = dbHandler.Save(p).Error
 	if err != nil {
 		return err
 	}
@@ -92,19 +94,23 @@ func getDbOrDefault(key string, defaultValue string) string {
 
 func findPreferenceByKey(key string) (*Preference, error) {
 	p := &Preference{}
-	err := dbRepo.FindBy(p, nil, map[string]interface{}{"key": key})
+	err := dbHandler.First(p, map[string]interface{}{"key": key}).Error
 	return p, err
 }
 
 func initDbRepo() error {
-	if repositories.Spree_db == nil {
-		if err := repositories.InitDB(); err != nil {
+	if dbHandler == nil {
+		dbUrl := configs.Get(configs.DB_URL)
+		dbEngine := configs.Get(configs.DB_ENGINE)
+
+		db, err := gorm.Open(dbEngine, dbUrl)
+		if err != nil {
 			return err
 		}
-	}
 
-	if dbRepo == nil {
-		dbRepo = repositories.NewDatabaseRepository()
+		dbLog, _ := strconv.ParseBool(configs.Get(configs.DB_DEBUG))
+		db.LogMode(dbLog)
+		dbHandler = &db
 	}
 
 	return nil

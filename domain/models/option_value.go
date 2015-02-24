@@ -3,16 +3,16 @@ package models
 import "time"
 
 type OptionValue struct {
-	Id                     int64
-	Position               int64
-	Name                   string
-	Presentation           string
-	OptionTypeId           int64
-	OptionTypePresentation string
-	OptionTypeName         string
-	CreatedAt              time.Time
-	UpdatedAt              time.Time
-	VariantId              int64
+	Id                     int64     `json:"id"`
+	Position               int64     `json:"-"`
+	Name                   string    `json:"name"`
+	Presentation           string    `json:"presentation"`
+	OptionTypeId           int64     `json:"option_type_id"`
+	OptionTypePresentation string    `json:"option_type_presentation"`
+	OptionTypeName         string    `json:"option_type_name"`
+	CreatedAt              time.Time `json:"-"`
+	UpdatedAt              time.Time `json:"-"`
+	VariantId              int64     `json:"-"`
 }
 
 func (this OptionValue) TableName() string {

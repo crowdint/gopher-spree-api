@@ -1,6 +1,6 @@
 package repositories
 
-type OrderRepository DbRepo
+type OrderRepository DbRepository
 
 func NewOrderRepository() *OrderRepository {
 	return &OrderRepository{

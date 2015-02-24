@@ -1,6 +1,10 @@
 package json
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/crowdint/gopher-spree-api/domain/models"
+)
 
 func TestVariantStructure(t *testing.T) {
 	expected := `{"id":1,"cost_price":"1.9","depth":"23.1","height":"20","is_master":true,` +
@@ -30,7 +34,7 @@ func TestVariantStructure(t *testing.T) {
 		IsBackorderable: false,
 		TotalOnHand:     &totalOnHand,
 		IsDestroyed:     false,
-		OptionValues:    []*OptionValue{},
+		OptionValues:    []models.OptionValue{},
 		Images:          []*Asset{},
 	}
 
