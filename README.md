@@ -9,11 +9,13 @@ Experimental implementation of the Spree API on steroids.
 
 ## Getting started
 
-First of all install [gpm](https://github.com/pote/gpm) and
-[gvp](https://github.com/pote/gvp):
+First of all install [gpm](https://github.com/pote/gpm),
+[gvp](https://github.com/pote/gvp) and
+[gpm-local](https://github.com/thecnosophos/gpm-local):
 
     $ brew install gpm
     $ brew install gvp
+    $ brew install gpm-local # This is a gpm plugin
 
 In order to allow `gpm` to install our package dependencies
 you will need a personal github token configured for your workstation,
@@ -34,6 +36,15 @@ Install dependencies by running:
 
     $ gpm install
 
+### One time only
+
+Tell gpm to link project's subpackages with `gpm-local`:
+
+    $ gpm local name github.com/crowdint/gopher-spree-api
+
+This will allow us to work with uncommitted subpackage changes, as this
+will link every subpackage to be found inside the `.godeps` directory
+under this project's path.
 
 ### Adding new dependencies
 
