@@ -7,14 +7,14 @@ import (
 )
 
 type VariantInteractor struct {
-	Repo                  *repositories.VariantRepository
+	Repository            *repositories.VariantRepository
 	AssetInteractor       *AssetInteractor
 	OptionValueInteractor *OptionValueInteractor
 }
 
 func NewVariantInteractor() *VariantInteractor {
 	return &VariantInteractor{
-		Repo:                  repositories.NewVariantRepo(),
+		Repository:            repositories.NewVariantRepo(),
 		AssetInteractor:       NewAssetInteractor(),
 		OptionValueInteractor: NewOptionValueInteractor(),
 	}
@@ -23,7 +23,7 @@ func NewVariantInteractor() *VariantInteractor {
 type JsonVariantsMap map[int64][]*json.Variant
 
 func (this *VariantInteractor) GetJsonVariantsMap(productIds []int64) (JsonVariantsMap, error) {
-	variants, err := this.Repo.FindByProductIds(productIds)
+	variants, err := this.Repository.FindByProductIds(productIds)
 	if err != nil {
 		return JsonVariantsMap{}, err
 	}

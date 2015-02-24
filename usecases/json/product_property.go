@@ -7,12 +7,12 @@ import (
 )
 
 type ProductPropertyInteractor struct {
-	Repo *repositories.ProductPropertyRepository
+	Repository *repositories.ProductPropertyRepository
 }
 
 func NewProductPropertyInteractor() *ProductPropertyInteractor {
 	return &ProductPropertyInteractor{
-		Repo: repositories.NewProductPropertyRepo(),
+		Repository: repositories.NewProductPropertyRepo(),
 	}
 }
 
@@ -20,7 +20,7 @@ type JsonProductPropertiesMap map[int64][]*json.ProductProperty
 
 func (this *ProductPropertyInteractor) GetJsonProductPropertiesMap(productIds []int64) (JsonProductPropertiesMap, error) {
 
-	productProperties, err := this.Repo.FindByProductIds(productIds)
+	productProperties, err := this.Repository.FindByProductIds(productIds)
 	if err != nil {
 		return JsonProductPropertiesMap{}, err
 	}

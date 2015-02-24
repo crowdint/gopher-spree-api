@@ -7,12 +7,12 @@ import (
 )
 
 type OptionTypeInteractor struct {
-	Repo *repositories.OptionTypeRepository
+	Repository *repositories.OptionTypeRepository
 }
 
 func NewOptionTypeInteractor() *OptionTypeInteractor {
 	return &OptionTypeInteractor{
-		Repo: repositories.NewOptionTypeRepo(),
+		Repository: repositories.NewOptionTypeRepo(),
 	}
 }
 
@@ -20,7 +20,7 @@ type JsonOptionTypesMap map[int64][]*json.OptionType
 
 func (this *OptionTypeInteractor) GetJsonOptionTypesMap(productIds []int64) (JsonOptionTypesMap, error) {
 
-	optionTypes, err := this.Repo.FindByProductIds(productIds)
+	optionTypes, err := this.Repository.FindByProductIds(productIds)
 	if err != nil {
 		return JsonOptionTypesMap{}, err
 	}

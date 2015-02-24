@@ -117,7 +117,7 @@ func (this *OrderInteractor) setPayments(order *json.Order) {
 func (this *OrderInteractor) getVariantImages(variantId int64) []*json.Asset {
 	jsonImages := []*json.Asset{}
 
-	modelImages, err := this.AssetInteractor.Repo.AllImagesByVariantId(variantId)
+	modelImages, err := this.AssetInteractor.Repository.AllImagesByVariantId(variantId)
 	if err == nil {
 		jsonImages = this.AssetInteractor.toJsonAssets(modelImages)
 	}

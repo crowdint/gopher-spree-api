@@ -10,12 +10,12 @@ import (
 )
 
 type AssetInteractor struct {
-	Repo *repositories.AssetRepository
+	Repository *repositories.AssetRepository
 }
 
 func NewAssetInteractor() *AssetInteractor {
 	return &AssetInteractor{
-		Repo: repositories.NewAssetRepo(),
+		Repository: repositories.NewAssetRepo(),
 	}
 }
 
@@ -23,7 +23,7 @@ type JsonAssetsMap map[int64][]*json.Asset
 
 func (this *AssetInteractor) GetJsonAssetsMap(viewableIds []int64) (JsonAssetsMap, error) {
 
-	assets, err := this.Repo.FindByViewableIds(viewableIds)
+	assets, err := this.Repository.FindByViewableIds(viewableIds)
 	if err != nil {
 		return JsonAssetsMap{}, err
 	}
@@ -51,11 +51,11 @@ func (this *AssetInteractor) modelsToJsonAssetsMap(assetSlice []*models.Asset) J
 }
 
 func (this *AssetInteractor) toJsonAssets(modelAssets []*models.Asset) []*json.Asset {
-	jsonAsstes := []*json.Asset{}
+	jsonAssets := []*json.Asset{}
 	for _, modelAsset := range modelAssets {
-		jsonAsstes = append(jsonAsstes, this.toJson(modelAsset))
+		jsonAssets = append(jsonAssets, this.toJson(modelAsset))
 	}
-	return jsonAsstes
+	return jsonAssets
 }
 
 func (this *AssetInteractor) toJson(asset *models.Asset) *json.Asset {
