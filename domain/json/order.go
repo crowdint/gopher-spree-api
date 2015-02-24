@@ -42,11 +42,11 @@ type Order struct {
 	Quantity                  int64        `json:"total_quantity"`
 
 	// Associations
-	BillAddress *Address     `json:"bill_address,omitempty"`
+	BillAddress *Address     `json:"bill_address"`
 	LineItems   *[]LineItem  `json:"line_items,omitempty"`
 	Payments    []Payment    `json:"payments"`
-	ShipAddress *Address     `json:"ship_address,omitempty"`
-	Shipments   []Shipment   `json:"shipments,omitempty"`
+	ShipAddress *Address     `json:"ship_address"`
+	Shipments   []Shipment   `json:"shipments"`
 	Adjustments []Adjustment `json:"adjustments"`
 }
 

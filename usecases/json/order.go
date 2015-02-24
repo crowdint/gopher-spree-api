@@ -29,7 +29,7 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 
 	for i, lineItem := range *order.LineItems {
 		variant := variantsMap[lineItem.VariantId].(json.Variant)
-		product := productsMap[variant.Id].(json.Product)
+		product := productsMap[variant.ProductId].(json.Product)
 		price := pricesMap[variant.Id].(models.Price)
 
 		variant.Name = product.Name
@@ -130,13 +130,17 @@ func (this *OrderInteractor) getAddress(order *json.Order, id string) *json.Addr
 
 	this.BaseRepository.Association(order, address, id)
 
-	address.Country = &json.Country{}
-	this.BaseRepository.Association(address, address.Country, "CountryId")
+	if address.Id != 0 {
+		address.Country = &json.Country{}
+		this.BaseRepository.Association(address, address.Country, "CountryId")
 
-	address.State = &json.State{}
-	this.BaseRepository.Association(address, address.State, "StateId")
-	address.StateName = address.State.Name
-	address.StateText = address.State.Abbr
+		address.State = &json.State{}
+		this.BaseRepository.Association(address, address.State, "StateId")
+		address.StateName = address.State.Name
+		address.StateText = address.State.Abbr
+	} else {
+		address = nil
+	}
 
 	return address
 }
@@ -151,6 +155,7 @@ func (this *OrderInteractor) getAssociationMaps(order *json.Order) (varm, prom, 
 	var products []json.Product
 	this.BaseRepository.All(&products, nil, "id IN(?)", productIds)
 	prom = ToMap(products, "Id", false)
+
 
 	var prices []models.Price
 	this.BaseRepository.All(&prices, nil, "currency = ? AND variant_id IN(?)", spree.Get(spree.CURRENCY), variantIds)

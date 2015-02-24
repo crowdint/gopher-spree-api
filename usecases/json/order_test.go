@@ -85,14 +85,6 @@ func TestOrderInteractor_Show(t *testing.T) {
 		t.Error("Order Quantity should be greater than 0")
 	}
 
-	if jsonOrder.BillAddress == nil {
-		t.Error("Order BillAddress should not be nil, but it was")
-	}
-
-	if jsonOrder.ShipAddress == nil {
-		t.Error("Order ShipAddress should not be nil, but it was")
-	}
-
 	if jsonOrder.LineItems == nil {
 		t.Error("Order LineItems should not be nil, but it was")
 	}
