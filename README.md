@@ -38,13 +38,12 @@ Install dependencies by running:
 
 ### One time only
 
-Tell gpm to link project's subpackages with `gpm-local`:
+Tell gpm to link this project into the `.godeps` dir with `gpm-local`:
 
     $ gpm local name github.com/crowdint/gopher-spree-api
 
-This will allow us to work with uncommitted subpackage changes, as this
-will link every subpackage to be found inside the `.godeps` directory
-under this project's path.
+This will allow us to find this projects subpackages in the current
+$GOPATH
 
 ### Adding new dependencies
 
