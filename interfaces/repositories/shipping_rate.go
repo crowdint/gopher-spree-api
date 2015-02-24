@@ -20,8 +20,9 @@ func (this *ShippingRateRepository) AllByShipment(shipment *json.Shipment) []jso
 		"order": "cost ASC",
 	}, "shipment_id = ?", shipment.Id)
 
+	shippingMethodRepository := NewShippingMethodRepository()
+
 	for i, _ := range shippingRates {
-		shippingMethodRepository := NewShippingMethodRepository()
 		shippingMethodRepository.FindByShippingRateAssociation(&shippingRates[i])
 		shippingRates[i].Name = shippingRates[i].ShippingMethod.Name
 		shippingRates[i].ShippingMethodCode = &shippingRates[i].ShippingMethod.Code

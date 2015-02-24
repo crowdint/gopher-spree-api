@@ -20,23 +20,24 @@ func (this *ShipmentRepository) AllByOrder(order *json.Order) []json.Shipment {
 	this.All(&shipments, nil, "order_id = ?", order.Id)
 	lineItemsMap := utils.ToMap(*(order.LineItems), "Id", false)
 
+	stockLocationRepository := NewStockLocationRepository()
+	shippingRateRepository := NewShippingRateRepository()
+	inventoryUnitRepository := NewInventoryUnitRepository()
+	adjustmentRepository := NewAdjustmentRepository()
+
 	for i, _ := range shipments {
 		shipments[i].OrderId = order.Number
 
-		stockLocationRepository := NewStockLocationRepository()
 		stockLocationRepository.FindByShipmentAssociation(&shipments[i])
 		shipments[i].StockLocationName = shipments[i].StockLocation.Name
 
-		shippingRateRepository := NewShippingRateRepository()
 		shipments[i].ShippingRates = shippingRateRepository.AllByShipment(&shipments[i])
 
-		inventoryUnitRepository := NewInventoryUnitRepository()
 		inventoryUnitRepository.AllByShipmentAssociation(&shipments[i])
 		for j := 0; j < len(shipments[i].Manifest); j++ {
 			shipments[i].Manifest[j].Quantity = lineItemsMap[shipments[i].Manifest[j].LineItemId].(json.LineItem).Quantity
 		}
 
-		adjustmentRepository := NewAdjustmentRepository()
 		shipments[i].Adjustments = adjustmentRepository.AllByAdjustable(shipments[i].Id, shipments[i].SpreeClass())
 	}
 	return shipments
