@@ -7,21 +7,23 @@ import (
 )
 
 func TestDB(t *testing.T) {
-	err := InitDB()
+	err := InitDB(true)
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
 	}
 
+	defer Spree_db.Close()
+
 	if Spree_db == nil {
 		t.Error("Database helper not initialized")
 	}
-
-	Spree_db.Close()
 }
 
 func TestAll(t *testing.T) {
-	InitDB()
+	InitDB(true)
+
+	defer Spree_db.Close()
 
 	r := NewDatabaseRepository()
 
@@ -39,7 +41,9 @@ func TestAll(t *testing.T) {
 }
 
 func TestAllWithConditions(t *testing.T) {
-	InitDB()
+	InitDB(true)
+
+	defer Spree_db.Close()
 
 	r := NewDatabaseRepository()
 
@@ -57,7 +61,9 @@ func TestAllWithConditions(t *testing.T) {
 }
 
 func TestFindBy(t *testing.T) {
-	InitDB()
+	InitDB(true)
+
+	defer Spree_db.Close()
 
 	r := NewDatabaseRepository()
 
@@ -71,7 +77,9 @@ func TestFindBy(t *testing.T) {
 }
 
 func TestFindByWithConditions(t *testing.T) {
-	InitDB()
+	InitDB(true)
+
+	defer Spree_db.Close()
 
 	r := NewDatabaseRepository()
 
@@ -85,7 +93,9 @@ func TestFindByWithConditions(t *testing.T) {
 }
 
 func TestFindByWithOptions(t *testing.T) {
-	InitDB()
+	InitDB(true)
+
+	defer Spree_db.Close()
 
 	r := NewDatabaseRepository()
 

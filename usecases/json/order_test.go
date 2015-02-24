@@ -9,7 +9,7 @@ import (
 )
 
 func TestOrderInteractor_GetResponse(t *testing.T) {
-	err := repositories.InitDB()
+	err := repositories.InitDB(true)
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 		return
@@ -43,7 +43,7 @@ func TestOrderInteractor_GetResponse(t *testing.T) {
 }
 
 func TestOrderInteractor_Show(t *testing.T) {
-	err := repositories.InitDB()
+	err := repositories.InitDB(true)
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 		return

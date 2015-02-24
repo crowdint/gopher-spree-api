@@ -11,6 +11,13 @@ import (
 )
 
 func TestTaxonomiesIndex(t *testing.T) {
+	err := repositories.InitDB(true)
+	if err != nil {
+		t.Error("An error occurred: " + err.Error())
+	}
+
+	defer repositories.Spree_db.Close()
+
 	r := gin.New()
 
 	method := "GET"

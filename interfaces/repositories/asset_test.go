@@ -6,7 +6,7 @@ import (
 )
 
 func TestAssetRepo(t *testing.T) {
-	err := InitDB()
+	err := InitDB(true)
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
@@ -40,7 +40,7 @@ func TestAssetRepo(t *testing.T) {
 }
 
 func TestAssetRepo_AllImagesByVariantId(t *testing.T) {
-	err := InitDB()
+	err := InitDB(true)
 
 	if err != nil {
 		t.Error("An error has ocurred", err)

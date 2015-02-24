@@ -75,6 +75,7 @@ specific configurations, the following variables will override them:
 DATABASE_DEBUG        = true                                               # Logging enabled
 DATABASE_ENGINE       = postgres                                           # Engine name
 DATABASE_URL          = dbname=spree_dev sslmode=disable                   # Connection string/URL
+TEST_DATABASE_URL     = dbname=spree_test sslmode=disable                  # Test database connection string/URL
 MAX_IDLE_CONNS        = 2                                                  # Max iddle connections
 MAX_OPEN_CONNS        = 5                                                  # Max open connections
 
@@ -90,6 +91,19 @@ SPREE_ASSET_PATH      = ":host/spree/products/:asset_id/:style/:filename"  # Ass
 SPREE_ASSET_HOST      = ""                                                 # Assets host
 SPREE_DEFAULT_STYLES  = "mini,small,product,large"                         # Assets default styles
 ```
+
+## Testing
+
+You should create a test database and populate it with tests data. So
+the following commands should be executed in the spree project:
+
+    $ RAILS_ENV=test rake db:create
+    $ RAILS_ENV=test rake db:migrate
+    $ RAILS_ENV=test rake db:seed
+    $ RAILS_ENV=test rake spree_sample:load
+    
+**NOTE**: You should ensure that the spree_test database is populated when running
+the tests of this project.
 
 ## Build
 

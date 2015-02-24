@@ -33,7 +33,7 @@ func TestFindOrderWhenOrderIsInContext(t *testing.T) {
 
 func TestFindOrderWhenOrderExists(t *testing.T) {
 	t.Skip()
-	err := repositories.InitDB()
+	err := repositories.InitDB(true)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
@@ -68,10 +68,12 @@ func TestFindOrderWhenOrderExists(t *testing.T) {
 }
 
 func TestFindOrderWhenOrderDoesNotExist(t *testing.T) {
-	err := repositories.InitDB()
+	err := repositories.InitDB(true)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
+
+	defer repositories.Spree_db.Close()
 
 	var ctx *gin.Context
 	r := gin.New()
@@ -126,7 +128,7 @@ func TestGinOrderWhenOrderIsNotInContext(t *testing.T) {
 }
 
 func TestAuthorizeOrdersWhenUserIsSetAndIsAdmin(t *testing.T) {
-	err := repositories.InitDB()
+	err := repositories.InitDB(true)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
@@ -159,7 +161,7 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsAdmin(t *testing.T) {
 }
 
 func TestAuthorizeOrdersWhenUserIsSetAndIsNotAdmin(t *testing.T) {
-	err := repositories.InitDB()
+	err := repositories.InitDB(true)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
@@ -189,7 +191,7 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsNotAdmin(t *testing.T) {
 }
 
 func TestAuthorizeOrderWhenUserIsSetAndIsAdmin(t *testing.T) {
-	err := repositories.InitDB()
+	err := repositories.InitDB(true)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
@@ -224,10 +226,12 @@ func TestAuthorizeOrderWhenUserIsSetAndIsAdmin(t *testing.T) {
 }
 
 func TestAuthorizeOrderWhenUserIsNotAdminAndOrderBelongsToHim(t *testing.T) {
-	err := repositories.InitDB()
+	err := repositories.InitDB(true)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
+
+	defer repositories.Spree_db.Close()
 
 	dbRepo := repositories.NewDatabaseRepository()
 
@@ -265,10 +269,12 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderBelongsToHim(t *testing.T) {
 }
 
 func TestAuthorizeOrderWhenUserIsNotAdminAndOrderDoesNotBelongToHim(t *testing.T) {
-	err := repositories.InitDB()
+	err := repositories.InitDB(true)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
+
+	defer repositories.Spree_db.Close()
 
 	dbRepo := repositories.NewDatabaseRepository()
 
