@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	err := repositories.InitDB()
+	err := repositories.InitDB(false)
 
 	if err != nil {
 		panic(err)

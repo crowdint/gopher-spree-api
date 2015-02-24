@@ -10,6 +10,7 @@ const (
 	DB_IDLE_CONNS = "MAX_IDLE_CONNS"
 	DB_OPEN_CONNS = "MAX_OPEN_CONNS"
 	DB_URL        = "DATABASE_URL"
+	TEST_DB_URL   = "TEST_DATABASE_URL"
 
 	SPREE_URL = "SPREE_URL"
 	SPREE_NS  = "SPREE_NAMESPACE"
@@ -26,6 +27,7 @@ var defaultSettings = map[string]string{
 	DB_DEBUG:      getEnvOrDefault(DB_DEBUG, "false"),
 	DB_ENGINE:     getEnvOrDefault(DB_ENGINE, "postgres"),
 	DB_URL:        getEnvOrDefault(DB_URL, "dbname=spree_dev sslmode=disable"),
+	TEST_DB_URL:   getEnvOrDefault(TEST_DB_URL, "dbname=spree_test sslmode=disable"),
 	DB_IDLE_CONNS: getEnvOrDefault(DB_IDLE_CONNS, "2"),
 	DB_OPEN_CONNS: getEnvOrDefault(DB_OPEN_CONNS, "5"),
 

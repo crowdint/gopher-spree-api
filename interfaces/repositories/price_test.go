@@ -6,7 +6,7 @@ import (
 )
 
 func TestPriceRepo(t *testing.T) {
-	err := InitDB()
+	err := InitDB(true)
 
 	if err != nil {
 		t.Error("An error has ocurred", err)

@@ -22,8 +22,15 @@ type Not struct {
 	Values []interface{}
 }
 
-func InitDB() error {
-	dbUrl := configs.Get(configs.DB_URL)
+func InitDB(testing bool) error {
+	var dbUrl string
+
+	if testing {
+		dbUrl = configs.Get(configs.TEST_DB_URL)
+	} else {
+		dbUrl = configs.Get(configs.DB_URL)
+	}
+
 	dbEngine := configs.Get(configs.DB_ENGINE)
 
 	if dbEngine == "postgres" {

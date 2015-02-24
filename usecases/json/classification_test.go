@@ -6,7 +6,7 @@ import (
 )
 
 func TestClassificationInteractor_GetJsonClassificationsMap(t *testing.T) {
-	err := repositories.InitDB()
+	err := repositories.InitDB(true)
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}
