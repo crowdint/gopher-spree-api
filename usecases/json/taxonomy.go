@@ -2,7 +2,6 @@ package json
 
 import (
 	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/jinzhu/copier"
 )
@@ -39,7 +38,7 @@ func (this *TaxonomyInteractor) GetResponse(currentPage, perPage int, params Res
 		return TaxonomyResponse{}, err
 	}
 
-	var taxonomyModelSlice []*models.Taxonomy
+	var taxonomyModelSlice []*json.Taxonomy
 	this.BaseRepository.All(&taxonomyModelSlice, map[string]interface{}{
 		"limit":  perPage,
 		"offset": currentPage,
@@ -63,7 +62,7 @@ func (this *TaxonomyInteractor) GetShowResponse(param ResponseParameters) (inter
 	return true, nil
 }
 
-func (this *TaxonomyInteractor) transformToJsonResponse(taxonomyModelSlice []*models.Taxonomy) ([]*json.Taxonomy, error) {
+func (this *TaxonomyInteractor) transformToJsonResponse(taxonomyModelSlice []*json.Taxonomy) ([]*json.Taxonomy, error) {
 	taxonomyJsonSlice := this.modelsToJsonTaxonomiesSlice(taxonomyModelSlice)
 
 	//WIP MERGE TAXONS
@@ -71,7 +70,7 @@ func (this *TaxonomyInteractor) transformToJsonResponse(taxonomyModelSlice []*mo
 	return taxonomyJsonSlice, nil
 }
 
-func (this *TaxonomyInteractor) getIdSlice(taxonomySlice []*models.Taxonomy) []int64 {
+func (this *TaxonomyInteractor) getIdSlice(taxonomySlice []*json.Taxonomy) []int64 {
 	taxonomyIds := []int64{}
 
 	for _, taxonomy := range taxonomySlice {
@@ -81,7 +80,7 @@ func (this *TaxonomyInteractor) getIdSlice(taxonomySlice []*models.Taxonomy) []i
 	return taxonomyIds
 }
 
-func (this *TaxonomyInteractor) modelsToJsonTaxonomiesSlice(taxonomySlice []*models.Taxonomy) []*json.Taxonomy {
+func (this *TaxonomyInteractor) modelsToJsonTaxonomiesSlice(taxonomySlice []*json.Taxonomy) []*json.Taxonomy {
 	jsonTaxonomySlice := []*json.Taxonomy{}
 
 	for _, taxonomy := range taxonomySlice {
@@ -99,5 +98,5 @@ func (this *TaxonomyInteractor) GetTotalCount(param ResponseParameters) (int64, 
 	if err != nil {
 		return 0, err
 	}
-	return this.BaseRepository.Count(models.Taxonomy{}, query, gparams)
+	return this.BaseRepository.Count(json.Taxonomy{}, query, gparams)
 }
