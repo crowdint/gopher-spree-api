@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	jsn "github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -40,14 +39,14 @@ func TestProductInteractor_GetMergedResponse(t *testing.T) {
 }
 
 func TestProductInteractor_getIdSlice(t *testing.T) {
-	products := []*models.Product{
-		&models.Product{
+	products := []*jsn.Product{
+		&jsn.Product{
 			Id: 1,
 		},
-		&models.Product{
+		&jsn.Product{
 			Id: 2,
 		},
-		&models.Product{
+		&jsn.Product{
 			Id: 3,
 		},
 	}
@@ -66,16 +65,16 @@ func TestProductInteractor_getIdSlice(t *testing.T) {
 }
 
 func TestProductInteractor_modelsToJsonProductsSlice(t *testing.T) {
-	products := []*models.Product{
-		&models.Product{
+	products := []*jsn.Product{
+		&jsn.Product{
 			Id:   1,
 			Name: "name1",
 		},
-		&models.Product{
+		&jsn.Product{
 			Id:   2,
 			Name: "name2",
 		},
-		&models.Product{
+		&jsn.Product{
 			Id:   3,
 			Name: "name3",
 		},

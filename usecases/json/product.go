@@ -8,7 +8,6 @@ import (
 	"github.com/jinzhu/copier"
 
 	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -52,7 +51,7 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int, params Resp
 		return ProductResponse{}, err
 	}
 
-	var productModelSlice []*models.Product
+	var productModelSlice []*json.Product
 	err = this.BaseRepository.All(&productModelSlice, map[string]interface{}{
 		"limit":  perPage,
 		"offset": currentPage,
@@ -80,13 +79,13 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 		return struct{}{}, errors.New("Invalid parameter type: " + fmt.Sprintf("%v", id))
 	}
 
-	product := &models.Product{}
+	product := &json.Product{}
 	err = this.BaseRepository.FindBy(product, nil, map[string]interface{}{"id": id})
 	if err != nil {
 		return nil, err
 	}
 
-	productModelSlice := []*models.Product{}
+	productModelSlice := []*json.Product{}
 
 	productModelSlice = append(productModelSlice, product)
 
@@ -98,7 +97,7 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 	return productJsonSlice[0], nil
 }
 
-func (this *ProductInteractor) transformToJsonResponse(productModelSlice []*models.Product) ([]*json.Product, error) {
+func (this *ProductInteractor) transformToJsonResponse(productModelSlice []*json.Product) ([]*json.Product, error) {
 	productJsonSlice := this.modelsToJsonProductsSlice(productModelSlice)
 
 	productIds := this.getIdSlice(productModelSlice)
@@ -143,7 +142,7 @@ func (this *ProductInteractor) mergeComplementaryValues(productIds []int64, prod
 	return nil
 }
 
-func (this *ProductInteractor) getIdSlice(productSlice []*models.Product) []int64 {
+func (this *ProductInteractor) getIdSlice(productSlice []*json.Product) []int64 {
 	productIds := []int64{}
 
 	for _, product := range productSlice {
@@ -153,7 +152,7 @@ func (this *ProductInteractor) getIdSlice(productSlice []*models.Product) []int6
 	return productIds
 }
 
-func (this *ProductInteractor) modelsToJsonProductsSlice(productSlice []*models.Product) []*json.Product {
+func (this *ProductInteractor) modelsToJsonProductsSlice(productSlice []*json.Product) []*json.Product {
 	jsonProductsSlice := []*json.Product{}
 
 	for _, product := range productSlice {
@@ -257,5 +256,5 @@ func (this *ProductInteractor) GetTotalCount(params ResponseParameters) (int64, 
 	if err != nil {
 		return 0, err
 	}
-	return this.BaseRepository.Count(&models.Product{}, query, gparams)
+	return this.BaseRepository.Count(&json.Product{}, query, gparams)
 }
