@@ -34,7 +34,7 @@ func TestVariantRepo(t *testing.T) {
 
 	temp := reflect.ValueOf(*variants[0]).Type().String()
 
-	if temp != "models.Variant" {
+	if temp != "json.Variant" {
 		t.Error("Invalid type", t)
 	}
 }

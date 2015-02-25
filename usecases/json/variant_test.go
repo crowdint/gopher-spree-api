@@ -1,7 +1,7 @@
 package json
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 
 	"testing"
@@ -42,14 +42,14 @@ func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
 
 	defer repositories.Spree_db.Close()
 
-	variantSlice := []*models.Variant{
-		&models.Variant{
+	variantSlice := []*json.Variant{
+		&json.Variant{
 			Id:        1,
 			Sku:       "sku0001",
 			Price:     9.99,
 			ProductId: 10,
 		},
-		&models.Variant{
+		&json.Variant{
 			Id:        2,
 			Sku:       "sku0002",
 			Price:     10.99,
@@ -82,7 +82,7 @@ func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
 }
 
 func TestVariantInteractor_toJson(t *testing.T) {
-	variant := &models.Variant{
+	variant := &json.Variant{
 		Id:        1,
 		Sku:       "sku0001",
 		Price:     9.99,

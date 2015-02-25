@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/crowdint/gopher-spree-api/configs/spree"
-	"github.com/crowdint/gopher-spree-api/domain/models"
 )
 
 type Variant struct {
@@ -34,8 +33,18 @@ type Variant struct {
 
 	// Associations
 	Images       []*Asset             `json:"images"`
-	OptionValues []models.OptionValue `json:"option_values" gorm:"many2many:spree_option_values_variants;"`
+	OptionValues []OptionValue `json:"option_values" gorm:"many2many:spree_option_values_variants;"`
 	StockItems   []*StockItem         `json:"-"`
+
+
+  //FROM DB
+  Position            int64 `json:"-"`
+	CostCurrency        string `json:"-"`
+	TaxCategoryId       int64 `json:"-"`
+	UpdatedAt           time.Time `json:"-"`
+	StockItemsCount     int64 `json:"-"`
+	RealStockItemsCount int64 `json:"-"`
+	Backorderable       bool `json:"-"`
 }
 
 func (this *Variant) AfterFind() (err error) {

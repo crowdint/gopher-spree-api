@@ -2,7 +2,6 @@ package json
 
 import (
 	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -36,7 +35,7 @@ func (this *VariantInteractor) GetJsonVariantsMap(productIds []int64) (JsonVaria
 	return variantsJson, nil
 }
 
-func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*models.Variant) (JsonVariantsMap, error) {
+func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*json.Variant) (JsonVariantsMap, error) {
 	variantIds := this.getIdSlice(variantSlice)
 	jsonAssetsMap, err := this.AssetInteractor.GetJsonAssetsMap(variantIds)
 	if err != nil {
@@ -67,7 +66,7 @@ func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*models.Va
 	return jsonVariantsMap, nil
 }
 
-func (this *VariantInteractor) toJson(variant *models.Variant) *json.Variant {
+func (this *VariantInteractor) toJson(variant *json.Variant) *json.Variant {
 	variantJson := &json.Variant{
 		Id: variant.Id,
 		//Name: from product
@@ -94,7 +93,7 @@ func (this *VariantInteractor) toJson(variant *models.Variant) *json.Variant {
 	return variantJson
 }
 
-func (this *VariantInteractor) getIdSlice(variantSlice []*models.Variant) []int64 {
+func (this *VariantInteractor) getIdSlice(variantSlice []*json.Variant) []int64 {
 	variantIds := []int64{}
 
 	for _, variant := range variantSlice {
