@@ -1,7 +1,7 @@
 package json
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -15,7 +15,7 @@ func NewOptionValueInteractor() *OptionValueInteractor {
 	}
 }
 
-type OptionValuesMap map[int64][]models.OptionValue
+type OptionValuesMap map[int64][]json.OptionValue
 
 func (this *OptionValueInteractor) GetJsonOptionValuesMap(variantIds []int64) (OptionValuesMap, error) {
 
@@ -29,12 +29,12 @@ func (this *OptionValueInteractor) GetJsonOptionValuesMap(variantIds []int64) (O
 	return optionValuesJson, nil
 }
 
-func (this *OptionValueInteractor) modelsToJsonOptionValuesMap(optionValueSlice []*models.OptionValue) OptionValuesMap {
+func (this *OptionValueInteractor) modelsToJsonOptionValuesMap(optionValueSlice []*json.OptionValue) OptionValuesMap {
 	jsonOptionValuesMap := OptionValuesMap{}
 
 	for _, optionValue := range optionValueSlice {
 		if _, exists := jsonOptionValuesMap[optionValue.VariantId]; !exists {
-			jsonOptionValuesMap[optionValue.VariantId] = []models.OptionValue{}
+			jsonOptionValuesMap[optionValue.VariantId] = []json.OptionValue{}
 		}
 
 		jsonOptionValuesMap[optionValue.VariantId] =
