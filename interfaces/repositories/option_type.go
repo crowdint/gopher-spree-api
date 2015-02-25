@@ -1,6 +1,6 @@
 package repositories
 
-import "github.com/crowdint/gopher-spree-api/domain/models"
+import "github.com/crowdint/gopher-spree-api/domain/json"
 
 type OptionTypeRepository DbRepository
 
@@ -10,8 +10,8 @@ func NewOptionTypeRepo() *OptionTypeRepository {
 	}
 }
 
-func (this *OptionTypeRepository) FindByProductIds(productIds []int64) ([]*models.OptionType, error) {
-	var optionTypes []*models.OptionType
+func (this *OptionTypeRepository) FindByProductIds(productIds []int64) ([]*json.OptionType, error) {
+	var optionTypes []*json.OptionType
 
 	if len(productIds) == 0 {
 		return optionTypes, nil

@@ -35,7 +35,7 @@ func TestOptionTypeRepo(t *testing.T) {
 
 	temp := reflect.ValueOf(*optionTypes[0]).Type().String()
 
-	if temp != "models.OptionType" {
+	if temp != "json.OptionType" {
 		t.Error("Invalid type", t)
 	}
 }

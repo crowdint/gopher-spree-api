@@ -2,7 +2,6 @@ package json
 
 import (
 	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -30,7 +29,7 @@ func (this *OptionTypeInteractor) GetJsonOptionTypesMap(productIds []int64) (Jso
 	return optionTypesJson, nil
 }
 
-func (this *OptionTypeInteractor) modelsToJsonOptionTypesMap(optionTypeSlice []*models.OptionType) JsonOptionTypesMap {
+func (this *OptionTypeInteractor) modelsToJsonOptionTypesMap(optionTypeSlice []*json.OptionType) JsonOptionTypesMap {
 	jsonOptionTypesMap := JsonOptionTypesMap{}
 
 	for _, optionType := range optionTypeSlice {
@@ -47,7 +46,7 @@ func (this *OptionTypeInteractor) modelsToJsonOptionTypesMap(optionTypeSlice []*
 	return jsonOptionTypesMap
 }
 
-func (this *OptionTypeInteractor) toJson(optionType *models.OptionType) *json.OptionType {
+func (this *OptionTypeInteractor) toJson(optionType *json.OptionType) *json.OptionType {
 	optionTypeJson := &json.OptionType{
 		Id:           optionType.Id,
 		Name:         optionType.Name,
