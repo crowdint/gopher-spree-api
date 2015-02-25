@@ -2,7 +2,6 @@ package json
 
 import (
 	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/jinzhu/copier"
 )
@@ -31,7 +30,7 @@ func (this *ClassificationInteractor) GetJsonClassificationsMap(productIds []int
 	return classificationsJson, nil
 }
 
-func (this *ClassificationInteractor) taxonsToClassificationMap(taxonsSlice []*models.Taxon) JsonClassificationsMap {
+func (this *ClassificationInteractor) taxonsToClassificationMap(taxonsSlice []*json.Taxon) JsonClassificationsMap {
 	jsonClassificationsMap := JsonClassificationsMap{}
 
 	for _, taxon := range taxonsSlice {
@@ -47,7 +46,7 @@ func (this *ClassificationInteractor) taxonsToClassificationMap(taxonsSlice []*m
 	return jsonClassificationsMap
 }
 
-func (this *ClassificationInteractor) taxonToJsonClassification(taxon *models.Taxon) *json.Classification {
+func (this *ClassificationInteractor) taxonToJsonClassification(taxon *json.Taxon) *json.Classification {
 	jsonTaxon := &json.Taxon{}
 	copier.Copy(jsonTaxon, taxon)
 
