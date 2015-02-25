@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	jsn "github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -39,16 +39,16 @@ func TestTaxonInteractor_GetResponse(t *testing.T) {
 }
 
 func TestTaxonInteractor_modelsToJsonTaxonsSlice(t *testing.T) {
-	taxons := []*models.Taxon{
-		&models.Taxon{
+	taxons := []*jsn.Taxon{
+		&jsn.Taxon{
 			Id:   1,
 			Name: "Categories",
 		},
-		&models.Taxon{
+		&jsn.Taxon{
 			Id:   2,
 			Name: "Bags",
 		},
-		&models.Taxon{
+		&jsn.Taxon{
 			Id:   3,
 			Name: "Mugs",
 		},

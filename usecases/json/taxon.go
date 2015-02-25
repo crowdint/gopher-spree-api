@@ -4,7 +4,6 @@ import (
 	"github.com/jinzhu/copier"
 
 	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -42,7 +41,7 @@ func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params Respon
 		return TaxonResponse{}, err
 	}
 
-	var taxonModelSlice []*models.Taxon
+	var taxonModelSlice []*json.Taxon
 
 	err = this.BaseRepository.All(&taxonModelSlice, map[string]interface{}{
 		"limit":  perPage,
@@ -62,7 +61,7 @@ func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params Respon
 	}, nil
 }
 
-func (this *TaxonInteractor) modelsToJsonTaxonsSlice(taxonSlice []*models.Taxon) []*json.Taxon {
+func (this *TaxonInteractor) modelsToJsonTaxonsSlice(taxonSlice []*json.Taxon) []*json.Taxon {
 	jsonTaxonsSlice := []*json.Taxon{}
 
 	for _, taxon := range taxonSlice {
@@ -82,11 +81,11 @@ func (this *TaxonInteractor) GetTotalCount(params ResponseParameters) (int64, er
 	if err != nil {
 		return 0, err
 	}
-	return this.BaseRepository.Count(models.Taxon{}, query, gparams)
+	return this.BaseRepository.Count(json.Taxon{}, query, gparams)
 }
 
 func (this *TaxonInteractor) GetShowResponse(params ResponseParameters) (interface{}, error) {
-	taxonModelSlice := []*models.Taxon{}
+	taxonModelSlice := []*json.Taxon{}
 
 	//DUMMY UNTIL TAXON SHOW IS IMPLEMENTED
 
