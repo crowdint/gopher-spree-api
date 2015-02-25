@@ -1,6 +1,6 @@
 package repositories
 
-import "github.com/crowdint/gopher-spree-api/domain/models"
+import "github.com/crowdint/gopher-spree-api/domain/json"
 
 type ProductPropertyRepository DbRepository
 
@@ -10,8 +10,8 @@ func NewProductPropertyRepo() *ProductPropertyRepository {
 	}
 }
 
-func (this *ProductPropertyRepository) FindByProductIds(productIds []int64) ([]*models.ProductProperty, error) {
-	var productProperties []*models.ProductProperty
+func (this *ProductPropertyRepository) FindByProductIds(productIds []int64) ([]*json.ProductProperty, error) {
+	var productProperties []*json.ProductProperty
 
 	if len(productIds) == 0 {
 		return productProperties, nil

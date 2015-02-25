@@ -2,7 +2,6 @@ package json
 
 import (
 	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -30,7 +29,7 @@ func (this *ProductPropertyInteractor) GetJsonProductPropertiesMap(productIds []
 	return productPropertiesJson, nil
 }
 
-func (this *ProductPropertyInteractor) modelsToJsonProductPropertiesMap(productPropertySlice []*models.ProductProperty) JsonProductPropertiesMap {
+func (this *ProductPropertyInteractor) modelsToJsonProductPropertiesMap(productPropertySlice []*json.ProductProperty) JsonProductPropertiesMap {
 	jsonProductPropertiesMap := JsonProductPropertiesMap{}
 
 	for _, productProperty := range productPropertySlice {
@@ -47,7 +46,7 @@ func (this *ProductPropertyInteractor) modelsToJsonProductPropertiesMap(productP
 	return jsonProductPropertiesMap
 }
 
-func (this *ProductPropertyInteractor) toJson(productProperty *models.ProductProperty) *json.ProductProperty {
+func (this *ProductPropertyInteractor) toJson(productProperty *json.ProductProperty) *json.ProductProperty {
 	productPropertyJson := &json.ProductProperty{
 		Id:           productProperty.Id,
 		ProductId:    productProperty.ProductId,
