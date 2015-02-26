@@ -70,20 +70,3 @@ func TestOptionTypeInteractor_modelsToJsonOptionTypesMap(t *testing.T) {
 
 }
 
-func TestOptionTypeInteractor_toJson(t *testing.T) {
-	optionType := &domain.OptionType{
-		Id:           2,
-		Name:         "tshirt-color",
-		Presentation: "Color",
-		Position:     2,
-		ProductId:    3,
-	}
-
-	optionTypeInteractor := NewOptionTypeInteractor()
-
-	jsonOptionType := optionTypeInteractor.toJson(optionType)
-
-	if jsonOptionType.Id != 2 || jsonOptionType.Name != "tshirt-color" || jsonOptionType.Presentation != "Color" || jsonOptionType.Position != 2 {
-		t.Error("Invalid values for first option type")
-	}
-}

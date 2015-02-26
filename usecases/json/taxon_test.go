@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -35,36 +34,5 @@ func TestTaxonInteractor_GetResponse(t *testing.T) {
 
 	if string(jsonBytes) == "" {
 		t.Error("Error: Json string is empty")
-	}
-}
-
-func TestTaxonInteractor_modelsToJsonTaxonsSlice(t *testing.T) {
-	taxons := []*domain.Taxon{
-		&domain.Taxon{
-			Id:   1,
-			Name: "Categories",
-		},
-		&domain.Taxon{
-			Id:   2,
-			Name: "Bags",
-		},
-		&domain.Taxon{
-			Id:   3,
-			Name: "Mugs",
-		},
-	}
-
-	taxonInteractor := NewTaxonInteractor()
-
-	jsonTaxons := taxonInteractor.modelsToJsonTaxonsSlice(taxons)
-
-	if len(jsonTaxons) < 1 {
-		t.Error("Incorrect taxon ids slice length")
-	}
-
-	p1 := jsonTaxons[0]
-
-	if p1.Id != 1 || p1.Name != "Categories" {
-		t.Error("Incorrect taxon values")
 	}
 }

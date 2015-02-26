@@ -33,26 +33,13 @@ func (this *ProductPropertyInteractor) modelsToJsonProductPropertiesMap(productP
 	jsonProductPropertiesMap := JsonProductPropertiesMap{}
 
 	for _, productProperty := range productPropertySlice {
-		productPropertyJson := this.toJson(productProperty)
-
 		if _, exists := jsonProductPropertiesMap[productProperty.ProductId]; !exists {
 			jsonProductPropertiesMap[productProperty.ProductId] = []*domain.ProductProperty{}
 		}
 
-		jsonProductPropertiesMap[productProperty.ProductId] = append(jsonProductPropertiesMap[productProperty.ProductId], productPropertyJson)
+		jsonProductPropertiesMap[productProperty.ProductId] = append(jsonProductPropertiesMap[productProperty.ProductId], productProperty)
 
 	}
 
 	return jsonProductPropertiesMap
-}
-
-func (this *ProductPropertyInteractor) toJson(productProperty *domain.ProductProperty) *domain.ProductProperty {
-	productPropertyJson := &domain.ProductProperty{
-		Id:           productProperty.Id,
-		ProductId:    productProperty.ProductId,
-		PropertyId:   productProperty.PropertyId,
-		Value:        productProperty.Value,
-		PropertyName: productProperty.PropertyName,
-	}
-	return productPropertyJson
 }

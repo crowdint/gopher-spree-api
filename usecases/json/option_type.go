@@ -33,25 +33,13 @@ func (this *OptionTypeInteractor) modelsToJsonOptionTypesMap(optionTypeSlice []*
 	jsonOptionTypesMap := JsonOptionTypesMap{}
 
 	for _, optionType := range optionTypeSlice {
-		optionTypeJson := this.toJson(optionType)
-
 		if _, exists := jsonOptionTypesMap[optionType.ProductId]; !exists {
 			jsonOptionTypesMap[optionType.ProductId] = []*domain.OptionType{}
 		}
 
-		jsonOptionTypesMap[optionType.ProductId] = append(jsonOptionTypesMap[optionType.ProductId], optionTypeJson)
+		jsonOptionTypesMap[optionType.ProductId] = append(jsonOptionTypesMap[optionType.ProductId], optionType)
 
 	}
 
 	return jsonOptionTypesMap
-}
-
-func (this *OptionTypeInteractor) toJson(optionType *domain.OptionType) *domain.OptionType {
-	optionTypeJson := &domain.OptionType{
-		Id:           optionType.Id,
-		Name:         optionType.Name,
-		Presentation: optionType.Presentation,
-		Position:     optionType.Position,
-	}
-	return optionTypeJson
 }

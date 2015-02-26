@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/jinzhu/copier"
-
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
@@ -98,16 +96,14 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 }
 
 func (this *ProductInteractor) transformToJsonResponse(productModelSlice []*domain.Product) ([]*domain.Product, error) {
-	productJsonSlice := this.modelsToJsonProductsSlice(productModelSlice)
-
 	productIds := this.getIdSlice(productModelSlice)
 
-	err := this.mergeComplementaryValues(productIds, productJsonSlice)
+	err := this.mergeComplementaryValues(productIds, productModelSlice)
 	if err != nil {
 		return []*domain.Product{}, err
 	}
 
-	return productJsonSlice, nil
+	return productModelSlice, nil
 }
 
 func (this *ProductInteractor) mergeComplementaryValues(productIds []int64, productJsonSlice []*domain.Product) error {
@@ -150,19 +146,6 @@ func (this *ProductInteractor) getIdSlice(productSlice []*domain.Product) []int6
 	}
 
 	return productIds
-}
-
-func (this *ProductInteractor) modelsToJsonProductsSlice(productSlice []*domain.Product) []*domain.Product {
-	jsonProductsSlice := []*domain.Product{}
-
-	for _, product := range productSlice {
-		productJson := &domain.Product{}
-		copier.Copy(productJson, product)
-
-		jsonProductsSlice = append(jsonProductsSlice, productJson)
-	}
-
-	return jsonProductsSlice
 }
 
 func (this *ProductInteractor) mergeVariants(productSlice []*domain.Product, variantsMap JsonVariantsMap) {

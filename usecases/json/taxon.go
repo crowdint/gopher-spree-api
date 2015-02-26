@@ -1,8 +1,6 @@
 package json
 
 import (
-	"github.com/jinzhu/copier"
-
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
@@ -52,28 +50,11 @@ func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params Respon
 		return TaxonResponse{}, err
 	}
 
-	taxonJsonSlice := this.modelsToJsonTaxonsSlice(taxonModelSlice)
-
-	this.toTaxonTree(taxonJsonSlice)
+	this.toTaxonTree(taxonModelSlice)
 
 	return TaxonResponse{
-		data: taxonJsonSlice,
+		data: taxonModelSlice,
 	}, nil
-}
-
-func (this *TaxonInteractor) modelsToJsonTaxonsSlice(taxonSlice []*domain.Taxon) []*domain.Taxon {
-	jsonTaxonsSlice := []*domain.Taxon{}
-
-	for _, taxon := range taxonSlice {
-		taxonJson := &domain.Taxon{
-			Taxons: []*domain.Taxon{},
-		}
-
-		copier.Copy(taxonJson, taxon)
-		jsonTaxonsSlice = append(jsonTaxonsSlice, taxonJson)
-	}
-
-	return jsonTaxonsSlice
 }
 
 func (this *TaxonInteractor) GetTotalCount(params ResponseParameters) (int64, error) {

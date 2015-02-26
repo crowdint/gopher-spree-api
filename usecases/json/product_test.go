@@ -64,37 +64,6 @@ func TestProductInteractor_getIdSlice(t *testing.T) {
 	}
 }
 
-func TestProductInteractor_modelsToJsonProductsSlice(t *testing.T) {
-	products := []*domain.Product{
-		&domain.Product{
-			Id:   1,
-			Name: "name1",
-		},
-		&domain.Product{
-			Id:   2,
-			Name: "name2",
-		},
-		&domain.Product{
-			Id:   3,
-			Name: "name3",
-		},
-	}
-
-	productInteractor := NewProductInteractor()
-
-	jsonProducts := productInteractor.modelsToJsonProductsSlice(products)
-
-	if len(jsonProducts) < 1 {
-		t.Error("Incorrect product ids slice lenght")
-	}
-
-	p1 := jsonProducts[0]
-
-	if p1.Id != 1 || p1.Name != "name1" {
-		t.Error("Incorrect product values")
-	}
-}
-
 func TestProductInteractor_mergeVariants(t *testing.T) {
 	jsonProductSlice := []*domain.Product{
 		&domain.Product{

@@ -73,22 +73,3 @@ func TestProductPropertyInteractor_modelsToJsonProductPropertiesMap(t *testing.T
 		t.Error("Invalid values for second productProperty")
 	}
 }
-
-func TestProductPropertyInteractor_toJson(t *testing.T) {
-	productProperty := &domain.ProductProperty{
-		Id:           66,
-		ProductId:    10,
-		PropertyId:   3,
-		Value:        "Men's",
-		PropertyName: "Gender",
-	}
-
-	productPropertyInteractor := NewProductPropertyInteractor()
-
-	jsonProductProperty := productPropertyInteractor.toJson(productProperty)
-
-	if jsonProductProperty.Id != 66 || jsonProductProperty.ProductId !=
-		10 || jsonProductProperty.PropertyId != 3 || jsonProductProperty.Value != "Men's" || jsonProductProperty.PropertyName != "Gender" {
-		t.Error("Invalid values domain.ProductProperty")
-	}
-}

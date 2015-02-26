@@ -3,7 +3,6 @@ package json
 import (
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-	"github.com/jinzhu/copier"
 )
 
 type TaxonomyResponse struct {
@@ -63,11 +62,9 @@ func (this *TaxonomyInteractor) GetShowResponse(param ResponseParameters) (inter
 }
 
 func (this *TaxonomyInteractor) transformToJsonResponse(taxonomyModelSlice []*domain.Taxonomy) ([]*domain.Taxonomy, error) {
-	taxonomyJsonSlice := this.modelsToJsonTaxonomiesSlice(taxonomyModelSlice)
-
 	//WIP MERGE TAXONS
 
-	return taxonomyJsonSlice, nil
+	return taxonomyModelSlice, nil
 }
 
 func (this *TaxonomyInteractor) getIdSlice(taxonomySlice []*domain.Taxonomy) []int64 {
@@ -78,19 +75,6 @@ func (this *TaxonomyInteractor) getIdSlice(taxonomySlice []*domain.Taxonomy) []i
 	}
 
 	return taxonomyIds
-}
-
-func (this *TaxonomyInteractor) modelsToJsonTaxonomiesSlice(taxonomySlice []*domain.Taxonomy) []*domain.Taxonomy {
-	jsonTaxonomySlice := []*domain.Taxonomy{}
-
-	for _, taxonomy := range taxonomySlice {
-		taxonomyJson := &domain.Taxonomy{}
-		copier.Copy(taxonomyJson, taxonomy)
-
-		jsonTaxonomySlice = append(jsonTaxonomySlice, taxonomyJson)
-	}
-
-	return jsonTaxonomySlice
 }
 
 func (this *TaxonomyInteractor) GetTotalCount(param ResponseParameters) (int64, error) {
