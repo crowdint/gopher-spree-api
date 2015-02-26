@@ -19,7 +19,7 @@ type OrderInteractor struct {
 	ShipmentRepository    *repositories.ShipmentRepository
 }
 
-func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order, error) {
+func (this *OrderInteractor) Show(o *json.Order, u *models.User) (*json.Order, error) {
 	order := json.Order{}
 	copier.Copy(&order, o)
 
@@ -30,7 +30,7 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 	for i, lineItem := range *order.LineItems {
 		variant := variantsMap[lineItem.VariantId].(json.Variant)
 		product := productsMap[variant.ProductId].(json.Product)
-		price := pricesMap[variant.Id].(models.Price)
+		price := pricesMap[variant.Id].(json.Price)
 
 		variant.Name = product.Name
 		variant.Description = product.Description
@@ -58,7 +58,7 @@ func (this *OrderInteractor) Show(o *models.Order, u *models.User) (*json.Order,
 }
 
 func (this *OrderInteractor) GetResponse(currentPage, perPage int, params ResponseParameters) (ContentResponse, error) {
-	orders := []models.Order{}
+	orders := []json.Order{}
 	ordersJson := []json.Order{}
 
 	query, gparams, err := params.GetGransakParams()
@@ -103,7 +103,7 @@ func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, er
 		return 0, err
 	}
 
-	return this.BaseRepository.Count(models.Order{}, query, gparams)
+	return this.BaseRepository.Count(json.Order{}, query, gparams)
 }
 
 func (this *OrderInteractor) setPayments(order *json.Order) {
@@ -157,7 +157,7 @@ func (this *OrderInteractor) getAssociationMaps(order *json.Order) (varm, prom, 
 	prom = ToMap(products, "Id", false)
 
 
-	var prices []models.Price
+	var prices []json.Price
 	this.BaseRepository.All(&prices, nil, "currency = ? AND variant_id IN(?)", spree.Get(spree.CURRENCY), variantIds)
 	prim = ToMap(prices, "VariantId", false)
 

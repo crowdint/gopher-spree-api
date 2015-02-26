@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain/models"
+  "github.com/crowdint/gopher-spree-api/domain/models"
+	jsn "github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -52,7 +53,7 @@ func TestOrderInteractor_Show(t *testing.T) {
 	defer repositories.Spree_db.Close()
 
 	orderInteractor := NewOrderInteractor()
-	order := models.Order{}
+	order := jsn.Order{}
 	user := models.User{}
 
 	err = orderInteractor.BaseRepository.FindBy(&order, map[string]interface{}{

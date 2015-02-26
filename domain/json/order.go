@@ -48,8 +48,33 @@ type Order struct {
 	ShipAddress *Address     `json:"ship_address"`
 	Shipments   []Shipment   `json:"shipments"`
 	Adjustments []Adjustment `json:"adjustments"`
+
+  //FROM DB
+  ApprovedAt            time.Time `json:"-"`
+	ApproverId            int64 `json:"-"`
+	CanceledAt            time.Time `json:"-"`
+	CancelerId            int64 `json:"-"`
+	ConfirmationDelivered bool `json:"-"`
+	ConsideredRisky       bool `json:"-"`
+	CreatedBy             int64 `json:"-"`
+	ItemCount             int64 `json:"-"`
+	LastIpAddress         string `json:"-"`
+	PromoTotal            float64 `json:"-"`
+	ShipmentTotal         float64 `json:"-"`
+	ShippingMethodId      int64 `json:"-"`
+	StateLockVersion      int64 `json:"-"`
+	StoreId               int64 `json:"-"`
 }
 
 func (this *Order) SpreeClass() string {
 	return "Spree::Order"
+}
+
+func (this Order) TableName() string {
+	return "spree_orders"
+}
+
+func (this *Order) AfterFind() (err error) {
+	this.TaxTotal = this.IncludedTaxTotal + this.AdditionalTaxTotal
+	return
 }

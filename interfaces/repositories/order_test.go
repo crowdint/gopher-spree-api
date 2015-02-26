@@ -3,7 +3,7 @@ package repositories
 import (
 	"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain/json"
 )
 
 func TestOrderRepository(t *testing.T) {
@@ -21,7 +21,7 @@ func TestOrderRepository(t *testing.T) {
 
 	orderRepository := NewOrderRepository()
 
-	order := &models.Order{}
+	order := &json.Order{}
 	orderRepository.dbHandler.First(order)
 
 	quantities, err := orderRepository.SumLineItemsQuantityByOrderIds([]int64{order.Id})

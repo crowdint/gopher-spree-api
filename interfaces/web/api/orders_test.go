@@ -8,6 +8,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 
 	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -18,7 +19,7 @@ func TestFindOrderWhenOrderIsInContext(t *testing.T) {
 	method := "GET"
 	path := "/api/orders/ABC123"
 
-	order := &models.Order{Number: "ABC123"}
+	order := &json.Order{Number: "ABC123"}
 	r.GET(path, func(c *gin.Context) {
 		c.Set("Order", order)
 		findOrder(c)
@@ -38,7 +39,7 @@ func TestFindOrderWhenOrderExists(t *testing.T) {
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	order := &models.Order{}
+	order := &json.Order{}
 	err = repositories.NewDatabaseRepository().FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
@@ -103,7 +104,7 @@ func TestGetGinOrderWhenOrderIsInContext(t *testing.T) {
 	}
 
 	ctx := &gin.Context{Request: req}
-	ctx.Set("Order", &models.Order{})
+	ctx.Set("Order", &json.Order{})
 	order := currentOrder(ctx)
 
 	if order == nil {
@@ -237,7 +238,7 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderBelongsToHim(t *testing.T) {
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	order := &models.Order{}
+	order := &json.Order{}
 	err = dbRepo.FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
@@ -278,7 +279,7 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderDoesNotBelongToHim(t *testing.T
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	order := &models.Order{}
+	order := &json.Order{}
 	err = dbRepo.FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())

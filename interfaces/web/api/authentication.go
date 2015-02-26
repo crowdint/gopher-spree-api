@@ -10,6 +10,7 @@ import (
 
 	"github.com/crowdint/gopher-spree-api/configs/spree"
 	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -91,7 +92,7 @@ func verifyOrderTokenAccess(c *gin.Context, dbRepo *repositories.DbRepository, a
 	}
 
 	// Find the order by guest token (order token)
-	order := &models.Order{}
+	order := &json.Order{}
 	err := dbRepo.FindBy(order, nil, map[string]interface{}{"guest_token": orderToken})
 	if err != nil {
 		unauthorized(c, "You are not authorized to perform that action.")

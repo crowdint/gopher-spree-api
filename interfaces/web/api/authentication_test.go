@@ -9,6 +9,7 @@ import (
 
 	"github.com/crowdint/gopher-spree-api/configs/spree"
 	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -108,7 +109,7 @@ func TestAuthenticationWithValidOrderToken(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	order := &models.Order{}
+	order := &json.Order{}
 	err := repositories.NewDatabaseRepository().FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error has ocurred", err)
@@ -170,7 +171,7 @@ func TestAuthenticationWithValidOrderTokenAndActionIsNotOrderShow(t *testing.T) 
 		t.Error("An error has ocurred", err)
 	}
 
-	order := &models.Order{}
+	order := &json.Order{}
 	err := repositories.NewDatabaseRepository().FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error has ocurred", err)
