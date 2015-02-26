@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 
-	jsn "github.com/crowdint/gopher-spree-api/domain"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/crowdint/gopher-spree-api/usecases/json"
 )
@@ -21,7 +21,7 @@ func findOrder(c *gin.Context) {
 	order := currentOrder(c)
 
 	if order == nil {
-		order = &jsn.Order{}
+		order = &domain.Order{}
 		err := repositories.NewDatabaseRepository().FindBy(order, nil, params{
 			"number": c.Params.ByName("order_number"),
 		})
@@ -37,10 +37,10 @@ func findOrder(c *gin.Context) {
 	c.Next()
 }
 
-func currentOrder(c *gin.Context) *jsn.Order {
+func currentOrder(c *gin.Context) *domain.Order {
 	order, err := c.Get("Order")
 	if err == nil {
-		return order.(*jsn.Order)
+		return order.(*domain.Order)
 	}
 	return nil
 }
@@ -73,7 +73,7 @@ func authorizeOrder(c *gin.Context) {
 
 func OrdersIndex(c *gin.Context) {
 	params := NewRequestParameters(c)
-	orders, err := domain.SpreeResponseFetcher.GetResponse(domain.NewOrderInteractor(), params)
+	orders, err := json.SpreeResponseFetcher.GetResponse(json.NewOrderInteractor(), params)
 
 	if err == nil || len(orders) == 0 {
 		c.JSON(200, orders)
@@ -83,7 +83,7 @@ func OrdersIndex(c *gin.Context) {
 }
 
 func OrdersShow(c *gin.Context) {
-	order, err := domain.NewOrderInteractor().Show(currentOrder(c), currentUser(c))
+	order, err := json.NewOrderInteractor().Show(currentOrder(c), currentUser(c))
 
 	if err == nil {
 		c.JSON(200, order)

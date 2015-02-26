@@ -19,7 +19,7 @@ func init() {
 func TaxonsIndex(c *gin.Context) {
 	params := NewRequestParameters(c)
 
-	if taxons, err := domain.SpreeResponseFetcher.GetResponse(domain.NewTaxonInteractor(), params); err != nil && err.Error() != "Record Not Found" {
+	if taxons, err := json.SpreeResponseFetcher.GetResponse(json.NewTaxonInteractor(), params); err != nil && err.Error() != "Record Not Found" {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(200, taxons)

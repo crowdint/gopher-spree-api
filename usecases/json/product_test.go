@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	jsn "github.com/crowdint/gopher-spree-api/domain"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -28,7 +28,7 @@ func TestProductInteractor_GetMergedResponse(t *testing.T) {
 		return
 	}
 
-	jsonBytes, err := domain.Marshal(jsonProductSlice)
+	jsonBytes, err := json.Marshal(jsonProductSlice)
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}
@@ -39,14 +39,14 @@ func TestProductInteractor_GetMergedResponse(t *testing.T) {
 }
 
 func TestProductInteractor_getIdSlice(t *testing.T) {
-	products := []*jsn.Product{
-		&jsn.Product{
+	products := []*domain.Product{
+		&domain.Product{
 			Id: 1,
 		},
-		&jsn.Product{
+		&domain.Product{
 			Id: 2,
 		},
-		&jsn.Product{
+		&domain.Product{
 			Id: 3,
 		},
 	}
@@ -65,16 +65,16 @@ func TestProductInteractor_getIdSlice(t *testing.T) {
 }
 
 func TestProductInteractor_modelsToJsonProductsSlice(t *testing.T) {
-	products := []*jsn.Product{
-		&jsn.Product{
+	products := []*domain.Product{
+		&domain.Product{
 			Id:   1,
 			Name: "name1",
 		},
-		&jsn.Product{
+		&domain.Product{
 			Id:   2,
 			Name: "name2",
 		},
-		&jsn.Product{
+		&domain.Product{
 			Id:   3,
 			Name: "name3",
 		},
@@ -96,24 +96,24 @@ func TestProductInteractor_modelsToJsonProductsSlice(t *testing.T) {
 }
 
 func TestProductInteractor_mergeVariants(t *testing.T) {
-	jsonProductSlice := []*jsn.Product{
-		&jsn.Product{
+	jsonProductSlice := []*domain.Product{
+		&domain.Product{
 			Id:   99991,
 			Name: "Product1",
 		},
-		&jsn.Product{
+		&domain.Product{
 			Id:   99992,
 			Name: "Product2",
 		},
 	}
 
 	jsonVariantsMap := JsonVariantsMap{
-		99991: []*jsn.Variant{
+		99991: []*domain.Variant{
 			{
 				Id: 99991,
 			},
 		},
-		99992: []*jsn.Variant{
+		99992: []*domain.Variant{
 			{
 				Id:       99992,
 				IsMaster: true,
@@ -145,14 +145,14 @@ func TestProductInteractor_mergeVariants(t *testing.T) {
 }
 
 func TestProductInteractor_mergeOptionTypes(t *testing.T) {
-	jsonProductSlice := []*jsn.Product{
-		&jsn.Product{
+	jsonProductSlice := []*domain.Product{
+		&domain.Product{
 			Id: 3,
 		},
 	}
 
 	jsonOptionTypesMap := JsonOptionTypesMap{
-		3: []*jsn.OptionType{
+		3: []*domain.OptionType{
 			{
 				Id:           1,
 				Name:         "tshirt-size",
@@ -190,21 +190,21 @@ func TestProductInteractor_mergeOptionTypes(t *testing.T) {
 }
 
 func TestProductInteractor_mergeClassifications(t *testing.T) {
-	jsonProductSlice := []*jsn.Product{
-		&jsn.Product{
+	jsonProductSlice := []*domain.Product{
+		&domain.Product{
 			Id: 3,
 		},
-		&jsn.Product{
+		&domain.Product{
 			Id: 5,
 		},
 	}
 
 	jsonOptionTypesMap := JsonClassificationsMap{
-		3: []*jsn.Classification{
+		3: []*domain.Classification{
 			{
 				TaxonId:  1,
 				Position: 5,
-				Taxon: jsn.Taxon{
+				Taxon: domain.Taxon{
 					Id:   1,
 					Name: "taxonName",
 				},

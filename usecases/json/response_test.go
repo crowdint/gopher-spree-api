@@ -27,7 +27,7 @@ func TestResponseInteractor(t *testing.T) {
 		return
 	}
 
-	jsonBytes, err := domain.Marshal(response)
+	jsonBytes, err := json.Marshal(response)
 
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
