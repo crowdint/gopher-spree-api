@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -17,7 +17,7 @@ func TestTaxonomiesIndex(t *testing.T) {
 	path := "/api/taxonomies/"
 
 	r.GET(path, func(c *gin.Context) {
-		user := &json.User{}
+		user := &domain.User{}
 		repositories.Spree_db.First(user)
 		c.Set("CurrentUser", user)
 		TaxonomiesIndex(c)

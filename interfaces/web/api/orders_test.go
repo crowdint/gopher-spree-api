@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/julienschmidt/httprouter"
 
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -18,7 +18,7 @@ func TestFindOrderWhenOrderIsInContext(t *testing.T) {
 	method := "GET"
 	path := "/api/orders/ABC123"
 
-	order := &json.Order{Number: "ABC123"}
+	order := &domain.Order{Number: "ABC123"}
 	r.GET(path, func(c *gin.Context) {
 		c.Set("Order", order)
 		findOrder(c)
@@ -38,7 +38,7 @@ func TestFindOrderWhenOrderExists(t *testing.T) {
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	order := &json.Order{}
+	order := &domain.Order{}
 	err = repositories.NewDatabaseRepository().FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
@@ -103,7 +103,7 @@ func TestGetGinOrderWhenOrderIsInContext(t *testing.T) {
 	}
 
 	ctx := &gin.Context{Request: req}
-	ctx.Set("Order", &json.Order{})
+	ctx.Set("Order", &domain.Order{})
 	order := currentOrder(ctx)
 
 	if order == nil {
@@ -131,9 +131,9 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsAdmin(t *testing.T) {
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	user := &json.User{}
-	user.Roles = []json.Role{
-		json.Role{Name: "admin"},
+	user := &domain.User{}
+	user.Roles = []domain.Role{
+		domain.Role{Name: "admin"},
 	}
 	err = repositories.NewDatabaseRepository().FindBy(user, nil, nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsNotAdmin(t *testing.T) {
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	user := &json.User{}
+	user := &domain.User{}
 	err = repositories.NewDatabaseRepository().FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
@@ -194,9 +194,9 @@ func TestAuthorizeOrderWhenUserIsSetAndIsAdmin(t *testing.T) {
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	user := &json.User{}
-	user.Roles = []json.Role{
-		json.Role{Name: "admin"},
+	user := &domain.User{}
+	user.Roles = []domain.Role{
+		domain.Role{Name: "admin"},
 	}
 	err = repositories.NewDatabaseRepository().FindBy(user, nil, nil)
 	if err != nil {
@@ -231,13 +231,13 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderBelongsToHim(t *testing.T) {
 
 	dbRepo := repositories.NewDatabaseRepository()
 
-	user := &json.User{}
+	user := &domain.User{}
 	err = dbRepo.FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	order := &json.Order{}
+	order := &domain.Order{}
 	err = dbRepo.FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
@@ -272,13 +272,13 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderDoesNotBelongToHim(t *testing.T
 
 	dbRepo := repositories.NewDatabaseRepository()
 
-	user := &json.User{}
+	user := &domain.User{}
 	err = dbRepo.FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	order := &json.Order{}
+	order := &domain.Order{}
 	err = dbRepo.FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())

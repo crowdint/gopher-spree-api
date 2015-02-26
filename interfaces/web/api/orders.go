@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 
-	jsn "github.com/crowdint/gopher-spree-api/domain/json"
+	jsn "github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/crowdint/gopher-spree-api/usecases/json"
 )
@@ -73,7 +73,7 @@ func authorizeOrder(c *gin.Context) {
 
 func OrdersIndex(c *gin.Context) {
 	params := NewRequestParameters(c)
-	orders, err := json.SpreeResponseFetcher.GetResponse(json.NewOrderInteractor(), params)
+	orders, err := domain.SpreeResponseFetcher.GetResponse(domain.NewOrderInteractor(), params)
 
 	if err == nil || len(orders) == 0 {
 		c.JSON(200, orders)
@@ -83,7 +83,7 @@ func OrdersIndex(c *gin.Context) {
 }
 
 func OrdersShow(c *gin.Context) {
-	order, err := json.NewOrderInteractor().Show(currentOrder(c), currentUser(c))
+	order, err := domain.NewOrderInteractor().Show(currentOrder(c), currentUser(c))
 
 	if err == nil {
 		c.JSON(200, order)
