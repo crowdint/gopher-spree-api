@@ -22,11 +22,9 @@ type Address struct {
 	CreatedAt        time.Time `json:"-"`
 	UpdatedAt        time.Time `json:"-"`
 
-	//Computed
-	StateName string `json:"state_name"`
-	StateText string `json:"state_text"` //TODO:Check implementation in interactor
+	StateName string `json:"state_name" sql:"-"`
+	StateText string `json:"state_text" sql:"-"`
 
-	// Associations
 	Country *Country `json:"country"`
 	State   *State   `json:"state"`
 }

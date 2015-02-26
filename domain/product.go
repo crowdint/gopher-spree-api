@@ -22,15 +22,12 @@ type Product struct {
 	ProductProperties  []ProductProperty `json:"product_properties"`
 	Classifications    []Classification  `json:"classifications"`
 
-
-
-  //FROM DB BUT NOT IN JSON
-  DeletedAt          time.Time `json:"-"`
-	TaxCategoryId      int64 `json:"-"`
-	CreatedAt          time.Time `json:"-"`
-	UpdatedAt          time.Time `json:"-"`
-	Promotionable      bool `json:"-"`
-	MetaTitle          string `json:"-"`
+	DeletedAt     time.Time `json:"-"`
+	TaxCategoryId int64     `json:"-"`
+	CreatedAt     time.Time `json:"-"`
+	UpdatedAt     time.Time `json:"-"`
+	Promotionable bool      `json:"-"`
+	MetaTitle     string    `json:"-"`
 }
 
 func (this Product) TableName() string {

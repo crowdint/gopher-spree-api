@@ -9,7 +9,6 @@ type ShippingRate struct {
 	ShippingMethodCode *string `json:"shipping_method_code"`
 	ShippingMethodId   int64   `json:"shipping_method_id"`
 
-	// Associations
 	ShippingMethod ShippingMethod `json:"-"`
 }
 

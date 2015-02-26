@@ -5,7 +5,6 @@ type ShippingMethod struct {
 	Code string `json:"code"`
 	Name string `json:"name"`
 
-	// Associations
 	ShippingCategories []ShippingCategory `json:"shipping_categories"`
 	Zones              []ShippingZone     `json:"zones" gorm:"many2many:spree_shipping_methods_zones;"`
 }

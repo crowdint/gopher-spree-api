@@ -21,13 +21,11 @@ type LineItem struct {
 	CreatedAt          time.Time `json:"-"`
 	UpdatedAt          time.Time `json:"-"`
 
-	// Computed
-	Amount              float64 `json:"-"`
-	DisplayAmount       string  `json:"display_amount"` //TODO: implement
-	FinalAmount         float64 `json:"total,string"`
-	SingleDisplayAmount string  `json:"single_display_amount"` //TODO: implement
+	Amount              float64 `json:"-" sql:"-"`
+	DisplayAmount       string  `json:"display_amount" sql:"-"` //TODO: implement
+	FinalAmount         float64 `json:"total,string" sql:"-"`
+	SingleDisplayAmount string  `json:"single_display_amount" sql:"-"` //TODO: implement
 
-	// Associations
 	Adjustments []Adjustment `json:"adjustments"`
 	Variant     *Variant     `json:"variant"`
 }

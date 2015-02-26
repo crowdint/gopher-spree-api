@@ -1,6 +1,5 @@
 package domain
 
-
 import (
 	"regexp"
 	"strconv"

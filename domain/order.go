@@ -30,18 +30,16 @@ type Order struct {
 	CreatedAt           time.Time `json:"created_at"`
 	UpdatedAt           time.Time `json:"updated_at"`
 
-	//Computed
-	CheckoutSteps             []string     `json:"checkout_steps"`               //TODO: implement
-	DisplayAdditionalTaxTotal string       `json:"display_additional_tax_total"` //TODO: implement
-	DisplayIncludedTaxTotal   string       `json:"display_included_tax_total"`   //TODO: implement
-	DisplayItemTotal          string       `json:"display_item_total"`           //TODO: implement
-	DisplayTaxTotal           string       `json:"display_tax_total"`            //TODO: implement
-	DisplayTotal              string       `json:"display_total"`                //TODO: implement
-	DisplayShipTotal          string       `json:"display_ship_total"`           //TODO: implement
-	Permissions               *Permissions `json:"permissions,omitempty"`
-	Quantity                  int64        `json:"total_quantity"`
+	CheckoutSteps             []string     `json:"checkout_steps" sql:"-"`               //TODO: implement
+	DisplayAdditionalTaxTotal string       `json:"display_additional_tax_total" sql:"-"` //TODO: implement
+	DisplayIncludedTaxTotal   string       `json:"display_included_tax_total" sql:"-"`   //TODO: implement
+	DisplayItemTotal          string       `json:"display_item_total" sql:"-"`           //TODO: implement
+	DisplayTaxTotal           string       `json:"display_tax_total" sql:"-"`            //TODO: implement
+	DisplayTotal              string       `json:"display_total" sql:"-"`                //TODO: implement
+	DisplayShipTotal          string       `json:"display_ship_total" sql:"-"`           //TODO: implement
+	Permissions               *Permissions `json:"permissions,omitempty" sql:"-"`
+	Quantity                  int64        `json:"total_quantity" sql:"-"`
 
-	// Associations
 	BillAddress *Address     `json:"bill_address"`
 	LineItems   *[]LineItem  `json:"line_items,omitempty"`
 	Payments    []Payment    `json:"payments"`
@@ -49,21 +47,20 @@ type Order struct {
 	Shipments   []Shipment   `json:"shipments"`
 	Adjustments []Adjustment `json:"adjustments"`
 
-  //FROM DB
-  ApprovedAt            time.Time `json:"-"`
-	ApproverId            int64 `json:"-"`
+	ApprovedAt            time.Time `json:"-"`
+	ApproverId            int64     `json:"-"`
 	CanceledAt            time.Time `json:"-"`
-	CancelerId            int64 `json:"-"`
-	ConfirmationDelivered bool `json:"-"`
-	ConsideredRisky       bool `json:"-"`
-	CreatedBy             int64 `json:"-"`
-	ItemCount             int64 `json:"-"`
-	LastIpAddress         string `json:"-"`
-	PromoTotal            float64 `json:"-"`
-	ShipmentTotal         float64 `json:"-"`
-	ShippingMethodId      int64 `json:"-"`
-	StateLockVersion      int64 `json:"-"`
-	StoreId               int64 `json:"-"`
+	CancelerId            int64     `json:"-"`
+	ConfirmationDelivered bool      `json:"-"`
+	ConsideredRisky       bool      `json:"-"`
+	CreatedBy             int64     `json:"-"`
+	ItemCount             int64     `json:"-"`
+	LastIpAddress         string    `json:"-"`
+	PromoTotal            float64   `json:"-"`
+	ShipmentTotal         float64   `json:"-"`
+	ShippingMethodId      int64     `json:"-"`
+	StateLockVersion      int64     `json:"-"`
+	StoreId               int64     `json:"-"`
 }
 
 func (this *Order) SpreeClass() string {

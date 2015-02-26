@@ -9,9 +9,7 @@ type ProductProperty struct {
 	Value        string `json:"value"`
 	PropertyName string `json:"property_name"`
 
-  //FROM DB BUT NOT IN JSON
-  CreatedAt    time.Time `json:"-"`
-	UpdatedAt    time.Time `json:"-"`
-	Position     int64 `json:"-"`
-
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
+	Position  int64     `json:"-"`
 }

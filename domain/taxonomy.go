@@ -7,7 +7,7 @@ type Taxonomy struct {
 	Name string `json:"name"`
 	Root Taxon  `json:"root"`
 
-  Position  int64 `json:"-"`
+	Position  int64     `json:"-"`
 	CreatedAt time.Time `json:"-"`
 	UpdatedAt time.Time `json:"-"`
 }

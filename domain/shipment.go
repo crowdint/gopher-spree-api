@@ -16,7 +16,6 @@ type Shipment struct {
 	Tracking             *string      `json:"tracking"`
 	ShippedAt            *time.Time   `json:"shipped_at"`
 
-	// Associations
 	StockLocation   StockLocation    `json:"-"`
 	Adjustments     []Adjustment     `json:"adjustments"`
 	ShippingMethods []ShippingMethod `json:"shipping_methods"`

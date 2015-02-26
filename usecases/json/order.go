@@ -155,7 +155,6 @@ func (this *OrderInteractor) getAssociationMaps(order *domain.Order) (varm, prom
 	this.BaseRepository.All(&products, nil, "id IN(?)", productIds)
 	prom = ToMap(products, "Id", false)
 
-
 	var prices []domain.Price
 	this.BaseRepository.All(&prices, nil, "currency = ? AND variant_id IN(?)", spree.Get(spree.CURRENCY), variantIds)
 	prim = ToMap(prices, "VariantId", false)

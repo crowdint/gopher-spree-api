@@ -14,21 +14,19 @@ type Taxon struct {
 	Depth      int64    `json:"-"`
 	Taxons     []*Taxon `json:"taxons"`
 
-
-	Position               int64 `json:"-"`
-	IconFileName           string `json:"-"`
-	IconContentType        string `json:"-"`
-	IconFileSize           int64 `json:"-"`
+	Position               int64     `json:"-"`
+	IconFileName           string    `json:"-"`
+	IconContentType        string    `json:"-"`
+	IconFileSize           int64     `json:"-"`
 	IconUpdatedAt          time.Time `json:"-"`
-	Description            string `json:"-"`
+	Description            string    `json:"-"`
 	CreatedAt              time.Time `json:"-"`
 	UpdatedAt              time.Time `json:"-"`
-	MetaTitle              string `json:"-"`
-	MetaDescription        string `json:"-"`
-	MetaKeywords           string `json:"-"`
-	ClassificationPosition int64 `json:"-"`
-	ProductId              int64 `json:"-"`
-
+	MetaTitle              string    `json:"-"`
+	MetaDescription        string    `json:"-"`
+	MetaKeywords           string    `json:"-"`
+	ClassificationPosition int64     `json:"-"`
+	ProductId              int64     `json:"-"`
 }
 
 func (this Taxon) TableName() string {
@@ -36,6 +34,6 @@ func (this Taxon) TableName() string {
 }
 
 func (this Taxon) AfterFind() (err error) {
-  this.PrettyName = this.Name
+	this.PrettyName = this.Name
 	return
 }

@@ -17,8 +17,7 @@ type Adjustment struct {
 	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`
 
-	// Computed
-	DisplayAmount string `json:"display_amount"`
+	DisplayAmount string `json:"display_amount" sql:"-"`
 }
 
 func (this Adjustment) TableName() string {

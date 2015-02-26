@@ -20,31 +20,27 @@ type Variant struct {
 	Width       float64   `json:"width,string"`
 	DeletedAt   time.Time `json:"-"`
 
-	// Computed
-	Description     string `json:"description"`
-	DisplayPrice    string `json:"display_price"`
-	InStock         bool   `json:"in_stock"`
-	IsBackorderable bool   `json:"is_backorderable"`
-	IsDestroyed     bool   `json:"is_destroyed"`
-	Name            string `json:"name"`
-	Slug            string `json:"slug"`
-	TotalOnHand     *int64 `json:"total_on_hand"`
-	TrackInventory  bool   `json:"track_inventory"`
+	Description     string `json:"description" sql:"-"`
+	DisplayPrice    string `json:"display_price" sql:"-"`
+	InStock         bool   `json:"in_stock" sql:"-"`
+	IsBackorderable bool   `json:"is_backorderable" sql:"-"`
+	IsDestroyed     bool   `json:"is_destroyed" sql:"-"`
+	Name            string `json:"name" sql:"-"`
+	Slug            string `json:"slug" sql:"-"`
+	TotalOnHand     *int64 `json:"total_on_hand" sql:"-"`
+	TrackInventory  bool   `json:"track_inventory" sql:"-"`
 
-	// Associations
-	Images       []*Asset             `json:"images"`
+	Images       []*Asset      `json:"images"`
 	OptionValues []OptionValue `json:"option_values" gorm:"many2many:spree_option_values_variants;"`
-	StockItems   []*StockItem         `json:"-"`
+	StockItems   []*StockItem  `json:"-"`
 
-
-  //FROM DB
-  Position            int64 `json:"-"`
-	CostCurrency        string `json:"-"`
-	TaxCategoryId       int64 `json:"-"`
+	Position            int64     `json:"-"`
+	CostCurrency        string    `json:"-"`
+	TaxCategoryId       int64     `json:"-"`
 	UpdatedAt           time.Time `json:"-"`
-	StockItemsCount     int64 `json:"-"`
-	RealStockItemsCount int64 `json:"-"`
-	Backorderable       bool `json:"-"`
+	StockItemsCount     int64     `json:"-"`
+	RealStockItemsCount int64     `json:"-"`
+	Backorderable       bool      `json:"-"`
 }
 
 func (this *Variant) AfterFind() (err error) {

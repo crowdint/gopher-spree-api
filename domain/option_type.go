@@ -8,11 +8,9 @@ type OptionType struct {
 	Presentation string `json:"presentation"`
 	Position     int64  `json:"position"`
 
-	//FROM DB BUT NOT IN JSON
-  CreatedAt    time.Time `json:"-"`
-	UpdatedAt    time.Time `json:"-"`
-	ProductId    int64     `json:"-"`
-
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
+	ProductId int64     `json:"-"`
 }
 
 func (this OptionType) TableName() string {
