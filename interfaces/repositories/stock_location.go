@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 type StockLocationRepository struct {
@@ -14,6 +14,6 @@ func NewStockLocationRepository() *StockLocationRepository {
 	}
 }
 
-func (this *StockLocationRepository) FindByShipmentAssociation(shipment *json.Shipment) {
+func (this *StockLocationRepository) FindByShipmentAssociation(shipment *domain.Shipment) {
 	this.Association(shipment, &shipment.StockLocation, "StockLocationId")
 }

@@ -1,6 +1,6 @@
 package repositories
 
-import "github.com/crowdint/gopher-spree-api/domain/json"
+import "github.com/crowdint/gopher-spree-api/domain"
 
 type TaxonRepository DbRepository
 
@@ -12,7 +12,7 @@ func NewTaxonRepo() *TaxonRepository {
 
 var queryConfig = map[string]string{}
 
-func (this *TaxonRepository) FindByProductIds(productIds []int64) ([]*json.Taxon, error) {
+func (this *TaxonRepository) FindByProductIds(productIds []int64) ([]*domain.Taxon, error) {
 	queryConfig["selectString"] = "taxons.*, " +
 		"spree_products_taxons.product_id, " +
 		"spree_products_taxons.position AS classification_position "
@@ -25,7 +25,7 @@ func (this *TaxonRepository) FindByProductIds(productIds []int64) ([]*json.Taxon
 	return this.findByResourceIds(productIds)
 }
 
-func (this *TaxonRepository) FindByTaxonomyIds(taxonomyIds []int64) ([]*json.Taxon, error) {
+func (this *TaxonRepository) FindByTaxonomyIds(taxonomyIds []int64) ([]*domain.Taxon, error) {
 	queryConfig["selectString"] = "taxons.*, " +
 		"spree_taxonomies.id, " +
 		"spree_taxonomies.name AS taxonomy_name "
@@ -38,8 +38,8 @@ func (this *TaxonRepository) FindByTaxonomyIds(taxonomyIds []int64) ([]*json.Tax
 	return this.findByResourceIds(taxonomyIds)
 }
 
-func (this *TaxonRepository) findByResourceIds(resourceIds []int64) ([]*json.Taxon, error) {
-	taxons := []*json.Taxon{}
+func (this *TaxonRepository) findByResourceIds(resourceIds []int64) ([]*domain.Taxon, error) {
+	taxons := []*domain.Taxon{}
 
 	if len(resourceIds) == 0 {
 		return taxons, nil

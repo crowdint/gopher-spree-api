@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 type AdjustmentRepository struct {
@@ -14,8 +14,8 @@ func NewAdjustmentRepository() *AdjustmentRepository {
 	}
 }
 
-func (this *AdjustmentRepository) AllByAdjustable(adjustableId int64, adjustableType string) []json.Adjustment {
-	adjustments := []json.Adjustment{}
+func (this *AdjustmentRepository) AllByAdjustable(adjustableId int64, adjustableType string) []domain.Adjustment {
+	adjustments := []domain.Adjustment{}
 	this.All(&adjustments, nil, "adjustable_id = ? AND adjustable_type = ?", adjustableId, adjustableType)
 	return adjustments
 }

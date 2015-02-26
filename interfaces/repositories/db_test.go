@@ -3,7 +3,7 @@ package repositories
 import (
 	"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 func TestDB(t *testing.T) {
@@ -25,7 +25,7 @@ func TestAll(t *testing.T) {
 
 	r := NewDatabaseRepository()
 
-	p := &[]json.Product{}
+	p := &[]domain.Product{}
 
 	err := r.All(p, map[string]interface{}{"limit": 10, "offset": 1}, nil)
 
@@ -43,7 +43,7 @@ func TestAllWithConditions(t *testing.T) {
 
 	r := NewDatabaseRepository()
 
-	p := &[]json.Product{}
+	p := &[]domain.Product{}
 
 	err := r.All(p, map[string]interface{}{"limit": 10, "offset": 1}, map[string]interface{}{"id": 1})
 
@@ -61,7 +61,7 @@ func TestFindBy(t *testing.T) {
 
 	r := NewDatabaseRepository()
 
-	p := &json.Product{}
+	p := &domain.Product{}
 
 	err := r.FindBy(p, nil, nil)
 
@@ -75,7 +75,7 @@ func TestFindByWithConditions(t *testing.T) {
 
 	r := NewDatabaseRepository()
 
-	p := &json.Product{}
+	p := &domain.Product{}
 
 	err := r.FindBy(p, nil, map[string]interface{}{"id": 1})
 
@@ -89,7 +89,7 @@ func TestFindByWithOptions(t *testing.T) {
 
 	r := NewDatabaseRepository()
 
-	p := &json.Product{}
+	p := &domain.Product{}
 
 	err := r.FindBy(p, map[string]interface{}{
 		"not": Not{Key: "tax_category_id", Values: []interface{}{0}},

@@ -29,7 +29,7 @@ func TestTaxonRepo_FindByProductIds(t *testing.T) {
 
 	temp := reflect.ValueOf(*taxonsByProduct[0]).Type().String()
 
-	if temp != "json.Taxon" {
+	if temp != "domain.Taxon" {
 		t.Error("Invalid type", t)
 	}
 
@@ -59,7 +59,7 @@ func TestTaxonRepo_FindByTaxonomyIds(t *testing.T) {
 
 	temp := reflect.ValueOf(*taxonsByTaxonomy[0]).Type().String()
 
-	if temp != "json.Taxon" {
+	if temp != "domain.Taxon" {
 		t.Error("Invalid type", t)
 	}
 }

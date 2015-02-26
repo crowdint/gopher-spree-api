@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 type AssetRepository struct {
@@ -14,8 +14,8 @@ func NewAssetRepo() *AssetRepository {
 	}
 }
 
-func (this *AssetRepository) FindByViewableIds(viewableIds []int64) ([]*json.AssetModel, error) {
-	var assets []*json.AssetModel
+func (this *AssetRepository) FindByViewableIds(viewableIds []int64) ([]*domain.AssetModel, error) {
+	var assets []*domain.AssetModel
 
 	if len(viewableIds) == 0 {
 		return assets, nil
@@ -28,8 +28,8 @@ func (this *AssetRepository) FindByViewableIds(viewableIds []int64) ([]*json.Ass
 	return assets, query.Error
 }
 
-func (this *AssetRepository) AllImagesByVariantId(variantId int64) ([]*json.AssetModel, error) {
-	modelImages := []*json.AssetModel{}
+func (this *AssetRepository) AllImagesByVariantId(variantId int64) ([]*domain.AssetModel, error) {
+	modelImages := []*domain.AssetModel{}
 	err := this.All(&modelImages, map[string]interface{}{
 		"order": "position ASC",
 	}, "type IN ('Spree::Image') AND viewable_id = ? AND viewable_type = ?", variantId, "Spree::Variant")
