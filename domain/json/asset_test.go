@@ -1,9 +1,9 @@
-package models
+package json
 
 import "testing"
 
 func TestAsset_assetUrl(t *testing.T) {
-	asset := Asset{
+	asset := AssetModel{
 		Id:                 1,
 		AttachmentFileName: "image.jpg",
 	}

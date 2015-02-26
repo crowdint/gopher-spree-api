@@ -5,7 +5,6 @@ import (
 
 	"github.com/crowdint/gopher-spree-api/configs"
 	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -33,7 +32,7 @@ func (this *AssetInteractor) GetJsonAssetsMap(viewableIds []int64) (JsonAssetsMa
 	return assetsJson, nil
 }
 
-func (this *AssetInteractor) modelsToJsonAssetsMap(assetSlice []*models.Asset) JsonAssetsMap {
+func (this *AssetInteractor) modelsToJsonAssetsMap(assetSlice []*json.AssetModel) JsonAssetsMap {
 	jsonAssetsMap := JsonAssetsMap{}
 
 	for _, asset := range assetSlice {
@@ -50,7 +49,7 @@ func (this *AssetInteractor) modelsToJsonAssetsMap(assetSlice []*models.Asset) J
 	return jsonAssetsMap
 }
 
-func (this *AssetInteractor) toJsonAssets(modelAssets []*models.Asset) []*json.Asset {
+func (this *AssetInteractor) toJsonAssets(modelAssets []*json.AssetModel) []*json.Asset {
 	jsonAssets := []*json.Asset{}
 	for _, modelAsset := range modelAssets {
 		jsonAssets = append(jsonAssets, this.toJson(modelAsset))
@@ -58,7 +57,7 @@ func (this *AssetInteractor) toJsonAssets(modelAssets []*models.Asset) []*json.A
 	return jsonAssets
 }
 
-func (this *AssetInteractor) toJson(asset *models.Asset) *json.Asset {
+func (this *AssetInteractor) toJson(asset *json.AssetModel) *json.Asset {
 	assetJson := json.Asset{
 		"id":                      asset.Id,
 		"viewable_id":             asset.ViewableId,
