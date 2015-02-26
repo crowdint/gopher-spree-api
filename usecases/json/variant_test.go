@@ -1,7 +1,7 @@
 package json
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 
 	"testing"
@@ -42,14 +42,14 @@ func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
 
 	defer repositories.Spree_db.Close()
 
-	variantSlice := []*json.Variant{
-		&json.Variant{
+	variantSlice := []*domain.Variant{
+		&domain.Variant{
 			Id:        1,
 			Sku:       "sku0001",
 			Price:     9.99,
 			ProductId: 10,
 		},
-		&json.Variant{
+		&domain.Variant{
 			Id:        2,
 			Sku:       "sku0002",
 			Price:     10.99,
@@ -82,7 +82,7 @@ func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
 }
 
 func TestVariantInteractor_toJson(t *testing.T) {
-	variant := &json.Variant{
+	variant := &domain.Variant{
 		Id:        1,
 		Sku:       "sku0001",
 		Price:     9.99,
@@ -94,6 +94,6 @@ func TestVariantInteractor_toJson(t *testing.T) {
 	jsonVariant := variantInteractor.toJson(variant)
 
 	if jsonVariant.Id != 1 || jsonVariant.Sku != "sku0001" || jsonVariant.Price != 9.99 {
-		t.Error("Invalid values for second json.Variant")
+		t.Error("Invalid values for second domain.Variant")
 	}
 }

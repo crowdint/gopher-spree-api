@@ -1,7 +1,7 @@
 package json
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -15,7 +15,7 @@ func NewProductPropertyInteractor() *ProductPropertyInteractor {
 	}
 }
 
-type JsonProductPropertiesMap map[int64][]*json.ProductProperty
+type JsonProductPropertiesMap map[int64][]*domain.ProductProperty
 
 func (this *ProductPropertyInteractor) GetJsonProductPropertiesMap(productIds []int64) (JsonProductPropertiesMap, error) {
 
@@ -29,14 +29,14 @@ func (this *ProductPropertyInteractor) GetJsonProductPropertiesMap(productIds []
 	return productPropertiesJson, nil
 }
 
-func (this *ProductPropertyInteractor) modelsToJsonProductPropertiesMap(productPropertySlice []*json.ProductProperty) JsonProductPropertiesMap {
+func (this *ProductPropertyInteractor) modelsToJsonProductPropertiesMap(productPropertySlice []*domain.ProductProperty) JsonProductPropertiesMap {
 	jsonProductPropertiesMap := JsonProductPropertiesMap{}
 
 	for _, productProperty := range productPropertySlice {
 		productPropertyJson := this.toJson(productProperty)
 
 		if _, exists := jsonProductPropertiesMap[productProperty.ProductId]; !exists {
-			jsonProductPropertiesMap[productProperty.ProductId] = []*json.ProductProperty{}
+			jsonProductPropertiesMap[productProperty.ProductId] = []*domain.ProductProperty{}
 		}
 
 		jsonProductPropertiesMap[productProperty.ProductId] = append(jsonProductPropertiesMap[productProperty.ProductId], productPropertyJson)
@@ -46,8 +46,8 @@ func (this *ProductPropertyInteractor) modelsToJsonProductPropertiesMap(productP
 	return jsonProductPropertiesMap
 }
 
-func (this *ProductPropertyInteractor) toJson(productProperty *json.ProductProperty) *json.ProductProperty {
-	productPropertyJson := &json.ProductProperty{
+func (this *ProductPropertyInteractor) toJson(productProperty *domain.ProductProperty) *domain.ProductProperty {
+	productPropertyJson := &domain.ProductProperty{
 		Id:           productProperty.Id,
 		ProductId:    productProperty.ProductId,
 		PropertyId:   productProperty.PropertyId,

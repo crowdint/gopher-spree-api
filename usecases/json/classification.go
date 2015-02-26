@@ -1,7 +1,7 @@
 package json
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/jinzhu/copier"
 )
@@ -16,7 +16,7 @@ func NewClassificationInteractor() *ClassificationInteractor {
 	}
 }
 
-type JsonClassificationsMap map[int64][]*json.Classification
+type JsonClassificationsMap map[int64][]*domain.Classification
 
 func (this *ClassificationInteractor) GetJsonClassificationsMap(productIds []int64) (JsonClassificationsMap, error) {
 
@@ -30,14 +30,14 @@ func (this *ClassificationInteractor) GetJsonClassificationsMap(productIds []int
 	return classificationsJson, nil
 }
 
-func (this *ClassificationInteractor) taxonsToClassificationMap(taxonsSlice []*json.Taxon) JsonClassificationsMap {
+func (this *ClassificationInteractor) taxonsToClassificationMap(taxonsSlice []*domain.Taxon) JsonClassificationsMap {
 	jsonClassificationsMap := JsonClassificationsMap{}
 
 	for _, taxon := range taxonsSlice {
 		classificationJson := this.taxonToJsonClassification(taxon)
 
 		if _, exists := jsonClassificationsMap[taxon.ProductId]; !exists {
-			jsonClassificationsMap[taxon.ProductId] = []*json.Classification{}
+			jsonClassificationsMap[taxon.ProductId] = []*domain.Classification{}
 		}
 
 		jsonClassificationsMap[taxon.ProductId] = append(jsonClassificationsMap[taxon.ProductId], classificationJson)
@@ -46,11 +46,11 @@ func (this *ClassificationInteractor) taxonsToClassificationMap(taxonsSlice []*j
 	return jsonClassificationsMap
 }
 
-func (this *ClassificationInteractor) taxonToJsonClassification(taxon *json.Taxon) *json.Classification {
-	jsonTaxon := &json.Taxon{}
+func (this *ClassificationInteractor) taxonToJsonClassification(taxon *domain.Taxon) *domain.Classification {
+	jsonTaxon := &domain.Taxon{}
 	copier.Copy(jsonTaxon, taxon)
 
-	classificationJson := &json.Classification{
+	classificationJson := &domain.Classification{
 		TaxonId:  taxon.Id,
 		Position: taxon.ClassificationPosition,
 		Taxon:    *jsonTaxon,

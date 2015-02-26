@@ -3,17 +3,17 @@ package json
 import (
 	"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 func TestAssetInteractor_modelsToJsonAssetsMap(t *testing.T) {
-	assetSlice := []*json.AssetModel{
-		&json.AssetModel{
+	assetSlice := []*domain.AssetModel{
+		&domain.AssetModel{
 			Id:                 1,
 			ViewableId:         1,
 			AttachmentFileName: "asset1.jpg",
 		},
-		&json.AssetModel{
+		&domain.AssetModel{
 			Id:                 2,
 			ViewableId:         3,
 			AttachmentFileName: "asset2.jpg",
@@ -32,13 +32,13 @@ func TestAssetInteractor_modelsToJsonAssetsMap(t *testing.T) {
 }
 
 func TestAssetInteractor_toJsonAssets(t *testing.T) {
-	modelAssets := []*json.AssetModel{
-		&json.AssetModel{
+	modelAssets := []*domain.AssetModel{
+		&domain.AssetModel{
 			Id:                 1,
 			ViewableId:         1,
 			AttachmentFileName: "asset1.jpg",
 		},
-		&json.AssetModel{
+		&domain.AssetModel{
 			Id:                 2,
 			ViewableId:         3,
 			AttachmentFileName: "asset2.jpg",

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	jsn "github.com/crowdint/gopher-spree-api/domain/json"
+	jsn "github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -28,7 +28,7 @@ func TestTaxonInteractor_GetResponse(t *testing.T) {
 		return
 	}
 
-	jsonBytes, err := json.Marshal(jsonTaxonSlice)
+	jsonBytes, err := domain.Marshal(jsonTaxonSlice)
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}

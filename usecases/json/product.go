@@ -7,12 +7,12 @@ import (
 
 	"github.com/jinzhu/copier"
 
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
 type ProductResponse struct {
-	data []*json.Product
+	data []*domain.Product
 }
 
 func (this ProductResponse) GetCount() int {
@@ -51,7 +51,7 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int, params Resp
 		return ProductResponse{}, err
 	}
 
-	var productModelSlice []*json.Product
+	var productModelSlice []*domain.Product
 	err = this.BaseRepository.All(&productModelSlice, map[string]interface{}{
 		"limit":  perPage,
 		"offset": currentPage,
@@ -79,13 +79,13 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 		return struct{}{}, errors.New("Invalid parameter type: " + fmt.Sprintf("%v", id))
 	}
 
-	product := &json.Product{}
+	product := &domain.Product{}
 	err = this.BaseRepository.FindBy(product, nil, map[string]interface{}{"id": id})
 	if err != nil {
 		return nil, err
 	}
 
-	productModelSlice := []*json.Product{}
+	productModelSlice := []*domain.Product{}
 
 	productModelSlice = append(productModelSlice, product)
 
@@ -97,20 +97,20 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 	return productJsonSlice[0], nil
 }
 
-func (this *ProductInteractor) transformToJsonResponse(productModelSlice []*json.Product) ([]*json.Product, error) {
+func (this *ProductInteractor) transformToJsonResponse(productModelSlice []*domain.Product) ([]*domain.Product, error) {
 	productJsonSlice := this.modelsToJsonProductsSlice(productModelSlice)
 
 	productIds := this.getIdSlice(productModelSlice)
 
 	err := this.mergeComplementaryValues(productIds, productJsonSlice)
 	if err != nil {
-		return []*json.Product{}, err
+		return []*domain.Product{}, err
 	}
 
 	return productJsonSlice, nil
 }
 
-func (this *ProductInteractor) mergeComplementaryValues(productIds []int64, productJsonSlice []*json.Product) error {
+func (this *ProductInteractor) mergeComplementaryValues(productIds []int64, productJsonSlice []*domain.Product) error {
 	variantsMap, err := this.VariantInteractor.GetJsonVariantsMap(productIds)
 	if err != nil {
 		return errors.New("Error getting variants: " + err.Error())
@@ -142,7 +142,7 @@ func (this *ProductInteractor) mergeComplementaryValues(productIds []int64, prod
 	return nil
 }
 
-func (this *ProductInteractor) getIdSlice(productSlice []*json.Product) []int64 {
+func (this *ProductInteractor) getIdSlice(productSlice []*domain.Product) []int64 {
 	productIds := []int64{}
 
 	for _, product := range productSlice {
@@ -152,11 +152,11 @@ func (this *ProductInteractor) getIdSlice(productSlice []*json.Product) []int64 
 	return productIds
 }
 
-func (this *ProductInteractor) modelsToJsonProductsSlice(productSlice []*json.Product) []*json.Product {
-	jsonProductsSlice := []*json.Product{}
+func (this *ProductInteractor) modelsToJsonProductsSlice(productSlice []*domain.Product) []*domain.Product {
+	jsonProductsSlice := []*domain.Product{}
 
 	for _, product := range productSlice {
-		productJson := &json.Product{}
+		productJson := &domain.Product{}
 		copier.Copy(productJson, product)
 
 		jsonProductsSlice = append(jsonProductsSlice, productJson)
@@ -165,9 +165,9 @@ func (this *ProductInteractor) modelsToJsonProductsSlice(productSlice []*json.Pr
 	return jsonProductsSlice
 }
 
-func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, variantsMap JsonVariantsMap) {
+func (this *ProductInteractor) mergeVariants(productSlice []*domain.Product, variantsMap JsonVariantsMap) {
 	for _, product := range productSlice {
-		product.Variants = []json.Variant{}
+		product.Variants = []domain.Variant{}
 		var totalOnHand int64
 
 		variantSlice := variantsMap[product.Id]
@@ -201,9 +201,9 @@ func (this *ProductInteractor) mergeVariants(productSlice []*json.Product, varia
 	}
 }
 
-func (this *ProductInteractor) mergeProductProperties(productSlice []*json.Product, productPropertiesMap JsonProductPropertiesMap) {
+func (this *ProductInteractor) mergeProductProperties(productSlice []*domain.Product, productPropertiesMap JsonProductPropertiesMap) {
 	for _, product := range productSlice {
-		product.ProductProperties = []json.ProductProperty{}
+		product.ProductProperties = []domain.ProductProperty{}
 
 		productPropertiesSlice := productPropertiesMap[product.Id]
 
@@ -217,10 +217,10 @@ func (this *ProductInteractor) mergeProductProperties(productSlice []*json.Produ
 	}
 }
 
-func (this *ProductInteractor) mergeClassifications(productSlice []*json.Product, classificationsMap JsonClassificationsMap) {
+func (this *ProductInteractor) mergeClassifications(productSlice []*domain.Product, classificationsMap JsonClassificationsMap) {
 	for _, product := range productSlice {
 		product.TaxonIds = []int{}
-		product.Classifications = []json.Classification{}
+		product.Classifications = []domain.Classification{}
 
 		classificationsSlice := classificationsMap[product.Id]
 
@@ -235,9 +235,9 @@ func (this *ProductInteractor) mergeClassifications(productSlice []*json.Product
 	}
 }
 
-func (this *ProductInteractor) mergeOptionTypes(productSlice []*json.Product, optionTypesMap JsonOptionTypesMap) {
+func (this *ProductInteractor) mergeOptionTypes(productSlice []*domain.Product, optionTypesMap JsonOptionTypesMap) {
 	for _, product := range productSlice {
-		product.OptionTypes = []json.OptionType{}
+		product.OptionTypes = []domain.OptionType{}
 
 		optionTypesSlice := optionTypesMap[product.Id]
 
@@ -256,5 +256,5 @@ func (this *ProductInteractor) GetTotalCount(params ResponseParameters) (int64, 
 	if err != nil {
 		return 0, err
 	}
-	return this.BaseRepository.Count(&json.Product{}, query, gparams)
+	return this.BaseRepository.Count(&domain.Product{}, query, gparams)
 }

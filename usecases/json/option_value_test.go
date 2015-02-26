@@ -1,7 +1,7 @@
 package json
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"testing"
 )
@@ -32,8 +32,8 @@ func TestOptionValueInteractor_GetJsonOptionValuesMap(t *testing.T) {
 }
 
 func TestOptionValueInteractor_modelsToJsonOptionValuesMap(t *testing.T) {
-	optionValueslice := []*json.OptionValue{
-		&json.OptionValue{
+	optionValueslice := []*domain.OptionValue{
+		&domain.OptionValue{
 			Id:                     2,
 			Name:                   "Medium",
 			Presentation:           "M",

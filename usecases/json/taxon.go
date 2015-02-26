@@ -3,12 +3,12 @@ package json
 import (
 	"github.com/jinzhu/copier"
 
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
 type TaxonResponse struct {
-	data []*json.Taxon
+	data []*domain.Taxon
 }
 
 func (this TaxonResponse) GetCount() int {
@@ -41,7 +41,7 @@ func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params Respon
 		return TaxonResponse{}, err
 	}
 
-	var taxonModelSlice []*json.Taxon
+	var taxonModelSlice []*domain.Taxon
 
 	err = this.BaseRepository.All(&taxonModelSlice, map[string]interface{}{
 		"limit":  perPage,
@@ -61,12 +61,12 @@ func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params Respon
 	}, nil
 }
 
-func (this *TaxonInteractor) modelsToJsonTaxonsSlice(taxonSlice []*json.Taxon) []*json.Taxon {
-	jsonTaxonsSlice := []*json.Taxon{}
+func (this *TaxonInteractor) modelsToJsonTaxonsSlice(taxonSlice []*domain.Taxon) []*domain.Taxon {
+	jsonTaxonsSlice := []*domain.Taxon{}
 
 	for _, taxon := range taxonSlice {
-		taxonJson := &json.Taxon{
-			Taxons: []*json.Taxon{},
+		taxonJson := &domain.Taxon{
+			Taxons: []*domain.Taxon{},
 		}
 
 		copier.Copy(taxonJson, taxon)
@@ -81,18 +81,18 @@ func (this *TaxonInteractor) GetTotalCount(params ResponseParameters) (int64, er
 	if err != nil {
 		return 0, err
 	}
-	return this.BaseRepository.Count(json.Taxon{}, query, gparams)
+	return this.BaseRepository.Count(domain.Taxon{}, query, gparams)
 }
 
 func (this *TaxonInteractor) GetShowResponse(params ResponseParameters) (interface{}, error) {
-	taxonModelSlice := []*json.Taxon{}
+	taxonModelSlice := []*domain.Taxon{}
 
 	//DUMMY UNTIL TAXON SHOW IS IMPLEMENTED
 
 	return taxonModelSlice[0], nil
 }
 
-func (this *TaxonInteractor) toTaxonTree(nodes []*json.Taxon) {
+func (this *TaxonInteractor) toTaxonTree(nodes []*domain.Taxon) {
 	for _, node := range nodes {
 		for _, childNode := range nodes {
 			if node.Lft < childNode.Rgt && node.Rgt > childNode.Rgt && (node.Depth+1) == childNode.Depth {

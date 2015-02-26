@@ -1,13 +1,13 @@
 package json
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/jinzhu/copier"
 )
 
 type TaxonomyResponse struct {
-	data []*json.Taxonomy
+	data []*domain.Taxonomy
 }
 
 func (this TaxonomyResponse) GetCount() int {
@@ -38,7 +38,7 @@ func (this *TaxonomyInteractor) GetResponse(currentPage, perPage int, params Res
 		return TaxonomyResponse{}, err
 	}
 
-	var taxonomyModelSlice []*json.Taxonomy
+	var taxonomyModelSlice []*domain.Taxonomy
 	this.BaseRepository.All(&taxonomyModelSlice, map[string]interface{}{
 		"limit":  perPage,
 		"offset": currentPage,
@@ -62,7 +62,7 @@ func (this *TaxonomyInteractor) GetShowResponse(param ResponseParameters) (inter
 	return true, nil
 }
 
-func (this *TaxonomyInteractor) transformToJsonResponse(taxonomyModelSlice []*json.Taxonomy) ([]*json.Taxonomy, error) {
+func (this *TaxonomyInteractor) transformToJsonResponse(taxonomyModelSlice []*domain.Taxonomy) ([]*domain.Taxonomy, error) {
 	taxonomyJsonSlice := this.modelsToJsonTaxonomiesSlice(taxonomyModelSlice)
 
 	//WIP MERGE TAXONS
@@ -70,7 +70,7 @@ func (this *TaxonomyInteractor) transformToJsonResponse(taxonomyModelSlice []*js
 	return taxonomyJsonSlice, nil
 }
 
-func (this *TaxonomyInteractor) getIdSlice(taxonomySlice []*json.Taxonomy) []int64 {
+func (this *TaxonomyInteractor) getIdSlice(taxonomySlice []*domain.Taxonomy) []int64 {
 	taxonomyIds := []int64{}
 
 	for _, taxonomy := range taxonomySlice {
@@ -80,11 +80,11 @@ func (this *TaxonomyInteractor) getIdSlice(taxonomySlice []*json.Taxonomy) []int
 	return taxonomyIds
 }
 
-func (this *TaxonomyInteractor) modelsToJsonTaxonomiesSlice(taxonomySlice []*json.Taxonomy) []*json.Taxonomy {
-	jsonTaxonomySlice := []*json.Taxonomy{}
+func (this *TaxonomyInteractor) modelsToJsonTaxonomiesSlice(taxonomySlice []*domain.Taxonomy) []*domain.Taxonomy {
+	jsonTaxonomySlice := []*domain.Taxonomy{}
 
 	for _, taxonomy := range taxonomySlice {
-		taxonomyJson := &json.Taxonomy{}
+		taxonomyJson := &domain.Taxonomy{}
 		copier.Copy(taxonomyJson, taxonomy)
 
 		jsonTaxonomySlice = append(jsonTaxonomySlice, taxonomyJson)
@@ -98,5 +98,5 @@ func (this *TaxonomyInteractor) GetTotalCount(param ResponseParameters) (int64, 
 	if err != nil {
 		return 0, err
 	}
-	return this.BaseRepository.Count(json.Taxonomy{}, query, gparams)
+	return this.BaseRepository.Count(domain.Taxonomy{}, query, gparams)
 }
