@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -17,7 +17,7 @@ func TestProductsIndex(t *testing.T) {
 	path := "/api/products/"
 
 	r.GET(path, func(c *gin.Context) {
-		user := &models.User{}
+		user := &json.User{}
 		repositories.Spree_db.First(user)
 		c.Set("CurrentUser", user)
 		ProductsIndex(c)

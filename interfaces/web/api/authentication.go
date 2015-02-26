@@ -9,7 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/crowdint/gopher-spree-api/configs/spree"
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
@@ -29,7 +28,7 @@ func Authentication() gin.HandlerFunc {
 		// POST + authentication (false) + token (spreeToken) => next
 		// authentication (true) + token (spreeToken || orderToken) => next
 		if isReadAction(c.Request) && !authRequired {
-			nextHandler(c, &models.User{})
+			nextHandler(c, &json.User{})
 			return
 		} else {
 			if err := verifySpreeTokenAccess(c, authRequired); err != nil {
@@ -41,7 +40,7 @@ func Authentication() gin.HandlerFunc {
 
 func verifySpreeTokenAccess(c *gin.Context, authRequired bool) error {
 	var err error
-	user := &models.User{}
+	user := &json.User{}
 	isGuestUser := false
 	spreeToken := getSpreeToken(c)
 	dbRepo := repositories.NewDatabaseRepository()
@@ -118,12 +117,12 @@ func unauthorizedAuthRequiredMsg(c *gin.Context, authRequired bool) {
 	}
 }
 
-func nextHandler(c *gin.Context, user *models.User) {
+func nextHandler(c *gin.Context, user *json.User) {
 	c.Set("CurrentUser", user)
 	c.Next()
 }
 
-func findUserBySpreeApiKey(c *gin.Context, dbRepo *repositories.DbRepository, user *models.User, spreeToken string) error {
+func findUserBySpreeApiKey(c *gin.Context, dbRepo *repositories.DbRepository, user *json.User, spreeToken string) error {
 	err := dbRepo.FindBy(user, nil, map[string]interface{}{"spree_api_key": spreeToken})
 
 	if err != nil {

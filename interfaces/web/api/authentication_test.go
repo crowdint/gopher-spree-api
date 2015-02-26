@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/crowdint/gopher-spree-api/configs/spree"
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
@@ -19,7 +18,7 @@ func TestAuthenticationWithValidToken(t *testing.T) {
 	}
 
 	dbSpreeToken := "testUser"
-	repositories.Spree_db.FirstOrCreate(&models.User{}, models.User{SpreeApiKey: dbSpreeToken})
+	repositories.Spree_db.FirstOrCreate(&json.User{}, json.User{SpreeApiKey: dbSpreeToken})
 
 	req, err := http.NewRequest("GET", "/products", nil)
 	if err != nil {
@@ -125,7 +124,7 @@ func TestAuthenticationWithValidOrderToken(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	r := gin.New()
-	var user *models.User
+	var user *json.User
 	r.Use(Authentication(), func(c *gin.Context) {
 		user = currentUser(c)
 	})
@@ -188,7 +187,7 @@ func TestAuthenticationWithValidOrderTokenAndActionIsNotOrderShow(t *testing.T) 
 
 	spree.Set(spree.API_AUTHENTICATION, "true")
 	r := gin.New()
-	var user *models.User
+	var user *json.User
 	r.Use(Authentication(), func(c *gin.Context) {
 		user = currentUser(c)
 	})
@@ -215,7 +214,7 @@ func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalse(t *testing.T
 
 	spree.Set(spree.API_AUTHENTICATION, "false")
 	r := gin.New()
-	var user *models.User
+	var user *json.User
 	r.Use(Authentication(), func(c *gin.Context) {
 		user = currentUser(c)
 	})
@@ -242,7 +241,7 @@ func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalseAndActionIsNo
 
 	spree.Set(spree.API_AUTHENTICATION, "false")
 	r := gin.New()
-	var user *models.User
+	var user *json.User
 	r.Use(Authentication(), func(c *gin.Context) {
 		user = currentUser(c)
 	})
@@ -259,10 +258,10 @@ func TestAuthenticationWithTokenAndAuthenticationRequiredIsFalseAndActionsIsNotR
 		t.Error("An error has ocurred", err)
 	}
 
-	user := &models.User{}
-	var currentUsr *models.User
+	user := &json.User{}
+	var currentUsr *json.User
 	dbSpreeToken := "testUser"
-	repositories.Spree_db.FirstOrCreate(user, models.User{SpreeApiKey: dbSpreeToken})
+	repositories.Spree_db.FirstOrCreate(user, json.User{SpreeApiKey: dbSpreeToken})
 
 	path := "/api/products"
 	req, err := http.NewRequest("POST", path, nil)

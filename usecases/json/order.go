@@ -5,7 +5,6 @@ import (
 
 	"github.com/crowdint/gopher-spree-api/configs/spree"
 	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	. "github.com/crowdint/gopher-spree-api/utils"
 )
@@ -19,7 +18,7 @@ type OrderInteractor struct {
 	ShipmentRepository    *repositories.ShipmentRepository
 }
 
-func (this *OrderInteractor) Show(o *json.Order, u *models.User) (*json.Order, error) {
+func (this *OrderInteractor) Show(o *json.Order, u *json.User) (*json.Order, error) {
 	order := json.Order{}
 	copier.Copy(&order, o)
 
@@ -178,7 +177,7 @@ func (this *OrderInteractor) getLineItems(order *json.Order) *[]json.LineItem {
 	return lineItems
 }
 
-func (this *OrderInteractor) getPermissions(order *json.Order, user *models.User) *json.Permissions {
+func (this *OrderInteractor) getPermissions(order *json.Order, user *json.User) *json.Permissions {
 	updatePermission := user.HasRole("admin") || (*order.UserId == user.Id)
 	permissions := &json.Permissions{CanUpdate: &updatePermission}
 	return permissions
@@ -189,7 +188,7 @@ func (this *OrderInteractor) getQuantity(order *json.Order) int64 {
 	return quantities[order.Id]
 }
 
-func (this *OrderInteractor) setComputedValues(order *json.Order, user *models.User) {
+func (this *OrderInteractor) setComputedValues(order *json.Order, user *json.User) {
 	order.Permissions = this.getPermissions(order, user)
 	order.Quantity = this.getQuantity(order)
 	order.BillAddress = this.getAddress(order, "BillAddressId")

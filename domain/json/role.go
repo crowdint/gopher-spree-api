@@ -1,4 +1,4 @@
-package models
+package json
 
 type Role struct {
 	Id   int64

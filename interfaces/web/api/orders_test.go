@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/julienschmidt/httprouter"
 
-	"github.com/crowdint/gopher-spree-api/domain/models"
 	"github.com/crowdint/gopher-spree-api/domain/json"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
@@ -132,9 +131,9 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsAdmin(t *testing.T) {
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	user := &models.User{}
-	user.Roles = []models.Role{
-		models.Role{Name: "admin"},
+	user := &json.User{}
+	user.Roles = []json.Role{
+		json.Role{Name: "admin"},
 	}
 	err = repositories.NewDatabaseRepository().FindBy(user, nil, nil)
 	if err != nil {
@@ -165,7 +164,7 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsNotAdmin(t *testing.T) {
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	user := &models.User{}
+	user := &json.User{}
 	err = repositories.NewDatabaseRepository().FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
@@ -195,9 +194,9 @@ func TestAuthorizeOrderWhenUserIsSetAndIsAdmin(t *testing.T) {
 		t.Error("An error occurred: " + err.Error())
 	}
 
-	user := &models.User{}
-	user.Roles = []models.Role{
-		models.Role{Name: "admin"},
+	user := &json.User{}
+	user.Roles = []json.Role{
+		json.Role{Name: "admin"},
 	}
 	err = repositories.NewDatabaseRepository().FindBy(user, nil, nil)
 	if err != nil {
@@ -232,7 +231,7 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderBelongsToHim(t *testing.T) {
 
 	dbRepo := repositories.NewDatabaseRepository()
 
-	user := &models.User{}
+	user := &json.User{}
 	err = dbRepo.FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
@@ -273,7 +272,7 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderDoesNotBelongToHim(t *testing.T
 
 	dbRepo := repositories.NewDatabaseRepository()
 
-	user := &models.User{}
+	user := &json.User{}
 	err = dbRepo.FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
