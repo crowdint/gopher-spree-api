@@ -1,43 +1,43 @@
 package json
 
-import (
-	"encoding/json"
-	"testing"
+//import (
+//"encoding/json"
+//"testing"
 
-	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-)
+//"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+//)
 
-func TestResponseInteractor(t *testing.T) {
-	err := repositories.InitDB(true)
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
-	}
+//func TestResponseInteractor(t *testing.T) {
+//err := repositories.InitDB(true)
+//if err != nil {
+//t.Error("Error: An error has ocurred:", err.Error())
+//}
 
-	defer repositories.Spree_db.Close()
+//defer repositories.Spree_db.Close()
 
-	productInteractor := NewProductInteractor()
+//productInteractor := NewProductInteractor()
 
-	interactor := SpreeResponseFetcher
+//interactor := SpreeResponseFetcher
 
-	params := newDummyResponseParams(2, 0, "")
+//params := newDummyResponseParams(2, 0, "")
 
-	response, err := interactor.GetResponse(productInteractor, params)
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
-		return
-	}
+//response, err := interactor.GetResponse(productInteractor, params)
+//if err != nil {
+//t.Error("Error: An error has ocurred:", err.Error())
+//return
+//}
 
-	jsonBytes, err := json.Marshal(response)
+//jsonBytes, err := json.Marshal(response)
 
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
-		return
-	}
+//if err != nil {
+//t.Error("Error: An error has ocurred:", err.Error())
+//return
+//}
 
-	strJson := string(jsonBytes)
+//strJson := string(jsonBytes)
 
-	if strJson == "" {
-		t.Error("Error: Empty json string")
-		return
-	}
-}
+//if strJson == "" {
+//t.Error("Error: Empty json string")
+//return
+//}
+//}

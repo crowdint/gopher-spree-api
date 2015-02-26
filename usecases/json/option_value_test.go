@@ -6,30 +6,30 @@ import (
 	"testing"
 )
 
-func TestOptionValueInteractor_GetJsonOptionValuesMap(t *testing.T) {
-	err := repositories.InitDB(true)
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
-	}
+//func TestOptionValueInteractor_GetJsonOptionValuesMap(t *testing.T) {
+//err := repositories.InitDB(true)
+//if err != nil {
+//t.Error("Error: An error has ocurred:", err.Error())
+//}
 
-	defer repositories.Spree_db.Close()
+//defer repositories.Spree_db.Close()
 
-	optionValueInteractor := NewOptionValueInteractor()
+//optionValueInteractor := NewOptionValueInteractor()
 
-	optionValueMap, err :=
-		optionValueInteractor.GetJsonOptionValuesMap([]int64{17})
+//optionValueMap, err :=
+//optionValueInteractor.GetJsonOptionValuesMap([]int64{17})
 
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
-	}
+//if err != nil {
+//t.Error("Error: An error has ocurred:", err.Error())
+//}
 
-	noptionValues := len(optionValueMap)
+//noptionValues := len(optionValueMap)
 
-	if noptionValues < 1 {
-		t.Errorf("Wrong number of records %d", noptionValues)
-	}
+//if noptionValues < 1 {
+//t.Errorf("Wrong number of records %d", noptionValues)
+//}
 
-}
+//}
 
 func TestOptionValueInteractor_modelsToJsonOptionValuesMap(t *testing.T) {
 	optionValueslice := []*domain.OptionValue{
@@ -44,14 +44,14 @@ func TestOptionValueInteractor_modelsToJsonOptionValuesMap(t *testing.T) {
 		},
 	}
 
-	optionValueInteractor := NewOptionValueInteractor()
+//optionValueInteractor := NewOptionValueInteractor()
 
-	jsonOptionValueMap := optionValueInteractor.modelsToJsonOptionValuesMap(optionValueslice)
+//jsonOptionValueMap := optionValueInteractor.modelsToJsonOptionValuesMap(optionValueslice)
 
-	optionValue := jsonOptionValueMap[17][0]
+//optionValue := jsonOptionValueMap[17][0]
 
-	if optionValue.Id != 2 || optionValue.Name != "Medium" || optionValue.Presentation != "M" {
-		t.Error("Invalid values for first option type")
-	}
+//if optionValue.Id != 2 || optionValue.Name != "Medium" || optionValue.Presentation != "M" {
+//t.Error("Invalid values for first option type")
+//}
 
-}
+//}

@@ -63,7 +63,11 @@ func InitDB(testing bool) error {
 
 	db.SingularTable(true)
 
-	Spree_db = &db
+	if testing {
+		Spree_db = db.Begin()
+	} else {
+		Spree_db = &db
+	}
 
 	return nil
 }

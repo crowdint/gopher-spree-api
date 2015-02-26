@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"strconv"
 	"testing"
 
 	"github.com/crowdint/gopher-spree-api/domain"
@@ -8,6 +9,11 @@ import (
 
 func TestOrderRepository(t *testing.T) {
 	err := InitDB(true)
+
+	defer func() {
+		Spree_db.Rollback()
+		Spree_db.Close()
+	}()
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
@@ -17,11 +23,13 @@ func TestOrderRepository(t *testing.T) {
 		t.Error("Database helper not initialized")
 	}
 
-	defer Spree_db.Close()
-
 	orderRepository := NewOrderRepository()
 
-	order := &domain.Order{}
+	order := &models.Order{}
+
+	Spree_db.Create(order)
+	Spree_db.Exec("INSERT INTO spree_line_items(order_id, quantity, price) values(" + strconv.Itoa(int(order.Id)) + ", 1, 10)")
+
 	orderRepository.dbHandler.First(order)
 
 	quantities, err := orderRepository.SumLineItemsQuantityByOrderIds([]int64{order.Id})

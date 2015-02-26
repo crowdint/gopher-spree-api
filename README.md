@@ -101,9 +101,8 @@ the following commands should be executed in the spree project:
     $ RAILS_ENV=test rake db:migrate
     $ RAILS_ENV=test rake db:seed
     $ RAILS_ENV=test rake spree_sample:load
-    
-**NOTE**: You should ensure that the spree_test database is populated when running
-the tests of this project.
+
+Each test should create and destroy the data it uses to test.
 
 ## Build
 

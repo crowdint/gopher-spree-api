@@ -4,11 +4,30 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain"
+	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain/models"
 )
 
 func TestOptionValueRepo(t *testing.T) {
 	err := InitDB(true)
+
+	defer func() {
+		Spree_db.Rollback()
+		Spree_db.Close()
+	}()
+
+	optionValue := &models.OptionValue{
+		Id:           1,
+		OptionTypeId: 1,
+	}
+
+	optionType := &models.OptionType{
+		Id: 1,
+	}
+
+	Spree_db.Create(optionValue)
+	Spree_db.Create(optionType)
+	Spree_db.Exec("INSERT INTO spree_option_values_variants(option_value_id, variant_id) values(1, 17)")
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
@@ -17,8 +36,6 @@ func TestOptionValueRepo(t *testing.T) {
 	if Spree_db == nil {
 		t.Error("Database helper not initialized")
 	}
-
-	defer Spree_db.Close()
 
 	optionValueRepo := NewOptionValueRepo()
 
@@ -44,6 +61,18 @@ func TestOptionValueRepo(t *testing.T) {
 func TestOptionValueRepository_AllByVariantAssociation(t *testing.T) {
 	err := InitDB(true)
 
+	defer func() {
+		Spree_db.Rollback()
+		Spree_db.Close()
+	}()
+
+	optionValue := &models.OptionValue{
+		Id: 1,
+	}
+
+	Spree_db.Create(optionValue)
+	Spree_db.Exec("INSERT INTO spree_option_values_variants(option_value_id, variant_id) values(1, 17)")
+
 	if err != nil {
 		t.Error("An error has ocurred", err)
 	}
@@ -51,8 +80,6 @@ func TestOptionValueRepository_AllByVariantAssociation(t *testing.T) {
 	if Spree_db == nil {
 		t.Error("Database helper not initialized")
 	}
-
-	defer Spree_db.Close()
 
 	optionValueRepo := NewOptionValueRepo()
 	variant := &domain.Variant{Id: 17}
