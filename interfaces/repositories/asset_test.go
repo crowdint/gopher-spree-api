@@ -34,7 +34,7 @@ func TestAssetRepo(t *testing.T) {
 
 	temp := reflect.ValueOf(*assets[0]).Type().String()
 
-	if temp != "models.Asset" {
+	if temp != "domain.AssetModel" {
 		t.Error("Invalid type", t)
 	}
 }

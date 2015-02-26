@@ -1,14 +1,12 @@
 package json
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-	"github.com/jinzhu/copier"
 )
 
 type TaxonomyResponse struct {
-	data []*json.Taxonomy
+	data []*domain.Taxonomy
 }
 
 func (this TaxonomyResponse) GetCount() int {
@@ -39,7 +37,7 @@ func (this *TaxonomyInteractor) GetResponse(currentPage, perPage int, params Res
 		return TaxonomyResponse{}, err
 	}
 
-	var taxonomyModelSlice []*models.Taxonomy
+	var taxonomyModelSlice []*domain.Taxonomy
 	this.BaseRepository.All(&taxonomyModelSlice, map[string]interface{}{
 		"limit":  perPage,
 		"offset": currentPage,
@@ -63,15 +61,13 @@ func (this *TaxonomyInteractor) GetShowResponse(param ResponseParameters) (inter
 	return true, nil
 }
 
-func (this *TaxonomyInteractor) transformToJsonResponse(taxonomyModelSlice []*models.Taxonomy) ([]*json.Taxonomy, error) {
-	taxonomyJsonSlice := this.modelsToJsonTaxonomiesSlice(taxonomyModelSlice)
-
+func (this *TaxonomyInteractor) transformToJsonResponse(taxonomyModelSlice []*domain.Taxonomy) ([]*domain.Taxonomy, error) {
 	//WIP MERGE TAXONS
 
-	return taxonomyJsonSlice, nil
+	return taxonomyModelSlice, nil
 }
 
-func (this *TaxonomyInteractor) getIdSlice(taxonomySlice []*models.Taxonomy) []int64 {
+func (this *TaxonomyInteractor) getIdSlice(taxonomySlice []*domain.Taxonomy) []int64 {
 	taxonomyIds := []int64{}
 
 	for _, taxonomy := range taxonomySlice {
@@ -81,23 +77,10 @@ func (this *TaxonomyInteractor) getIdSlice(taxonomySlice []*models.Taxonomy) []i
 	return taxonomyIds
 }
 
-func (this *TaxonomyInteractor) modelsToJsonTaxonomiesSlice(taxonomySlice []*models.Taxonomy) []*json.Taxonomy {
-	jsonTaxonomySlice := []*json.Taxonomy{}
-
-	for _, taxonomy := range taxonomySlice {
-		taxonomyJson := &json.Taxonomy{}
-		copier.Copy(taxonomyJson, taxonomy)
-
-		jsonTaxonomySlice = append(jsonTaxonomySlice, taxonomyJson)
-	}
-
-	return jsonTaxonomySlice
-}
-
 func (this *TaxonomyInteractor) GetTotalCount(param ResponseParameters) (int64, error) {
 	query, gparams, err := param.GetGransakParams()
 	if err != nil {
 		return 0, err
 	}
-	return this.BaseRepository.Count(models.Taxonomy{}, query, gparams)
+	return this.BaseRepository.Count(domain.Taxonomy{}, query, gparams)
 }

@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/jinzhu/gorm"
 )
 
@@ -13,9 +13,9 @@ func NewVariantRepo() *VariantRepository {
 	}
 }
 
-func (this *VariantRepository) FindByProductIds(productIds []int64) ([]*models.Variant, error) {
+func (this *VariantRepository) FindByProductIds(productIds []int64) ([]*domain.Variant, error) {
 
-	variants := []*models.Variant{}
+	variants := []*domain.Variant{}
 
 	if len(productIds) == 0 {
 		return variants, nil

@@ -35,7 +35,7 @@ func TestProductPropertyRepo(t *testing.T) {
 
 	temp := reflect.ValueOf(*productProperties[0]).Type().String()
 
-	if temp != "models.ProductProperty" {
+	if temp != "domain.ProductProperty" {
 		t.Error("Invalid type", t)
 	}
 

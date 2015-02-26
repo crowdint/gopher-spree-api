@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/crowdint/gopher-spree-api/configs/spree"
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -28,7 +28,7 @@ func Authentication() gin.HandlerFunc {
 		// POST + authentication (false) + token (spreeToken) => next
 		// authentication (true) + token (spreeToken || orderToken) => next
 		if isReadAction(c.Request) && !authRequired {
-			nextHandler(c, &models.User{})
+			nextHandler(c, &domain.User{})
 			return
 		} else {
 			if err := verifySpreeTokenAccess(c, authRequired); err != nil {
@@ -40,7 +40,7 @@ func Authentication() gin.HandlerFunc {
 
 func verifySpreeTokenAccess(c *gin.Context, authRequired bool) error {
 	var err error
-	user := &models.User{}
+	user := &domain.User{}
 	isGuestUser := false
 	spreeToken := getSpreeToken(c)
 	dbRepo := repositories.NewDatabaseRepository()
@@ -91,7 +91,7 @@ func verifyOrderTokenAccess(c *gin.Context, dbRepo *repositories.DbRepository, a
 	}
 
 	// Find the order by guest token (order token)
-	order := &models.Order{}
+	order := &domain.Order{}
 	err := dbRepo.FindBy(order, nil, map[string]interface{}{"guest_token": orderToken})
 	if err != nil {
 		unauthorized(c, "You are not authorized to perform that action.")
@@ -117,12 +117,12 @@ func unauthorizedAuthRequiredMsg(c *gin.Context, authRequired bool) {
 	}
 }
 
-func nextHandler(c *gin.Context, user *models.User) {
+func nextHandler(c *gin.Context, user *domain.User) {
 	c.Set("CurrentUser", user)
 	c.Next()
 }
 
-func findUserBySpreeApiKey(c *gin.Context, dbRepo *repositories.DbRepository, user *models.User, spreeToken string) error {
+func findUserBySpreeApiKey(c *gin.Context, dbRepo *repositories.DbRepository, user *domain.User, spreeToken string) error {
 	err := dbRepo.FindBy(user, nil, map[string]interface{}{"spree_api_key": spreeToken})
 
 	if err != nil {

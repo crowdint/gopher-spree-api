@@ -1,7 +1,7 @@
 package json
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 
 	"testing"
@@ -37,15 +37,15 @@ func TestProductPropertyInteractor_GetJsonProductPropertiesMap(t *testing.T) {
 }
 
 func TestProductPropertyInteractor_modelsToJsonProductPropertiesMap(t *testing.T) {
-	productPropertySlice := []*models.ProductProperty{
-		&models.ProductProperty{
+	productPropertySlice := []*domain.ProductProperty{
+		&domain.ProductProperty{
 			Id:           66,
 			ProductId:    10,
 			PropertyId:   3,
 			Value:        "Men's",
 			PropertyName: "Gender",
 		},
-		&models.ProductProperty{
+		&domain.ProductProperty{
 			Id:           1,
 			ProductId:    3,
 			PropertyId:   1,
@@ -71,24 +71,5 @@ func TestProductPropertyInteractor_modelsToJsonProductPropertiesMap(t *testing.T
 
 	if pp2.Id != 1 {
 		t.Error("Invalid values for second productProperty")
-	}
-}
-
-func TestProductPropertyInteractor_toJson(t *testing.T) {
-	productProperty := &models.ProductProperty{
-		Id:           66,
-		ProductId:    10,
-		PropertyId:   3,
-		Value:        "Men's",
-		PropertyName: "Gender",
-	}
-
-	productPropertyInteractor := NewProductPropertyInteractor()
-
-	jsonProductProperty := productPropertyInteractor.toJson(productProperty)
-
-	if jsonProductProperty.Id != 66 || jsonProductProperty.ProductId !=
-		10 || jsonProductProperty.PropertyId != 3 || jsonProductProperty.Value != "Men's" || jsonProductProperty.PropertyName != "Gender" {
-		t.Error("Invalid values json.ProductProperty")
 	}
 }

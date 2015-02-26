@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -17,7 +17,7 @@ func TestTaxonsIndex(t *testing.T) {
 	path := "/api/taxons/"
 
 	r.GET(path, func(c *gin.Context) {
-		user := &models.User{}
+		user := &domain.User{}
 		repositories.Spree_db.First(user)
 		c.Set("CurrentUser", user)
 		TaxonsIndex(c)

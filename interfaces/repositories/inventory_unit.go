@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/utils"
 )
 
@@ -15,7 +15,7 @@ func NewInventoryUnitRepository() *InventoryUnitRepository {
 	}
 }
 
-func (this *InventoryUnitRepository) AllByShipmentAssociation(shipment *json.Shipment) {
+func (this *InventoryUnitRepository) AllByShipmentAssociation(shipment *domain.Shipment) {
 	this.Association(shipment, &shipment.Manifest, "ShipmentId")
 
 	manifestToMap := utils.ToMap(shipment.Manifest, "LineItemId", true)
@@ -26,7 +26,7 @@ func (this *InventoryUnitRepository) AllByShipmentAssociation(shipment *json.Shi
 		for _, v := range manifestToMap {
 			inventoryUnits := v.([]interface{})
 			for j := 0; j < len(inventoryUnits); j++ {
-				states[inventoryUnits[j].(json.InventoryUnit).State]++
+				states[inventoryUnits[j].(domain.InventoryUnit).State]++
 			}
 		}
 

@@ -1,7 +1,7 @@
 package json
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 
 	"testing"
@@ -32,15 +32,15 @@ func TestOptionTypeInteractor_GetJsonOptionTypesMap(t *testing.T) {
 }
 
 func TestOptionTypeInteractor_modelsToJsonOptionTypesMap(t *testing.T) {
-	optionTypeslice := []*models.OptionType{
-		&models.OptionType{
+	optionTypeslice := []*domain.OptionType{
+		&domain.OptionType{
 			Id:           1,
 			Name:         "tshirt-size",
 			Presentation: "Size",
 			Position:     1,
 			ProductId:    3,
 		},
-		&models.OptionType{
+		&domain.OptionType{
 			Id:           2,
 			Name:         "tshirt-color",
 			Presentation: "Color",
@@ -70,20 +70,3 @@ func TestOptionTypeInteractor_modelsToJsonOptionTypesMap(t *testing.T) {
 
 }
 
-func TestOptionTypeInteractor_toJson(t *testing.T) {
-	optionType := &models.OptionType{
-		Id:           2,
-		Name:         "tshirt-color",
-		Presentation: "Color",
-		Position:     2,
-		ProductId:    3,
-	}
-
-	optionTypeInteractor := NewOptionTypeInteractor()
-
-	jsonOptionType := optionTypeInteractor.toJson(optionType)
-
-	if jsonOptionType.Id != 2 || jsonOptionType.Name != "tshirt-color" || jsonOptionType.Presentation != "Color" || jsonOptionType.Position != 2 {
-		t.Error("Invalid values for first option type")
-	}
-}

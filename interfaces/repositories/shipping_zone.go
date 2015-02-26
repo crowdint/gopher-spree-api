@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 type ShippingZoneRepository struct {
@@ -14,7 +14,7 @@ func NewShippingZoneRepository() *ShippingZoneRepository {
 	}
 }
 
-func (this *ShippingZoneRepository) AllByShippingMethodAssociation(shippingMethod *json.ShippingMethod) {
+func (this *ShippingZoneRepository) AllByShippingMethodAssociation(shippingMethod *domain.ShippingMethod) {
 	this.dbHandler.Table("spree_zones").
 		Select("spree_zones.*").
 		Where("spree_shipping_methods_zones.shipping_method_id = ?", shippingMethod.Id).

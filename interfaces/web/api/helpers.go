@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/crowdint/gopher-spree-api/configs"
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 const (
@@ -22,9 +22,9 @@ var (
 
 type params map[string]interface{}
 
-func currentUser(c *gin.Context) *models.User {
+func currentUser(c *gin.Context) *domain.User {
 	currentUser, _ := c.Get("CurrentUser")
-	user := currentUser.(*models.User)
+	user := currentUser.(*domain.User)
 	return user
 }
 

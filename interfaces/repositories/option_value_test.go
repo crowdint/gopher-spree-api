@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 func TestOptionValueRepo(t *testing.T) {
@@ -36,7 +36,7 @@ func TestOptionValueRepo(t *testing.T) {
 
 	temp := reflect.ValueOf(*optionValues[0]).Type().String()
 
-	if temp != "models.OptionValue" {
+	if temp != "domain.OptionValue" {
 		t.Error("Invalid type", t)
 	}
 }
@@ -55,7 +55,7 @@ func TestOptionValueRepository_AllByVariantAssociation(t *testing.T) {
 	defer Spree_db.Close()
 
 	optionValueRepo := NewOptionValueRepo()
-	variant := &json.Variant{Id: 17}
+	variant := &domain.Variant{Id: 17}
 	optionValues := optionValueRepo.AllByVariantAssociation(variant)
 
 	if len(optionValues) < 1 {

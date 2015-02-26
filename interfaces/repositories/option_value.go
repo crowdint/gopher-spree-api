@@ -1,8 +1,7 @@
 package repositories
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 type OptionValueRepository struct {
@@ -15,14 +14,14 @@ func NewOptionValueRepo() *OptionValueRepository {
 	}
 }
 
-func (this *OptionValueRepository) AllByVariantAssociation(variant *json.Variant) []models.OptionValue {
-	optionValues := []models.OptionValue{}
+func (this *OptionValueRepository) AllByVariantAssociation(variant *domain.Variant) []domain.OptionValue {
+	optionValues := []domain.OptionValue{}
 	this.Association(variant, &optionValues, "OptionValues")
 	return optionValues
 }
 
-func (this *OptionValueRepository) FindByVariantIds(variantIds []int64) ([]*models.OptionValue, error) {
-	var optionValues []*models.OptionValue
+func (this *OptionValueRepository) FindByVariantIds(variantIds []int64) ([]*domain.OptionValue, error) {
+	var optionValues []*domain.OptionValue
 
 	if len(variantIds) == 0 {
 		return optionValues, nil

@@ -1,8 +1,7 @@
 package json
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
@@ -20,7 +19,7 @@ func NewVariantInteractor() *VariantInteractor {
 	}
 }
 
-type JsonVariantsMap map[int64][]*json.Variant
+type JsonVariantsMap map[int64][]*domain.Variant
 
 func (this *VariantInteractor) GetJsonVariantsMap(productIds []int64) (JsonVariantsMap, error) {
 	variants, err := this.Repository.FindByProductIds(productIds)
@@ -36,7 +35,7 @@ func (this *VariantInteractor) GetJsonVariantsMap(productIds []int64) (JsonVaria
 	return variantsJson, nil
 }
 
-func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*models.Variant) (JsonVariantsMap, error) {
+func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*domain.Variant) (JsonVariantsMap, error) {
 	variantIds := this.getIdSlice(variantSlice)
 	jsonAssetsMap, err := this.AssetInteractor.GetJsonAssetsMap(variantIds)
 	if err != nil {
@@ -57,7 +56,7 @@ func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*models.Va
 		variantJson.OptionValues = jsonOptionValuesMap[variant.Id]
 
 		if _, exists := jsonVariantsMap[variant.ProductId]; !exists {
-			jsonVariantsMap[variant.ProductId] = []*json.Variant{}
+			jsonVariantsMap[variant.ProductId] = []*domain.Variant{}
 		}
 
 		jsonVariantsMap[variant.ProductId] = append(jsonVariantsMap[variant.ProductId], variantJson)
@@ -67,8 +66,8 @@ func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*models.Va
 	return jsonVariantsMap, nil
 }
 
-func (this *VariantInteractor) toJson(variant *models.Variant) *json.Variant {
-	variantJson := &json.Variant{
+func (this *VariantInteractor) toJson(variant *domain.Variant) *domain.Variant {
+	variantJson := &domain.Variant{
 		Id: variant.Id,
 		//Name: from product
 		Sku:      variant.Sku,
@@ -94,7 +93,7 @@ func (this *VariantInteractor) toJson(variant *models.Variant) *json.Variant {
 	return variantJson
 }
 
-func (this *VariantInteractor) getIdSlice(variantSlice []*models.Variant) []int64 {
+func (this *VariantInteractor) getIdSlice(variantSlice []*domain.Variant) []int64 {
 	variantIds := []int64{}
 
 	for _, variant := range variantSlice {

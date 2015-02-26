@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/crowdint/gopher-spree-api/usecases/json"
 )
@@ -21,7 +21,7 @@ func findOrder(c *gin.Context) {
 	order := currentOrder(c)
 
 	if order == nil {
-		order = &models.Order{}
+		order = &domain.Order{}
 		err := repositories.NewDatabaseRepository().FindBy(order, nil, params{
 			"number": c.Params.ByName("order_number"),
 		})
@@ -37,10 +37,10 @@ func findOrder(c *gin.Context) {
 	c.Next()
 }
 
-func currentOrder(c *gin.Context) *models.Order {
+func currentOrder(c *gin.Context) *domain.Order {
 	order, err := c.Get("Order")
 	if err == nil {
-		return order.(*models.Order)
+		return order.(*domain.Order)
 	}
 	return nil
 }

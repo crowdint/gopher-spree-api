@@ -1,15 +1,12 @@
 package json
 
 import (
-	"github.com/jinzhu/copier"
-
-	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
 type TaxonResponse struct {
-	data []*json.Taxon
+	data []*domain.Taxon
 }
 
 func (this TaxonResponse) GetCount() int {
@@ -42,7 +39,7 @@ func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params Respon
 		return TaxonResponse{}, err
 	}
 
-	var taxonModelSlice []*models.Taxon
+	var taxonModelSlice []*domain.Taxon
 
 	err = this.BaseRepository.All(&taxonModelSlice, map[string]interface{}{
 		"limit":  perPage,
@@ -53,28 +50,11 @@ func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params Respon
 		return TaxonResponse{}, err
 	}
 
-	taxonJsonSlice := this.modelsToJsonTaxonsSlice(taxonModelSlice)
-
-	this.toTaxonTree(taxonJsonSlice)
+	this.toTaxonTree(taxonModelSlice)
 
 	return TaxonResponse{
-		data: taxonJsonSlice,
+		data: taxonModelSlice,
 	}, nil
-}
-
-func (this *TaxonInteractor) modelsToJsonTaxonsSlice(taxonSlice []*models.Taxon) []*json.Taxon {
-	jsonTaxonsSlice := []*json.Taxon{}
-
-	for _, taxon := range taxonSlice {
-		taxonJson := &json.Taxon{
-			Taxons: []*json.Taxon{},
-		}
-
-		copier.Copy(taxonJson, taxon)
-		jsonTaxonsSlice = append(jsonTaxonsSlice, taxonJson)
-	}
-
-	return jsonTaxonsSlice
 }
 
 func (this *TaxonInteractor) GetTotalCount(params ResponseParameters) (int64, error) {
@@ -82,18 +62,18 @@ func (this *TaxonInteractor) GetTotalCount(params ResponseParameters) (int64, er
 	if err != nil {
 		return 0, err
 	}
-	return this.BaseRepository.Count(models.Taxon{}, query, gparams)
+	return this.BaseRepository.Count(domain.Taxon{}, query, gparams)
 }
 
 func (this *TaxonInteractor) GetShowResponse(params ResponseParameters) (interface{}, error) {
-	taxonModelSlice := []*models.Taxon{}
+	taxonModelSlice := []*domain.Taxon{}
 
 	//DUMMY UNTIL TAXON SHOW IS IMPLEMENTED
 
 	return taxonModelSlice[0], nil
 }
 
-func (this *TaxonInteractor) toTaxonTree(nodes []*json.Taxon) {
+func (this *TaxonInteractor) toTaxonTree(nodes []*domain.Taxon) {
 	for _, node := range nodes {
 		for _, childNode := range nodes {
 			if node.Lft < childNode.Rgt && node.Rgt > childNode.Rgt && (node.Depth+1) == childNode.Depth {

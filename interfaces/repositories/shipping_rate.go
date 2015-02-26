@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain/json"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 type ShippingRateRepository struct {
@@ -14,8 +14,8 @@ func NewShippingRateRepository() *ShippingRateRepository {
 	}
 }
 
-func (this *ShippingRateRepository) AllByShipment(shipment *json.Shipment) []json.ShippingRate {
-	shippingRates := []json.ShippingRate{}
+func (this *ShippingRateRepository) AllByShipment(shipment *domain.Shipment) []domain.ShippingRate {
+	shippingRates := []domain.ShippingRate{}
 	this.All(&shippingRates, map[string]interface{}{
 		"order": "cost ASC",
 	}, "shipment_id = ?", shipment.Id)
