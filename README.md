@@ -6,7 +6,6 @@ Experimental implementation of the Spree API on steroids.
 
 - An up and running spree app
 - A go installation
-- Memcached installed. [Here's](https://glassonionblog.wordpress.com/2012/02/18/installing-memcached-on-mac-os-x-snow-leopard/) a tutorial to install memcached.
 
 ## Getting started
 
@@ -65,6 +64,15 @@ format:
     code.google.com/p/go.example/hello/...  ae081cd1d6cc
 
 And install dependencies again.
+
+### Installign Memcached
+To install memcached, you must have [port](http://www.macports.org/install.php) installed.
+
+    $ sudo port install memcached
+
+To start Memcached Server
+
+    $ memcached -vv
 
 ### Configuration
 
