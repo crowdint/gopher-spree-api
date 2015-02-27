@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 func TestProductPropertyRepo(t *testing.T) {
@@ -23,7 +23,7 @@ func TestProductPropertyRepo(t *testing.T) {
 		t.Error("Database helper not initialized")
 	}
 
-	Spree_db.Create(&models.ProductProperty{Id: 1, ProductId: 1, PropertyId: 1})
+	Spree_db.Create(&domain.ProductProperty{Id: 1, ProductId: 1, PropertyId: 1})
 	Spree_db.Exec("INSERT INTO spree_properties(id, presentation) values(1, 'foo')")
 
 	productPropertyRepo := NewProductPropertyRepo()

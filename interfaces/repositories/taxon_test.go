@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 func TestTaxonRepo_FindByProductIds(t *testing.T) {
@@ -23,7 +23,7 @@ func TestTaxonRepo_FindByProductIds(t *testing.T) {
 		t.Error("Database helper not initialized")
 	}
 
-	Spree_db.Create(&models.Taxon{Id: 1})
+	Spree_db.Create(&domain.Taxon{Id: 1})
 	Spree_db.Exec("INSERT INTO spree_products_taxons(taxon_id, product_id) values(1, 1)")
 
 	taxonRepo := NewTaxonRepo()
@@ -59,7 +59,7 @@ func TestTaxonRepo_FindByTaxonomyIds(t *testing.T) {
 		t.Error("Database helper not initialized")
 	}
 
-	Spree_db.Create(&models.Taxon{Id: 1, TaxonomyId: 1})
+	Spree_db.Create(&domain.Taxon{Id: 1, TaxonomyId: 1})
 	Spree_db.Exec("INSERT INTO spree_taxonomies(id, name) values(1, 'foo')")
 
 	taxonRepo := NewTaxonRepo()

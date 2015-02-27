@@ -4,9 +4,9 @@ package json
 //"encoding/json"
 //"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain"
-	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-)
+//"github.com/crowdint/gopher-spree-api/domain"
+//"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+//)
 
 //func TestProductInteractor_GetMergedResponse(t *testing.T) {
 //err := repositories.InitDB(true)
@@ -38,18 +38,18 @@ package json
 //}
 //}
 
-func TestProductInteractor_getIdSlice(t *testing.T) {
-	products := []*domain.Product{
-		&domain.Product{
-			Id: 1,
-		},
-		&domain.Product{
-			Id: 2,
-		},
-		&domain.Product{
-			Id: 3,
-		},
-	}
+//func TestProductInteractor_getIdSlice(t *testing.T) {
+//products := []*domain.Product{
+//&domain.Product{
+//Id: 1,
+//},
+//&domain.Product{
+//Id: 2,
+//},
+//&domain.Product{
+//Id: 3,
+//},
+//}
 
 //productInteractor := NewProductInteractor()
 
@@ -64,31 +64,31 @@ func TestProductInteractor_getIdSlice(t *testing.T) {
 //}
 //}
 
-func TestProductInteractor_mergeVariants(t *testing.T) {
-	jsonProductSlice := []*domain.Product{
-		&domain.Product{
-			Id:   99991,
-			Name: "Product1",
-		},
-		&domain.Product{
-			Id:   99992,
-			Name: "Product2",
-		},
-	}
+//func TestProductInteractor_mergeVariants(t *testing.T) {
+//jsonProductSlice := []*domain.Product{
+//&domain.Product{
+//Id:   99991,
+//Name: "Product1",
+//},
+//&domain.Product{
+//Id:   99992,
+//Name: "Product2",
+//},
+//}
 
-	jsonVariantsMap := JsonVariantsMap{
-		99991: []*domain.Variant{
-			{
-				Id: 99991,
-			},
-		},
-		99992: []*domain.Variant{
-			{
-				Id:       99992,
-				IsMaster: true,
-			},
-		},
-	}
+//jsonVariantsMap := JsonVariantsMap{
+//99991: []*domain.Variant{
+//{
+//Id: 99991,
+//},
+//},
+//99992: []*domain.Variant{
+//{
+//Id:       99992,
+//IsMaster: true,
+//},
+//},
+//}
 
 //productInteractor := NewProductInteractor()
 
@@ -113,27 +113,27 @@ func TestProductInteractor_mergeVariants(t *testing.T) {
 //}
 //}
 
-func TestProductInteractor_mergeOptionTypes(t *testing.T) {
-	jsonProductSlice := []*domain.Product{
-		&domain.Product{
-			Id: 3,
-		},
-	}
+//func TestProductInteractor_mergeOptionTypes(t *testing.T) {
+//jsonProductSlice := []*domain.Product{
+//&domain.Product{
+//Id: 3,
+//},
+//}
 
-	jsonOptionTypesMap := JsonOptionTypesMap{
-		3: []*domain.OptionType{
-			{
-				Id:           1,
-				Name:         "tshirt-size",
-				Presentation: "Size",
-			},
-			{
-				Id:           2,
-				Name:         "tshirt-color",
-				Presentation: "Color",
-			},
-		},
-	}
+//jsonOptionTypesMap := JsonOptionTypesMap{
+//3: []*domain.OptionType{
+//{
+//Id:           1,
+//Name:         "tshirt-size",
+//Presentation: "Size",
+//},
+//{
+//Id:           2,
+//Name:         "tshirt-color",
+//Presentation: "Color",
+//},
+//},
+//}
 
 //productInteractor := NewProductInteractor()
 
@@ -158,28 +158,28 @@ func TestProductInteractor_mergeOptionTypes(t *testing.T) {
 //}
 //}
 
-func TestProductInteractor_mergeClassifications(t *testing.T) {
-	jsonProductSlice := []*domain.Product{
-		&domain.Product{
-			Id: 3,
-		},
-		&domain.Product{
-			Id: 5,
-		},
-	}
+//func TestProductInteractor_mergeClassifications(t *testing.T) {
+//jsonProductSlice := []*domain.Product{
+//&domain.Product{
+//Id: 3,
+//},
+//&domain.Product{
+//Id: 5,
+//},
+//}
 
-	jsonOptionTypesMap := JsonClassificationsMap{
-		3: []*domain.Classification{
-			{
-				TaxonId:  1,
-				Position: 5,
-				Taxon: domain.Taxon{
-					Id:   1,
-					Name: "taxonName",
-				},
-			},
-		},
-	}
+//jsonOptionTypesMap := JsonClassificationsMap{
+//3: []*domain.Classification{
+//{
+//TaxonId:  1,
+//Position: 5,
+//Taxon: domain.Taxon{
+//Id:   1,
+//Name: "taxonName",
+//},
+//},
+//},
+//}
 
 //productInteractor := NewProductInteractor()
 

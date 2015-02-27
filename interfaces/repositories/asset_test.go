@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 func TestAssetRepo(t *testing.T) {
@@ -15,7 +15,7 @@ func TestAssetRepo(t *testing.T) {
 		Spree_db.Close()
 	}()
 
-	asset := &models.Asset{
+	asset := &domain.AssetModel{
 		ViewableId: 11,
 	}
 
@@ -60,7 +60,7 @@ func TestAssetRepo_AllImagesByVariantId(t *testing.T) {
 		Spree_db.Close()
 	}()
 
-	asset := &models.Asset{
+	asset := &domain.AssetModel{
 		ViewableId:   11,
 		ViewableType: "Spree::Variant",
 		Type:         "Spree::Image",

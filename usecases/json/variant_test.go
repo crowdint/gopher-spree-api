@@ -1,8 +1,8 @@
 package json
 
-import (
-	"github.com/crowdint/gopher-spree-api/domain"
-	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+//import (
+//"github.com/crowdint/gopher-spree-api/domain"
+//"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 
 //"testing"
 //)
@@ -42,20 +42,20 @@ import (
 
 //defer repositories.Spree_db.Close()
 
-	variantSlice := []*domain.Variant{
-		&domain.Variant{
-			Id:        1,
-			Sku:       "sku0001",
-			Price:     9.99,
-			ProductId: 10,
-		},
-		&domain.Variant{
-			Id:        2,
-			Sku:       "sku0002",
-			Price:     10.99,
-			ProductId: 20,
-		},
-	}
+//variantSlice := []*domain.Variant{
+//&domain.Variant{
+//Id:        1,
+//Sku:       "sku0001",
+//Price:     9.99,
+//ProductId: 10,
+//},
+//&domain.Variant{
+//Id:        2,
+//Sku:       "sku0002",
+//Price:     10.99,
+//ProductId: 20,
+//},
+//}
 
 //variantInteractor := NewVariantInteractor()
 
@@ -81,19 +81,19 @@ import (
 //}
 //}
 
-func TestVariantInteractor_toJson(t *testing.T) {
-	variant := &domain.Variant{
-		Id:        1,
-		Sku:       "sku0001",
-		Price:     9.99,
-		ProductId: 10,
-	}
+//func TestVariantInteractor_toJson(t *testing.T) {
+//variant := &domain.Variant{
+//Id:        1,
+//Sku:       "sku0001",
+//Price:     9.99,
+//ProductId: 10,
+//}
 
 //variantInteractor := NewVariantInteractor()
 
 //jsonVariant := variantInteractor.toJson(variant)
 
-	if jsonVariant.Id != 1 || jsonVariant.Sku != "sku0001" || jsonVariant.Price != 9.99 {
-		t.Error("Invalid values for second domain.Variant")
-	}
-}
+//if jsonVariant.Id != 1 || jsonVariant.Sku != "sku0001" || jsonVariant.Price != 9.99 {
+//t.Error("Invalid values for second domain.Variant")
+//}
+//}

@@ -25,7 +25,7 @@ func TestOrderRepository(t *testing.T) {
 
 	orderRepository := NewOrderRepository()
 
-	order := &models.Order{}
+	order := &domain.Order{}
 
 	Spree_db.Create(order)
 	Spree_db.Exec("INSERT INTO spree_line_items(order_id, quantity, price) values(" + strconv.Itoa(int(order.Id)) + ", 1, 10)")

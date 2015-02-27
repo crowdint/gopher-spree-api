@@ -33,7 +33,7 @@ package json
 //t.Error("Error: An error has ocurred:", err.Error())
 //}
 
-	if string(jsonBytes) == "" {
-		t.Error("Error: Json string is empty")
-	}
-}
+//if string(jsonBytes) == "" {
+//t.Error("Error: Json string is empty")
+//}
+//}

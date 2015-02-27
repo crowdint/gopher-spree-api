@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 func TestOptionTypeRepo(t *testing.T) {
@@ -15,7 +15,7 @@ func TestOptionTypeRepo(t *testing.T) {
 		Spree_db.Close()
 	}()
 
-	optionType := &models.OptionType{}
+	optionType := &domain.OptionType{}
 
 	Spree_db.Save(optionType)
 	Spree_db.Exec("INSERT into spree_product_option_types(product_id, option_type_id) values(3, 1)")

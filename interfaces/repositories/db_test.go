@@ -113,7 +113,7 @@ func TestFindByWithConditions(t *testing.T) {
 
 	p := &domain.Product{}
 
-	Spree_db.Create(&models.Product{Id: 1})
+	Spree_db.Create(&domain.Product{Id: 1})
 
 	err := r.FindBy(p, nil, map[string]interface{}{"id": 1})
 
@@ -134,7 +134,7 @@ func TestFindByWithOptions(t *testing.T) {
 
 	p := &domain.Product{}
 
-	Spree_db.Create(&models.Product{Id: 1, TaxCategoryId: 1})
+	Spree_db.Create(&domain.Product{Id: 1, TaxCategoryId: 1})
 
 	err := r.FindBy(p, map[string]interface{}{
 		"not": Not{Key: "tax_category_id", Values: []interface{}{0}},

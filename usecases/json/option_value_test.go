@@ -1,10 +1,10 @@
 package json
 
-import (
-	"github.com/crowdint/gopher-spree-api/domain"
-	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-	"testing"
-)
+//import (
+//"github.com/crowdint/gopher-spree-api/domain"
+//"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+//"testing"
+//)
 
 //func TestOptionValueInteractor_GetJsonOptionValuesMap(t *testing.T) {
 //err := repositories.InitDB(true)
@@ -31,18 +31,18 @@ import (
 
 //}
 
-func TestOptionValueInteractor_modelsToJsonOptionValuesMap(t *testing.T) {
-	optionValueslice := []*domain.OptionValue{
-		&domain.OptionValue{
-			Id:                     2,
-			Name:                   "Medium",
-			Presentation:           "M",
-			VariantId:              17,
-			OptionTypeName:         "thshirt-size",
-			OptionTypeId:           1,
-			OptionTypePresentation: "Size",
-		},
-	}
+//func TestOptionValueInteractor_modelsToJsonOptionValuesMap(t *testing.T) {
+//optionValueslice := []*domain.OptionValue{
+//&domain.OptionValue{
+//Id:                     2,
+//Name:                   "Medium",
+//Presentation:           "M",
+//VariantId:              17,
+//OptionTypeName:         "thshirt-size",
+//OptionTypeId:           1,
+//OptionTypePresentation: "Size",
+//},
+//}
 
 //optionValueInteractor := NewOptionValueInteractor()
 

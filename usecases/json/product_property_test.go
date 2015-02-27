@@ -1,8 +1,8 @@
 package json
 
-import (
-	"github.com/crowdint/gopher-spree-api/domain"
-	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+//import (
+//"github.com/crowdint/gopher-spree-api/domain"
+//"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 
 //"testing"
 //)
@@ -36,23 +36,23 @@ import (
 //}
 //}
 
-func TestProductPropertyInteractor_modelsToJsonProductPropertiesMap(t *testing.T) {
-	productPropertySlice := []*domain.ProductProperty{
-		&domain.ProductProperty{
-			Id:           66,
-			ProductId:    10,
-			PropertyId:   3,
-			Value:        "Men's",
-			PropertyName: "Gender",
-		},
-		&domain.ProductProperty{
-			Id:           1,
-			ProductId:    3,
-			PropertyId:   1,
-			Value:        "Wilson",
-			PropertyName: "Manufacturer",
-		},
-	}
+//func TestProductPropertyInteractor_modelsToJsonProductPropertiesMap(t *testing.T) {
+//productPropertySlice := []*domain.ProductProperty{
+//&domain.ProductProperty{
+//Id:           66,
+//ProductId:    10,
+//PropertyId:   3,
+//Value:        "Men's",
+//PropertyName: "Gender",
+//},
+//&domain.ProductProperty{
+//Id:           1,
+//ProductId:    3,
+//PropertyId:   1,
+//Value:        "Wilson",
+//PropertyName: "Manufacturer",
+//},
+//}
 
 //productPropertyInteractor := NewProductPropertyInteractor()
 
@@ -69,7 +69,7 @@ func TestProductPropertyInteractor_modelsToJsonProductPropertiesMap(t *testing.T
 //t.Error("Invalid values for first productProperty")
 //}
 
-	if pp2.Id != 1 {
-		t.Error("Invalid values for second productProperty")
-	}
-}
+//if pp2.Id != 1 {
+//t.Error("Invalid values for second productProperty")
+//}
+//}

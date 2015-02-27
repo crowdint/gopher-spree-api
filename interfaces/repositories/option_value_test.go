@@ -4,8 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/crowdint/gopher-spree-api/domain/json"
-	"github.com/crowdint/gopher-spree-api/domain/models"
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 func TestOptionValueRepo(t *testing.T) {
@@ -16,12 +15,12 @@ func TestOptionValueRepo(t *testing.T) {
 		Spree_db.Close()
 	}()
 
-	optionValue := &models.OptionValue{
+	optionValue := &domain.OptionValue{
 		Id:           1,
 		OptionTypeId: 1,
 	}
 
-	optionType := &models.OptionType{
+	optionType := &domain.OptionType{
 		Id: 1,
 	}
 
@@ -59,14 +58,14 @@ func TestOptionValueRepo(t *testing.T) {
 }
 
 func TestOptionValueRepository_AllByVariantAssociation(t *testing.T) {
-	err := InitDB(true)
+	err := InitDB(false)
 
 	defer func() {
 		Spree_db.Rollback()
 		Spree_db.Close()
 	}()
 
-	optionValue := &models.OptionValue{
+	optionValue := &domain.OptionValue{
 		Id: 1,
 	}
 

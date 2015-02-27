@@ -20,15 +20,15 @@ type Order struct {
 	PaymentTotal        float64   `json:"payment_total,string"`
 	ShipAddressId       int64     `json:"-"`
 	ShipmentState       string    `json:"shipment_state"`
-	ShipTotal           float64   `json:"ship_total,string"`
+	ShipTotal           float64   `json:"ship_total,string" sql:"-"`
 	SpecialInstructions string    `json:"special_instructions"`
 	State               string    `json:"state"`
-	TaxTotal            float64   `json:"tax_total,string"`
+	TaxTotal            float64   `json:"tax_total,string" sql:"-"`
 	Total               float64   `json:"total,string"`
 	UserId              *int64    `json:"user_id"`
 	CompletedAt         time.Time `json:"completed_at"`
-	CreatedAt           time.Time `json:"created_at"`
-	UpdatedAt           time.Time `json:"updated_at"`
+	CreatedAt           time.Time `json:"created_at" sql:"-"`
+	UpdatedAt           time.Time `json:"updated_at" sql:"-"`
 
 	CheckoutSteps             []string     `json:"checkout_steps" sql:"-"`               //TODO: implement
 	DisplayAdditionalTaxTotal string       `json:"display_additional_tax_total" sql:"-"` //TODO: implement
@@ -40,12 +40,12 @@ type Order struct {
 	Permissions               *Permissions `json:"permissions,omitempty" sql:"-"`
 	Quantity                  int64        `json:"total_quantity" sql:"-"`
 
-	BillAddress *Address     `json:"bill_address"`
-	LineItems   *[]LineItem  `json:"line_items,omitempty"`
-	Payments    []Payment    `json:"payments"`
-	ShipAddress *Address     `json:"ship_address"`
-	Shipments   []Shipment   `json:"shipments"`
-	Adjustments []Adjustment `json:"adjustments"`
+	BillAddress *Address     `json:"bill_address" sql:"-"`
+	LineItems   *[]LineItem  `json:"line_items,omitempty" sql:"-"`
+	Payments    []Payment    `json:"payments" sql:"-"`
+	ShipAddress *Address     `json:"ship_address" sql:"-""`
+	Shipments   []Shipment   `json:"shipments" sql:"-"`
+	Adjustments []Adjustment `json:"adjustments" sql:"-"`
 
 	ApprovedAt            time.Time `json:"-"`
 	ApproverId            int64     `json:"-"`
@@ -53,7 +53,7 @@ type Order struct {
 	CancelerId            int64     `json:"-"`
 	ConfirmationDelivered bool      `json:"-"`
 	ConsideredRisky       bool      `json:"-"`
-	CreatedBy             int64     `json:"-"`
+	CreatedBy             int64     `json:"-" sql:"-"`
 	ItemCount             int64     `json:"-"`
 	LastIpAddress         string    `json:"-"`
 	PromoTotal            float64   `json:"-"`

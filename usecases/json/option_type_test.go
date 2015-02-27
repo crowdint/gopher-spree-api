@@ -1,8 +1,8 @@
 package json
 
-import (
-	"github.com/crowdint/gopher-spree-api/domain"
-	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+//import (
+//"github.com/crowdint/gopher-spree-api/domain"
+//"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 
 //"testing"
 //)
@@ -31,23 +31,23 @@ import (
 
 //}
 
-func TestOptionTypeInteractor_modelsToJsonOptionTypesMap(t *testing.T) {
-	optionTypeslice := []*domain.OptionType{
-		&domain.OptionType{
-			Id:           1,
-			Name:         "tshirt-size",
-			Presentation: "Size",
-			Position:     1,
-			ProductId:    3,
-		},
-		&domain.OptionType{
-			Id:           2,
-			Name:         "tshirt-color",
-			Presentation: "Color",
-			Position:     2,
-			ProductId:    3,
-		},
-	}
+//func TestOptionTypeInteractor_modelsToJsonOptionTypesMap(t *testing.T) {
+//optionTypeslice := []*domain.OptionType{
+//&domain.OptionType{
+//Id:           1,
+//Name:         "tshirt-size",
+//Presentation: "Size",
+//Position:     1,
+//ProductId:    3,
+//},
+//&domain.OptionType{
+//Id:           2,
+//Name:         "tshirt-color",
+//Presentation: "Color",
+//Position:     2,
+//ProductId:    3,
+//},
+//}
 
 //optionTypeInteractor := NewOptionTypeInteractor()
 
@@ -69,4 +69,3 @@ func TestOptionTypeInteractor_modelsToJsonOptionTypesMap(t *testing.T) {
 //}
 
 //}
-
