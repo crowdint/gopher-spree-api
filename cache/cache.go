@@ -8,6 +8,8 @@ import (
 
 var (
 	cache *memcache.Client
+
+	ErrCacheInit = errors.New("Cache is not initialized.")
 )
 
 type Cacheable interface {
@@ -25,7 +27,7 @@ func InitCache(servers ...string) {
 
 func set(key string, cacheable Cacheable) error {
 	if cache == nil {
-		return errors.New("Cache is not initialized.")
+		return ErrCacheInit
 	}
 
 	data, err := cacheable.Marshal()
@@ -33,7 +35,7 @@ func set(key string, cacheable Cacheable) error {
 		return err
 	}
 
-	cache.Set(&memcache.Item{Key: key, Value: data})
+	cache.Set(&memcache.Item{Key: key, Value: data, Expiration: 3600})
 	return nil
 }
 
@@ -59,7 +61,7 @@ func SetMultisWithPrefix(prefix string, cacheables []Cacheable) {
 
 func find(key string, cacheable Cacheable) error {
 	if cache == nil {
-		return errors.New("Cache is not initialized.")
+		return ErrCacheInit
 	}
 
 	item, err := cache.Get(cacheable.Key())
@@ -80,7 +82,7 @@ func FindWithPrefix(prefix string, cacheable Cacheable) error {
 
 func findMultis(keys []string, cacheables []Cacheable) ([]Cacheable, error) {
 	if cache == nil {
-		return cacheables, errors.New("Cache is not initialized.")
+		return cacheables, ErrCacheInit
 	}
 
 	items, err := cache.GetMulti(keys)
@@ -118,4 +120,11 @@ func FindMultisWithPrefix(prefix string, cacheables []Cacheable) ([]Cacheable, e
 	}
 
 	return findMultis(keys, cacheables)
+}
+
+func Delete(cacheable Cacheable) error {
+	if cache == nil {
+		return ErrCacheInit
+	}
+	return cache.Delete(cacheable.Key())
 }
