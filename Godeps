@@ -11,4 +11,4 @@ github.com/yvasiyarov/newrelic_platform_go 13d5af9721f4455a501db543c93827447089b
 github.com/bradfitz/gomemcache/memcache    72a68649ba712ee7c4b5b4a943a626bcd7d90eb8
 
 # Tools
-github.com/ddollar/forego                  v0.16.1
+github.com/ddollar/forego                  f0fe9777cd8728b79cb167835667a9c3919177cb
