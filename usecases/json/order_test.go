@@ -90,7 +90,7 @@ func TestOrderInteractor_Show(t *testing.T) {
 	orderInteractor := NewOrderInteractor()
 	user := domain.User{}
 
-	err := orderInteractor.BaseRepository.FindBy(&order, map[string]interface{}{
+	err := orderInteractor.OrderRepository.FindBy(&order, map[string]interface{}{
 		"not": repositories.Not{Key: "user_id", Values: []interface{}{0}},
 	}, nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func TestOrderInteractor_Show(t *testing.T) {
 		return
 	}
 
-	err = orderInteractor.BaseRepository.FindBy(&user, nil, map[string]interface{}{
+	err = orderInteractor.OrderRepository.FindBy(&user, nil, map[string]interface{}{
 		"id": order.UserId,
 	})
 	if err != nil {

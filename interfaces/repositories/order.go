@@ -1,10 +1,12 @@
 package repositories
 
-type OrderRepository DbRepository
+type OrderRepository struct {
+	DbRepository
+}
 
 func NewOrderRepository() *OrderRepository {
 	return &OrderRepository{
-		dbHandler: Spree_db,
+		DbRepository{Spree_db},
 	}
 }
 

@@ -1,8 +1,9 @@
 package json
 
 import (
-	"github.com/jinzhu/copier"
+	"log"
 
+	"github.com/crowdint/gopher-spree-api/cache"
 	"github.com/crowdint/gopher-spree-api/configs/spree"
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
@@ -12,68 +13,79 @@ import (
 type OrderInteractor struct {
 	AssetInteractor       *AssetInteractor
 	AdjustmentRepository  *repositories.AdjustmentRepository
-	BaseRepository        *repositories.DbRepository
 	OrderRepository       *repositories.OrderRepository
 	OptionValueRepository *repositories.OptionValueRepository
 	ShipmentRepository    *repositories.ShipmentRepository
 }
 
-func (this *OrderInteractor) Show(o *domain.Order, u *domain.User) (*domain.Order, error) {
-	order := domain.Order{}
-	copier.Copy(&order, o)
+func NewOrderInteractor() *OrderInteractor {
+	return &OrderInteractor{
+		AssetInteractor:       NewAssetInteractor(),
+		AdjustmentRepository:  repositories.NewAdjustmentRepository(),
+		OrderRepository:       repositories.NewOrderRepository(),
+		OptionValueRepository: repositories.NewOptionValueRepo(),
+		ShipmentRepository:    repositories.NewShipmentRepository(),
+	}
+}
 
-	this.setComputedValues(&order, u)
+func (this *OrderInteractor) Show(order *domain.Order, u *domain.User) (*domain.Order, error) {
+	if err := cache.Find(order); err != nil {
+		this.setComputedValues(order, u)
 
-	variantsMap, productsMap, pricesMap, stockItemsMap := this.getAssociationMaps(&order)
+		variantsMap, productsMap, pricesMap, stockItemsMap := this.getAssociationMaps(order)
 
-	for i, lineItem := range *order.LineItems {
-		variant := variantsMap[lineItem.VariantId].(domain.Variant)
-		product := productsMap[variant.ProductId].(domain.Product)
-		price := pricesMap[variant.Id].(domain.Price)
+		for i, lineItem := range *order.LineItems {
+			variant := variantsMap[lineItem.VariantId].(domain.Variant)
+			product := productsMap[variant.ProductId].(domain.Product)
+			price := pricesMap[variant.Id].(domain.Price)
 
-		variant.Name = product.Name
-		variant.Description = product.Description
-		variant.Slug = product.Slug
-		variant.Price = price.Amount
+			variant.Name = product.Name
+			variant.Description = product.Description
+			variant.Slug = product.Slug
+			variant.Price = price.Amount
 
-		for _, stockItem := range stockItemsMap[variant.Id].([]interface{}) {
-			si := stockItem.(domain.StockItem)
-			variant.StockItems = append(variant.StockItems, &si)
+			for _, stockItem := range stockItemsMap[variant.Id].([]interface{}) {
+				si := stockItem.(domain.StockItem)
+				variant.StockItems = append(variant.StockItems, &si)
+			}
+
+			variant.SetInventoryValues()
+			variant.Images = this.getVariantImages(variant.Id)
+			variant.OptionValues = this.OptionValueRepository.AllByVariantAssociation(&variant)
+
+			(*order.LineItems)[i].Variant = &variant
+			(*order.LineItems)[i].Adjustments = this.AdjustmentRepository.AllByAdjustable(lineItem.Id, lineItem.SpreeClass())
 		}
 
-		variant.SetInventoryValues()
-		variant.Images = this.getVariantImages(variant.Id)
-		variant.OptionValues = this.OptionValueRepository.AllByVariantAssociation(&variant)
+		this.setPayments(order)
+		order.Shipments = this.ShipmentRepository.AllByOrder(order)
+		order.Adjustments = this.AdjustmentRepository.AllByAdjustable(order.Id, order.SpreeClass())
 
-		(*order.LineItems)[i].Variant = &variant
-		(*order.LineItems)[i].Adjustments = this.AdjustmentRepository.AllByAdjustable(lineItem.Id, lineItem.SpreeClass())
+		if err := cache.Set(order); err != nil {
+			log.Println("An error occurred while setting the cache: ", err.Error())
+		}
 	}
 
-	this.setPayments(&order)
-	order.Shipments = this.ShipmentRepository.AllByOrder(&order)
-	order.Adjustments = this.AdjustmentRepository.AllByAdjustable(order.Id, order.SpreeClass())
-
-	return &order, nil
+	return order, nil
 }
 
 func (this *OrderInteractor) GetResponse(currentPage, perPage int, params ResponseParameters) (ContentResponse, error) {
-	orders := []domain.Order{}
-	ordersJson := []domain.Order{}
+	orders := []*domain.Order{}
 
 	query, gparams, err := params.GetGransakParams()
-
 	if err != nil {
 		return &OrderResponse{}, err
 	}
 
-	err = this.BaseRepository.All(&orders, map[string]interface{}{"limit": perPage, "offset": currentPage}, query, gparams)
-
+	err = this.OrderRepository.All(&orders, map[string]interface{}{"limit": perPage, "offset": currentPage}, query, gparams)
 	if err != nil {
 		return &OrderResponse{}, err
 	}
 
-	if len(orders) == 0 {
-		return &OrderResponse{data: &ordersJson}, nil
+	ordersCached := this.toCacheData(orders)
+	missingOrdersCached, _ := cache.FindMultisWithPrefix("index", ordersCached)
+	if len(missingOrdersCached) == 0 {
+		return OrderResponse{data: orders}, nil
 	}
 
 	var orderIds []int64
@@ -84,11 +96,10 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, params Respon
 	quantities, err := this.OrderRepository.SumLineItemsQuantityByOrderIds(orderIds)
 	for index, order := range orders {
 		orders[index].Quantity = quantities[order.Id]
+		cache.SetWithPrefix("index", order)
 	}
 
-	copier.Copy(&ordersJson, &orders)
-
-	return &OrderResponse{data: &ordersJson}, nil
+	return &OrderResponse{data: orders}, nil
 }
 
 func (this *OrderInteractor) GetShowResponse(params ResponseParameters) (interface{}, error) {
@@ -102,12 +113,19 @@ func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, er
 		return 0, err
 	}
 
-	return this.BaseRepository.Count(domain.Order{}, query, gparams)
+	return this.OrderRepository.Count(domain.Order{}, query, gparams)
+}
+
+func (this *OrderInteractor) toCacheData(orderSlice []*domain.Order) (ordersCached []cache.Cacheable) {
+	for _, order := range orderSlice {
+		ordersCached = append(ordersCached, order)
+	}
+	return
 }
 
 func (this *OrderInteractor) setPayments(order *domain.Order) {
 	payments := []domain.Payment{}
-	this.BaseRepository.All(&payments, map[string]interface{}{
+	this.OrderRepository.All(&payments, map[string]interface{}{
 		"order": "created_at",
 	}, "order_id = ?", order.Id)
 	order.Payments = payments
@@ -127,14 +145,14 @@ func (this *OrderInteractor) getVariantImages(variantId int64) []*domain.Asset {
 func (this *OrderInteractor) getAddress(order *domain.Order, id string) *domain.Address {
 	address := &domain.Address{}
 
-	this.BaseRepository.Association(order, address, id)
+	this.OrderRepository.Association(order, address, id)
 
 	if address.Id != 0 {
 		address.Country = &domain.Country{}
-		this.BaseRepository.Association(address, address.Country, "CountryId")
+		this.OrderRepository.Association(address, address.Country, "CountryId")
 
 		address.State = &domain.State{}
-		this.BaseRepository.Association(address, address.State, "StateId")
+		this.OrderRepository.Association(address, address.State, "StateId")
 		address.StateName = address.State.Name
 		address.StateText = address.State.Abbr
 	} else {
@@ -147,24 +165,24 @@ func (this *OrderInteractor) getAddress(order *domain.Order, id string) *domain.
 func (this *OrderInteractor) getAssociationMaps(order *domain.Order) (varm, prom, prim, stim map[int64]interface{}) {
 	variantIds := Collect(*order.LineItems, "VariantId")
 	var variants []domain.Variant
-	this.BaseRepository.All(&variants, nil, "id IN(?)", variantIds)
+	this.OrderRepository.All(&variants, nil, "id IN(?)", variantIds)
 	varm = ToMap(variants, "Id", false)
 
 	productIds := Collect(variants, "ProductId")
 	var products []domain.Product
-	this.BaseRepository.All(&products, nil, "id IN(?)", productIds)
+	this.OrderRepository.All(&products, nil, "id IN(?)", productIds)
 	prom = ToMap(products, "Id", false)
 
 	var prices []domain.Price
-	this.BaseRepository.All(&prices, nil, "currency = ? AND variant_id IN(?)", spree.Get(spree.CURRENCY), variantIds)
+	this.OrderRepository.All(&prices, nil, "currency = ? AND variant_id IN(?)", spree.Get(spree.CURRENCY), variantIds)
 	prim = ToMap(prices, "VariantId", false)
 
 	var stockLocations []domain.StockLocation
-	this.BaseRepository.All(&stockLocations, nil, map[string]interface{}{"active": true})
+	this.OrderRepository.All(&stockLocations, nil, map[string]interface{}{"active": true})
 	stockLocationIds := Collect(stockLocations, "Id")
 
 	var stockItems []domain.StockItem
-	this.BaseRepository.All(&stockItems, nil, "variant_id IN(?) AND stock_location_id IN(?)", variantIds, stockLocationIds)
+	this.OrderRepository.All(&stockItems, nil, "variant_id IN(?) AND stock_location_id IN(?)", variantIds, stockLocationIds)
 	stim = ToMap(stockItems, "VariantId", true)
 
 	return
@@ -172,7 +190,7 @@ func (this *OrderInteractor) getAssociationMaps(order *domain.Order) (varm, prom
 
 func (this *OrderInteractor) getLineItems(order *domain.Order) *[]domain.LineItem {
 	lineItems := &[]domain.LineItem{}
-	this.BaseRepository.Association(order, lineItems, "OrderId")
+	this.OrderRepository.Association(order, lineItems, "OrderId")
 	return lineItems
 }
 
@@ -196,28 +214,17 @@ func (this *OrderInteractor) setComputedValues(order *domain.Order, user *domain
 }
 
 type OrderResponse struct {
-	data *[]domain.Order
+	data []*domain.Order
 }
 
-func (this *OrderResponse) GetCount() int {
-	return len(*this.data)
+func (this OrderResponse) GetCount() int {
+	return len(this.data)
 }
 
-func (this *OrderResponse) GetData() interface{} {
+func (this OrderResponse) GetData() interface{} {
 	return this.data
 }
 
 func (this OrderResponse) GetTag() string {
 	return "orders"
-}
-
-func NewOrderInteractor() *OrderInteractor {
-	return &OrderInteractor{
-		AssetInteractor:       NewAssetInteractor(),
-		AdjustmentRepository:  repositories.NewAdjustmentRepository(),
-		BaseRepository:        repositories.NewDatabaseRepository(),
-		OrderRepository:       repositories.NewOrderRepository(),
-		OptionValueRepository: repositories.NewOptionValueRepo(),
-		ShipmentRepository:    repositories.NewShipmentRepository(),
-	}
 }
