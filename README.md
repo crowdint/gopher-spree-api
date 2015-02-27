@@ -65,10 +65,10 @@ format:
 
 And install dependencies again.
 
-### Installign Memcached
-To install memcached, you must have [port](http://www.macports.org/install.php) installed.
+### Installing Memcached
+To install memcached.
 
-    $ sudo port install memcached
+    $ $ brew install memcached
 
 To start Memcached Server
 

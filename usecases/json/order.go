@@ -83,7 +83,7 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, params Respon
 	}
 
 	ordersCached := this.toCacheData(orders)
-	missingOrdersCached, _ := cache.FindMultisWithPrefix("index", ordersCached)
+	missingOrdersCached, _ := cache.FindMultiWithPrefix("index", ordersCached)
 	if len(missingOrdersCached) == 0 {
 		return OrderResponse{data: orders}, nil
 	}

@@ -63,7 +63,7 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int, params Resp
 	}
 
 	productsCached := this.toCacheData(productModelSlice)
-	missingProductsCached, _ := cache.FindMultis(productsCached)
+	missingProductsCached, _ := cache.FindMulti(productsCached)
 	if len(missingProductsCached) == 0 {
 		return ProductResponse{data: productModelSlice}, nil
 	}
@@ -73,7 +73,7 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int, params Resp
 		return ProductResponse{}, err
 	}
 
-	cache.SetMultis(missingProductsCached)
+	cache.SetMulti(missingProductsCached)
 
 	return ProductResponse{data: productModelSlice}, nil
 }

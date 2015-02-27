@@ -47,7 +47,7 @@ func SetWithPrefix(prefix string, cacheable Cacheable) error {
 	return set(cacheable.KeyWithPrefix(prefix), cacheable)
 }
 
-func SetMultis(cacheables []Cacheable) {
+func SetMulti(cacheables []Cacheable) {
 	for _, cacheable := range cacheables {
 		go set(cacheable.Key(), cacheable)
 	}
@@ -80,7 +80,7 @@ func FindWithPrefix(prefix string, cacheable Cacheable) error {
 	return find(cacheable.KeyWithPrefix(prefix), cacheable)
 }
 
-func findMultis(keys []string, cacheables []Cacheable) ([]Cacheable, error) {
+func findMulti(keys []string, cacheables []Cacheable) ([]Cacheable, error) {
 	if cache == nil {
 		return cacheables, ErrCacheInit
 	}
@@ -104,22 +104,22 @@ func findMultis(keys []string, cacheables []Cacheable) ([]Cacheable, error) {
 	return missingItems, nil
 }
 
-func FindMultis(cacheables []Cacheable) ([]Cacheable, error) {
+func FindMulti(cacheables []Cacheable) ([]Cacheable, error) {
 	keys := []string{}
 	for _, cacheable := range cacheables {
 		keys = append(keys, cacheable.Key())
 	}
 
-	return findMultis(keys, cacheables)
+	return findMulti(keys, cacheables)
 }
 
-func FindMultisWithPrefix(prefix string, cacheables []Cacheable) ([]Cacheable, error) {
+func FindMultiWithPrefix(prefix string, cacheables []Cacheable) ([]Cacheable, error) {
 	keys := []string{}
 	for _, cacheable := range cacheables {
 		keys = append(keys, cacheable.KeyWithPrefix(prefix))
 	}
 
-	return findMultis(keys, cacheables)
+	return findMulti(keys, cacheables)
 }
 
 func Delete(cacheable Cacheable) error {

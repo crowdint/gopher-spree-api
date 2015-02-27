@@ -81,8 +81,8 @@ func TestCacheImplementation(t *testing.T) {
 		getMultis = append(getMultis, &CacheItem{})
 	}
 
-	SetMultis(setMultis)
-	missingItems, err := FindMultis(getMultis)
+	SetMulti(setMultis)
+	missingItems, err := FindMulti(getMultis)
 	errorHandler(t, err, "find multis: %v", err)
 	if len(missingItems) > 0 {
 		t.Errorf("There are some missing items %+v", missingItems)
