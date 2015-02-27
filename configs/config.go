@@ -11,6 +11,8 @@ const (
 	DB_OPEN_CONNS = "MAX_OPEN_CONNS"
 	DB_URL        = "DATABASE_URL"
 
+	MEMCACHED_URL = "MEMCACHED_URL"
+
 	SPREE_URL = "SPREE_URL"
 	SPREE_NS  = "SPREE_NAMESPACE"
 
@@ -28,6 +30,9 @@ var defaultSettings = map[string]string{
 	DB_URL:        getEnvOrDefault(DB_URL, "dbname=spree_dev sslmode=disable"),
 	DB_IDLE_CONNS: getEnvOrDefault(DB_IDLE_CONNS, "2"),
 	DB_OPEN_CONNS: getEnvOrDefault(DB_OPEN_CONNS, "5"),
+
+	// Memcached Settings
+	MEMCACHED_URL: getEnvOrDefault(MEMCACHED_URL, "127.0.0.1:11211"),
 
 	// Spree Settings
 	SPREE_URL: getEnvOrDefault(SPREE_URL, "http://localhost:5100"),
