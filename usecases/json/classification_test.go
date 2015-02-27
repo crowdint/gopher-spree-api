@@ -1,29 +1,37 @@
 package json
 
-//import (
-//"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-//"testing"
-//)
+import (
+	"testing"
 
-//func TestClassificationInteractor_GetJsonClassificationsMap(t *testing.T) {
-//err := repositories.InitDB(true)
-//if err != nil {
-//t.Error("Error: An error has ocurred:", err.Error())
-//}
+	"github.com/crowdint/gopher-spree-api/domain"
+	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+)
 
-//defer repositories.Spree_db.Close()
+func TestClassificationInteractor_GetJsonClassificationsMap(t *testing.T) {
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
+	}
 
-//classificationInteractor := NewClassificationInteractor()
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
-//classificationMap, err := classificationInteractor.GetJsonClassificationsMap([]int64{1, 2, 3})
-//if err != nil {
-//t.Error("Error: An error has ocurred:", err.Error())
-//}
+	repositories.Spree_db.Create(&domain.Product{Id: 1})
+	repositories.Spree_db.Create(&domain.Taxon{Id: 1})
+	repositories.Spree_db.Exec("INSERT INTO spree_products_taxons(taxon_id, product_id) VALUES(1, 1)")
 
-//nclassifications := len(classificationMap)
+	classificationInteractor := NewClassificationInteractor()
 
-//if nclassifications < 1 {
-//t.Errorf("Wrong number of records %d", nclassifications)
-//}
+	classificationMap, err := classificationInteractor.GetJsonClassificationsMap([]int64{1, 2, 3})
+	if err != nil {
+		t.Error("Error: An error has ocurred:", err.Error())
+	}
 
-//}
+	nclassifications := len(classificationMap)
+
+	if nclassifications < 1 {
+		t.Errorf("Wrong number of records %d", nclassifications)
+	}
+
+}

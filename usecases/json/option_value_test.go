@@ -1,57 +1,72 @@
 package json
 
-//import (
-//"github.com/crowdint/gopher-spree-api/domain"
-//"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-//"testing"
-//)
+import (
+	"github.com/crowdint/gopher-spree-api/domain"
+	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"testing"
+)
 
-//func TestOptionValueInteractor_GetJsonOptionValuesMap(t *testing.T) {
-//err := repositories.InitDB(true)
-//if err != nil {
-//t.Error("Error: An error has ocurred:", err.Error())
-//}
+func TestOptionValueInteractor_GetJsonOptionValuesMap(t *testing.T) {
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
+	}
 
-//defer repositories.Spree_db.Close()
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
-//optionValueInteractor := NewOptionValueInteractor()
+	optionValue := &domain.OptionValue{
+		Id:           1,
+		OptionTypeId: 1,
+	}
 
-//optionValueMap, err :=
-//optionValueInteractor.GetJsonOptionValuesMap([]int64{17})
+	optionType := &domain.OptionType{
+		Id: 1,
+	}
 
-//if err != nil {
-//t.Error("Error: An error has ocurred:", err.Error())
-//}
+	repositories.Spree_db.Create(optionValue)
+	repositories.Spree_db.Create(optionType)
+	repositories.Spree_db.Exec("INSERT INTO spree_option_values_variants(option_value_id, variant_id) values(1, 17)")
 
-//noptionValues := len(optionValueMap)
+	optionValueInteractor := NewOptionValueInteractor()
 
-//if noptionValues < 1 {
-//t.Errorf("Wrong number of records %d", noptionValues)
-//}
+	optionValueMap, err :=
+		optionValueInteractor.GetJsonOptionValuesMap([]int64{17})
 
-//}
+	if err != nil {
+		t.Error("Error: An error has ocurred:", err.Error())
+	}
 
-//func TestOptionValueInteractor_modelsToJsonOptionValuesMap(t *testing.T) {
-//optionValueslice := []*domain.OptionValue{
-//&domain.OptionValue{
-//Id:                     2,
-//Name:                   "Medium",
-//Presentation:           "M",
-//VariantId:              17,
-//OptionTypeName:         "thshirt-size",
-//OptionTypeId:           1,
-//OptionTypePresentation: "Size",
-//},
-//}
+	noptionValues := len(optionValueMap)
 
-//optionValueInteractor := NewOptionValueInteractor()
+	if noptionValues < 1 {
+		t.Errorf("Wrong number of records %d", noptionValues)
+	}
 
-//jsonOptionValueMap := optionValueInteractor.modelsToJsonOptionValuesMap(optionValueslice)
+}
 
-//optionValue := jsonOptionValueMap[17][0]
+func TestOptionValueInteractor_modelsToJsonOptionValuesMap(t *testing.T) {
+	optionValueslice := []*domain.OptionValue{
+		&domain.OptionValue{
+			Id:                     2,
+			Name:                   "Medium",
+			Presentation:           "M",
+			VariantId:              17,
+			OptionTypeName:         "thshirt-size",
+			OptionTypeId:           1,
+			OptionTypePresentation: "Size",
+		},
+	}
 
-//if optionValue.Id != 2 || optionValue.Name != "Medium" || optionValue.Presentation != "M" {
-//t.Error("Invalid values for first option type")
-//}
+	optionValueInteractor := NewOptionValueInteractor()
 
-//}
+	jsonOptionValueMap := optionValueInteractor.modelsToJsonOptionValuesMap(optionValueslice)
+
+	optionValue := jsonOptionValueMap[17][0]
+
+	if optionValue.Id != 2 || optionValue.Name != "Medium" || optionValue.Presentation != "M" {
+		t.Error("Invalid values for first option type")
+	}
+
+}
