@@ -17,6 +17,11 @@ func TestOptionTypeInteractor_GetJsonOptionTypesMap(t *testing.T) {
 		repositories.Spree_db.Close()
 	}()
 
+	optionType := &domain.OptionType{Id: 1}
+
+	repositories.Spree_db.Create(optionType)
+	repositories.Spree_db.Exec("INSERT into spree_product_option_types(product_id, option_type_id) values(3, 1)")
+
 	repositories.Spree_db.Create(&domain.OptionType{})
 
 	optionTypeInteractor := NewOptionTypeInteractor()

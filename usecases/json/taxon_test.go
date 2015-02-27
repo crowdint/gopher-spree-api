@@ -1,39 +1,44 @@
 package json
 
-//import (
-//"encoding/json"
-//"testing"
+import (
+	"encoding/json"
+	"testing"
 
-//"github.com/crowdint/gopher-spree-api/domain/models"
-//"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-//)
+	"github.com/crowdint/gopher-spree-api/domain"
+	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+)
 
-//func TestTaxonInteractor_GetResponse(t *testing.T) {
-//err := repositories.InitDB(true)
-//if err != nil {
-//t.Error("Error: An error has ocurred:", err.Error())
-//}
+func TestTaxonInteractor_GetResponse(t *testing.T) {
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
+	}
 
-//defer repositories.Spree_db.Close()
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
-//taxonInteractor := NewTaxonInteractor()
+	repositories.Spree_db.Create(&domain.Taxon{Id: 1})
+	repositories.Spree_db.Exec("INSERT INTO spree_products_taxons(taxon_id, product_id) values(1, 1)")
 
-//jsonTaxonSlice, err := taxonInteractor.GetResponse(1, 10, &FakeResponseParameters{})
-//if err != nil {
-//t.Error("Error: An error has ocurred:", err.Error())
-//}
+	taxonInteractor := NewTaxonInteractor()
 
-//if jsonTaxonSlice.(ContentResponse).GetCount() < 1 {
-//t.Error("Error: Invalid number of rows")
-//return
-//}
+	jsonTaxonSlice, err := taxonInteractor.GetResponse(1, 10, &FakeResponseParameters{})
+	if err != nil {
+		t.Error("Error: An error has ocurred:", err.Error())
+	}
 
-//jsonBytes, err := json.Marshal(jsonTaxonSlice)
-//if err != nil {
-//t.Error("Error: An error has ocurred:", err.Error())
-//}
+	if jsonTaxonSlice.(ContentResponse).GetCount() < 1 {
+		t.Error("Error: Invalid number of rows")
+		return
+	}
 
-//if string(jsonBytes) == "" {
-//t.Error("Error: Json string is empty")
-//}
-//}
+	jsonBytes, err := json.Marshal(jsonTaxonSlice)
+	if err != nil {
+		t.Error("Error: An error has ocurred:", err.Error())
+	}
+
+	if string(jsonBytes) == "" {
+		t.Error("Error: Json string is empty")
+	}
+}

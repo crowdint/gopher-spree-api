@@ -15,9 +15,9 @@ func TestOptionTypeRepo(t *testing.T) {
 		Spree_db.Close()
 	}()
 
-	optionType := &domain.OptionType{}
+	optionType := &domain.OptionType{Id: 1}
 
-	Spree_db.Save(optionType)
+	Spree_db.Create(optionType)
 	Spree_db.Exec("INSERT into spree_product_option_types(product_id, option_type_id) values(3, 1)")
 
 	if err != nil {
