@@ -6,6 +6,7 @@ Experimental implementation of the Spree API on steroids.
 
 - An up and running spree app
 - A go installation
+- Memcached installed. [Here's](https://glassonionblog.wordpress.com/2012/02/18/installing-memcached-on-mac-os-x-snow-leopard/) a tutorial to install memcached.
 
 ## Getting started
 
