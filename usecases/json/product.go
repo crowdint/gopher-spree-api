@@ -3,8 +3,10 @@ package json
 import (
 	"errors"
 	"fmt"
+	"log"
 	"strconv"
 
+	"github.com/crowdint/gopher-spree-api/cache"
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
@@ -60,14 +62,39 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int, params Resp
 		return ProductResponse{}, err
 	}
 
-	productJsonSlice, err := this.transformToJsonResponse(productModelSlice)
-	if err != nil {
+	productsCached := this.toCacheData(productModelSlice)
+	missingProductsCached, _ := cache.FindMultis(productsCached)
+	if len(missingProductsCached) == 0 {
+		return ProductResponse{data: productModelSlice}, nil
+	}
+
+	missingProductsIds, missingProducts := this.getMissingProductsFromMissingData(&missingProductsCached)
+	if err = this.mergeComplementaryValues(missingProductsIds, missingProducts); err != nil {
 		return ProductResponse{}, err
 	}
 
-	return ProductResponse{
-		data: productJsonSlice,
-	}, nil
+	cache.SetMultis(missingProductsCached)
+
+	return ProductResponse{data: productModelSlice}, nil
+}
+
+func (this *ProductInteractor) toCacheData(productSlice []*domain.Product) (productsCached []cache.Cacheable) {
+	for _, product := range productSlice {
+		productsCached = append(productsCached, product)
+	}
+	return
+}
+
+func (this *ProductInteractor) getMissingProductsFromMissingData(missingData *[]cache.Cacheable) ([]int64, []*domain.Product) {
+	missingProductsIds := []int64{}
+	missingProducts := []*domain.Product{}
+	for _, missingProduct := range *missingData {
+		p := missingProduct.(*domain.Product)
+		missingProducts = append(missingProducts, p)
+		missingProductsIds = append(missingProductsIds, p.Id)
+	}
+
+	return missingProductsIds, missingProducts
 }
 
 func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (interface{}, error) {
@@ -83,6 +110,10 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 		return nil, err
 	}
 
+	if err = cache.Find(product); err == nil {
+		return product, nil
+	}
+
 	productModelSlice := []*domain.Product{}
 
 	productModelSlice = append(productModelSlice, product)
@@ -90,6 +121,10 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 	productJsonSlice, err := this.transformToJsonResponse(productModelSlice)
 	if err != nil {
 		return nil, err
+	}
+
+	if err = cache.Set(productJsonSlice[0]); err != nil {
+		log.Println("An error occurred while setting the cache: ", err.Error())
 	}
 
 	return productJsonSlice[0], nil
