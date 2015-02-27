@@ -3,10 +3,23 @@ package repositories
 import (
 	"reflect"
 	"testing"
+
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 func TestAssetRepo(t *testing.T) {
-	err := InitDB()
+	err := InitDB(true)
+
+	defer func() {
+		Spree_db.Rollback()
+		Spree_db.Close()
+	}()
+
+	asset := &domain.AssetModel{
+		ViewableId: 11,
+	}
+
+	Spree_db.Save(asset)
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
@@ -16,13 +29,12 @@ func TestAssetRepo(t *testing.T) {
 		t.Error("Database helper not initialized")
 	}
 
-	defer Spree_db.Close()
-
 	assetRepo := NewAssetRepo()
 
 	assets, err := assetRepo.FindByViewableIds([]int64{11})
 	if err != nil {
 		t.Error("There was an error", err)
+		return
 	}
 
 	nv := len(assets)
@@ -37,29 +49,45 @@ func TestAssetRepo(t *testing.T) {
 	if temp != "domain.AssetModel" {
 		t.Error("Invalid type", t)
 	}
+
 }
 
 func TestAssetRepo_AllImagesByVariantId(t *testing.T) {
-	err := InitDB()
+	err := InitDB(true)
+
+	defer func() {
+		Spree_db.Rollback()
+		Spree_db.Close()
+	}()
+
+	asset := &domain.AssetModel{
+		ViewableId:   11,
+		ViewableType: "Spree::Variant",
+		Type:         "Spree::Image",
+	}
+
+	Spree_db.Save(asset)
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
+		return
 	}
 
 	if Spree_db == nil {
 		t.Error("Database helper not initialized")
+		return
 	}
-
-	defer Spree_db.Close()
 
 	assetRepo := NewAssetRepo()
 
 	images, err := assetRepo.AllImagesByVariantId(11)
 	if err != nil {
 		t.Error("There was an error", err)
+		return
 	}
 
 	if len(images) < 1 {
 		t.Errorf("There aren't images for this variant: %d", 11)
 	}
+
 }

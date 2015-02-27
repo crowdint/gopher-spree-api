@@ -12,8 +12,8 @@ type Variant struct {
 	Depth       float64   `json:"depth,string"`
 	Height      float64   `json:"height,string"`
 	IsMaster    bool      `json:"is_master"`
-	OptionsText string    `json:"options_text"`
-	Price       float64   `json:"price,string"`
+	OptionsText string    `json:"options_text" sql:"-"`
+	Price       float64   `json:"price,string" sql:"-"`
 	ProductId   int64     `json:"product_id"`
 	Sku         string    `json:"sku"`
 	Weight      float64   `json:"weight,string"`
@@ -30,17 +30,17 @@ type Variant struct {
 	TotalOnHand     *int64 `json:"total_on_hand" sql:"-"`
 	TrackInventory  bool   `json:"track_inventory" sql:"-"`
 
-	Images       []*Asset      `json:"images"`
+	Images       []*Asset      `json:"images" sql:"-"`
 	OptionValues []OptionValue `json:"option_values" gorm:"many2many:spree_option_values_variants;"`
-	StockItems   []*StockItem  `json:"-"`
+	StockItems   []*StockItem  `json:"-" sql:"-"`
 
 	Position            int64     `json:"-"`
 	CostCurrency        string    `json:"-"`
 	TaxCategoryId       int64     `json:"-"`
 	UpdatedAt           time.Time `json:"-"`
 	StockItemsCount     int64     `json:"-"`
-	RealStockItemsCount int64     `json:"-"`
-	Backorderable       bool      `json:"-"`
+	RealStockItemsCount int64     `json:"-" sql:"-"`
+	Backorderable       bool      `json:"-" sql:"-"`
 }
 
 func (this *Variant) AfterFind() (err error) {

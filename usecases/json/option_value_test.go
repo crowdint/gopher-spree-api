@@ -7,12 +7,27 @@ import (
 )
 
 func TestOptionValueInteractor_GetJsonOptionValuesMap(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
 
-	defer repositories.Spree_db.Close()
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
+
+	optionValue := &domain.OptionValue{
+		Id:           1,
+		OptionTypeId: 1,
+	}
+
+	optionType := &domain.OptionType{
+		Id: 1,
+	}
+
+	repositories.Spree_db.Create(optionValue)
+	repositories.Spree_db.Create(optionType)
+	repositories.Spree_db.Exec("INSERT INTO spree_option_values_variants(option_value_id, variant_id) values(1, 17)")
 
 	optionValueInteractor := NewOptionValueInteractor()
 

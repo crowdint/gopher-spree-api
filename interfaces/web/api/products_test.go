@@ -11,10 +11,21 @@ import (
 )
 
 func TestProductsIndex(t *testing.T) {
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
+
 	r := gin.New()
 
 	method := "GET"
 	path := "/api/products/"
+
+	repositories.Spree_db.Create(&domain.User{})
 
 	r.GET(path, func(c *gin.Context) {
 		user := &domain.User{}
@@ -30,6 +41,17 @@ func TestProductsIndex(t *testing.T) {
 }
 
 func TestProductsShow(t *testing.T) {
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
+
+	repositories.Spree_db.Create(&domain.Product{Id: 1})
+
 	r := gin.New()
 
 	method := "GET"

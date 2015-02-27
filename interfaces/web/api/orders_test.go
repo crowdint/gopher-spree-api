@@ -12,6 +12,17 @@ import (
 )
 
 func TestFindOrderWhenOrderIsInContext(t *testing.T) {
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
+
+	repositories.Spree_db.Create(&domain.Order{Number: "ABC123", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
+
 	var ctx *gin.Context
 	r := gin.New()
 
@@ -33,13 +44,20 @@ func TestFindOrderWhenOrderIsInContext(t *testing.T) {
 
 func TestFindOrderWhenOrderExists(t *testing.T) {
 	t.Skip()
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("An error occurred: " + err.Error())
+
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
 
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
+
+	repositories.Spree_db.Create(&domain.Order{Number: "R123456789", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
+
 	order := &domain.Order{}
-	err = repositories.NewDatabaseRepository().FindBy(order, nil, nil)
+	err := repositories.NewDatabaseRepository().FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
@@ -68,10 +86,16 @@ func TestFindOrderWhenOrderExists(t *testing.T) {
 }
 
 func TestFindOrderWhenOrderDoesNotExist(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("An error occurred: " + err.Error())
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
+
+	repositories.Spree_db.Create(&domain.Order{Number: "R123456789", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
 
 	var ctx *gin.Context
 	r := gin.New()
@@ -126,16 +150,25 @@ func TestGinOrderWhenOrderIsNotInContext(t *testing.T) {
 }
 
 func TestAuthorizeOrdersWhenUserIsSetAndIsAdmin(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("An error occurred: " + err.Error())
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
+
+	repositories.Spree_db.Create(&domain.Order{Number: "R123456789", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
 
 	user := &domain.User{}
 	user.Roles = []domain.Role{
 		domain.Role{Name: "admin"},
 	}
-	err = repositories.NewDatabaseRepository().FindBy(user, nil, nil)
+
+	repositories.Spree_db.Create(user)
+
+	err := repositories.NewDatabaseRepository().FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
@@ -159,13 +192,19 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsAdmin(t *testing.T) {
 }
 
 func TestAuthorizeOrdersWhenUserIsSetAndIsNotAdmin(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("An error occurred: " + err.Error())
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
 
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
+
 	user := &domain.User{}
-	err = repositories.NewDatabaseRepository().FindBy(user, nil, nil)
+	repositories.Spree_db.Create(user)
+
+	err := repositories.NewDatabaseRepository().FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
@@ -189,16 +228,23 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsNotAdmin(t *testing.T) {
 }
 
 func TestAuthorizeOrderWhenUserIsSetAndIsAdmin(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("An error occurred: " + err.Error())
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
 	user := &domain.User{}
 	user.Roles = []domain.Role{
 		domain.Role{Name: "admin"},
 	}
-	err = repositories.NewDatabaseRepository().FindBy(user, nil, nil)
+
+	repositories.Spree_db.Create(user)
+
+	err := repositories.NewDatabaseRepository().FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
@@ -224,20 +270,28 @@ func TestAuthorizeOrderWhenUserIsSetAndIsAdmin(t *testing.T) {
 }
 
 func TestAuthorizeOrderWhenUserIsNotAdminAndOrderBelongsToHim(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("An error occurred: " + err.Error())
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
 	dbRepo := repositories.NewDatabaseRepository()
 
 	user := &domain.User{}
-	err = dbRepo.FindBy(user, nil, nil)
+	repositories.Spree_db.Create(user)
+
+	err := dbRepo.FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
 
 	order := &domain.Order{}
+	repositories.Spree_db.Create(&domain.Order{Number: "R123456789", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
+
 	err = dbRepo.FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
@@ -265,20 +319,28 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderBelongsToHim(t *testing.T) {
 }
 
 func TestAuthorizeOrderWhenUserIsNotAdminAndOrderDoesNotBelongToHim(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("An error occurred: " + err.Error())
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
 	dbRepo := repositories.NewDatabaseRepository()
 
 	user := &domain.User{}
-	err = dbRepo.FindBy(user, nil, nil)
+	repositories.Spree_db.Create(user)
+
+	err := dbRepo.FindBy(user, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())
 	}
 
 	order := &domain.Order{}
+	repositories.Spree_db.Create(&domain.Order{Number: "R123456789", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
+
 	err = dbRepo.FindBy(order, nil, nil)
 	if err != nil {
 		t.Error("An error occurred: " + err.Error())

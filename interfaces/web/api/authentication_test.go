@@ -13,9 +13,14 @@ import (
 )
 
 func TestAuthenticationWithValidToken(t *testing.T) {
-	if err := repositories.InitDB(); err != nil {
+	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
 	dbSpreeToken := "testUser"
 	repositories.Spree_db.FirstOrCreate(&domain.User{}, domain.User{SpreeApiKey: dbSpreeToken})
@@ -47,9 +52,14 @@ func TestAuthenticationWithValidToken(t *testing.T) {
 }
 
 func TestAuthenticationWithInvalidToken(t *testing.T) {
-	if err := repositories.InitDB(); err != nil {
+	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
 	req, err := http.NewRequest("GET", "/products", nil)
 	if err != nil {
@@ -104,9 +114,16 @@ func TestAuthenticationWithoutToken(t *testing.T) {
 }
 
 func TestAuthenticationWithValidOrderToken(t *testing.T) {
-	if err := repositories.InitDB(); err != nil {
+	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
+
+	repositories.Spree_db.Create(&domain.Order{Number: "R123456789", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
 
 	order := &domain.Order{}
 	err := repositories.NewDatabaseRepository().FindBy(order, nil, nil)
@@ -132,7 +149,9 @@ func TestAuthenticationWithValidOrderToken(t *testing.T) {
 	r.ServeHTTP(w, req)
 
 	if w.Code != 200 {
+		t.Error(w)
 		t.Errorf("api.Authentication response code should be 200, but was: %d", w.Code)
+		return
 	}
 
 	if user.Id != -1 {
@@ -141,9 +160,14 @@ func TestAuthenticationWithValidOrderToken(t *testing.T) {
 }
 
 func TestAuthenticationWithInvalidOrderToken(t *testing.T) {
-	if err := repositories.InitDB(); err != nil {
+	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
 	path := "/api/orders/testOrderNumber"
 	req, err := http.NewRequest("GET", path, nil)
@@ -166,9 +190,16 @@ func TestAuthenticationWithInvalidOrderToken(t *testing.T) {
 }
 
 func TestAuthenticationWithValidOrderTokenAndActionIsNotOrderShow(t *testing.T) {
-	if err := repositories.InitDB(); err != nil {
+	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
+
+	repositories.Spree_db.Create(&domain.Order{Number: "R123456789", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
 
 	order := &domain.Order{}
 	err := repositories.NewDatabaseRepository().FindBy(order, nil, nil)
@@ -200,9 +231,14 @@ func TestAuthenticationWithValidOrderTokenAndActionIsNotOrderShow(t *testing.T) 
 }
 
 func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalse(t *testing.T) {
-	if err := repositories.InitDB(); err != nil {
+	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
 	path := "/api/products"
 	req, err := http.NewRequest("GET", path, nil)
@@ -227,9 +263,14 @@ func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalse(t *testing.T
 }
 
 func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalseAndActionIsNotRead(t *testing.T) {
-	if err := repositories.InitDB(); err != nil {
+	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
 	path := "/api/products"
 	req, err := http.NewRequest("POST", path, nil)
@@ -254,9 +295,14 @@ func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalseAndActionIsNo
 }
 
 func TestAuthenticationWithTokenAndAuthenticationRequiredIsFalseAndActionsIsNotRead(t *testing.T) {
-	if err := repositories.InitDB(); err != nil {
+	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
+
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
 	user := &domain.User{}
 	var currentUsr *domain.User

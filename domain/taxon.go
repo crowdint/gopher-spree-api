@@ -5,14 +5,14 @@ import "time"
 type Taxon struct {
 	Id         int64    `json:"id"`
 	Name       string   `json:"name"`
-	PrettyName string   `json:"pretty_name"`
+	PrettyName string   `json:"pretty_name" sql:"-"`
 	Permalink  string   `json:"permalink"`
 	ParentId   int64    `json:"parent_id"`
 	TaxonomyId int64    `json:"taxonomy_id"`
 	Lft        int64    `json:"-"`
 	Rgt        int64    `json:"-"`
 	Depth      int64    `json:"-"`
-	Taxons     []*Taxon `json:"taxons"`
+	Taxons     []*Taxon `json:"taxons" sql:"-"`
 
 	Position               int64     `json:"-"`
 	IconFileName           string    `json:"-"`
@@ -25,8 +25,8 @@ type Taxon struct {
 	MetaTitle              string    `json:"-"`
 	MetaDescription        string    `json:"-"`
 	MetaKeywords           string    `json:"-"`
-	ClassificationPosition int64     `json:"-"`
-	ProductId              int64     `json:"-"`
+	ClassificationPosition int64     `json:"-" sql:"-"`
+	ProductId              int64     `json:"-" sql:"-"`
 }
 
 func (this Taxon) TableName() string {

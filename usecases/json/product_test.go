@@ -2,6 +2,7 @@ package json
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	"github.com/crowdint/gopher-spree-api/domain"
@@ -9,12 +10,22 @@ import (
 )
 
 func TestProductInteractor_GetMergedResponse(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
 
-	defer repositories.Spree_db.Close()
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
+
+	tmpl := `INSERT INTO spree_products(id, name, description, available_on, deleted_at, slug, meta_description, meta_keywords, tax_category_id, shipping_category_id, created_at, updated_at, promotionable, meta_title) VALUES(%s)`
+
+	sql1 := fmt.Sprintf(tmpl, `1,'Spree Ringer T-Shirt','Labore ut sint neque exercitationem aliquid consequuntur ea dolores.Quo asperiores eligendi ipsam officia.Autem aliquid temporibus est blanditiis','2015-02-24 17:57:13.788353',null,'spree-ringer-t-shirt',null,null,1,1,'2015-02-24 17:57:15.214292','2015-02-24 17:57:39.946429','t',null`)
+	sql2 := fmt.Sprintf(tmpl, `2, 'Ruby on Rails Mug','Labore ut sint neque exercitationem aliquid consequuntur ea dolores.Quo asperiores eligendi ipsam officia.Autem aliquid temporibus est blanditiis.','2015-02-24 17:57:13.788353',null,'ruby-on-rails-mug',null,null,null,1,'2015-02-24 17:57:15.518985','2015-02-24 17:57:33.982174','t',null`)
+
+	repositories.Spree_db.Exec(sql1)
+	repositories.Spree_db.Exec(sql2)
 
 	productInteractor := NewProductInteractor()
 

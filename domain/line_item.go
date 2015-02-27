@@ -27,7 +27,7 @@ type LineItem struct {
 	SingleDisplayAmount string  `json:"single_display_amount" sql:"-"` //TODO: implement
 
 	Adjustments []Adjustment `json:"adjustments"`
-	Variant     *Variant     `json:"variant"`
+	Variant     *Variant     `json:"variant" sql:"-"`
 }
 
 func (this *LineItem) AfterFind() (err error) {

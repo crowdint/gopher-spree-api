@@ -10,7 +10,7 @@ type OptionType struct {
 
 	CreatedAt time.Time `json:"-"`
 	UpdatedAt time.Time `json:"-"`
-	ProductId int64     `json:"-"`
+	ProductId int64     `json:"-" sql:"-"`
 }
 
 func (this OptionType) TableName() string {

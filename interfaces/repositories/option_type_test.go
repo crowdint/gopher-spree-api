@@ -3,20 +3,32 @@ package repositories
 import (
 	"reflect"
 	"testing"
+
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 func TestOptionTypeRepo(t *testing.T) {
-	err := InitDB()
+	err := InitDB(true)
+
+	defer func() {
+		Spree_db.Rollback()
+		Spree_db.Close()
+	}()
+
+	optionType := &domain.OptionType{}
+
+	Spree_db.Save(optionType)
+	Spree_db.Exec("INSERT into spree_product_option_types(product_id, option_type_id) values(3, 1)")
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
+		return
 	}
 
 	if Spree_db == nil {
 		t.Error("Database helper not initialized")
+		return
 	}
-
-	defer Spree_db.Close()
 
 	optionTypeRepo := NewOptionTypeRepo()
 
@@ -24,6 +36,7 @@ func TestOptionTypeRepo(t *testing.T) {
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
+		return
 	}
 
 	not := len(optionTypes)
