@@ -99,10 +99,8 @@ the following commands should be executed in the spree project:
 
     $ RAILS_ENV=test rake db:create
     $ RAILS_ENV=test rake db:migrate
-    $ RAILS_ENV=test rake db:seed
-    $ RAILS_ENV=test rake spree_sample:load
 
-Each test should create and destroy the data it uses to test.
+Each test should create and roll back the data used to tests
 
 ## Build
 

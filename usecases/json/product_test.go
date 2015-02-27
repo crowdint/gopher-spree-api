@@ -1,213 +1,224 @@
 package json
 
-//import (
-//"encoding/json"
-//"testing"
+import (
+	"encoding/json"
+	"fmt"
+	"testing"
 
-//"github.com/crowdint/gopher-spree-api/domain"
-//"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-//)
+	"github.com/crowdint/gopher-spree-api/domain"
+	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+)
 
-//func TestProductInteractor_GetMergedResponse(t *testing.T) {
-//err := repositories.InitDB(true)
-//if err != nil {
-//t.Error("Error: An error has ocurred:", err.Error())
-//}
+func TestProductInteractor_GetMergedResponse(t *testing.T) {
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
+	}
 
-//defer repositories.Spree_db.Close()
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
-//productInteractor := NewProductInteractor()
+	tmpl := `INSERT INTO spree_products(id, name, description, available_on, deleted_at, slug, meta_description, meta_keywords, tax_category_id, shipping_category_id, created_at, updated_at, promotionable, meta_title) VALUES(%s)`
 
-//jsonProductSlice, err := productInteractor.GetResponse(1, 10, &FakeResponseParameters{})
-//if err != nil {
-//t.Error("Error: An error has ocurred:", err.Error())
-//}
+	sql1 := fmt.Sprintf(tmpl, `1,'Spree Ringer T-Shirt','Labore ut sint neque exercitationem aliquid consequuntur ea dolores.Quo asperiores eligendi ipsam officia.Autem aliquid temporibus est blanditiis','2015-02-24 17:57:13.788353',null,'spree-ringer-t-shirt',null,null,1,1,'2015-02-24 17:57:15.214292','2015-02-24 17:57:39.946429','t',null`)
+	sql2 := fmt.Sprintf(tmpl, `2, 'Ruby on Rails Mug','Labore ut sint neque exercitationem aliquid consequuntur ea dolores.Quo asperiores eligendi ipsam officia.Autem aliquid temporibus est blanditiis.','2015-02-24 17:57:13.788353',null,'ruby-on-rails-mug',null,null,null,1,'2015-02-24 17:57:15.518985','2015-02-24 17:57:33.982174','t',null`)
 
-//if jsonProductSlice.(ContentResponse).GetCount() < 1 {
-//t.Error("Error: Invalid number of rows")
-//return
-//}
+	repositories.Spree_db.Exec(sql1)
+	repositories.Spree_db.Exec(sql2)
 
-//jsonBytes, err := json.Marshal(jsonProductSlice)
-//if err != nil {
-//t.Error("Error: An error has ocurred:", err.Error())
-//}
+	productInteractor := NewProductInteractor()
 
-//if string(jsonBytes) == "" {
-//t.Error("Error: Json string is empty")
-//}
-//}
+	jsonProductSlice, err := productInteractor.GetResponse(1, 10, &FakeResponseParameters{})
+	if err != nil {
+		t.Error("Error: An error has ocurred:", err.Error())
+	}
 
-//func TestProductInteractor_getIdSlice(t *testing.T) {
-//products := []*domain.Product{
-//&domain.Product{
-//Id: 1,
-//},
-//&domain.Product{
-//Id: 2,
-//},
-//&domain.Product{
-//Id: 3,
-//},
-//}
+	if jsonProductSlice.(ContentResponse).GetCount() < 1 {
+		t.Error("Error: Invalid number of rows")
+		return
+	}
 
-//productInteractor := NewProductInteractor()
+	jsonBytes, err := json.Marshal(jsonProductSlice)
+	if err != nil {
+		t.Error("Error: An error has ocurred:", err.Error())
+	}
 
-//ids := productInteractor.getIdSlice(products)
+	if string(jsonBytes) == "" {
+		t.Error("Error: Json string is empty")
+	}
+}
 
-//if len(ids) != 3 {
-//t.Error("Incorrect number of ids")
-//}
+func TestProductInteractor_getIdSlice(t *testing.T) {
+	products := []*domain.Product{
+		&domain.Product{
+			Id: 1,
+		},
+		&domain.Product{
+			Id: 2,
+		},
+		&domain.Product{
+			Id: 3,
+		},
+	}
 
-//if ids[0] != 1 || ids[1] != 2 || ids[2] != 3 {
-//t.Error("Incorrect id value")
-//}
-//}
+	productInteractor := NewProductInteractor()
 
-//func TestProductInteractor_mergeVariants(t *testing.T) {
-//jsonProductSlice := []*domain.Product{
-//&domain.Product{
-//Id:   99991,
-//Name: "Product1",
-//},
-//&domain.Product{
-//Id:   99992,
-//Name: "Product2",
-//},
-//}
+	ids := productInteractor.getIdSlice(products)
 
-//jsonVariantsMap := JsonVariantsMap{
-//99991: []*domain.Variant{
-//{
-//Id: 99991,
-//},
-//},
-//99992: []*domain.Variant{
-//{
-//Id:       99992,
-//IsMaster: true,
-//},
-//},
-//}
+	if len(ids) != 3 {
+		t.Error("Incorrect number of ids")
+	}
 
-//productInteractor := NewProductInteractor()
+	if ids[0] != 1 || ids[1] != 2 || ids[2] != 3 {
+		t.Error("Incorrect id value")
+	}
+}
 
-//productInteractor.mergeVariants(jsonProductSlice, jsonVariantsMap)
+func TestProductInteractor_mergeVariants(t *testing.T) {
+	jsonProductSlice := []*domain.Product{
+		&domain.Product{
+			Id:   99991,
+			Name: "Product1",
+		},
+		&domain.Product{
+			Id:   99992,
+			Name: "Product2",
+		},
+	}
 
-//p2 := jsonProductSlice[0]
+	jsonVariantsMap := JsonVariantsMap{
+		99991: []*domain.Variant{
+			{
+				Id: 99991,
+			},
+		},
+		99992: []*domain.Variant{
+			{
+				Id:       99992,
+				IsMaster: true,
+			},
+		},
+	}
 
-//if p2.Variants == nil {
-//t.Error("Product variants are nil")
-//return
-//}
+	productInteractor := NewProductInteractor()
 
-//if len(p2.Variants) == 0 {
-//t.Error("No product variants found")
-//return
-//}
+	productInteractor.mergeVariants(jsonProductSlice, jsonVariantsMap)
 
-//v1 := p2.Variants[0]
+	p2 := jsonProductSlice[0]
 
-//if v1.Id != 99991 || v1.Name != "Product1" || v1.IsMaster {
-//t.Errorf("Incorrect variant values %d %s %b", v1.Id, v1.Name, v1.IsMaster)
-//}
-//}
+	if p2.Variants == nil {
+		t.Error("Product variants are nil")
+		return
+	}
 
-//func TestProductInteractor_mergeOptionTypes(t *testing.T) {
-//jsonProductSlice := []*domain.Product{
-//&domain.Product{
-//Id: 3,
-//},
-//}
+	if len(p2.Variants) == 0 {
+		t.Error("No product variants found")
+		return
+	}
 
-//jsonOptionTypesMap := JsonOptionTypesMap{
-//3: []*domain.OptionType{
-//{
-//Id:           1,
-//Name:         "tshirt-size",
-//Presentation: "Size",
-//},
-//{
-//Id:           2,
-//Name:         "tshirt-color",
-//Presentation: "Color",
-//},
-//},
-//}
+	v1 := p2.Variants[0]
 
-//productInteractor := NewProductInteractor()
+	if v1.Id != 99991 || v1.Name != "Product1" || v1.IsMaster {
+		t.Errorf("Incorrect variant values %d %s %b", v1.Id, v1.Name, v1.IsMaster)
+	}
+}
 
-//productInteractor.mergeOptionTypes(jsonProductSlice, jsonOptionTypesMap)
+func TestProductInteractor_mergeOptionTypes(t *testing.T) {
+	jsonProductSlice := []*domain.Product{
+		&domain.Product{
+			Id: 3,
+		},
+	}
 
-//product := jsonProductSlice[0]
+	jsonOptionTypesMap := JsonOptionTypesMap{
+		3: []*domain.OptionType{
+			{
+				Id:           1,
+				Name:         "tshirt-size",
+				Presentation: "Size",
+			},
+			{
+				Id:           2,
+				Name:         "tshirt-color",
+				Presentation: "Color",
+			},
+		},
+	}
 
-//if product.OptionTypes == nil {
-//t.Error("Product OptionTypes are nil")
-//return
-//}
+	productInteractor := NewProductInteractor()
 
-//if len(product.OptionTypes) == 0 {
-//t.Error("No product optionTypes found")
-//return
-//}
+	productInteractor.mergeOptionTypes(jsonProductSlice, jsonOptionTypesMap)
 
-//optionType1 := product.OptionTypes[0]
+	product := jsonProductSlice[0]
 
-//if optionType1.Id != 1 || optionType1.Name != "tshirt-size" || optionType1.Presentation != "Size" {
-//t.Errorf("Incorrect optionType values: \n Id -> %d, Name -> %s, Presentation -> %d", optionType1.Id, optionType1.Name, optionType1.Presentation)
-//}
-//}
+	if product.OptionTypes == nil {
+		t.Error("Product OptionTypes are nil")
+		return
+	}
 
-//func TestProductInteractor_mergeClassifications(t *testing.T) {
-//jsonProductSlice := []*domain.Product{
-//&domain.Product{
-//Id: 3,
-//},
-//&domain.Product{
-//Id: 5,
-//},
-//}
+	if len(product.OptionTypes) == 0 {
+		t.Error("No product optionTypes found")
+		return
+	}
 
-//jsonOptionTypesMap := JsonClassificationsMap{
-//3: []*domain.Classification{
-//{
-//TaxonId:  1,
-//Position: 5,
-//Taxon: domain.Taxon{
-//Id:   1,
-//Name: "taxonName",
-//},
-//},
-//},
-//}
+	optionType1 := product.OptionTypes[0]
 
-//productInteractor := NewProductInteractor()
+	if optionType1.Id != 1 || optionType1.Name != "tshirt-size" || optionType1.Presentation != "Size" {
+		t.Errorf("Incorrect optionType values: \n Id -> %d, Name -> %s, Presentation -> %d", optionType1.Id, optionType1.Name, optionType1.Presentation)
+	}
+}
 
-//productInteractor.mergeClassifications(jsonProductSlice, jsonOptionTypesMap)
+func TestProductInteractor_mergeClassifications(t *testing.T) {
+	jsonProductSlice := []*domain.Product{
+		&domain.Product{
+			Id: 3,
+		},
+		&domain.Product{
+			Id: 5,
+		},
+	}
 
-//product1 := jsonProductSlice[0]
-//product2 := jsonProductSlice[1]
+	jsonOptionTypesMap := JsonClassificationsMap{
+		3: []*domain.Classification{
+			{
+				TaxonId:  1,
+				Position: 5,
+				Taxon: domain.Taxon{
+					Id:   1,
+					Name: "taxonName",
+				},
+			},
+		},
+	}
 
-//if product1.Classifications == nil || product2.Classifications == nil {
-//t.Error("Product.Classifications should be and empty slice [] at least")
-//}
+	productInteractor := NewProductInteractor()
 
-//classification := product1.Classifications[0]
+	productInteractor.mergeClassifications(jsonProductSlice, jsonOptionTypesMap)
 
-//if classification.TaxonId != 1 || classification.Taxon.Id != 1 {
-//t.Error("Wrong assignment of classifications")
-//}
+	product1 := jsonProductSlice[0]
+	product2 := jsonProductSlice[1]
 
-//if len(product2.Classifications) > 0 {
-//t.Error("Wrong assignment of classficiations")
-//}
+	if product1.Classifications == nil || product2.Classifications == nil {
+		t.Error("Product.Classifications should be and empty slice [] at least")
+	}
 
-//if product1.TaxonIds[0] != 1 {
-//t.Error("Wrong assignment of taxon ids")
-//}
+	classification := product1.Classifications[0]
 
-//if len(product2.TaxonIds) != 0 {
-//t.Error("Wrong assignment of taxon ids")
-//}
+	if classification.TaxonId != 1 || classification.Taxon.Id != 1 {
+		t.Error("Wrong assignment of classifications")
+	}
 
-//}
+	if len(product2.Classifications) > 0 {
+		t.Error("Wrong assignment of classficiations")
+	}
+
+	if product1.TaxonIds[0] != 1 {
+		t.Error("Wrong assignment of taxon ids")
+	}
+
+	if len(product2.TaxonIds) != 0 {
+		t.Error("Wrong assignment of taxon ids")
+	}
+
+}

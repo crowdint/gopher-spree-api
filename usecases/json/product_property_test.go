@@ -1,75 +1,80 @@
 package json
 
-//import (
-//"github.com/crowdint/gopher-spree-api/domain"
-//"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+import (
+	"github.com/crowdint/gopher-spree-api/domain"
+	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 
-//"testing"
-//)
+	"testing"
+)
 
-//func TestProductPropertyInteractor_GetJsonProductPropertiesMap(t *testing.T) {
-//err := repositories.InitDB(true)
-//if err != nil {
-//t.Error("Error: An error has ocurred:", err.Error())
-//}
+func TestProductPropertyInteractor_GetJsonProductPropertiesMap(t *testing.T) {
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
+	}
 
-//defer repositories.Spree_db.Close()
+	defer func() {
+		repositories.Spree_db.Rollback()
+		repositories.Spree_db.Close()
+	}()
 
-//productPropertyInteractor := NewProductPropertyInteractor()
+	repositories.Spree_db.Create(&domain.ProductProperty{Id: 1, ProductId: 1, PropertyId: 1})
+	repositories.Spree_db.Exec("INSERT INTO spree_properties(id, presentation) values(1, 'foo')")
 
-//productPropertyMap, err := productPropertyInteractor.GetJsonProductPropertiesMap([]int64{1, 2})
+	productPropertyInteractor := NewProductPropertyInteractor()
 
-//if err != nil {
-//t.Error("Error: An error has ocurred:", err.Error())
-//}
+	productPropertyMap, err := productPropertyInteractor.GetJsonProductPropertiesMap([]int64{1, 2})
 
-//nProductProperties := len(productPropertyMap)
+	if err != nil {
+		t.Error("Error: An error has ocurred:", err.Error())
+	}
 
-//if nProductProperties < 1 {
-//t.Errorf("Wrong number of records %d", nProductProperties)
-//}
+	nProductProperties := len(productPropertyMap)
 
-//ppArray1 := productPropertyMap[1]
+	if nProductProperties < 1 {
+		t.Errorf("Wrong number of records %d", nProductProperties)
+	}
 
-//if len(ppArray1) < 1 {
-//t.Error("No productProperties found")
-//}
-//}
+	ppArray1 := productPropertyMap[1]
 
-//func TestProductPropertyInteractor_modelsToJsonProductPropertiesMap(t *testing.T) {
-//productPropertySlice := []*domain.ProductProperty{
-//&domain.ProductProperty{
-//Id:           66,
-//ProductId:    10,
-//PropertyId:   3,
-//Value:        "Men's",
-//PropertyName: "Gender",
-//},
-//&domain.ProductProperty{
-//Id:           1,
-//ProductId:    3,
-//PropertyId:   1,
-//Value:        "Wilson",
-//PropertyName: "Manufacturer",
-//},
-//}
+	if len(ppArray1) < 1 {
+		t.Error("No productProperties found")
+	}
+}
 
-//productPropertyInteractor := NewProductPropertyInteractor()
+func TestProductPropertyInteractor_modelsToJsonProductPropertiesMap(t *testing.T) {
+	productPropertySlice := []*domain.ProductProperty{
+		&domain.ProductProperty{
+			Id:           66,
+			ProductId:    10,
+			PropertyId:   3,
+			Value:        "Men's",
+			PropertyName: "Gender",
+		},
+		&domain.ProductProperty{
+			Id:           1,
+			ProductId:    3,
+			PropertyId:   1,
+			Value:        "Wilson",
+			PropertyName: "Manufacturer",
+		},
+	}
 
-//jsonProductPropertyMap := productPropertyInteractor.modelsToJsonProductPropertiesMap(productPropertySlice)
+	productPropertyInteractor := NewProductPropertyInteractor()
 
-//pp1 := jsonProductPropertyMap[10][0]
-//pp2 := jsonProductPropertyMap[3][0]
+	jsonProductPropertyMap := productPropertyInteractor.modelsToJsonProductPropertiesMap(productPropertySlice)
 
-//if pp1 == nil || pp2 == nil {
-//t.Error("Error: nil value on map")
-//}
+	pp1 := jsonProductPropertyMap[10][0]
+	pp2 := jsonProductPropertyMap[3][0]
 
-//if pp1.Id != 66 {
-//t.Error("Invalid values for first productProperty")
-//}
+	if pp1 == nil || pp2 == nil {
+		t.Error("Error: nil value on map")
+	}
 
-//if pp2.Id != 1 {
-//t.Error("Invalid values for second productProperty")
-//}
-//}
+	if pp1.Id != 66 {
+		t.Error("Invalid values for first productProperty")
+	}
+
+	if pp2.Id != 1 {
+		t.Error("Invalid values for second productProperty")
+	}
+}
