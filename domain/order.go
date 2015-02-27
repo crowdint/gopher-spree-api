@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"encoding/json"
+	"fmt"
 	"time"
 )
 
@@ -74,4 +76,20 @@ func (this Order) TableName() string {
 func (this *Order) AfterFind() (err error) {
 	this.TaxTotal = this.IncludedTaxTotal + this.AdditionalTaxTotal
 	return
+}
+
+func (this *Order) Key() string {
+	return fmt.Sprintf("%s/%d/%d", this.SpreeClass(), this.Id, this.UpdatedAt.Unix())
+}
+
+func (this *Order) KeyWithPrefix(prefix string) string {
+	return fmt.Sprintf("%s/%s/%d/%d", this.SpreeClass(), prefix, this.Id, this.UpdatedAt.Unix())
+}
+
+func (this *Order) Marshal() ([]byte, error) {
+	return json.Marshal(this)
+}
+
+func (this *Order) Unmarshal(data []byte) error {
+	return json.Unmarshal(data, this)
 }
