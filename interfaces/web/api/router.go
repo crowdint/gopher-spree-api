@@ -45,13 +45,13 @@ func Router() *gin.Engine {
 	return router
 }
 
-func routes() []string {
-	return []string{
-		`^` + namespace() + `/api/products(/?)$`,
-		`^` + namespace() + `/api/products/\d+$`,
-		`^` + namespace() + `/api/orders(/?)$`,
-		`^` + namespace() + `/api/orders/\w+$`,
-		`^` + namespace() + `/api/taxonomies(/?)$`,
-		`^` + namespace() + `/api/taxons(/?)$`,
+func routes() map[string]bool {
+	return map[string]bool{
+		`^` + namespace() + `/api/products(/?)$`:   true,
+		`^` + namespace() + `/api/products/\d+$`:   true,
+		`^` + namespace() + `/api/orders(/?)$`:     false,
+		`^` + namespace() + `/api/orders/\w+$`:     false,
+		`^` + namespace() + `/api/taxonomies(/?)$`: false,
+		`^` + namespace() + `/api/taxons(/?)$`:     false,
 	}
 }

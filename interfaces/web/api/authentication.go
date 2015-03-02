@@ -20,7 +20,7 @@ func Authentication() gin.HandlerFunc {
 		// GET + authentication (false) + readAction => next
 		// POST + authentication (false) + token (spreeToken) => next
 		// authentication (true) + token (spreeToken || orderToken) => next
-		if isReadAction(c.Request) && !authRequired {
+		if isPublicAction(c.Request) && !authRequired {
 			nextHandler(c, &domain.User{})
 			return
 		} else {
@@ -127,18 +127,30 @@ func findUserBySpreeApiKey(c *gin.Context, dbRepo *repositories.DbRepository, us
 	return nil
 }
 
-func isReadAction(req *http.Request) bool {
-	readAction := false
+// isPublicAction returns true for the following resources routes:
+// - Country,
+// - OptionType,
+// - OptionValue,
+// - Product,
+// - ProductProperty,
+// - Property,
+// - State,
+// - Taxon,
+// - Taxonomy,
+// - Variant,
+// - Zone
+func isPublicAction(req *http.Request) (isPublic bool) {
 	path := req.URL.Path
 
-	for _, pattern := range routes() {
-		if readAction, _ = regexp.MatchString(pattern, path); readAction {
-			// readAction is true when => [Country, OptionType, OptionValue, Product, ProductProperty, Property, State, Taxon, Taxonomy, Variant, Zone]
+	for pattern, public := range routes() {
+		match, _ := regexp.MatchString(pattern, path)
+		if match && public {
+			isPublic = true
 			break
 		}
 	}
 
-	return req.Method == "GET" && readAction
+	return req.Method == "GET" && isPublic
 }
 
 func isOrdersShowAction(path string) bool {

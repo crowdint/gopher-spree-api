@@ -48,7 +48,7 @@ func isNotRequestToApi(url *url.URL) bool {
 }
 
 func isMissingURL(url *url.URL) bool {
-	for _, pattern := range routes() {
+	for pattern, _ := range routes() {
 		if match, _ := regexp.MatchString(pattern, url.Path); match {
 			return false
 		}
