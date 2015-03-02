@@ -6,11 +6,31 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/crowdint/gopher-spree-api/cache"
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
+func TestOrderInteractor_ToCacheData(t *testing.T) {
+	orderInteractor := NewOrderInteractor()
+	orderSlice := []*domain.Order{
+		&domain.Order{
+			Id:    100,
+			Email: "test@email.com",
+		},
+	}
+
+	cacheSlice := orderInteractor.toCacheData(orderSlice)
+	if len(cacheSlice) != len(orderSlice) {
+		t.Fatalf("The len of cache Slice should be %d, but was %d", len(orderSlice), len(cacheSlice))
+	}
+}
+
 func TestOrderInteractor_GetResponse(t *testing.T) {
+	if err := cache.SetupMemcached(); err != nil {
+		t.Error("Couldn't find memcached")
+	}
+
 	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
@@ -45,9 +65,26 @@ func TestOrderInteractor_GetResponse(t *testing.T) {
 		t.Error("Error: Json string is empty")
 		return
 	}
+
+	ordersCached := []cache.Cacheable{
+		order,
+	}
+
+	missingItems, err := cache.FindMulti(ordersCached)
+	if err != nil {
+		t.Error("An error ocurred while finding cached orders: ", err.Error())
+	}
+
+	if len(missingItems) != 0 {
+		t.Error("All orders should be cached, but they weren't")
+	}
 }
 
 func TestOrderInteractor_Show(t *testing.T) {
+	if err := cache.SetupMemcached(); err != nil {
+		t.Error("Couldn't find memcached")
+	}
+
 	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
@@ -122,5 +159,9 @@ func TestOrderInteractor_Show(t *testing.T) {
 
 	if jsonOrder.LineItems == nil {
 		t.Error("Order LineItems should not be nil, but it was")
+	}
+
+	if err = cache.Find(&order); err != nil {
+		t.Error("Order should be cached, but it wasn't")
 	}
 }
