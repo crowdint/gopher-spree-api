@@ -23,7 +23,6 @@ func init() {
 	}
 
 	proxy = httputil.NewSingleHostReverseProxy(spreeURL)
-	routesPattern = regexRoutesPattern()
 }
 
 func Proxy() gin.HandlerFunc {
@@ -49,7 +48,7 @@ func isNotRequestToApi(url *url.URL) bool {
 }
 
 func isMissingURL(url *url.URL) bool {
-	for pattern, _ := range routesPattern {
+	for _, pattern := range routes() {
 		if match, _ := regexp.MatchString(pattern, url.Path); match {
 			return false
 		}

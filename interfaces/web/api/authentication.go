@@ -13,13 +13,6 @@ import (
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
-var (
-	readRoutesPattern = []string{
-		`^` + namespace() + `/api/products(/?)$`,
-		`^` + namespace() + `/api/products/\d+$`,
-	}
-)
-
 func Authentication() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authRequired := spree.IsAuthenticationRequired()
@@ -138,7 +131,7 @@ func isReadAction(req *http.Request) bool {
 	readAction := false
 	path := req.URL.Path
 
-	for _, pattern := range readRoutesPattern {
+	for _, pattern := range routes() {
 		if readAction, _ = regexp.MatchString(pattern, path); readAction {
 			// readAction is true when => [Country, OptionType, OptionValue, Product, ProductProperty, Property, State, Taxon, Taxonomy, Variant, Zone]
 			break
