@@ -68,7 +68,7 @@ And install dependencies again.
 ### Installing Memcached
 To install memcached.
 
-    $ $ brew install memcached
+    $ brew install memcached
 
 To start Memcached Server
 
