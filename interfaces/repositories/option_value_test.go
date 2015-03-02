@@ -8,7 +8,22 @@ import (
 )
 
 func TestOptionValueRepo(t *testing.T) {
-	err := InitDB()
+	err := InitDB(true)
+
+	defer ResetDB()
+
+	optionValue := &domain.OptionValue{
+		Id:           10,
+		OptionTypeId: 1,
+	}
+
+	optionType := &domain.OptionType{
+		Id: 1,
+	}
+
+	Spree_db.Create(optionValue)
+	Spree_db.Create(optionType)
+	Spree_db.Exec("INSERT INTO spree_option_values_variants(option_value_id, variant_id) values(10, 17)")
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
@@ -17,8 +32,6 @@ func TestOptionValueRepo(t *testing.T) {
 	if Spree_db == nil {
 		t.Error("Database helper not initialized")
 	}
-
-	defer Spree_db.Close()
 
 	optionValueRepo := NewOptionValueRepo()
 
@@ -42,7 +55,16 @@ func TestOptionValueRepo(t *testing.T) {
 }
 
 func TestOptionValueRepository_AllByVariantAssociation(t *testing.T) {
-	err := InitDB()
+	err := InitDB(false)
+
+	defer ResetDB()
+
+	optionValue := &domain.OptionValue{
+		Id: 10,
+	}
+
+	Spree_db.Create(optionValue)
+	Spree_db.Exec("INSERT INTO spree_option_values_variants(option_value_id, variant_id) values(10, 17)")
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
@@ -51,8 +73,6 @@ func TestOptionValueRepository_AllByVariantAssociation(t *testing.T) {
 	if Spree_db == nil {
 		t.Error("Database helper not initialized")
 	}
-
-	defer Spree_db.Close()
 
 	optionValueRepo := NewOptionValueRepo()
 	variant := &domain.Variant{Id: 17}

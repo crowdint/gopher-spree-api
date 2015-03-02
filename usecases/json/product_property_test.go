@@ -8,12 +8,14 @@ import (
 )
 
 func TestProductPropertyInteractor_GetJsonProductPropertiesMap(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
 
-	defer repositories.Spree_db.Close()
+	defer ResetDB()
+
+	repositories.Spree_db.Create(&domain.ProductProperty{Id: 1, ProductId: 1, PropertyId: 1})
+	repositories.Spree_db.Exec("INSERT INTO spree_properties(id, presentation) values(1, 'foo')")
 
 	productPropertyInteractor := NewProductPropertyInteractor()
 

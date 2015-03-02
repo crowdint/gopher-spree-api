@@ -2,6 +2,8 @@ package json
 
 import (
 	"encoding/json"
+	"fmt"
+	"strconv"
 	"testing"
 
 	"github.com/crowdint/gopher-spree-api/domain"
@@ -9,13 +11,16 @@ import (
 )
 
 func TestOrderInteractor_GetResponse(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
-		return
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
 
-	defer repositories.Spree_db.Close()
+	defer ResetDB()
+
+	order := &domain.Order{}
+
+	repositories.Spree_db.Create(order)
+	repositories.Spree_db.Exec("INSERT INTO spree_line_items(order_id, quantity, price) values(" + strconv.Itoa(int(order.Id)) + ", 1, 10)")
 
 	orderInteractor := NewOrderInteractor()
 
@@ -43,19 +48,49 @@ func TestOrderInteractor_GetResponse(t *testing.T) {
 }
 
 func TestOrderInteractor_Show(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
-		return
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
 
-	defer repositories.Spree_db.Close()
+	defer ResetDB()
+
+	oid := int64(1)
+
+	order := domain.Order{
+		Id:     379,
+		UserId: &oid,
+	}
+
+	repositories.Spree_db.Create(&order)
+	repositories.Spree_db.Exec("INSERT INTO spree_users(id, deleted_at) VALUES(1, null)")
+
+	repositories.Spree_db.Create(&domain.LineItem{Id: 1, OrderId: 379, VariantId: 1, Quantity: 1})
+	repositories.Spree_db.Create(&domain.LineItem{Id: 2, OrderId: 379, VariantId: 2, Quantity: 1})
+
+	repositories.Spree_db.Create(&domain.Variant{Id: 1, ProductId: 1, CostPrice: "10"})
+	repositories.Spree_db.Create(&domain.Variant{Id: 2, ProductId: 2, CostPrice: "10"})
+
+	repositories.Spree_db.Exec("INSERT INTO spree_stock_items(variant_id) values(1)")
+	repositories.Spree_db.Exec("INSERT INTO spree_prices(variant_id, currency) values(1, 'USD')")
+
+	repositories.Spree_db.Exec("INSERT INTO spree_stock_items(variant_id) values(2)")
+	repositories.Spree_db.Exec("INSERT INTO spree_prices(variant_id, currency) values(2, 'USD')")
+
+	tmpl := `INSERT INTO spree_products(id, name, description, available_on, deleted_at, slug, meta_description, meta_keywords, tax_category_id, shipping_category_id, created_at, updated_at, promotionable, meta_title) VALUES(%s)`
+
+	sql1 := fmt.Sprintf(tmpl, `1,'Spree Ringer T-Shirt','Labore ut sint neque exercitationem aliquid consequuntur ea dolores.Quo asperiores eligendi ipsam officia.Autem aliquid temporibus est blanditiis','2015-02-24 17:57:13.788353',null,'spree-ringer-t-shirt',null,null,1,1,'2015-02-24 17:57:15.214292','2015-02-24 17:57:39.946429','t',null`)
+	sql2 := fmt.Sprintf(tmpl, `2, 'Ruby on Rails Mug','Labore ut sint neque exercitationem aliquid consequuntur ea dolores.Quo asperiores eligendi ipsam officia.Autem aliquid temporibus est blanditiis.','2015-02-24 17:57:13.788353',null,'ruby-on-rails-mug',null,null,null,1,'2015-02-24 17:57:15.518985','2015-02-24 17:57:33.982174','t',null`)
+
+	repositories.Spree_db.Exec(sql1)
+	repositories.Spree_db.Exec(sql2)
+
+	repositories.Spree_db.Create(&domain.StockItem{Id: 1, VariantId: 1, StockLocationId: 1})
+	repositories.Spree_db.Create(&domain.StockItem{Id: 2, VariantId: 2, StockLocationId: 1})
 
 	orderInteractor := NewOrderInteractor()
-	order := domain.Order{}
 	user := domain.User{}
 
-	err = orderInteractor.BaseRepository.FindBy(&order, map[string]interface{}{
+	err := orderInteractor.BaseRepository.FindBy(&order, map[string]interface{}{
 		"not": repositories.Not{Key: "user_id", Values: []interface{}{0}},
 	}, nil)
 	if err != nil {

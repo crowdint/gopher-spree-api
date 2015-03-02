@@ -8,12 +8,11 @@ import (
 )
 
 func TestResponseInteractor(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
 
-	defer repositories.Spree_db.Close()
+	defer ResetDB()
 
 	productInteractor := NewProductInteractor()
 

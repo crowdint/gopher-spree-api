@@ -3,10 +3,14 @@ package repositories
 import (
 	"reflect"
 	"testing"
+
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 func TestVariantRepo(t *testing.T) {
-	err := InitDB()
+	err := InitDB(true)
+
+	defer ResetDB()
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
@@ -16,7 +20,9 @@ func TestVariantRepo(t *testing.T) {
 		t.Error("Database helper not initialized")
 	}
 
-	defer Spree_db.Close()
+	Spree_db.Create(&domain.Variant{Id: 1, ProductId: 1, CostPrice: "10"})
+	Spree_db.Exec("INSERT INTO spree_stock_items(variant_id) values(1)")
+	Spree_db.Exec("INSERT INTO spree_prices(variant_id, currency) values(1, 'USD')")
 
 	variantRepo := NewVariantRepo()
 

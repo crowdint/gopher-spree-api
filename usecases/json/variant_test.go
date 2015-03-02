@@ -8,12 +8,15 @@ import (
 )
 
 func TestVariantInteractor_GetJsonVariantsMap(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
 
-	defer repositories.Spree_db.Close()
+	defer ResetDB()
+
+	repositories.Spree_db.Create(&domain.Variant{Id: 1, ProductId: 1, CostPrice: "10"})
+	repositories.Spree_db.Exec("INSERT INTO spree_stock_items(variant_id) values(1)")
+	repositories.Spree_db.Exec("INSERT INTO spree_prices(variant_id, currency) values(1, 'USD')")
 
 	variantInteractor := NewVariantInteractor()
 
@@ -35,12 +38,11 @@ func TestVariantInteractor_GetJsonVariantsMap(t *testing.T) {
 }
 
 func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
 
-	defer repositories.Spree_db.Close()
+	defer ResetDB()
 
 	variantSlice := []*domain.Variant{
 		&domain.Variant{

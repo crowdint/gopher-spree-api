@@ -8,12 +8,18 @@ import (
 )
 
 func TestOptionTypeInteractor_GetJsonOptionTypesMap(t *testing.T) {
-	err := repositories.InitDB()
-	if err != nil {
-		t.Error("Error: An error has ocurred:", err.Error())
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
 	}
 
-	defer repositories.Spree_db.Close()
+	defer ResetDB()
+
+	optionType := &domain.OptionType{Id: 1}
+
+	repositories.Spree_db.Create(optionType)
+	repositories.Spree_db.Exec("INSERT into spree_product_option_types(product_id, option_type_id) values(3, 1)")
+
+	repositories.Spree_db.Create(&domain.OptionType{})
 
 	optionTypeInteractor := NewOptionTypeInteractor()
 
@@ -69,4 +75,3 @@ func TestOptionTypeInteractor_modelsToJsonOptionTypesMap(t *testing.T) {
 	}
 
 }
-
