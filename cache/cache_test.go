@@ -1,11 +1,7 @@
 package cache
 
 import (
-	"fmt"
-	"os"
-	"os/exec"
 	"testing"
-	"time"
 
 	"github.com/bradfitz/gomemcache/memcache"
 )
@@ -31,30 +27,11 @@ func (item *CacheItem) Unmarshal(data []byte) error {
 	return nil
 }
 
-func setup(t *testing.T) {
-	sock := fmt.Sprintf("/tmp/test-gomemcache-%d.sock", os.Getpid())
-	cmd := exec.Command("memcached", "-s", sock)
-	if err := cmd.Start(); err != nil {
-		t.Skipf("skipping test; couldn't find memcached")
-		return
-	}
-	defer cmd.Wait()
-	defer cmd.Process.Kill()
-
-	// Wait a bit for the socket to appear.
-	for i := 0; i < 10; i++ {
-		if _, err := os.Stat(sock); err == nil {
-			break
-		}
-		time.Sleep(time.Duration(25*i) * time.Millisecond)
-	}
-
-	InitCache(sock)
-}
-
 func TestCacheImplementation(t *testing.T) {
 	// Init memcached
-	setup(t)
+	if err := SetupMemcached(); err != nil {
+		t.Skipf("skipping test; couldn't find memcached")
+	}
 
 	// Set
 	foo := &CacheItem{"foo"}
