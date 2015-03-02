@@ -19,7 +19,7 @@ type Cacheable interface {
 	Unmarshal([]byte) error
 }
 
-func InitCache(servers ...string) {
+func Init(servers ...string) {
 	if cache == nil {
 		cache = memcache.New(servers...)
 	}

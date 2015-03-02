@@ -16,6 +16,6 @@ func main() {
 		panic(err)
 	}
 
-	cache.InitCache(configs.Get(configs.MEMCACHED_URL))
+	cache.Init(configs.Get(configs.MEMCACHED_URL))
 	api.Router().Run("0.0.0.0:" + os.Getenv("PORT"))
 }

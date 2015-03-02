@@ -24,6 +24,6 @@ func SetupMemcached() error {
 		time.Sleep(time.Duration(25*i) * time.Millisecond)
 	}
 
-	InitCache(sock)
+	Init(sock)
 	return nil
 }
