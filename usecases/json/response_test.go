@@ -12,9 +12,7 @@ func TestResponseInteractor(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	productInteractor := NewProductInteractor()
 

@@ -11,13 +11,10 @@ func TestOptionValueInteractor_GetJsonOptionValuesMap(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	optionValue := &domain.OptionValue{
-		Id:           1,
+		Id:           10,
 		OptionTypeId: 1,
 	}
 
@@ -27,7 +24,7 @@ func TestOptionValueInteractor_GetJsonOptionValuesMap(t *testing.T) {
 
 	repositories.Spree_db.Create(optionValue)
 	repositories.Spree_db.Create(optionType)
-	repositories.Spree_db.Exec("INSERT INTO spree_option_values_variants(option_value_id, variant_id) values(1, 17)")
+	repositories.Spree_db.Exec("INSERT INTO spree_option_values_variants(option_value_id, variant_id) values(10, 17)")
 
 	optionValueInteractor := NewOptionValueInteractor()
 

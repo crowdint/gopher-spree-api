@@ -12,10 +12,7 @@ func TestVariantInteractor_GetJsonVariantsMap(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	repositories.Spree_db.Create(&domain.Variant{Id: 1, ProductId: 1, CostPrice: "10"})
 	repositories.Spree_db.Exec("INSERT INTO spree_stock_items(variant_id) values(1)")
@@ -45,9 +42,7 @@ func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	variantSlice := []*domain.Variant{
 		&domain.Variant{

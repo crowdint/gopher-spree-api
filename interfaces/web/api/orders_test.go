@@ -16,10 +16,7 @@ func TestFindOrderWhenOrderIsInContext(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	repositories.Spree_db.Create(&domain.Order{Number: "ABC123", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
 
@@ -49,10 +46,7 @@ func TestFindOrderWhenOrderExists(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	repositories.Spree_db.Create(&domain.Order{Number: "R123456789", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
 
@@ -90,10 +84,7 @@ func TestFindOrderWhenOrderDoesNotExist(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	repositories.Spree_db.Create(&domain.Order{Number: "R123456789", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
 
@@ -154,10 +145,7 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsAdmin(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	repositories.Spree_db.Create(&domain.Order{Number: "R123456789", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
 
@@ -196,10 +184,7 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsNotAdmin(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	user := &domain.User{}
 	repositories.Spree_db.Create(user)
@@ -232,10 +217,7 @@ func TestAuthorizeOrderWhenUserIsSetAndIsAdmin(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	user := &domain.User{}
 	user.Roles = []domain.Role{
@@ -274,10 +256,7 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderBelongsToHim(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	dbRepo := repositories.NewDatabaseRepository()
 
@@ -323,10 +302,7 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderDoesNotBelongToHim(t *testing.T
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	dbRepo := repositories.NewDatabaseRepository()
 

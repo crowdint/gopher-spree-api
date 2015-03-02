@@ -94,13 +94,12 @@ SPREE_DEFAULT_STYLES  = "mini,small,product,large"                         # Ass
 
 ## Testing
 
-You should create a test database and populate it with tests data. So
-the following commands should be executed in the spree project:
+You should create a test database. So the following commands should be executed in the spree project:
 
     $ RAILS_ENV=test rake db:create
     $ RAILS_ENV=test rake db:migrate
 
-Each test should create and roll back the data used to tests
+Each test should create and roll back the data used to tests.
 
 ## Build
 

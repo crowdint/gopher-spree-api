@@ -10,10 +10,7 @@ import (
 func TestOptionTypeRepo(t *testing.T) {
 	err := InitDB(true)
 
-	defer func() {
-		Spree_db.Rollback()
-		Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	optionType := &domain.OptionType{Id: 1}
 

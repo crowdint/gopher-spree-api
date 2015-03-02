@@ -15,10 +15,7 @@ func TestOrderInteractor_GetResponse(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	order := &domain.Order{}
 
@@ -55,10 +52,7 @@ func TestOrderInteractor_Show(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	oid := int64(1)
 
@@ -89,10 +83,6 @@ func TestOrderInteractor_Show(t *testing.T) {
 
 	repositories.Spree_db.Exec(sql1)
 	repositories.Spree_db.Exec(sql2)
-
-	repositories.Spree_db.Exec("INSERT INTO spree_stock_items(variant_id, stock_location_id) VALUES(1, 1)")
-
-	repositories.Spree_db.Create(&domain.StockLocation{Id: 1, Active: true})
 
 	repositories.Spree_db.Create(&domain.StockItem{Id: 1, VariantId: 1, StockLocationId: 1})
 	repositories.Spree_db.Create(&domain.StockItem{Id: 2, VariantId: 2, StockLocationId: 1})

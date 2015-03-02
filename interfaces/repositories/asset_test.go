@@ -10,10 +10,7 @@ import (
 func TestAssetRepo(t *testing.T) {
 	err := InitDB(true)
 
-	defer func() {
-		Spree_db.Rollback()
-		Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	asset := &domain.AssetModel{
 		ViewableId: 11,
@@ -55,10 +52,7 @@ func TestAssetRepo(t *testing.T) {
 func TestAssetRepo_AllImagesByVariantId(t *testing.T) {
 	err := InitDB(true)
 
-	defer func() {
-		Spree_db.Rollback()
-		Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	asset := &domain.AssetModel{
 		ViewableId:   11,

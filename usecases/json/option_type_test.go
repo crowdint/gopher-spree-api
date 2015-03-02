@@ -12,10 +12,7 @@ func TestOptionTypeInteractor_GetJsonOptionTypesMap(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	optionType := &domain.OptionType{Id: 1}
 

@@ -10,10 +10,7 @@ import (
 func TestTaxonRepo_FindByProductIds(t *testing.T) {
 	err := InitDB(true)
 
-	defer func() {
-		Spree_db.Rollback()
-		Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
@@ -46,10 +43,7 @@ func TestTaxonRepo_FindByProductIds(t *testing.T) {
 func TestTaxonRepo_FindByTaxonomyIds(t *testing.T) {
 	err := InitDB(true)
 
-	defer func() {
-		Spree_db.Rollback()
-		Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	if err != nil {
 		t.Error("An error has ocurred", err)

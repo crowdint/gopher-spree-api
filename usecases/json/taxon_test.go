@@ -13,10 +13,7 @@ func TestTaxonInteractor_GetResponse(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	repositories.Spree_db.Create(&domain.Taxon{Id: 1})
 	repositories.Spree_db.Exec("INSERT INTO spree_products_taxons(taxon_id, product_id) values(1, 1)")

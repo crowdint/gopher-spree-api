@@ -1,5 +1,7 @@
 package json
 
+import "github.com/crowdint/gopher-spree-api/interfaces/repositories"
+
 type DummyResponseParams struct {
 	currentPage  int
 	perPage      int
@@ -30,4 +32,9 @@ func newDummyResponseParams(currentPage, perPage int, gransakQuery string) *Dumm
 		perPage:      perPage,
 		gransakQuery: gransakQuery,
 	}
+}
+
+func ResetDB() {
+	repositories.Spree_db.Rollback()
+	repositories.Spree_db.Close()
 }

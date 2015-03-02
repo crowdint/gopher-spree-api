@@ -10,10 +10,7 @@ import (
 func TestDB(t *testing.T) {
 	err := InitDB(true)
 
-	defer func() {
-		Spree_db.Rollback()
-		Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
@@ -27,10 +24,7 @@ func TestDB(t *testing.T) {
 func TestAll(t *testing.T) {
 	InitDB(true)
 
-	defer func() {
-		Spree_db.Rollback()
-		Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	r := NewDatabaseRepository()
 
@@ -52,10 +46,7 @@ func TestAll(t *testing.T) {
 func TestAllWithConditions(t *testing.T) {
 	InitDB(true)
 
-	defer func() {
-		Spree_db.Rollback()
-		Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	r := NewDatabaseRepository()
 
@@ -83,10 +74,7 @@ func TestAllWithConditions(t *testing.T) {
 func TestFindBy(t *testing.T) {
 	InitDB(true)
 
-	defer func() {
-		Spree_db.Rollback()
-		Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	r := NewDatabaseRepository()
 
@@ -104,10 +92,7 @@ func TestFindBy(t *testing.T) {
 func TestFindByWithConditions(t *testing.T) {
 	InitDB(true)
 
-	defer func() {
-		Spree_db.Rollback()
-		Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	r := NewDatabaseRepository()
 
@@ -125,10 +110,7 @@ func TestFindByWithConditions(t *testing.T) {
 func TestFindByWithOptions(t *testing.T) {
 	InitDB(true)
 
-	defer func() {
-		Spree_db.Rollback()
-		Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	r := NewDatabaseRepository()
 

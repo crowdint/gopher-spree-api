@@ -12,10 +12,7 @@ func TestProductPropertyInteractor_GetJsonProductPropertiesMap(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	repositories.Spree_db.Create(&domain.ProductProperty{Id: 1, ProductId: 1, PropertyId: 1})
 	repositories.Spree_db.Exec("INSERT INTO spree_properties(id, presentation) values(1, 'foo')")

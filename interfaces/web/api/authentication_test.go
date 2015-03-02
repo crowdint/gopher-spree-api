@@ -17,10 +17,7 @@ func TestAuthenticationWithValidToken(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	dbSpreeToken := "testUser"
 	repositories.Spree_db.FirstOrCreate(&domain.User{}, domain.User{SpreeApiKey: dbSpreeToken})
@@ -56,10 +53,7 @@ func TestAuthenticationWithInvalidToken(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	req, err := http.NewRequest("GET", "/products", nil)
 	if err != nil {
@@ -118,10 +112,7 @@ func TestAuthenticationWithValidOrderToken(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	repositories.Spree_db.Create(&domain.Order{Number: "R123456789", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
 
@@ -164,10 +155,7 @@ func TestAuthenticationWithInvalidOrderToken(t *testing.T) {
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	path := "/api/orders/testOrderNumber"
 	req, err := http.NewRequest("GET", path, nil)
@@ -194,10 +182,7 @@ func TestAuthenticationWithValidOrderTokenAndActionIsNotOrderShow(t *testing.T) 
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	repositories.Spree_db.Create(&domain.Order{Number: "R123456789", GuestToken: "Xrz5qBnbnoBQnYQYzOMQkQ"})
 
@@ -235,10 +220,7 @@ func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalse(t *testing.T
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	path := "/api/products"
 	req, err := http.NewRequest("GET", path, nil)
@@ -267,10 +249,7 @@ func TestAuthenticationWithoutTokenAndAuthenticationRequiredIsFalseAndActionIsNo
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	path := "/api/products"
 	req, err := http.NewRequest("POST", path, nil)
@@ -299,10 +278,7 @@ func TestAuthenticationWithTokenAndAuthenticationRequiredIsFalseAndActionsIsNotR
 		t.Error("An error has ocurred", err)
 	}
 
-	defer func() {
-		repositories.Spree_db.Rollback()
-		repositories.Spree_db.Close()
-	}()
+	defer ResetDB()
 
 	user := &domain.User{}
 	var currentUsr *domain.User
