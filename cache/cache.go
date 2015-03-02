@@ -35,8 +35,7 @@ func set(key string, cacheable Cacheable) error {
 		return err
 	}
 
-	cache.Set(&memcache.Item{Key: key, Value: data, Expiration: 3600})
-	return nil
+	return cache.Set(&memcache.Item{Key: key, Value: data, Expiration: 3600})
 }
 
 func Set(cacheable Cacheable) error {

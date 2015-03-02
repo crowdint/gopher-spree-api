@@ -36,6 +36,7 @@ func TestOrderInteractor_GetResponse(t *testing.T) {
 	}
 
 	defer ResetDB()
+	defer cache.KillMemcached()
 
 	order := &domain.Order{}
 
@@ -70,13 +71,9 @@ func TestOrderInteractor_GetResponse(t *testing.T) {
 		order,
 	}
 
-	missingItems, err := cache.FindMulti(ordersCached)
+	_, err = cache.FindMultiWithPrefix("index", ordersCached)
 	if err != nil {
 		t.Error("An error ocurred while finding cached orders: ", err.Error())
-	}
-
-	if len(missingItems) != 0 {
-		t.Error("All orders should be cached, but they weren't")
 	}
 }
 
@@ -90,6 +87,7 @@ func TestOrderInteractor_Show(t *testing.T) {
 	}
 
 	defer ResetDB()
+	defer cache.KillMemcached()
 
 	oid := int64(1)
 
@@ -162,6 +160,6 @@ func TestOrderInteractor_Show(t *testing.T) {
 	}
 
 	if err = cache.Find(&order); err != nil {
-		t.Error("Order should be cached, but it wasn't")
+		t.Error("Order should be cached, but it wasn't:", err.Error())
 	}
 }

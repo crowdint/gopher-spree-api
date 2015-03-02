@@ -30,8 +30,10 @@ func (item *CacheItem) Unmarshal(data []byte) error {
 func TestCacheImplementation(t *testing.T) {
 	// Init memcached
 	if err := SetupMemcached(); err != nil {
-		t.Skipf("skipping test; couldn't find memcached")
+		t.Error("Couldn't find memcached", err.Error())
 	}
+
+	defer KillMemcached()
 
 	// Set
 	foo := &CacheItem{"foo"}
@@ -60,7 +62,7 @@ func TestCacheImplementation(t *testing.T) {
 
 	SetMulti(setMultis)
 	missingItems, err := FindMulti(getMultis)
-	errorHandler(t, err, "find multis: %v", err)
+	errorHandler(t, err, "find multi: %v", err)
 	if len(missingItems) > 0 {
 		t.Errorf("There are some missing items %+v", missingItems)
 	}
