@@ -7,9 +7,8 @@ import (
 )
 
 var (
-	api           *gin.RouterGroup
-	router        *gin.Engine
-	routesPattern map[string]string
+	api    *gin.RouterGroup
+	router *gin.Engine
 )
 
 func init() {
@@ -46,13 +45,13 @@ func Router() *gin.Engine {
 	return router
 }
 
-func regexRoutesPattern() map[string]string {
-	return map[string]string{
-		`^` + namespace() + `/api/products(/?)$`:   "products.index", // pattern -> action
-		`^` + namespace() + `/api/products/\d+$`:   "products.show",
-		`^` + namespace() + `/api/orders(/?)$`:     "orders.index",
-		`^` + namespace() + `/api/orders/\w+$`:     "orders.show",
-		`^` + namespace() + `/api/taxonomies(/?)$`: "taxonomies.index",
-		`^` + namespace() + `/api/taxons(/?)$`:     "taxons.index",
+func routes() map[string]bool {
+	return map[string]bool{
+		`^` + namespace() + `/api/products(/?)$`:   true,
+		`^` + namespace() + `/api/products/\d+$`:   true,
+		`^` + namespace() + `/api/orders(/?)$`:     false,
+		`^` + namespace() + `/api/orders/\w+$`:     false,
+		`^` + namespace() + `/api/taxonomies(/?)$`: false,
+		`^` + namespace() + `/api/taxons(/?)$`:     false,
 	}
 }
