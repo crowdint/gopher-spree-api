@@ -63,7 +63,7 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int, params Resp
 	}
 
 	productsCached := this.toCacheData(productModelSlice)
-	missingProductsCached, _ := cache.FindMulti(productsCached)
+	missingProductsCached, _ := cache.FetchMulti(productsCached)
 	if len(missingProductsCached) == 0 {
 		return ProductResponse{data: productModelSlice}, nil
 	}

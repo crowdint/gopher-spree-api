@@ -71,7 +71,7 @@ func TestOrderInteractor_GetResponse(t *testing.T) {
 		order,
 	}
 
-	_, err = cache.FindMultiWithPrefix("index", ordersCached)
+	_, err = cache.FetchMultiWithPrefix("index", ordersCached)
 	if err != nil {
 		t.Error("An error ocurred while finding cached orders: ", err.Error())
 	}

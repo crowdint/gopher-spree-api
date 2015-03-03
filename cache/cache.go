@@ -79,7 +79,7 @@ func FindWithPrefix(prefix string, cacheable Cacheable) error {
 	return find(cacheable.KeyWithPrefix(prefix), cacheable)
 }
 
-func findMulti(keys []string, cacheables []Cacheable) ([]Cacheable, error) {
+func fetchMulti(keys []string, cacheables []Cacheable) ([]Cacheable, error) {
 	if cache == nil {
 		return cacheables, ErrCacheInit
 	}
@@ -103,22 +103,30 @@ func findMulti(keys []string, cacheables []Cacheable) ([]Cacheable, error) {
 	return missingItems, nil
 }
 
-func FindMulti(cacheables []Cacheable) ([]Cacheable, error) {
+// FetchMulti expects an array of Cacheable to fill it with data in the memcached server
+// It returns an array of Cacheable of the items that are not in the cache and an error.
+//
+//	cacheables is the array to be fill. This array has to have items that implement the
+// 	Cacheable interface.
+//
+// []Cacheable is the returned array with the missing items from the cacheables array.
+// error is the Error returned if any.
+func FetchMulti(cacheables []Cacheable) ([]Cacheable, error) {
 	keys := []string{}
 	for _, cacheable := range cacheables {
 		keys = append(keys, cacheable.Key())
 	}
 
-	return findMulti(keys, cacheables)
+	return fetchMulti(keys, cacheables)
 }
 
-func FindMultiWithPrefix(prefix string, cacheables []Cacheable) ([]Cacheable, error) {
+func FetchMultiWithPrefix(prefix string, cacheables []Cacheable) ([]Cacheable, error) {
 	keys := []string{}
 	for _, cacheable := range cacheables {
 		keys = append(keys, cacheable.KeyWithPrefix(prefix))
 	}
 
-	return findMulti(keys, cacheables)
+	return fetchMulti(keys, cacheables)
 }
 
 func Delete(cacheable Cacheable) error {

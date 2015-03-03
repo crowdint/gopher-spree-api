@@ -61,7 +61,7 @@ func TestCacheImplementation(t *testing.T) {
 	}
 
 	SetMulti(setMultis)
-	missingItems, err := FindMulti(getMultis)
+	missingItems, err := FetchMulti(getMultis)
 	errorHandler(t, err, "find multi: %v", err)
 	if len(missingItems) > 0 {
 		t.Errorf("There are some missing items %+v", missingItems)
