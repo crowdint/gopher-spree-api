@@ -28,13 +28,6 @@ func (item *CacheItem) Unmarshal(data []byte) error {
 }
 
 func TestCacheImplementation(t *testing.T) {
-	// Init memcached
-	if err := SetupMemcached(); err != nil {
-		t.Error("Couldn't find memcached", err.Error())
-	}
-
-	defer KillMemcached()
-
 	// Set
 	foo := &CacheItem{"foo"}
 	err := Set(foo)

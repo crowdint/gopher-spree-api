@@ -27,16 +27,11 @@ func TestOrderInteractor_ToCacheData(t *testing.T) {
 }
 
 func TestOrderInteractor_GetResponse(t *testing.T) {
-	if err := cache.SetupMemcached(); err != nil {
-		t.Error("Couldn't find memcached")
-	}
-
 	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
 
 	defer ResetDB()
-	defer cache.KillMemcached()
 
 	order := &domain.Order{}
 
@@ -78,16 +73,11 @@ func TestOrderInteractor_GetResponse(t *testing.T) {
 }
 
 func TestOrderInteractor_Show(t *testing.T) {
-	if err := cache.SetupMemcached(); err != nil {
-		t.Error("Couldn't find memcached")
-	}
-
 	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
 
 	defer ResetDB()
-	defer cache.KillMemcached()
 
 	oid := int64(1)
 
