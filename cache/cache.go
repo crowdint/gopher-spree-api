@@ -2,8 +2,10 @@ package cache
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/bradfitz/gomemcache/memcache"
+	"github.com/crowdint/gopher-spree-api/configs"
 )
 
 var (
@@ -12,17 +14,19 @@ var (
 	ErrCacheInit = errors.New("Cache is not initialized.")
 )
 
+func init() {
+	if cache == nil {
+		url := configs.Get(configs.MEMCACHED_URL)
+		servers := strings.Split(url, ",")
+		cache = memcache.New(servers...)
+	}
+}
+
 type Cacheable interface {
 	Key() string
 	KeyWithPrefix(string) string
 	Marshal() ([]byte, error)
 	Unmarshal([]byte) error
-}
-
-func Init(servers ...string) {
-	if cache == nil {
-		cache = memcache.New(servers...)
-	}
 }
 
 func set(key string, cacheable Cacheable) error {
