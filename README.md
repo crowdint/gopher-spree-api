@@ -65,6 +65,15 @@ format:
 
 And install dependencies again.
 
+### Installing Memcached
+To install memcached.
+
+    $ brew install memcached
+
+To start Memcached Server
+
+    $ memcached -vv
+
 ### Configuration
 
 There are sane defaults for running this app, but if you need to have

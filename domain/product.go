@@ -1,6 +1,10 @@
 package domain
 
-import "time"
+import (
+	"encoding/json"
+	"fmt"
+	"time"
+)
 
 type Product struct {
 	Id                 int64             `json:"id"`
@@ -32,4 +36,24 @@ type Product struct {
 
 func (this Product) TableName() string {
 	return "spree_products"
+}
+
+func (this *Product) SpreeClass() string {
+	return "Spree::Product"
+}
+
+func (this *Product) Key() string {
+	return fmt.Sprintf("%s/%d/%d", this.SpreeClass(), this.Id, this.UpdatedAt.Unix())
+}
+
+func (this *Product) KeyWithPrefix(prefix string) string {
+	return fmt.Sprintf("%s/%s/%d/%d", this.SpreeClass(), prefix, this.Id, this.UpdatedAt.Unix())
+}
+
+func (this *Product) Marshal() ([]byte, error) {
+	return json.Marshal(this)
+}
+
+func (this *Product) Unmarshal(data []byte) error {
+	return json.Unmarshal(data, this)
 }

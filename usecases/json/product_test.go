@@ -5,9 +5,42 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/crowdint/gopher-spree-api/cache"
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
+
+func TestProductInteractor_ToCacheData(t *testing.T) {
+	productInteractor := NewProductInteractor()
+	productSlice := []*domain.Product{
+		&domain.Product{
+			Name:        "Foo Product Name",
+			Description: "Foo Product Description",
+		},
+	}
+
+	cacheSlice := productInteractor.toCacheData(productSlice)
+	if len(cacheSlice) != len(productSlice) {
+		t.Fatalf("The len of cache Slice should be %d, but was %d", len(productSlice), len(cacheSlice))
+	}
+}
+
+func TestProductInteractor_GetMissingProductsFromMissongData(t *testing.T) {
+	productInteractor := NewProductInteractor()
+	cacheSlice := &[]cache.Cacheable{
+		&domain.Product{
+			Id:          100,
+			Name:        "Foo Product Name",
+			Description: "Foo Product Description",
+		},
+	}
+
+	productIds, productSlice := productInteractor.getMissingProductsFromMissingData(cacheSlice)
+	if len(productIds) != len(productSlice) && len(productIds) != len(*cacheSlice) {
+		t.Fatalf("The len of slices are incorrect. Ids (%d), Products (%d) and Cache (%d)", len(productIds), len(productSlice), len(*cacheSlice))
+	}
+
+}
 
 func TestProductInteractor_GetMergedResponse(t *testing.T) {
 	if err := repositories.InitDB(true); err != nil {

@@ -6,16 +6,37 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/crowdint/gopher-spree-api/cache"
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
+func TestOrderInteractor_ToCacheData(t *testing.T) {
+	orderInteractor := NewOrderInteractor()
+	orderSlice := []*domain.Order{
+		&domain.Order{
+			Id:    100,
+			Email: "test@email.com",
+		},
+	}
+
+	cacheSlice := orderInteractor.toCacheData(orderSlice)
+	if len(cacheSlice) != len(orderSlice) {
+		t.Fatalf("The len of cache Slice should be %d, but was %d", len(orderSlice), len(cacheSlice))
+	}
+}
+
 func TestOrderInteractor_GetResponse(t *testing.T) {
+	if err := cache.SetupMemcached(); err != nil {
+		t.Error("Couldn't find memcached")
+	}
+
 	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
 
 	defer ResetDB()
+	defer cache.KillMemcached()
 
 	order := &domain.Order{}
 
@@ -45,14 +66,28 @@ func TestOrderInteractor_GetResponse(t *testing.T) {
 		t.Error("Error: Json string is empty")
 		return
 	}
+
+	ordersCached := []cache.Cacheable{
+		order,
+	}
+
+	_, err = cache.FetchMultiWithPrefix("index", ordersCached)
+	if err != nil {
+		t.Error("An error ocurred while finding cached orders: ", err.Error())
+	}
 }
 
 func TestOrderInteractor_Show(t *testing.T) {
+	if err := cache.SetupMemcached(); err != nil {
+		t.Error("Couldn't find memcached")
+	}
+
 	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
 
 	defer ResetDB()
+	defer cache.KillMemcached()
 
 	oid := int64(1)
 
@@ -90,7 +125,7 @@ func TestOrderInteractor_Show(t *testing.T) {
 	orderInteractor := NewOrderInteractor()
 	user := domain.User{}
 
-	err := orderInteractor.BaseRepository.FindBy(&order, map[string]interface{}{
+	err := orderInteractor.OrderRepository.FindBy(&order, map[string]interface{}{
 		"not": repositories.Not{Key: "user_id", Values: []interface{}{0}},
 	}, nil)
 	if err != nil {
@@ -98,7 +133,7 @@ func TestOrderInteractor_Show(t *testing.T) {
 		return
 	}
 
-	err = orderInteractor.BaseRepository.FindBy(&user, nil, map[string]interface{}{
+	err = orderInteractor.OrderRepository.FindBy(&user, nil, map[string]interface{}{
 		"id": order.UserId,
 	})
 	if err != nil {
@@ -122,5 +157,9 @@ func TestOrderInteractor_Show(t *testing.T) {
 
 	if jsonOrder.LineItems == nil {
 		t.Error("Order LineItems should not be nil, but it was")
+	}
+
+	if err = cache.Find(&order); err != nil {
+		t.Error("Order should be cached, but it wasn't:", err.Error())
 	}
 }
