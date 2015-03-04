@@ -37,8 +37,8 @@ func (this *TaxonomyInteractor) GetResponse(currentPage, perPage int, params Res
 		return TaxonomyResponse{}, err
 	}
 
-	var taxonomyModelSlice []*domain.Taxonomy
-	this.BaseRepository.All(&taxonomyModelSlice, map[string]interface{}{
+	var taxonomies []*domain.Taxonomy
+	this.BaseRepository.All(&taxonomies, map[string]interface{}{
 		"limit":  perPage,
 		"offset": currentPage,
 		"order":  "created_at desc",
@@ -47,34 +47,15 @@ func (this *TaxonomyInteractor) GetResponse(currentPage, perPage int, params Res
 		return TaxonomyResponse{}, err
 	}
 
-	taxonomyJsonSlice, err := this.transformToJsonResponse(taxonomyModelSlice)
-	if err != nil {
-		return TaxonomyResponse{}, err
-	}
+	this.mergeTaxons(taxonomies)
 
 	return TaxonomyResponse{
-		data: taxonomyJsonSlice,
+		data: taxonomies,
 	}, nil
 }
 
 func (this *TaxonomyInteractor) GetShowResponse(param ResponseParameters) (interface{}, error) {
 	return true, nil
-}
-
-func (this *TaxonomyInteractor) transformToJsonResponse(taxonomyModelSlice []*domain.Taxonomy) ([]*domain.Taxonomy, error) {
-	//WIP MERGE TAXONS
-
-	return taxonomyModelSlice, nil
-}
-
-func (this *TaxonomyInteractor) getIdSlice(taxonomySlice []*domain.Taxonomy) []int64 {
-	taxonomyIds := []int64{}
-
-	for _, taxonomy := range taxonomySlice {
-		taxonomyIds = append(taxonomyIds, taxonomy.Id)
-	}
-
-	return taxonomyIds
 }
 
 func (this *TaxonomyInteractor) GetTotalCount(param ResponseParameters) (int64, error) {
@@ -83,4 +64,34 @@ func (this *TaxonomyInteractor) GetTotalCount(param ResponseParameters) (int64, 
 		return 0, err
 	}
 	return this.BaseRepository.Count(domain.Taxonomy{}, query, gparams)
+}
+
+func (this *TaxonomyInteractor) mergeTaxons(taxonomies []*domain.Taxonomy) {
+	taxonomyIds := []int64{}
+	for _, taxonomy := range taxonomies {
+		taxonomyIds = append(taxonomyIds, taxonomy.Id)
+	}
+
+	var taxons []*domain.Taxon
+	this.BaseRepository.All(&taxons, nil, "taxonomy_id IN (?)", taxonomyIds)
+	this.toTaxonTree(taxons, 2)
+
+	for _, taxonomy := range taxonomies {
+		for _, taxon := range taxons {
+			if taxon.TaxonomyId == taxonomy.Id && taxon.ParentId == 0 {
+				taxonomy.Root = taxon
+			}
+		}
+	}
+}
+
+func (this *TaxonomyInteractor) toTaxonTree(nodes []*domain.Taxon, maxDepth int64) {
+	for _, node := range nodes {
+		for _, childNode := range nodes {
+			if node.Lft < childNode.Rgt && node.Rgt > childNode.Rgt && (node.Depth+1) == childNode.Depth && childNode.Depth < maxDepth {
+				childNode.PrettyName = node.PrettyName + " -> " + childNode.PrettyName
+				node.Taxons = append(node.Taxons, childNode)
+			}
+		}
+	}
 }
