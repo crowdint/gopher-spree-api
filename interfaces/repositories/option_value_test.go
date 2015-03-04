@@ -59,11 +59,12 @@ func TestOptionValueRepository_AllByVariantAssociation(t *testing.T) {
 
 	defer ResetDB()
 
-	optionValue := &domain.OptionValue{
-		Id: 10,
-	}
+	variant := &domain.Variant{Id: 17}
+	optionValue := &domain.OptionValue{Id: 10, VariantId: variant.Id}
 
+	Spree_db.Create(variant)
 	Spree_db.Create(optionValue)
+
 	Spree_db.Exec("INSERT INTO spree_option_values_variants(option_value_id, variant_id) values(10, 17)")
 
 	if err != nil {
@@ -75,7 +76,6 @@ func TestOptionValueRepository_AllByVariantAssociation(t *testing.T) {
 	}
 
 	optionValueRepo := NewOptionValueRepo()
-	variant := &domain.Variant{Id: 17}
 	optionValues := optionValueRepo.AllByVariantAssociation(variant)
 
 	if len(optionValues) < 1 {
