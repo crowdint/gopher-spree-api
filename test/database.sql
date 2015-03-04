@@ -30,7 +30,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: friendly_id_slugs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: friendly_id_slugs; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE friendly_id_slugs (
@@ -63,7 +63,7 @@ ALTER SEQUENCE friendly_id_slugs_id_seq OWNED BY friendly_id_slugs.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE schema_migrations (
@@ -72,7 +72,7 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: spree_addresses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_addresses; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_addresses (
@@ -114,7 +114,7 @@ ALTER SEQUENCE spree_addresses_id_seq OWNED BY spree_addresses.id;
 
 
 --
--- Name: spree_adjustments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_adjustments; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_adjustments (
@@ -155,7 +155,7 @@ ALTER SEQUENCE spree_adjustments_id_seq OWNED BY spree_adjustments.id;
 
 
 --
--- Name: spree_assets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_assets; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_assets (
@@ -196,7 +196,7 @@ ALTER SEQUENCE spree_assets_id_seq OWNED BY spree_assets.id;
 
 
 --
--- Name: spree_calculators; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_calculators; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_calculators (
@@ -230,7 +230,7 @@ ALTER SEQUENCE spree_calculators_id_seq OWNED BY spree_calculators.id;
 
 
 --
--- Name: spree_configurations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_configurations; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_configurations (
@@ -262,7 +262,7 @@ ALTER SEQUENCE spree_configurations_id_seq OWNED BY spree_configurations.id;
 
 
 --
--- Name: spree_countries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_countries; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_countries (
@@ -297,7 +297,7 @@ ALTER SEQUENCE spree_countries_id_seq OWNED BY spree_countries.id;
 
 
 --
--- Name: spree_credit_cards; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_credit_cards; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_credit_cards (
@@ -338,7 +338,7 @@ ALTER SEQUENCE spree_credit_cards_id_seq OWNED BY spree_credit_cards.id;
 
 
 --
--- Name: spree_customer_returns; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_customer_returns; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_customer_returns (
@@ -370,7 +370,7 @@ ALTER SEQUENCE spree_customer_returns_id_seq OWNED BY spree_customer_returns.id;
 
 
 --
--- Name: spree_gateways; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_gateways; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_gateways (
@@ -408,7 +408,7 @@ ALTER SEQUENCE spree_gateways_id_seq OWNED BY spree_gateways.id;
 
 
 --
--- Name: spree_inventory_units; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_inventory_units; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_inventory_units (
@@ -444,7 +444,7 @@ ALTER SEQUENCE spree_inventory_units_id_seq OWNED BY spree_inventory_units.id;
 
 
 --
--- Name: spree_line_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_line_items; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_line_items (
@@ -486,7 +486,7 @@ ALTER SEQUENCE spree_line_items_id_seq OWNED BY spree_line_items.id;
 
 
 --
--- Name: spree_log_entries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_log_entries; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_log_entries (
@@ -519,7 +519,7 @@ ALTER SEQUENCE spree_log_entries_id_seq OWNED BY spree_log_entries.id;
 
 
 --
--- Name: spree_option_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_option_types; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_option_types (
@@ -552,7 +552,7 @@ ALTER SEQUENCE spree_option_types_id_seq OWNED BY spree_option_types.id;
 
 
 --
--- Name: spree_option_types_prototypes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_option_types_prototypes; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_option_types_prototypes (
@@ -562,7 +562,7 @@ CREATE TABLE spree_option_types_prototypes (
 
 
 --
--- Name: spree_option_values; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_option_values; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_option_values (
@@ -596,7 +596,7 @@ ALTER SEQUENCE spree_option_values_id_seq OWNED BY spree_option_values.id;
 
 
 --
--- Name: spree_option_values_variants; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_option_values_variants; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_option_values_variants (
@@ -606,7 +606,7 @@ CREATE TABLE spree_option_values_variants (
 
 
 --
--- Name: spree_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_orders; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_orders (
@@ -669,7 +669,7 @@ ALTER SEQUENCE spree_orders_id_seq OWNED BY spree_orders.id;
 
 
 --
--- Name: spree_orders_promotions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_orders_promotions; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_orders_promotions (
@@ -679,7 +679,7 @@ CREATE TABLE spree_orders_promotions (
 
 
 --
--- Name: spree_payment_capture_events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_payment_capture_events; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_payment_capture_events (
@@ -711,7 +711,7 @@ ALTER SEQUENCE spree_payment_capture_events_id_seq OWNED BY spree_payment_captur
 
 
 --
--- Name: spree_payment_methods; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_payment_methods; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_payment_methods (
@@ -750,7 +750,7 @@ ALTER SEQUENCE spree_payment_methods_id_seq OWNED BY spree_payment_methods.id;
 
 
 --
--- Name: spree_payments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_payments; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_payments (
@@ -791,7 +791,7 @@ ALTER SEQUENCE spree_payments_id_seq OWNED BY spree_payments.id;
 
 
 --
--- Name: spree_preferences; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_preferences; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_preferences (
@@ -823,7 +823,7 @@ ALTER SEQUENCE spree_preferences_id_seq OWNED BY spree_preferences.id;
 
 
 --
--- Name: spree_prices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_prices; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_prices (
@@ -855,7 +855,7 @@ ALTER SEQUENCE spree_prices_id_seq OWNED BY spree_prices.id;
 
 
 --
--- Name: spree_product_option_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_product_option_types; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_product_option_types (
@@ -888,7 +888,7 @@ ALTER SEQUENCE spree_product_option_types_id_seq OWNED BY spree_product_option_t
 
 
 --
--- Name: spree_product_properties; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_product_properties; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_product_properties (
@@ -922,7 +922,7 @@ ALTER SEQUENCE spree_product_properties_id_seq OWNED BY spree_product_properties
 
 
 --
--- Name: spree_products; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_products; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_products (
@@ -963,7 +963,7 @@ ALTER SEQUENCE spree_products_id_seq OWNED BY spree_products.id;
 
 
 --
--- Name: spree_products_promotion_rules; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_products_promotion_rules; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_products_promotion_rules (
@@ -973,7 +973,7 @@ CREATE TABLE spree_products_promotion_rules (
 
 
 --
--- Name: spree_products_taxons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_products_taxons; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_products_taxons (
@@ -1004,7 +1004,7 @@ ALTER SEQUENCE spree_products_taxons_id_seq OWNED BY spree_products_taxons.id;
 
 
 --
--- Name: spree_promotion_action_line_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_promotion_action_line_items; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_promotion_action_line_items (
@@ -1035,7 +1035,7 @@ ALTER SEQUENCE spree_promotion_action_line_items_id_seq OWNED BY spree_promotion
 
 
 --
--- Name: spree_promotion_actions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_promotion_actions; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_promotion_actions (
@@ -1067,7 +1067,7 @@ ALTER SEQUENCE spree_promotion_actions_id_seq OWNED BY spree_promotion_actions.i
 
 
 --
--- Name: spree_promotion_categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_promotion_categories; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_promotion_categories (
@@ -1098,7 +1098,7 @@ ALTER SEQUENCE spree_promotion_categories_id_seq OWNED BY spree_promotion_catego
 
 
 --
--- Name: spree_promotion_rules; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_promotion_rules; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_promotion_rules (
@@ -1134,7 +1134,7 @@ ALTER SEQUENCE spree_promotion_rules_id_seq OWNED BY spree_promotion_rules.id;
 
 
 --
--- Name: spree_promotion_rules_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_promotion_rules_users; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_promotion_rules_users (
@@ -1144,7 +1144,7 @@ CREATE TABLE spree_promotion_rules_users (
 
 
 --
--- Name: spree_promotions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_promotions; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_promotions (
@@ -1185,7 +1185,7 @@ ALTER SEQUENCE spree_promotions_id_seq OWNED BY spree_promotions.id;
 
 
 --
--- Name: spree_properties; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_properties; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_properties (
@@ -1217,7 +1217,7 @@ ALTER SEQUENCE spree_properties_id_seq OWNED BY spree_properties.id;
 
 
 --
--- Name: spree_properties_prototypes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_properties_prototypes; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_properties_prototypes (
@@ -1227,7 +1227,7 @@ CREATE TABLE spree_properties_prototypes (
 
 
 --
--- Name: spree_prototypes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_prototypes; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_prototypes (
@@ -1258,7 +1258,7 @@ ALTER SEQUENCE spree_prototypes_id_seq OWNED BY spree_prototypes.id;
 
 
 --
--- Name: spree_refund_reasons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_refund_reasons; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_refund_reasons (
@@ -1291,7 +1291,7 @@ ALTER SEQUENCE spree_refund_reasons_id_seq OWNED BY spree_refund_reasons.id;
 
 
 --
--- Name: spree_refunds; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_refunds; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_refunds (
@@ -1326,7 +1326,7 @@ ALTER SEQUENCE spree_refunds_id_seq OWNED BY spree_refunds.id;
 
 
 --
--- Name: spree_reimbursement_credits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_reimbursement_credits; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_reimbursement_credits (
@@ -1358,7 +1358,7 @@ ALTER SEQUENCE spree_reimbursement_credits_id_seq OWNED BY spree_reimbursement_c
 
 
 --
--- Name: spree_reimbursement_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_reimbursement_types; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_reimbursement_types (
@@ -1392,7 +1392,7 @@ ALTER SEQUENCE spree_reimbursement_types_id_seq OWNED BY spree_reimbursement_typ
 
 
 --
--- Name: spree_reimbursements; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_reimbursements; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_reimbursements (
@@ -1427,7 +1427,7 @@ ALTER SEQUENCE spree_reimbursements_id_seq OWNED BY spree_reimbursements.id;
 
 
 --
--- Name: spree_return_authorization_reasons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_return_authorization_reasons; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_return_authorization_reasons (
@@ -1460,7 +1460,7 @@ ALTER SEQUENCE spree_return_authorization_reasons_id_seq OWNED BY spree_return_a
 
 
 --
--- Name: spree_return_authorizations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_return_authorizations; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_return_authorizations (
@@ -1496,7 +1496,7 @@ ALTER SEQUENCE spree_return_authorizations_id_seq OWNED BY spree_return_authoriz
 
 
 --
--- Name: spree_return_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_return_items; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_return_items (
@@ -1540,7 +1540,7 @@ ALTER SEQUENCE spree_return_items_id_seq OWNED BY spree_return_items.id;
 
 
 --
--- Name: spree_roles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_roles; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_roles (
@@ -1569,7 +1569,7 @@ ALTER SEQUENCE spree_roles_id_seq OWNED BY spree_roles.id;
 
 
 --
--- Name: spree_roles_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_roles_users; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_roles_users (
@@ -1579,7 +1579,7 @@ CREATE TABLE spree_roles_users (
 
 
 --
--- Name: spree_shipments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_shipments; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_shipments (
@@ -1622,7 +1622,7 @@ ALTER SEQUENCE spree_shipments_id_seq OWNED BY spree_shipments.id;
 
 
 --
--- Name: spree_shipping_categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_shipping_categories; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_shipping_categories (
@@ -1653,7 +1653,7 @@ ALTER SEQUENCE spree_shipping_categories_id_seq OWNED BY spree_shipping_categori
 
 
 --
--- Name: spree_shipping_method_categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_shipping_method_categories; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_shipping_method_categories (
@@ -1685,7 +1685,7 @@ ALTER SEQUENCE spree_shipping_method_categories_id_seq OWNED BY spree_shipping_m
 
 
 --
--- Name: spree_shipping_methods; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_shipping_methods; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_shipping_methods (
@@ -1722,7 +1722,7 @@ ALTER SEQUENCE spree_shipping_methods_id_seq OWNED BY spree_shipping_methods.id;
 
 
 --
--- Name: spree_shipping_methods_zones; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_shipping_methods_zones; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_shipping_methods_zones (
@@ -1732,7 +1732,7 @@ CREATE TABLE spree_shipping_methods_zones (
 
 
 --
--- Name: spree_shipping_rates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_shipping_rates; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_shipping_rates (
@@ -1767,7 +1767,7 @@ ALTER SEQUENCE spree_shipping_rates_id_seq OWNED BY spree_shipping_rates.id;
 
 
 --
--- Name: spree_skrill_transactions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_skrill_transactions; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_skrill_transactions (
@@ -1803,7 +1803,7 @@ ALTER SEQUENCE spree_skrill_transactions_id_seq OWNED BY spree_skrill_transactio
 
 
 --
--- Name: spree_state_changes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_state_changes; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_state_changes (
@@ -1839,7 +1839,7 @@ ALTER SEQUENCE spree_state_changes_id_seq OWNED BY spree_state_changes.id;
 
 
 --
--- Name: spree_states; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_states; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_states (
@@ -1871,7 +1871,7 @@ ALTER SEQUENCE spree_states_id_seq OWNED BY spree_states.id;
 
 
 --
--- Name: spree_stock_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_stock_items; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_stock_items (
@@ -1906,7 +1906,7 @@ ALTER SEQUENCE spree_stock_items_id_seq OWNED BY spree_stock_items.id;
 
 
 --
--- Name: spree_stock_locations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_stock_locations; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_stock_locations (
@@ -1950,7 +1950,7 @@ ALTER SEQUENCE spree_stock_locations_id_seq OWNED BY spree_stock_locations.id;
 
 
 --
--- Name: spree_stock_movements; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_stock_movements; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_stock_movements (
@@ -1985,7 +1985,7 @@ ALTER SEQUENCE spree_stock_movements_id_seq OWNED BY spree_stock_movements.id;
 
 
 --
--- Name: spree_stock_transfers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_stock_transfers; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_stock_transfers (
@@ -2020,7 +2020,7 @@ ALTER SEQUENCE spree_stock_transfers_id_seq OWNED BY spree_stock_transfers.id;
 
 
 --
--- Name: spree_stores; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_stores; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_stores (
@@ -2059,7 +2059,7 @@ ALTER SEQUENCE spree_stores_id_seq OWNED BY spree_stores.id;
 
 
 --
--- Name: spree_tax_categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_tax_categories; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_tax_categories (
@@ -2094,7 +2094,7 @@ ALTER SEQUENCE spree_tax_categories_id_seq OWNED BY spree_tax_categories.id;
 
 
 --
--- Name: spree_tax_rates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_tax_rates; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_tax_rates (
@@ -2131,7 +2131,7 @@ ALTER SEQUENCE spree_tax_rates_id_seq OWNED BY spree_tax_rates.id;
 
 
 --
--- Name: spree_taxonomies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_taxonomies; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_taxonomies (
@@ -2163,7 +2163,7 @@ ALTER SEQUENCE spree_taxonomies_id_seq OWNED BY spree_taxonomies.id;
 
 
 --
--- Name: spree_taxons; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_taxons; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_taxons (
@@ -2209,7 +2209,7 @@ ALTER SEQUENCE spree_taxons_id_seq OWNED BY spree_taxons.id;
 
 
 --
--- Name: spree_taxons_promotion_rules; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_taxons_promotion_rules; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_taxons_promotion_rules (
@@ -2239,7 +2239,7 @@ ALTER SEQUENCE spree_taxons_promotion_rules_id_seq OWNED BY spree_taxons_promoti
 
 
 --
--- Name: spree_taxons_prototypes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_taxons_prototypes; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_taxons_prototypes (
@@ -2269,7 +2269,7 @@ ALTER SEQUENCE spree_taxons_prototypes_id_seq OWNED BY spree_taxons_prototypes.i
 
 
 --
--- Name: spree_tokenized_permissions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_tokenized_permissions; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_tokenized_permissions (
@@ -2302,7 +2302,7 @@ ALTER SEQUENCE spree_tokenized_permissions_id_seq OWNED BY spree_tokenized_permi
 
 
 --
--- Name: spree_trackers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_trackers; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_trackers (
@@ -2335,7 +2335,7 @@ ALTER SEQUENCE spree_trackers_id_seq OWNED BY spree_trackers.id;
 
 
 --
--- Name: spree_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_users; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_users (
@@ -2392,7 +2392,7 @@ ALTER SEQUENCE spree_users_id_seq OWNED BY spree_users.id;
 
 
 --
--- Name: spree_variants; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_variants; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_variants (
@@ -2435,7 +2435,7 @@ ALTER SEQUENCE spree_variants_id_seq OWNED BY spree_variants.id;
 
 
 --
--- Name: spree_zone_members; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_zone_members; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_zone_members (
@@ -2468,7 +2468,7 @@ ALTER SEQUENCE spree_zone_members_id_seq OWNED BY spree_zone_members.id;
 
 
 --
--- Name: spree_zones; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_zones; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE spree_zones (
@@ -2964,7 +2964,7 @@ ALTER TABLE ONLY spree_zones ALTER COLUMN id SET DEFAULT nextval('spree_zones_id
 
 
 --
--- Name: friendly_id_slugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: friendly_id_slugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY friendly_id_slugs
@@ -2972,7 +2972,7 @@ ALTER TABLE ONLY friendly_id_slugs
 
 
 --
--- Name: spree_activators_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_activators_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_promotions
@@ -2980,7 +2980,7 @@ ALTER TABLE ONLY spree_promotions
 
 
 --
--- Name: spree_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_addresses
@@ -2988,7 +2988,7 @@ ALTER TABLE ONLY spree_addresses
 
 
 --
--- Name: spree_adjustments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_adjustments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_adjustments
@@ -2996,7 +2996,7 @@ ALTER TABLE ONLY spree_adjustments
 
 
 --
--- Name: spree_assets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_assets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_assets
@@ -3004,7 +3004,7 @@ ALTER TABLE ONLY spree_assets
 
 
 --
--- Name: spree_calculators_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_calculators_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_calculators
@@ -3012,7 +3012,7 @@ ALTER TABLE ONLY spree_calculators
 
 
 --
--- Name: spree_configurations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_configurations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_configurations
@@ -3020,7 +3020,7 @@ ALTER TABLE ONLY spree_configurations
 
 
 --
--- Name: spree_countries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_countries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_countries
@@ -3028,7 +3028,7 @@ ALTER TABLE ONLY spree_countries
 
 
 --
--- Name: spree_credit_cards_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_credit_cards_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_credit_cards
@@ -3036,7 +3036,7 @@ ALTER TABLE ONLY spree_credit_cards
 
 
 --
--- Name: spree_customer_returns_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_customer_returns_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_customer_returns
@@ -3044,7 +3044,7 @@ ALTER TABLE ONLY spree_customer_returns
 
 
 --
--- Name: spree_gateways_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_gateways_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_gateways
@@ -3052,7 +3052,7 @@ ALTER TABLE ONLY spree_gateways
 
 
 --
--- Name: spree_inventory_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_inventory_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_inventory_units
@@ -3060,7 +3060,7 @@ ALTER TABLE ONLY spree_inventory_units
 
 
 --
--- Name: spree_line_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_line_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_line_items
@@ -3068,7 +3068,7 @@ ALTER TABLE ONLY spree_line_items
 
 
 --
--- Name: spree_log_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_log_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_log_entries
@@ -3076,7 +3076,7 @@ ALTER TABLE ONLY spree_log_entries
 
 
 --
--- Name: spree_option_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_option_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_option_types
@@ -3084,7 +3084,7 @@ ALTER TABLE ONLY spree_option_types
 
 
 --
--- Name: spree_option_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_option_values_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_option_values
@@ -3092,7 +3092,7 @@ ALTER TABLE ONLY spree_option_values
 
 
 --
--- Name: spree_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_orders
@@ -3100,7 +3100,7 @@ ALTER TABLE ONLY spree_orders
 
 
 --
--- Name: spree_payment_capture_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_payment_capture_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_payment_capture_events
@@ -3108,7 +3108,7 @@ ALTER TABLE ONLY spree_payment_capture_events
 
 
 --
--- Name: spree_payment_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_payment_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_payment_methods
@@ -3116,7 +3116,7 @@ ALTER TABLE ONLY spree_payment_methods
 
 
 --
--- Name: spree_payments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_payments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_payments
@@ -3124,7 +3124,7 @@ ALTER TABLE ONLY spree_payments
 
 
 --
--- Name: spree_preferences_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_preferences_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_preferences
@@ -3132,7 +3132,7 @@ ALTER TABLE ONLY spree_preferences
 
 
 --
--- Name: spree_prices_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_prices_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_prices
@@ -3140,7 +3140,7 @@ ALTER TABLE ONLY spree_prices
 
 
 --
--- Name: spree_product_option_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_product_option_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_product_option_types
@@ -3148,7 +3148,7 @@ ALTER TABLE ONLY spree_product_option_types
 
 
 --
--- Name: spree_product_properties_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_product_properties_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_product_properties
@@ -3156,7 +3156,7 @@ ALTER TABLE ONLY spree_product_properties
 
 
 --
--- Name: spree_products_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_products_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_products
@@ -3164,7 +3164,7 @@ ALTER TABLE ONLY spree_products
 
 
 --
--- Name: spree_products_taxons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_products_taxons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_products_taxons
@@ -3172,7 +3172,7 @@ ALTER TABLE ONLY spree_products_taxons
 
 
 --
--- Name: spree_promotion_action_line_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_promotion_action_line_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_promotion_action_line_items
@@ -3180,7 +3180,7 @@ ALTER TABLE ONLY spree_promotion_action_line_items
 
 
 --
--- Name: spree_promotion_actions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_promotion_actions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_promotion_actions
@@ -3188,7 +3188,7 @@ ALTER TABLE ONLY spree_promotion_actions
 
 
 --
--- Name: spree_promotion_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_promotion_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_promotion_categories
@@ -3196,7 +3196,7 @@ ALTER TABLE ONLY spree_promotion_categories
 
 
 --
--- Name: spree_promotion_rules_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_promotion_rules_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_promotion_rules
@@ -3204,7 +3204,7 @@ ALTER TABLE ONLY spree_promotion_rules
 
 
 --
--- Name: spree_properties_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_properties_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_properties
@@ -3212,7 +3212,7 @@ ALTER TABLE ONLY spree_properties
 
 
 --
--- Name: spree_prototypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_prototypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_prototypes
@@ -3220,7 +3220,7 @@ ALTER TABLE ONLY spree_prototypes
 
 
 --
--- Name: spree_refund_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_refund_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_refund_reasons
@@ -3228,7 +3228,7 @@ ALTER TABLE ONLY spree_refund_reasons
 
 
 --
--- Name: spree_refunds_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_refunds_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_refunds
@@ -3236,7 +3236,7 @@ ALTER TABLE ONLY spree_refunds
 
 
 --
--- Name: spree_reimbursement_credits_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_reimbursement_credits_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_reimbursement_credits
@@ -3244,7 +3244,7 @@ ALTER TABLE ONLY spree_reimbursement_credits
 
 
 --
--- Name: spree_reimbursement_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_reimbursement_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_reimbursement_types
@@ -3252,7 +3252,7 @@ ALTER TABLE ONLY spree_reimbursement_types
 
 
 --
--- Name: spree_reimbursements_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_reimbursements_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_reimbursements
@@ -3260,7 +3260,7 @@ ALTER TABLE ONLY spree_reimbursements
 
 
 --
--- Name: spree_return_authorization_inventory_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_return_authorization_inventory_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_return_items
@@ -3268,7 +3268,7 @@ ALTER TABLE ONLY spree_return_items
 
 
 --
--- Name: spree_return_authorization_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_return_authorization_reasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_return_authorization_reasons
@@ -3276,7 +3276,7 @@ ALTER TABLE ONLY spree_return_authorization_reasons
 
 
 --
--- Name: spree_return_authorizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_return_authorizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_return_authorizations
@@ -3284,7 +3284,7 @@ ALTER TABLE ONLY spree_return_authorizations
 
 
 --
--- Name: spree_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_roles
@@ -3292,7 +3292,7 @@ ALTER TABLE ONLY spree_roles
 
 
 --
--- Name: spree_shipments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_shipments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_shipments
@@ -3300,7 +3300,7 @@ ALTER TABLE ONLY spree_shipments
 
 
 --
--- Name: spree_shipping_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_shipping_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_shipping_categories
@@ -3308,7 +3308,7 @@ ALTER TABLE ONLY spree_shipping_categories
 
 
 --
--- Name: spree_shipping_method_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_shipping_method_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_shipping_method_categories
@@ -3316,7 +3316,7 @@ ALTER TABLE ONLY spree_shipping_method_categories
 
 
 --
--- Name: spree_shipping_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_shipping_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_shipping_methods
@@ -3324,7 +3324,7 @@ ALTER TABLE ONLY spree_shipping_methods
 
 
 --
--- Name: spree_shipping_rates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_shipping_rates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_shipping_rates
@@ -3332,7 +3332,7 @@ ALTER TABLE ONLY spree_shipping_rates
 
 
 --
--- Name: spree_skrill_transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_skrill_transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_skrill_transactions
@@ -3340,7 +3340,7 @@ ALTER TABLE ONLY spree_skrill_transactions
 
 
 --
--- Name: spree_state_changes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_state_changes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_state_changes
@@ -3348,7 +3348,7 @@ ALTER TABLE ONLY spree_state_changes
 
 
 --
--- Name: spree_states_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_states_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_states
@@ -3356,7 +3356,7 @@ ALTER TABLE ONLY spree_states
 
 
 --
--- Name: spree_stock_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_stock_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_stock_items
@@ -3364,7 +3364,7 @@ ALTER TABLE ONLY spree_stock_items
 
 
 --
--- Name: spree_stock_locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_stock_locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_stock_locations
@@ -3372,7 +3372,7 @@ ALTER TABLE ONLY spree_stock_locations
 
 
 --
--- Name: spree_stock_movements_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_stock_movements_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_stock_movements
@@ -3380,7 +3380,7 @@ ALTER TABLE ONLY spree_stock_movements
 
 
 --
--- Name: spree_stock_transfers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_stock_transfers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_stock_transfers
@@ -3388,7 +3388,7 @@ ALTER TABLE ONLY spree_stock_transfers
 
 
 --
--- Name: spree_stores_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_stores_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_stores
@@ -3396,7 +3396,7 @@ ALTER TABLE ONLY spree_stores
 
 
 --
--- Name: spree_tax_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_tax_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_tax_categories
@@ -3404,7 +3404,7 @@ ALTER TABLE ONLY spree_tax_categories
 
 
 --
--- Name: spree_tax_rates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_tax_rates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_tax_rates
@@ -3412,7 +3412,7 @@ ALTER TABLE ONLY spree_tax_rates
 
 
 --
--- Name: spree_taxonomies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_taxonomies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_taxonomies
@@ -3420,7 +3420,7 @@ ALTER TABLE ONLY spree_taxonomies
 
 
 --
--- Name: spree_taxons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_taxons_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_taxons
@@ -3428,7 +3428,7 @@ ALTER TABLE ONLY spree_taxons
 
 
 --
--- Name: spree_taxons_promotion_rules_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_taxons_promotion_rules_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_taxons_promotion_rules
@@ -3436,7 +3436,7 @@ ALTER TABLE ONLY spree_taxons_promotion_rules
 
 
 --
--- Name: spree_taxons_prototypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_taxons_prototypes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_taxons_prototypes
@@ -3444,7 +3444,7 @@ ALTER TABLE ONLY spree_taxons_prototypes
 
 
 --
--- Name: spree_tokenized_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_tokenized_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_tokenized_permissions
@@ -3452,7 +3452,7 @@ ALTER TABLE ONLY spree_tokenized_permissions
 
 
 --
--- Name: spree_trackers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_trackers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_trackers
@@ -3460,7 +3460,7 @@ ALTER TABLE ONLY spree_trackers
 
 
 --
--- Name: spree_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_users
@@ -3468,7 +3468,7 @@ ALTER TABLE ONLY spree_users
 
 
 --
--- Name: spree_variants_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_variants_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_variants
@@ -3476,7 +3476,7 @@ ALTER TABLE ONLY spree_variants
 
 
 --
--- Name: spree_zone_members_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_zone_members_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_zone_members
@@ -3484,7 +3484,7 @@ ALTER TABLE ONLY spree_zone_members
 
 
 --
--- Name: spree_zones_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_zones_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY spree_zones
@@ -3492,1134 +3492,1134 @@ ALTER TABLE ONLY spree_zones
 
 
 --
--- Name: email_idx_unique; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: email_idx_unique; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX email_idx_unique ON spree_users USING btree (email);
 
 
 --
--- Name: index_addresses_on_firstname; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_addresses_on_firstname; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_addresses_on_firstname ON spree_addresses USING btree (firstname);
 
 
 --
--- Name: index_addresses_on_lastname; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_addresses_on_lastname; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_addresses_on_lastname ON spree_addresses USING btree (lastname);
 
 
 --
--- Name: index_adjustments_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_adjustments_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_adjustments_on_order_id ON spree_adjustments USING btree (adjustable_id);
 
 
 --
--- Name: index_assets_on_viewable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_assets_on_viewable_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_assets_on_viewable_id ON spree_assets USING btree (viewable_id);
 
 
 --
--- Name: index_assets_on_viewable_type_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_assets_on_viewable_type_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_assets_on_viewable_type_and_type ON spree_assets USING btree (viewable_type, type);
 
 
 --
--- Name: index_friendly_id_slugs_on_slug_and_sluggable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_friendly_id_slugs_on_slug_and_sluggable_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_friendly_id_slugs_on_slug_and_sluggable_type ON friendly_id_slugs USING btree (slug, sluggable_type);
 
 
 --
--- Name: index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope ON friendly_id_slugs USING btree (slug, sluggable_type, scope);
 
 
 --
--- Name: index_friendly_id_slugs_on_sluggable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_friendly_id_slugs_on_sluggable_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_friendly_id_slugs_on_sluggable_id ON friendly_id_slugs USING btree (sluggable_id);
 
 
 --
--- Name: index_friendly_id_slugs_on_sluggable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_friendly_id_slugs_on_sluggable_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_friendly_id_slugs_on_sluggable_type ON friendly_id_slugs USING btree (sluggable_type);
 
 
 --
--- Name: index_inventory_units_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_inventory_units_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_inventory_units_on_order_id ON spree_inventory_units USING btree (order_id);
 
 
 --
--- Name: index_inventory_units_on_shipment_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_inventory_units_on_shipment_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_inventory_units_on_shipment_id ON spree_inventory_units USING btree (shipment_id);
 
 
 --
--- Name: index_inventory_units_on_variant_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_inventory_units_on_variant_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_inventory_units_on_variant_id ON spree_inventory_units USING btree (variant_id);
 
 
 --
--- Name: index_option_values_variants_on_variant_id_and_option_value_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_option_values_variants_on_variant_id_and_option_value_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_option_values_variants_on_variant_id_and_option_value_id ON spree_option_values_variants USING btree (variant_id, option_value_id);
 
 
 --
--- Name: index_product_properties_on_product_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_product_properties_on_product_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_product_properties_on_product_id ON spree_product_properties USING btree (product_id);
 
 
 --
--- Name: index_products_promotion_rules_on_product_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_products_promotion_rules_on_product_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_products_promotion_rules_on_product_id ON spree_products_promotion_rules USING btree (product_id);
 
 
 --
--- Name: index_products_promotion_rules_on_promotion_rule_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_products_promotion_rules_on_promotion_rule_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_products_promotion_rules_on_promotion_rule_id ON spree_products_promotion_rules USING btree (promotion_rule_id);
 
 
 --
--- Name: index_promotion_rules_on_product_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_promotion_rules_on_product_group_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_promotion_rules_on_product_group_id ON spree_promotion_rules USING btree (product_group_id);
 
 
 --
--- Name: index_promotion_rules_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_promotion_rules_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_promotion_rules_on_user_id ON spree_promotion_rules USING btree (user_id);
 
 
 --
--- Name: index_promotion_rules_users_on_promotion_rule_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_promotion_rules_users_on_promotion_rule_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_promotion_rules_users_on_promotion_rule_id ON spree_promotion_rules_users USING btree (promotion_rule_id);
 
 
 --
--- Name: index_promotion_rules_users_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_promotion_rules_users_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_promotion_rules_users_on_user_id ON spree_promotion_rules_users USING btree (user_id);
 
 
 --
--- Name: index_refunds_on_refund_reason_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_refunds_on_refund_reason_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_refunds_on_refund_reason_id ON spree_refunds USING btree (refund_reason_id);
 
 
 --
--- Name: index_return_authorizations_on_return_authorization_reason_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_return_authorizations_on_return_authorization_reason_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_return_authorizations_on_return_authorization_reason_id ON spree_return_authorizations USING btree (return_authorization_reason_id);
 
 
 --
--- Name: index_return_items_on_customer_return_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_return_items_on_customer_return_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_return_items_on_customer_return_id ON spree_return_items USING btree (customer_return_id);
 
 
 --
--- Name: index_shipments_on_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_shipments_on_number; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_shipments_on_number ON spree_shipments USING btree (number);
 
 
 --
--- Name: index_spree_addresses_on_country_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_addresses_on_country_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_addresses_on_country_id ON spree_addresses USING btree (country_id);
 
 
 --
--- Name: index_spree_addresses_on_state_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_addresses_on_state_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_addresses_on_state_id ON spree_addresses USING btree (state_id);
 
 
 --
--- Name: index_spree_adjustments_on_adjustable_id_and_adjustable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_adjustments_on_adjustable_id_and_adjustable_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_adjustments_on_adjustable_id_and_adjustable_type ON spree_adjustments USING btree (adjustable_id, adjustable_type);
 
 
 --
--- Name: index_spree_adjustments_on_eligible; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_adjustments_on_eligible; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_adjustments_on_eligible ON spree_adjustments USING btree (eligible);
 
 
 --
--- Name: index_spree_adjustments_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_adjustments_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_adjustments_on_order_id ON spree_adjustments USING btree (order_id);
 
 
 --
--- Name: index_spree_adjustments_on_source_id_and_source_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_adjustments_on_source_id_and_source_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_adjustments_on_source_id_and_source_type ON spree_adjustments USING btree (source_id, source_type);
 
 
 --
--- Name: index_spree_calculators_on_calculable_id_and_calculable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_calculators_on_calculable_id_and_calculable_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_calculators_on_calculable_id_and_calculable_type ON spree_calculators USING btree (calculable_id, calculable_type);
 
 
 --
--- Name: index_spree_calculators_on_id_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_calculators_on_id_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_calculators_on_id_and_type ON spree_calculators USING btree (id, type);
 
 
 --
--- Name: index_spree_configurations_on_name_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_configurations_on_name_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_configurations_on_name_and_type ON spree_configurations USING btree (name, type);
 
 
 --
--- Name: index_spree_credit_cards_on_address_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_credit_cards_on_address_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_credit_cards_on_address_id ON spree_credit_cards USING btree (address_id);
 
 
 --
--- Name: index_spree_credit_cards_on_payment_method_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_credit_cards_on_payment_method_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_credit_cards_on_payment_method_id ON spree_credit_cards USING btree (payment_method_id);
 
 
 --
--- Name: index_spree_credit_cards_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_credit_cards_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_credit_cards_on_user_id ON spree_credit_cards USING btree (user_id);
 
 
 --
--- Name: index_spree_gateways_on_active; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_gateways_on_active; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_gateways_on_active ON spree_gateways USING btree (active);
 
 
 --
--- Name: index_spree_gateways_on_test_mode; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_gateways_on_test_mode; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_gateways_on_test_mode ON spree_gateways USING btree (test_mode);
 
 
 --
--- Name: index_spree_inventory_units_on_line_item_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_inventory_units_on_line_item_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_inventory_units_on_line_item_id ON spree_inventory_units USING btree (line_item_id);
 
 
 --
--- Name: index_spree_line_items_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_line_items_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_line_items_on_order_id ON spree_line_items USING btree (order_id);
 
 
 --
--- Name: index_spree_line_items_on_tax_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_line_items_on_tax_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_line_items_on_tax_category_id ON spree_line_items USING btree (tax_category_id);
 
 
 --
--- Name: index_spree_line_items_on_variant_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_line_items_on_variant_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_line_items_on_variant_id ON spree_line_items USING btree (variant_id);
 
 
 --
--- Name: index_spree_log_entries_on_source_id_and_source_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_log_entries_on_source_id_and_source_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_log_entries_on_source_id_and_source_type ON spree_log_entries USING btree (source_id, source_type);
 
 
 --
--- Name: index_spree_option_types_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_option_types_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_option_types_on_position ON spree_option_types USING btree ("position");
 
 
 --
--- Name: index_spree_option_values_on_option_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_option_values_on_option_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_option_values_on_option_type_id ON spree_option_values USING btree (option_type_id);
 
 
 --
--- Name: index_spree_option_values_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_option_values_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_option_values_on_position ON spree_option_values USING btree ("position");
 
 
 --
--- Name: index_spree_option_values_variants_on_variant_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_option_values_variants_on_variant_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_option_values_variants_on_variant_id ON spree_option_values_variants USING btree (variant_id);
 
 
 --
--- Name: index_spree_orders_on_approver_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_orders_on_approver_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_orders_on_approver_id ON spree_orders USING btree (approver_id);
 
 
 --
--- Name: index_spree_orders_on_bill_address_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_orders_on_bill_address_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_orders_on_bill_address_id ON spree_orders USING btree (bill_address_id);
 
 
 --
--- Name: index_spree_orders_on_completed_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_orders_on_completed_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_orders_on_completed_at ON spree_orders USING btree (completed_at);
 
 
 --
--- Name: index_spree_orders_on_confirmation_delivered; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_orders_on_confirmation_delivered; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_orders_on_confirmation_delivered ON spree_orders USING btree (confirmation_delivered);
 
 
 --
--- Name: index_spree_orders_on_considered_risky; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_orders_on_considered_risky; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_orders_on_considered_risky ON spree_orders USING btree (considered_risky);
 
 
 --
--- Name: index_spree_orders_on_created_by_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_orders_on_created_by_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_orders_on_created_by_id ON spree_orders USING btree (created_by_id);
 
 
 --
--- Name: index_spree_orders_on_guest_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_orders_on_guest_token; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_orders_on_guest_token ON spree_orders USING btree (guest_token);
 
 
 --
--- Name: index_spree_orders_on_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_orders_on_number; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_orders_on_number ON spree_orders USING btree (number);
 
 
 --
--- Name: index_spree_orders_on_ship_address_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_orders_on_ship_address_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_orders_on_ship_address_id ON spree_orders USING btree (ship_address_id);
 
 
 --
--- Name: index_spree_orders_on_shipping_method_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_orders_on_shipping_method_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_orders_on_shipping_method_id ON spree_orders USING btree (shipping_method_id);
 
 
 --
--- Name: index_spree_orders_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_orders_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_orders_on_user_id ON spree_orders USING btree (user_id);
 
 
 --
--- Name: index_spree_orders_on_user_id_and_created_by_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_orders_on_user_id_and_created_by_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_orders_on_user_id_and_created_by_id ON spree_orders USING btree (user_id, created_by_id);
 
 
 --
--- Name: index_spree_orders_promotions_on_order_id_and_promotion_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_orders_promotions_on_order_id_and_promotion_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_orders_promotions_on_order_id_and_promotion_id ON spree_orders_promotions USING btree (order_id, promotion_id);
 
 
 --
--- Name: index_spree_payment_capture_events_on_payment_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_payment_capture_events_on_payment_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_payment_capture_events_on_payment_id ON spree_payment_capture_events USING btree (payment_id);
 
 
 --
--- Name: index_spree_payment_methods_on_id_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_payment_methods_on_id_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_payment_methods_on_id_and_type ON spree_payment_methods USING btree (id, type);
 
 
 --
--- Name: index_spree_payments_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_payments_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_payments_on_order_id ON spree_payments USING btree (order_id);
 
 
 --
--- Name: index_spree_payments_on_payment_method_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_payments_on_payment_method_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_payments_on_payment_method_id ON spree_payments USING btree (payment_method_id);
 
 
 --
--- Name: index_spree_payments_on_source_id_and_source_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_payments_on_source_id_and_source_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_payments_on_source_id_and_source_type ON spree_payments USING btree (source_id, source_type);
 
 
 --
--- Name: index_spree_preferences_on_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_preferences_on_key; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX index_spree_preferences_on_key ON spree_preferences USING btree (key);
 
 
 --
--- Name: index_spree_prices_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_prices_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_prices_on_deleted_at ON spree_prices USING btree (deleted_at);
 
 
 --
--- Name: index_spree_prices_on_variant_id_and_currency; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_prices_on_variant_id_and_currency; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_prices_on_variant_id_and_currency ON spree_prices USING btree (variant_id, currency);
 
 
 --
--- Name: index_spree_product_option_types_on_option_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_product_option_types_on_option_type_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_product_option_types_on_option_type_id ON spree_product_option_types USING btree (option_type_id);
 
 
 --
--- Name: index_spree_product_option_types_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_product_option_types_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_product_option_types_on_position ON spree_product_option_types USING btree ("position");
 
 
 --
--- Name: index_spree_product_option_types_on_product_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_product_option_types_on_product_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_product_option_types_on_product_id ON spree_product_option_types USING btree (product_id);
 
 
 --
--- Name: index_spree_product_properties_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_product_properties_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_product_properties_on_position ON spree_product_properties USING btree ("position");
 
 
 --
--- Name: index_spree_product_properties_on_property_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_product_properties_on_property_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_product_properties_on_property_id ON spree_product_properties USING btree (property_id);
 
 
 --
--- Name: index_spree_products_on_available_on; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_products_on_available_on; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_products_on_available_on ON spree_products USING btree (available_on);
 
 
 --
--- Name: index_spree_products_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_products_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_products_on_deleted_at ON spree_products USING btree (deleted_at);
 
 
 --
--- Name: index_spree_products_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_products_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_products_on_name ON spree_products USING btree (name);
 
 
 --
--- Name: index_spree_products_on_shipping_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_products_on_shipping_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_products_on_shipping_category_id ON spree_products USING btree (shipping_category_id);
 
 
 --
--- Name: index_spree_products_on_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_products_on_slug; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_products_on_slug ON spree_products USING btree (slug);
 
 
 --
--- Name: index_spree_products_on_tax_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_products_on_tax_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_products_on_tax_category_id ON spree_products USING btree (tax_category_id);
 
 
 --
--- Name: index_spree_products_taxons_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_products_taxons_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_products_taxons_on_position ON spree_products_taxons USING btree ("position");
 
 
 --
--- Name: index_spree_products_taxons_on_product_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_products_taxons_on_product_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_products_taxons_on_product_id ON spree_products_taxons USING btree (product_id);
 
 
 --
--- Name: index_spree_products_taxons_on_taxon_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_products_taxons_on_taxon_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_products_taxons_on_taxon_id ON spree_products_taxons USING btree (taxon_id);
 
 
 --
--- Name: index_spree_promotion_action_line_items_on_promotion_action_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_promotion_action_line_items_on_promotion_action_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_promotion_action_line_items_on_promotion_action_id ON spree_promotion_action_line_items USING btree (promotion_action_id);
 
 
 --
--- Name: index_spree_promotion_action_line_items_on_variant_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_promotion_action_line_items_on_variant_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_promotion_action_line_items_on_variant_id ON spree_promotion_action_line_items USING btree (variant_id);
 
 
 --
--- Name: index_spree_promotion_actions_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_promotion_actions_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_promotion_actions_on_deleted_at ON spree_promotion_actions USING btree (deleted_at);
 
 
 --
--- Name: index_spree_promotion_actions_on_id_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_promotion_actions_on_id_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_promotion_actions_on_id_and_type ON spree_promotion_actions USING btree (id, type);
 
 
 --
--- Name: index_spree_promotion_actions_on_promotion_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_promotion_actions_on_promotion_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_promotion_actions_on_promotion_id ON spree_promotion_actions USING btree (promotion_id);
 
 
 --
--- Name: index_spree_promotion_rules_on_promotion_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_promotion_rules_on_promotion_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_promotion_rules_on_promotion_id ON spree_promotion_rules USING btree (promotion_id);
 
 
 --
--- Name: index_spree_promotions_on_advertise; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_promotions_on_advertise; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_promotions_on_advertise ON spree_promotions USING btree (advertise);
 
 
 --
--- Name: index_spree_promotions_on_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_promotions_on_code; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_promotions_on_code ON spree_promotions USING btree (code);
 
 
 --
--- Name: index_spree_promotions_on_expires_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_promotions_on_expires_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_promotions_on_expires_at ON spree_promotions USING btree (expires_at);
 
 
 --
--- Name: index_spree_promotions_on_id_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_promotions_on_id_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_promotions_on_id_and_type ON spree_promotions USING btree (id, type);
 
 
 --
--- Name: index_spree_promotions_on_promotion_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_promotions_on_promotion_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_promotions_on_promotion_category_id ON spree_promotions USING btree (promotion_category_id);
 
 
 --
--- Name: index_spree_promotions_on_starts_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_promotions_on_starts_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_promotions_on_starts_at ON spree_promotions USING btree (starts_at);
 
 
 --
--- Name: index_spree_reimbursement_types_on_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_reimbursement_types_on_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_reimbursement_types_on_type ON spree_reimbursement_types USING btree (type);
 
 
 --
--- Name: index_spree_reimbursements_on_customer_return_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_reimbursements_on_customer_return_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_reimbursements_on_customer_return_id ON spree_reimbursements USING btree (customer_return_id);
 
 
 --
--- Name: index_spree_reimbursements_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_reimbursements_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_reimbursements_on_order_id ON spree_reimbursements USING btree (order_id);
 
 
 --
--- Name: index_spree_return_items_on_exchange_inventory_unit_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_return_items_on_exchange_inventory_unit_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_return_items_on_exchange_inventory_unit_id ON spree_return_items USING btree (exchange_inventory_unit_id);
 
 
 --
--- Name: index_spree_roles_users_on_role_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_roles_users_on_role_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_roles_users_on_role_id ON spree_roles_users USING btree (role_id);
 
 
 --
--- Name: index_spree_roles_users_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_roles_users_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_roles_users_on_user_id ON spree_roles_users USING btree (user_id);
 
 
 --
--- Name: index_spree_shipments_on_address_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_shipments_on_address_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_shipments_on_address_id ON spree_shipments USING btree (address_id);
 
 
 --
--- Name: index_spree_shipments_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_shipments_on_order_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_shipments_on_order_id ON spree_shipments USING btree (order_id);
 
 
 --
--- Name: index_spree_shipments_on_stock_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_shipments_on_stock_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_shipments_on_stock_location_id ON spree_shipments USING btree (stock_location_id);
 
 
 --
--- Name: index_spree_shipping_method_categories_on_shipping_method_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_shipping_method_categories_on_shipping_method_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_shipping_method_categories_on_shipping_method_id ON spree_shipping_method_categories USING btree (shipping_method_id);
 
 
 --
--- Name: index_spree_shipping_methods_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_shipping_methods_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_shipping_methods_on_deleted_at ON spree_shipping_methods USING btree (deleted_at);
 
 
 --
--- Name: index_spree_shipping_methods_on_tax_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_shipping_methods_on_tax_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_shipping_methods_on_tax_category_id ON spree_shipping_methods USING btree (tax_category_id);
 
 
 --
--- Name: index_spree_shipping_rates_on_selected; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_shipping_rates_on_selected; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_shipping_rates_on_selected ON spree_shipping_rates USING btree (selected);
 
 
 --
--- Name: index_spree_shipping_rates_on_tax_rate_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_shipping_rates_on_tax_rate_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_shipping_rates_on_tax_rate_id ON spree_shipping_rates USING btree (tax_rate_id);
 
 
 --
--- Name: index_spree_state_changes_on_stateful_id_and_stateful_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_state_changes_on_stateful_id_and_stateful_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_state_changes_on_stateful_id_and_stateful_type ON spree_state_changes USING btree (stateful_id, stateful_type);
 
 
 --
--- Name: index_spree_state_changes_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_state_changes_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_state_changes_on_user_id ON spree_state_changes USING btree (user_id);
 
 
 --
--- Name: index_spree_states_on_country_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_states_on_country_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_states_on_country_id ON spree_states USING btree (country_id);
 
 
 --
--- Name: index_spree_stock_items_on_backorderable; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stock_items_on_backorderable; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stock_items_on_backorderable ON spree_stock_items USING btree (backorderable);
 
 
 --
--- Name: index_spree_stock_items_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stock_items_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stock_items_on_deleted_at ON spree_stock_items USING btree (deleted_at);
 
 
 --
--- Name: index_spree_stock_items_on_stock_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stock_items_on_stock_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stock_items_on_stock_location_id ON spree_stock_items USING btree (stock_location_id);
 
 
 --
--- Name: index_spree_stock_locations_on_active; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stock_locations_on_active; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stock_locations_on_active ON spree_stock_locations USING btree (active);
 
 
 --
--- Name: index_spree_stock_locations_on_backorderable_default; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stock_locations_on_backorderable_default; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stock_locations_on_backorderable_default ON spree_stock_locations USING btree (backorderable_default);
 
 
 --
--- Name: index_spree_stock_locations_on_country_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stock_locations_on_country_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stock_locations_on_country_id ON spree_stock_locations USING btree (country_id);
 
 
 --
--- Name: index_spree_stock_locations_on_propagate_all_variants; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stock_locations_on_propagate_all_variants; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stock_locations_on_propagate_all_variants ON spree_stock_locations USING btree (propagate_all_variants);
 
 
 --
--- Name: index_spree_stock_locations_on_state_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stock_locations_on_state_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stock_locations_on_state_id ON spree_stock_locations USING btree (state_id);
 
 
 --
--- Name: index_spree_stock_movements_on_stock_item_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stock_movements_on_stock_item_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stock_movements_on_stock_item_id ON spree_stock_movements USING btree (stock_item_id);
 
 
 --
--- Name: index_spree_stock_transfers_on_destination_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stock_transfers_on_destination_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stock_transfers_on_destination_location_id ON spree_stock_transfers USING btree (destination_location_id);
 
 
 --
--- Name: index_spree_stock_transfers_on_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stock_transfers_on_number; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stock_transfers_on_number ON spree_stock_transfers USING btree (number);
 
 
 --
--- Name: index_spree_stock_transfers_on_source_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stock_transfers_on_source_location_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stock_transfers_on_source_location_id ON spree_stock_transfers USING btree (source_location_id);
 
 
 --
--- Name: index_spree_stores_on_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stores_on_code; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stores_on_code ON spree_stores USING btree (code);
 
 
 --
--- Name: index_spree_stores_on_default; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stores_on_default; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stores_on_default ON spree_stores USING btree ("default");
 
 
 --
--- Name: index_spree_stores_on_url; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_stores_on_url; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_stores_on_url ON spree_stores USING btree (url);
 
 
 --
--- Name: index_spree_tax_categories_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_tax_categories_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_tax_categories_on_deleted_at ON spree_tax_categories USING btree (deleted_at);
 
 
 --
--- Name: index_spree_tax_categories_on_is_default; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_tax_categories_on_is_default; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_tax_categories_on_is_default ON spree_tax_categories USING btree (is_default);
 
 
 --
--- Name: index_spree_tax_rates_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_tax_rates_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_tax_rates_on_deleted_at ON spree_tax_rates USING btree (deleted_at);
 
 
 --
--- Name: index_spree_tax_rates_on_included_in_price; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_tax_rates_on_included_in_price; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_tax_rates_on_included_in_price ON spree_tax_rates USING btree (included_in_price);
 
 
 --
--- Name: index_spree_tax_rates_on_show_rate_in_label; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_tax_rates_on_show_rate_in_label; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_tax_rates_on_show_rate_in_label ON spree_tax_rates USING btree (show_rate_in_label);
 
 
 --
--- Name: index_spree_tax_rates_on_tax_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_tax_rates_on_tax_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_tax_rates_on_tax_category_id ON spree_tax_rates USING btree (tax_category_id);
 
 
 --
--- Name: index_spree_tax_rates_on_zone_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_tax_rates_on_zone_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_tax_rates_on_zone_id ON spree_tax_rates USING btree (zone_id);
 
 
 --
--- Name: index_spree_taxonomies_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_taxonomies_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_taxonomies_on_position ON spree_taxonomies USING btree ("position");
 
 
 --
--- Name: index_spree_taxons_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_taxons_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_taxons_on_position ON spree_taxons USING btree ("position");
 
 
 --
--- Name: index_spree_taxons_promotion_rules_on_promotion_rule_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_taxons_promotion_rules_on_promotion_rule_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_taxons_promotion_rules_on_promotion_rule_id ON spree_taxons_promotion_rules USING btree (promotion_rule_id);
 
 
 --
--- Name: index_spree_taxons_promotion_rules_on_taxon_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_taxons_promotion_rules_on_taxon_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_taxons_promotion_rules_on_taxon_id ON spree_taxons_promotion_rules USING btree (taxon_id);
 
 
 --
--- Name: index_spree_taxons_prototypes_on_prototype_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_taxons_prototypes_on_prototype_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_taxons_prototypes_on_prototype_id ON spree_taxons_prototypes USING btree (prototype_id);
 
 
 --
--- Name: index_spree_taxons_prototypes_on_taxon_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_taxons_prototypes_on_taxon_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_taxons_prototypes_on_taxon_id ON spree_taxons_prototypes USING btree (taxon_id);
 
 
 --
--- Name: index_spree_trackers_on_active; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_trackers_on_active; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_trackers_on_active ON spree_trackers USING btree (active);
 
 
 --
--- Name: index_spree_users_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_users_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_users_on_deleted_at ON spree_users USING btree (deleted_at);
 
 
 --
--- Name: index_spree_users_on_spree_api_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_users_on_spree_api_key; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_users_on_spree_api_key ON spree_users USING btree (spree_api_key);
 
 
 --
--- Name: index_spree_variants_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_variants_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_variants_on_deleted_at ON spree_variants USING btree (deleted_at);
 
 
 --
--- Name: index_spree_variants_on_is_master; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_variants_on_is_master; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_variants_on_is_master ON spree_variants USING btree (is_master);
 
 
 --
--- Name: index_spree_variants_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_variants_on_position; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_variants_on_position ON spree_variants USING btree ("position");
 
 
 --
--- Name: index_spree_variants_on_product_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_variants_on_product_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_variants_on_product_id ON spree_variants USING btree (product_id);
 
 
 --
--- Name: index_spree_variants_on_sku; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_variants_on_sku; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_variants_on_sku ON spree_variants USING btree (sku);
 
 
 --
--- Name: index_spree_variants_on_tax_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_variants_on_tax_category_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_variants_on_tax_category_id ON spree_variants USING btree (tax_category_id);
 
 
 --
--- Name: index_spree_variants_on_track_inventory; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_variants_on_track_inventory; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_variants_on_track_inventory ON spree_variants USING btree (track_inventory);
 
 
 --
--- Name: index_spree_zone_members_on_zone_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_zone_members_on_zone_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_zone_members_on_zone_id ON spree_zone_members USING btree (zone_id);
 
 
 --
--- Name: index_spree_zone_members_on_zoneable_id_and_zoneable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_zone_members_on_zoneable_id_and_zoneable_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_zone_members_on_zoneable_id_and_zoneable_type ON spree_zone_members USING btree (zoneable_id, zoneable_type);
 
 
 --
--- Name: index_spree_zones_on_default_tax; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_spree_zones_on_default_tax; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_spree_zones_on_default_tax ON spree_zones USING btree (default_tax);
 
 
 --
--- Name: index_taxons_on_parent_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_taxons_on_parent_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_taxons_on_parent_id ON spree_taxons USING btree (parent_id);
 
 
 --
--- Name: index_taxons_on_permalink; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_taxons_on_permalink; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_taxons_on_permalink ON spree_taxons USING btree (permalink);
 
 
 --
--- Name: index_taxons_on_taxonomy_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_taxons_on_taxonomy_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_taxons_on_taxonomy_id ON spree_taxons USING btree (taxonomy_id);
 
 
 --
--- Name: index_tokenized_name_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_tokenized_name_and_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_tokenized_name_and_type ON spree_tokenized_permissions USING btree (permissable_id, permissable_type);
 
 
 --
--- Name: permalink_idx_unique; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: permalink_idx_unique; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX permalink_idx_unique ON spree_products USING btree (slug);
 
 
 --
--- Name: spree_shipping_rates_join_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: spree_shipping_rates_join_index; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX spree_shipping_rates_join_index ON spree_shipping_rates USING btree (shipment_id, shipping_method_id);
 
 
 --
--- Name: stock_item_by_loc_and_var_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: stock_item_by_loc_and_var_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX stock_item_by_loc_and_var_id ON spree_stock_items USING btree (stock_location_id, variant_id);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
 
 
 --
--- Name: unique_spree_shipping_method_categories; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: unique_spree_shipping_method_categories; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE UNIQUE INDEX unique_spree_shipping_method_categories ON spree_shipping_method_categories USING btree (shipping_category_id, shipping_method_id);
@@ -4630,418 +4630,3 @@ CREATE UNIQUE INDEX unique_spree_shipping_method_categories ON spree_shipping_me
 --
 
 SET search_path TO "$user",public;
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233939');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233940');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233941');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233942');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233943');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233944');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233945');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233946');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233947');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233948');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233949');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233950');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233951');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233952');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233953');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233954');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233955');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233956');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233957');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233958');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233959');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233960');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233961');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233962');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233963');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233964');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233965');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233966');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233967');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233968');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233969');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233970');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233971');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233972');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233973');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233974');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233975');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233976');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233977');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233978');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233979');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233980');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233981');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233982');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233983');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233984');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233985');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233986');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233987');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233988');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233989');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233990');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233991');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233992');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233993');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233994');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233995');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233996');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233997');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233998');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126233999');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234000');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234001');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234002');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234003');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234004');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234005');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234006');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234007');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234008');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234009');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234010');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234011');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234012');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234013');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234014');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234015');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234016');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234017');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234018');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234019');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234020');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234021');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234022');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234023');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234024');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234025');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234026');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234027');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234028');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234029');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234030');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234031');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234032');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234033');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234034');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234035');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234036');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234037');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234038');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234039');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234040');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234041');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234042');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234043');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234044');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234045');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234046');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234047');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234048');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234049');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234050');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234051');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234052');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234053');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234054');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234055');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234056');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234057');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234058');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234059');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234060');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234061');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234062');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234063');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234064');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234065');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234066');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234067');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234068');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234069');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234070');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234071');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234072');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234073');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234074');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234075');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234076');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234077');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234078');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234079');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234080');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234081');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234082');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234083');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234084');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234085');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234086');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234087');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234088');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234089');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234090');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234091');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234092');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234093');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234094');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234095');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234096');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234097');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234098');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234099');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234100');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234101');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234102');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234103');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234104');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234105');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234106');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234107');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234108');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234109');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234110');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234111');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234112');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234113');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234114');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234115');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234116');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234117');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234118');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234119');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234120');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234121');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234122');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234123');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234124');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234125');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234126');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234127');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234128');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234129');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234130');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234131');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234132');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234133');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234134');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234135');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234136');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234137');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234138');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234139');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234140');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234141');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234142');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234143');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234144');
-
-INSERT INTO schema_migrations (version) VALUES ('20150126234145');
-
