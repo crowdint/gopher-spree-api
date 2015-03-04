@@ -11,7 +11,7 @@ Experimental implementation of the Spree API on steroids.
 
 First of all install [gpm](https://github.com/pote/gpm),
 [gvp](https://github.com/pote/gvp) and
-[gpm-local](https://github.com/thecnosophos/gpm-local):
+[gpm-local](https://github.com/technosophos/gpm-local):
 
     $ brew install gpm
     $ brew install gvp
