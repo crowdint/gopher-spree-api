@@ -3,6 +3,7 @@ package domain
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -36,6 +37,42 @@ type Product struct {
 	UpdatedAt     time.Time `json:"-"`
 	Promotionable bool      `json:"-"`
 	MetaTitle     string    `json:"-"`
+}
+
+type PermittedProductParams struct {
+	Id                 int64     `json:"id"`
+	Name               string    `json:"name"`
+	Description        string    `json:"description"`
+	Price              string    `json:"price"`
+	AvailableOn        time.Time `json:"available_on"`
+	MetaDescription    string    `json:"meta_description"`
+	MetaKeyWords       string    `json:"meta_keywords"`
+	ShippingCategoryId int64     `json:"shipping_category_id"`
+	ShippingCategory   string    `json:"shipping_category"`
+}
+
+type ProductParams struct {
+	PermittedProductParams *PermittedProductParams `json:"product"`
+}
+
+func NewProductFromPermittedParams(productParams *ProductParams) *Product {
+	permittedProductParams := productParams.PermittedProductParams
+	if permittedProductParams == nil {
+		return &Product{}
+	}
+
+	return &Product{
+		Id:                 permittedProductParams.Id,
+		Name:               permittedProductParams.Name,
+		Description:        permittedProductParams.Description,
+		Price:              permittedProductParams.Price,
+		AvailableOn:        permittedProductParams.GetAvailableOn(),
+		Slug:               strings.Trim(permittedProductParams.Name, " "),
+		MetaDescription:    permittedProductParams.MetaDescription,
+		MetaKeyWords:       permittedProductParams.MetaKeyWords,
+		ShippingCategoryId: permittedProductParams.ShippingCategoryId,
+		Promotionable:      true,
+	}
 }
 
 func (this Product) TableName() string {
@@ -84,7 +121,7 @@ func (this *Product) IsValid() bool {
 	return productErrors.IsEmpty()
 }
 
-func (this *Product) SlugCandidates()[]interface{} {
+func (this *Product) SlugCandidates() []interface{} {
 	return []interface{}{
 		this.Name,
 		[]interface{}{this.Name, this.Master.Sku},
@@ -101,4 +138,11 @@ func (this *Product) GetErrors() *ValidatorErrors {
 	}
 
 	return productErrors
+}
+
+func (this *PermittedProductParams) GetAvailableOn() time.Time {
+	if this.AvailableOn.IsZero() {
+		this.AvailableOn = time.Now()
+	}
+	return this.AvailableOn
 }

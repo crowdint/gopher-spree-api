@@ -93,3 +93,40 @@ func TestProductValidator(t *testing.T) {
 		t.Errorf("Product should not have errors, but has %d", productErrors.Size())
 	}
 }
+
+func TestNewProductFromPermittedParams(t *testing.T) {
+	permittedProductParams := &PermittedProductParams{
+		Name:               "Test Product",
+		Description:        "Test Description",
+		Price:              "12.40",
+		ShippingCategoryId: 3,
+	}
+
+	product := NewProductFromPermittedParams(&ProductParams{permittedProductParams})
+
+	if product.Name != permittedProductParams.Name {
+		t.Errorf("Product Name should be %s, but was %s", permittedProductParams.Name, product.Name)
+	}
+
+	if product.Description != permittedProductParams.Description {
+		t.Errorf("Product Description should be %s, but was %s", permittedProductParams.Description, product.Description)
+	}
+
+	if product.Price != permittedProductParams.Price {
+		t.Errorf("Product Price should be %s, but was %s", permittedProductParams.Price, product.Price)
+	}
+}
+
+func TestPermittedParams_GetAvailableOn(t *testing.T) {
+	permittedProductParams := &PermittedProductParams{
+		Name:               "Test Product",
+		Description:        "Test Description",
+		Price:              "12.40",
+		ShippingCategoryId: 3,
+	}
+
+	permittedProductParams.GetAvailableOn()
+	if permittedProductParams.AvailableOn.IsZero() {
+		t.Error("Available On time should not be zero")
+	}
+}
