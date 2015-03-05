@@ -80,6 +80,10 @@ func (this *TaxonInteractor) GetShowResponse(params ResponseParameters) (interfa
 	return taxonModelSlice[0], nil
 }
 
+func (this *TaxonInteractor) GetCreateResponse(params ResponseParameters) (interface{}, interface{}, error) {
+	return nil, nil, nil
+}
+
 func (this *TaxonInteractor) toTaxonTree(nodes []*domain.Taxon) {
 	for _, node := range nodes {
 		for _, childNode := range nodes {

@@ -111,6 +111,10 @@ func (this *OrderInteractor) GetShowResponse(params ResponseParameters) (interfa
 	return nil, nil
 }
 
+func (this *OrderInteractor) GetCreateResponse(params ResponseParameters) (interface{}, interface{}, error) {
+	return nil, nil, nil
+}
+
 func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, error) {
 	queryData, err := params.GetQuery()
 	if err != nil {
