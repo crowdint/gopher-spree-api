@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+var (
+	productErrors = &ValidatorErrors{}
+)
+
 type Product struct {
 	Id                 int64             `json:"id"`
 	Name               string            `json:"name"`
@@ -58,6 +62,28 @@ func (this *Product) Unmarshal(data []byte) error {
 	return json.Unmarshal(data, this)
 }
 
+func (this *Product) IsValid() bool {
+	productErrors = &ValidatorErrors{}
+
+	if this.Name == "" {
+		productErrors.Add("name", ErrNotBlank.Error())
+	}
+
+	if this.Price == "" {
+		productErrors.Add("price", ErrNotBlank.Error())
+	}
+
+	if this.ShippingCategoryId == 0 {
+		productErrors.Add("shipping_category_id", ErrNotBlank.Error())
+	}
+
+	if len(this.Slug) < 3 {
+		productErrors.Add("slug", ErrTooShort(3).Error())
+	}
+
+	return productErrors.IsEmpty()
+}
+
 func (this *Product) SlugCandidates()[]interface{} {
 	return []interface{}{
 		this.Name,
@@ -67,4 +93,12 @@ func (this *Product) SlugCandidates()[]interface{} {
 
 func (this *Product) SetSlug(slug string) {
 	this.Slug = slug
+}
+
+func (this *Product) GetErrors() *ValidatorErrors {
+	if productErrors.IsEmpty() {
+		return nil
+	}
+
+	return productErrors
 }

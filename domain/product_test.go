@@ -41,3 +41,55 @@ func TestProductStructure(t *testing.T) {
 
 	AssertEqualJson(t, product, expected)
 }
+
+func TestProductValidator(t *testing.T) {
+	p := &Product{}
+
+	if p.IsValid() {
+		t.Error("Product should be invalid")
+	}
+
+	if p.GetErrors().Size() != 4 {
+		t.Errorf("Product should have 4 errors, but has %d", p.GetErrors().Size())
+	}
+
+	p.Name = "Test Product"
+
+	if p.IsValid() {
+		t.Error("Product should be invalid")
+	}
+
+	if p.GetErrors().Size() != 3 {
+		t.Errorf("Product should have 3 errors, but has %d", p.GetErrors().Size())
+	}
+
+	p.Price = "3"
+
+	if p.IsValid() {
+		t.Error("Product should be invalid")
+	}
+
+	if p.GetErrors().Size() != 2 {
+		t.Errorf("Product should have 2 errors, but has %d", p.GetErrors().Size())
+	}
+
+	p.Slug = "test-product"
+
+	if p.IsValid() {
+		t.Error("Product should be invalid")
+	}
+
+	if p.GetErrors().Size() != 1 {
+		t.Errorf("Product should have 1 error, but has %d", p.GetErrors().Size())
+	}
+
+	p.ShippingCategoryId = 3
+
+	if !p.IsValid() {
+		t.Error("Product should be valid")
+	}
+
+	if productErrors.Size() != 0 {
+		t.Errorf("Product should not have errors, but has %d", productErrors.Size())
+	}
+}
