@@ -1,11 +1,16 @@
 package json
 
-import "github.com/crowdint/gopher-spree-api/interfaces/repositories"
+import (
+	"encoding/json"
+
+	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+)
 
 type DummyResponseParams struct {
-	currentPage  int
-	perPage      int
-	gransakQuery string
+	currentPage          int
+	perPage              int
+	gransakQuery         string
+	permittedParamsBytes []byte
 }
 
 func (this *DummyResponseParams) GetIntParam(key string) (int, error) {
@@ -26,15 +31,16 @@ func (this *DummyResponseParams) GetQuery() (*RequestQuery, error) {
 	return &RequestQuery{}, nil
 }
 
-func (this *DummyResponseParams) GetPermittedParams(key string, obj interface{}) bool {
-	return false
+func (this *DummyResponseParams) BindPermittedParams(key string, obj interface{}) bool {
+	return json.Unmarshal(this.permittedParamsBytes, obj) == nil
 }
 
-func newDummyResponseParams(currentPage, perPage int, gransakQuery string) *DummyResponseParams {
+func newDummyResponseParams(currentPage, perPage int, gransakQuery string, permittedParamsBytes []byte) *DummyResponseParams {
 	return &DummyResponseParams{
-		currentPage:  currentPage,
-		perPage:      perPage,
-		gransakQuery: gransakQuery,
+		currentPage:          currentPage,
+		perPage:              perPage,
+		gransakQuery:         gransakQuery,
+		permittedParamsBytes: permittedParamsBytes,
 	}
 }
 

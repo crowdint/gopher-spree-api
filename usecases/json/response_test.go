@@ -18,7 +18,7 @@ func TestResponseInteractor(t *testing.T) {
 
 	interactor := SpreeResponseFetcher
 
-	params := newDummyResponseParams(2, 0, "")
+	params := newDummyResponseParams(2, 0, "", nil)
 
 	response, err := interactor.GetResponse(productInteractor, params)
 	if err != nil {

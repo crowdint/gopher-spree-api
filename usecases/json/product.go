@@ -133,6 +133,38 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 	return productJsonSlice[0], nil
 }
 
+func (this *ProductInteractor) GetCreateResponse(params ResponseParameters) (interface{}, interface{}, error) {
+	productParams := &domain.ProductParams{}
+	ok := params.BindPermittedParams("product", productParams)
+
+	if !ok {
+		return struct{}{}, nil, errors.New("Error occurred while parsing request parameters.")
+	}
+
+	this.setUpShippingCategory(productParams)
+	product := domain.NewProductFromPermittedParams(productParams)
+
+	if !product.IsValid() {
+		return struct{}{}, product.GetErrors(), errors.New("Invalid resource. Please fix errors and try again.")
+	}
+
+	if err := this.BaseRepository.CreateWithSlug(product); err != nil {
+		return struct{}{}, nil, err
+	}
+
+	return product, nil, nil
+}
+
+func (this *ProductInteractor) setUpShippingCategory(productParams *domain.ProductParams) {
+	if category := productParams.PermittedProductParams.ShippingCategory; category != "" {
+		shippingCategory := &domain.ShippingCategory{}
+		err := this.BaseRepository.FirstOrCreate(shippingCategory, map[string]interface{}{"name": category})
+		if err == nil {
+			productParams.PermittedProductParams.ShippingCategoryId = shippingCategory.Id
+		}
+	}
+}
+
 func (this *ProductInteractor) transformToJsonResponse(productModelSlice []*domain.Product) ([]*domain.Product, error) {
 	productIds := this.getIdSlice(productModelSlice)
 
