@@ -57,3 +57,14 @@ func (this *Product) Marshal() ([]byte, error) {
 func (this *Product) Unmarshal(data []byte) error {
 	return json.Unmarshal(data, this)
 }
+
+func (this *Product) SlugCandidates()[]interface{} {
+	return []interface{}{
+		this.Name,
+		[]interface{}{this.Name, this.Master.Sku},
+	}
+}
+
+func (this *Product) SetSlug(slug string) {
+	this.Slug = slug
+}

@@ -14,6 +14,8 @@ const (
 
 	MEMCACHED_URL = "MEMCACHED_URL"
 
+	SLUGGED_SEPARATOR = "SLUGGED_SEPARATOR"
+
 	SPREE_URL = "SPREE_URL"
 	SPREE_NS  = "SPREE_NAMESPACE"
 
@@ -37,6 +39,9 @@ var defaultSettings = map[string]string{
 
 	// Memcached Settings
 	MEMCACHED_URL: getEnvOrDefault(MEMCACHED_URL, "127.0.0.1:11211"),
+
+	// Slugged Settings
+	SLUGGED_SEPARATOR: getEnvOrDefault(SLUGGED_SEPARATOR, "-"),
 
 	// Spree Settings
 	SPREE_URL: getEnvOrDefault(SPREE_URL, "http://localhost:5100"),

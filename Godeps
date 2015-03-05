@@ -10,4 +10,5 @@ github.com/yvasiyarov/gorelic              v0.0.6
 github.com/yvasiyarov/go-metrics           c25f46c4b94079672242ec48a545e7ca9ebe3aec
 github.com/yvasiyarov/newrelic_platform_go 13d5af9721f4455a501db543c93827447089bab3
 github.com/bradfitz/gomemcache/memcache    72a68649ba712ee7c4b5b4a943a626bcd7d90eb8
+github.com/nu7hatch/gouuid                 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
 github.com/ddollar/forego                  f0fe9777cd8728b79cb167835667a9c3919177cb
