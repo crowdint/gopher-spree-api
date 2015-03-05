@@ -26,6 +26,10 @@ func (this *DummyResponseParams) GetQuery() (*RequestQuery, error) {
 	return &RequestQuery{}, nil
 }
 
+func (this *DummyResponseParams) GetPermittedParams(key string, obj interface{}) bool {
+	return false
+}
+
 func newDummyResponseParams(currentPage, perPage int, gransakQuery string) *DummyResponseParams {
 	return &DummyResponseParams{
 		currentPage:  currentPage,

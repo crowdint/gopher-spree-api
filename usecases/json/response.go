@@ -30,6 +30,7 @@ type ResponseParameters interface {
 	GetIntParam(string) (int, error)
 	GetStrParam(string) (string, error)
 	GetQuery() (*RequestQuery, error)
+	GetPermittedParams(string, interface{}) bool
 }
 
 type ContentInteractor interface {
