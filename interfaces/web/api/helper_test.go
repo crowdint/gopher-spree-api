@@ -1,17 +1,19 @@
 package api
 
 import (
+	"io"
 	"net/http"
 	"net/http/httptest"
 
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 )
 
-func PerformRequest(r http.Handler, method, path string) *httptest.ResponseRecorder {
-	req, _ := http.NewRequest(method, path, nil)
-	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
-	return w
+func PerformRequest(r http.Handler, method, path string, body io.Reader) *httptest.ResponseRecorder {
+	req, _ := http.NewRequest(method, path, body)
+	req.Header.Set("Content-Type", "application/json")
+	rec := httptest.NewRecorder()
+	r.ServeHTTP(rec, req)
+	return rec
 }
 
 func EqualFromJSONString(expected *string, got string) bool {
