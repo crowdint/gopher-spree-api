@@ -142,9 +142,9 @@ func findUserBySpreeApiKey(c *gin.Context, dbRepo *repositories.DbRepository, us
 func isPublicAction(req *http.Request) (isPublic bool) {
 	path := req.URL.Path
 
-	for pattern, public := range routes() {
-		match, _ := regexp.MatchString(pattern, path)
-		if match && public {
+	for _, route := range routes() {
+		match, _ := regexp.MatchString(route.RegexPattern, path)
+		if match && route.IsPublic {
 			isPublic = true
 			break
 		}

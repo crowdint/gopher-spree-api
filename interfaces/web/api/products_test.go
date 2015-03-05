@@ -1,7 +1,10 @@
 package api
 
 import (
+	"bytes"
+	"io/ioutil"
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/gin-gonic/gin"
@@ -58,5 +61,37 @@ func TestProductsShow(t *testing.T) {
 
 	if w.Code != http.StatusOK {
 		t.Errorf("Status code should be %d, but was %d", http.StatusOK, w.Code)
+	}
+}
+
+func TestProductsCreate(t *testing.T) {
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	defer ResetDB()
+
+	file, err := os.Open("../../../test/data/products/with_shipping_category.json")
+	if err != nil {
+		t.Error("An error occured while trying to open JSON file: ", err.Error())
+	}
+
+	productParams, err := ioutil.ReadAll(file)
+	if err != nil {
+		t.Error("An error occured: ", err.Error())
+	}
+
+	r := gin.New()
+
+	method := "POST"
+	path := "/api/products/"
+
+	r.POST(path, func(c *gin.Context) {
+		ProductsCreate(c)
+	})
+	w := PerformRequest(r, method, path, bytes.NewBuffer(productParams))
+
+	if w.Code != http.StatusCreated {
+		t.Errorf("Status code should be %d, but was %d -> %s", http.StatusCreated, w.Code, w.Body.String())
 	}
 }

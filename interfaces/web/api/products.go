@@ -14,6 +14,8 @@ func init() {
 		products.GET("", ProductsIndex)
 		products.GET("/", ProductsIndex)
 		products.GET("/:product_id", ProductsShow)
+		products.POST("", ProductsCreate)
+		products.POST("/", ProductsCreate)
 	}
 }
 
@@ -45,5 +47,18 @@ func productResponse(c *gin.Context, params *RequestParameters) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(200, products)
+	}
+}
+
+func ProductsCreate(c *gin.Context) {
+	params := NewRequestParameters(c)
+	product, productError, err := json.SpreeResponseFetcher.GetCreateResponse(json.NewProductInteractor(), params)
+
+	if err != nil && productError == nil {
+		c.JSON(422, gin.H{"error": err.Error()})
+	} else if productError != nil {
+		c.JSON(422, gin.H{"error": err.Error(), "errors": productError})
+	} else {
+		c.JSON(201, product)
 	}
 }

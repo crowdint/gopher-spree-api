@@ -9,7 +9,33 @@ import (
 var (
 	api    *gin.RouterGroup
 	router *gin.Engine
+
+	declaredRoutes = []Route{
+		// Products
+		Route{"GET", `^` + namespace() + `/api/products(/?)$`, true},   // Index
+		Route{"GET", `^` + namespace() + `/api/products/\d+$`, true},   // Show
+		Route{"POST", `^` + namespace() + `/api/products(/?)$`, false}, // Create
+
+		// Orders
+		Route{"GET", `^` + namespace() + `/api/orders(/?)$`, false}, // Index
+		Route{"GET", `^` + namespace() + `/api/orders/\w+$`, false}, // Show
+
+		// Taxonomies
+		Route{"GET", `^` + namespace() + `/api/taxonomies(/?)$`, false}, // Index
+
+		// Taxons
+		Route{"GET", `^` + namespace() + `/api/taxons(/?)$`, false}, // Index
+
+		// Search
+		Route{"GET", `^` + namespace() + `/api/search/products(/?)$`, false}, // Search
+	}
 )
+
+type Route struct {
+	Method       string
+	RegexPattern string
+	IsPublic     bool
+}
 
 func init() {
 	Router()
@@ -45,14 +71,6 @@ func Router() *gin.Engine {
 	return router
 }
 
-func routes() map[string]bool {
-	return map[string]bool{
-		`^` + namespace() + `/api/products(/?)$`:        true,
-		`^` + namespace() + `/api/products/\d+$`:        true,
-		`^` + namespace() + `/api/orders(/?)$`:          false,
-		`^` + namespace() + `/api/orders/\w+$`:          false,
-		`^` + namespace() + `/api/taxonomies(/?)$`:      false,
-		`^` + namespace() + `/api/taxons(/?)$`:          false,
-		`^` + namespace() + `/api/search/products(/?)$`: false,
-	}
+func routes() []Route {
+	return declaredRoutes
 }
