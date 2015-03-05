@@ -8,6 +8,7 @@ import (
 	_ "github.com/lib/pq"
 
 	"github.com/crowdint/gopher-spree-api/configs"
+	"github.com/crowdint/gopher-spree-api/slugged"
 	gsk "github.com/crowdint/gransak"
 )
 
@@ -122,6 +123,30 @@ func (this *DbRepository) FindBy(model interface{}, options map[string]interface
 	dbHandler := this.dbHandler
 	dbHandler = notIfPresent(dbHandler, options)
 	return dbHandler.First(model, where).Error
+}
+
+func (this *DbRepository) FirstOrCreate(model interface{}, where map[string]interface{}) error {
+	dbHandler := this.dbHandler
+	return dbHandler.FirstOrCreate(model, where).Error
+}
+
+func (this *DbRepository) Create(model interface{}) error {
+	dbHandler := this.dbHandler
+	return dbHandler.Create(model).Error
+}
+
+func (this *DbRepository) CreateWithSlug(model interface{}) (err error) {
+	sluggeable := model.(slugged.Sluggeable)
+	slugs := slugged.GenerateSlugs(sluggeable, configs.Get(configs.SLUGGED_SEPARATOR))
+
+	for _, slug := range slugs {
+		sluggeable.SetSlug(slug)
+		if err = this.Create(model); err == nil {
+			return
+		}
+	}
+
+	return
 }
 
 func orderByIfPresent(dbHandler *gorm.DB, options map[string]interface{}) *gorm.DB {

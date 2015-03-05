@@ -85,7 +85,7 @@ func TestFindBy(t *testing.T) {
 	err := r.FindBy(p, nil, nil)
 
 	if err != nil {
-		t.Errorf("DB.All %s", err)
+		t.Errorf("DB.FindBy %s", err.Error())
 	}
 }
 
@@ -103,7 +103,7 @@ func TestFindByWithConditions(t *testing.T) {
 	err := r.FindBy(p, nil, map[string]interface{}{"id": 1})
 
 	if err != nil {
-		t.Errorf("DB.All %s", err)
+		t.Errorf("DB.FindBy %s", err.Error())
 	}
 }
 
@@ -123,6 +123,71 @@ func TestFindByWithOptions(t *testing.T) {
 	}, nil)
 
 	if err != nil {
-		t.Errorf("DB.All %s", err)
+		t.Errorf("DB.FindBy %s", err.Error())
+	}
+}
+
+func TestCreate(t *testing.T) {
+	InitDB(true)
+
+	defer ResetDB()
+
+	r := NewDatabaseRepository()
+
+	p := &domain.Product{Name: "Test Product"}
+
+	err := r.Create(p)
+	if err != nil {
+		t.Errorf("DB.Create %s", err.Error())
+	}
+
+	if p.Id == 0 {
+		t.Errorf("The product was not created in the DB.")
+	}
+}
+
+func TestFirstOrCreate(t *testing.T) {
+	InitDB(true)
+
+	defer ResetDB()
+
+	r := NewDatabaseRepository()
+
+	p := &domain.Product{}
+
+	err := r.FirstOrCreate(p, map[string]interface{}{"name": "Test Product"})
+	if err != nil {
+		t.Errorf("DB.FirstOrCreate %s", err.Error())
+	}
+
+	if p.Id == 0 {
+		t.Errorf("The product was not created in the DB.")
+	}
+
+	if p.Name != "Test Product" {
+		t.Errorf("The product's name should be Test Product, but was %s.", p.Name)
+	}
+}
+
+func TestCreateWithSlug(t *testing.T) {
+	InitDB(true)
+
+	defer ResetDB()
+
+	r := NewDatabaseRepository()
+
+	p := &domain.Product{Name: "Test Product"}
+
+	err := r.CreateWithSlug(p)
+	if err != nil {
+		t.Errorf("DB.CreateWithSlug %s", err.Error())
+	}
+
+	if p.Id == 0 {
+		t.Errorf("The product was not created in the DB.")
+	}
+
+	if p.Slug == "" {
+		t.Errorf("The product slug was not set correctly.")
 	}
 }
