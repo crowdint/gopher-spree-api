@@ -55,16 +55,16 @@ func TestOptionValueRepo(t *testing.T) {
 }
 
 func TestOptionValueRepository_AllByVariantAssociation(t *testing.T) {
-	err := InitDB(false)
+	err := InitDB(true)
 
 	defer ResetDB()
 
 	optionValue := &domain.OptionValue{
-		Id: 10,
+		Id: 11,
 	}
 
 	Spree_db.Create(optionValue)
-	Spree_db.Exec("INSERT INTO spree_option_values_variants(option_value_id, variant_id) values(10, 17)")
+	Spree_db.Exec("INSERT INTO spree_option_values_variants(option_value_id, variant_id) values(11, 17)")
 
 	if err != nil {
 		t.Error("An error has ocurred", err)
