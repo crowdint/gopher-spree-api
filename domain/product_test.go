@@ -10,7 +10,7 @@ func TestProductStructure(t *testing.T) {
 		`"display_price":"$10.0","available_on":"2013-10-10T00:00:00Z","slug":"product1",` +
 		`"meta_description":"...","meta_keywords":"...","shipping_category_id":1,` +
 		`"taxon_ids":[1,10],"total_on_hand":10,"has_variants":true,"master":{"id":0,` +
-		`"cost_price":"","depth":"0","height":"0","is_master":false,"options_text":"",` +
+		`"cost_price":null,"depth":"0","height":"0","is_master":false,"options_text":"",` +
 		`"price":"0","product_id":0,"sku":"","weight":"0","width":"0","description":"",` +
 		`"display_price":"","in_stock":false,"is_backorderable":false,"is_destroyed":false,` +
 		`"name":"","slug":"","total_on_hand":null,"track_inventory":false,"images":null,` +

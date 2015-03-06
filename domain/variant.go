@@ -9,7 +9,7 @@ import (
 
 type Variant struct {
 	Id          int64     `json:"id"`
-	CostPrice   string    `json:"cost_price"`
+	CostPrice   *string   `json:"cost_price"`
 	Depth       float64   `json:"depth,string"`
 	Height      float64   `json:"height,string"`
 	IsMaster    bool      `json:"is_master"`

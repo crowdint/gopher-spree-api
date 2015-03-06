@@ -10,6 +10,7 @@ func TestVariantStructure(t *testing.T) {
 		`"track_inventory":true,"images":[],"option_values":[]}`
 
 	var totalOnHand int64 = 90
+	costPrice := "1.9"
 	variant := Variant{
 		Id:              1,
 		Name:            "var1",
@@ -23,7 +24,7 @@ func TestVariantStructure(t *testing.T) {
 		Slug:            "var1",
 		Description:     "variant 1",
 		TrackInventory:  true,
-		CostPrice:       "1.9",
+		CostPrice:       &costPrice,
 		DisplayPrice:    "$10.1",
 		OptionsText:     "opt 1",
 		InStock:         true,
