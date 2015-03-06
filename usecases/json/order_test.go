@@ -95,6 +95,8 @@ func TestOrderInteractor_Show(t *testing.T) {
 	repositories.Spree_db.Create(&domain.Variant{Id: 1, ProductId: 1, CostPrice: "10"})
 	repositories.Spree_db.Create(&domain.Variant{Id: 2, ProductId: 2, CostPrice: "10"})
 
+	repositories.Spree_db.FirstOrCreate(&domain.StockLocation{Id: 1, Active: true})
+
 	repositories.Spree_db.Exec("INSERT INTO spree_stock_items(variant_id, stock_location_id) values(1, 1)")
 	repositories.Spree_db.Exec("INSERT INTO spree_prices(variant_id, currency) values(1, 'USD')")
 
