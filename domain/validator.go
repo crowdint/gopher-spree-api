@@ -1,13 +1,13 @@
 package domain
 
 import (
-	"fmt"
-
 	"errors"
+	"fmt"
 )
 
 var (
 	ErrNotBlank = errors.New("can't be blank")
+	ErrNotValid = errors.New("Invalid resource. Please fix errors and try again.")
 )
 
 type Validatorable interface {

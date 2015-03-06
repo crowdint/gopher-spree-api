@@ -140,6 +140,13 @@ func (this *Product) GetErrors() *ValidatorErrors {
 	return productErrors
 }
 
+func (this *Product) BeforeCreate() (err error) {
+	if !this.IsValid() {
+		err = ErrNotValid
+	}
+	return
+}
+
 func (this *PermittedProductParams) GetAvailableOn() time.Time {
 	if this.AvailableOn.IsZero() {
 		this.AvailableOn = time.Now()

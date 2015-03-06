@@ -144,11 +144,10 @@ func (this *ProductInteractor) GetCreateResponse(params ResponseParameters) (int
 	this.setUpShippingCategory(productParams)
 	product := domain.NewProductFromPermittedParams(productParams)
 
-	if !product.IsValid() {
-		return struct{}{}, product.GetErrors(), errors.New("Invalid resource. Please fix errors and try again.")
-	}
-
 	if err := this.BaseRepository.CreateWithSlug(product); err != nil {
+		if err == domain.ErrNotValid {
+			return struct{}{}, product.GetErrors(), err
+		}
 		return struct{}{}, nil, err
 	}
 

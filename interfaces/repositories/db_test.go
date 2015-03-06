@@ -78,7 +78,7 @@ func TestFindBy(t *testing.T) {
 
 	r := NewDatabaseRepository()
 
-	p := &domain.Product{}
+	p := &domain.Product{Name: "Test Product", Price: "12", ShippingCategoryId: 1, Slug: "test-product"}
 
 	Spree_db.Create(p)
 
@@ -98,7 +98,7 @@ func TestFindByWithConditions(t *testing.T) {
 
 	p := &domain.Product{}
 
-	Spree_db.Create(&domain.Product{Id: 1})
+	Spree_db.Create(&domain.Product{Id: 1, Name: "Test Product", Price: "12", ShippingCategoryId: 1, Slug: "test-product"})
 
 	err := r.FindBy(p, nil, map[string]interface{}{"id": 1})
 
@@ -116,7 +116,7 @@ func TestFindByWithOptions(t *testing.T) {
 
 	p := &domain.Product{}
 
-	Spree_db.Create(&domain.Product{Id: 1, TaxCategoryId: 1})
+	Spree_db.Create(&domain.Product{Id: 1, TaxCategoryId: 1, Name: "Test Product", Price: "12", ShippingCategoryId: 1, Slug: "test-product"})
 
 	err := r.FindBy(p, map[string]interface{}{
 		"not": Not{Key: "tax_category_id", Values: []interface{}{0}},
@@ -134,7 +134,7 @@ func TestCreate(t *testing.T) {
 
 	r := NewDatabaseRepository()
 
-	p := &domain.Product{Name: "Test Product"}
+	p := &domain.Product{Name: "Test Product", Price: "12", ShippingCategoryId: 1, Slug: "test-product"}
 
 	err := r.Create(p)
 	if err != nil {
@@ -153,7 +153,7 @@ func TestFirstOrCreate(t *testing.T) {
 
 	r := NewDatabaseRepository()
 
-	p := &domain.Product{}
+	p := &domain.Product{Price: "12", ShippingCategoryId: 1, Slug: "test-product"}
 
 	err := r.FirstOrCreate(p, map[string]interface{}{"name": "Test Product"})
 	if err != nil {
@@ -176,7 +176,7 @@ func TestCreateWithSlug(t *testing.T) {
 
 	r := NewDatabaseRepository()
 
-	p := &domain.Product{Name: "Test Product"}
+	p := &domain.Product{Name: "Test Product", Price: "12", ShippingCategoryId: 1, Slug: "test-product"}
 
 	err := r.CreateWithSlug(p)
 	if err != nil {
