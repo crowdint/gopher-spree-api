@@ -2,13 +2,16 @@ package domain
 
 import (
 	"time"
+
+	"github.com/crowdint/gopher-spree-api/configs/spree"
+	. "github.com/crowdint/gopher-spree-api/utils"
 )
 
 type Adjustment struct {
 	Id             int64     `json:"id"`
 	AdjustableId   int64     `json:"adjustable_id"`
 	AdjustableType string    `json:"adjustable_type"`
-	Amount         string    `json:"amount"`
+	Amount         float64   `json:"amount,string"`
 	Eligible       bool      `json:"eligible"`
 	Mandatory      *bool     `json:"mandatory"`
 	Label          string    `json:"label"`
@@ -20,6 +23,12 @@ type Adjustment struct {
 	DisplayAmount string `json:"display_amount" sql:"-"`
 
 	Adjustable Adjustable `json:"-" sql:"-"`
+}
+
+func (this *Adjustment) AfterFind() (err error) {
+	this.DisplayAmount = Monetize(this.Amount, this.Currency())
+
+	return
 }
 
 func (this *Adjustment) Currency() string {

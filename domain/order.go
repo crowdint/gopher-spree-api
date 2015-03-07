@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"time"
+
+	. "github.com/crowdint/gopher-spree-api/utils"
 )
 
 type Order struct {
@@ -32,13 +34,13 @@ type Order struct {
 	CreatedAt           time.Time `json:"created_at" sql:"-"`
 	UpdatedAt           time.Time `json:"updated_at" sql:"-"`
 
-	CheckoutSteps             []string     `json:"checkout_steps" sql:"-"`               //TODO: implement
-	DisplayAdditionalTaxTotal string       `json:"display_additional_tax_total" sql:"-"` //TODO: implement
-	DisplayIncludedTaxTotal   string       `json:"display_included_tax_total" sql:"-"`   //TODO: implement
-	DisplayItemTotal          string       `json:"display_item_total" sql:"-"`           //TODO: implement
-	DisplayTaxTotal           string       `json:"display_tax_total" sql:"-"`            //TODO: implement
-	DisplayTotal              string       `json:"display_total" sql:"-"`                //TODO: implement
-	DisplayShipTotal          string       `json:"display_ship_total" sql:"-"`           //TODO: implement
+	CheckoutSteps             []string     `json:"checkout_steps" sql:"-"` //TODO: implement
+	DisplayAdditionalTaxTotal string       `json:"display_additional_tax_total" sql:"-"`
+	DisplayIncludedTaxTotal   string       `json:"display_included_tax_total" sql:"-"`
+	DisplayItemTotal          string       `json:"display_item_total" sql:"-"`
+	DisplayTaxTotal           string       `json:"display_tax_total" sql:"-"`
+	DisplayTotal              string       `json:"display_total" sql:"-"`
+	DisplayShipTotal          string       `json:"display_ship_total" sql:"-"`
 	Permissions               *Permissions `json:"permissions,omitempty" sql:"-"`
 	Quantity                  int64        `json:"total_quantity" sql:"-"`
 
@@ -83,6 +85,14 @@ func (this Order) AdjustableId() int64 {
 
 func (this *Order) AfterFind() (err error) {
 	this.TaxTotal = this.IncludedTaxTotal + this.AdditionalTaxTotal
+
+	this.DisplayAdditionalTaxTotal = Monetize(this.AdditionalTaxTotal, this.Currency)
+	this.DisplayIncludedTaxTotal = Monetize(this.IncludedTaxTotal, this.Currency)
+	this.DisplayItemTotal = Monetize(this.ItemTotal, this.Currency)
+	this.DisplayTaxTotal = Monetize(this.TaxTotal, this.Currency)
+	this.DisplayTotal = Monetize(this.Total, this.Currency)
+	this.DisplayShipTotal = Monetize(this.ShipTotal, this.Currency)
+
 	return
 }
 

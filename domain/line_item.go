@@ -2,6 +2,8 @@ package domain
 
 import (
 	"time"
+
+	. "github.com/crowdint/gopher-spree-api/utils"
 )
 
 type LineItem struct {
@@ -40,7 +42,10 @@ func (this LineItem) AdjustableCurrency() string {
 
 func (this *LineItem) AfterFind() (err error) {
 	this.Amount = this.Price * float64(this.Quantity)
-	this.FinalAmount = this.Amount + this.AdjustmentTotal
+	this.FinalAmount = this.Amount + this.AdjustmentTotal //TODO: this should match spree api (rounded).
+
+	this.DisplayAmount = Monetize(this.Amount, this.Currency)
+	this.SingleDisplayAmount = Monetize(this.Price, this.Currency)
 	return
 }
 

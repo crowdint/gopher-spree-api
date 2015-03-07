@@ -2,6 +2,8 @@ package domain
 
 import (
 	"time"
+
+	"github.com/crowdint/gopher-spree-api/configs/spree"
 )
 
 type Shipment struct {
