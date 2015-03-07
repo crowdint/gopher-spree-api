@@ -18,6 +18,16 @@ type Adjustment struct {
 	UpdatedAt      time.Time `json:"updated_at"`
 
 	DisplayAmount string `json:"display_amount" sql:"-"`
+
+	Adjustable Adjustable `json:"-" sql:"-"`
+}
+
+func (this *Adjustment) Currency() string {
+	if this.Adjustable != nil {
+		return this.Adjustable.AdjustableCurrency()
+	}
+
+	return spree.Get(spree.CURRENCY)
 }
 
 func (this Adjustment) TableName() string {

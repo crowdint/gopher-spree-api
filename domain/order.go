@@ -65,12 +65,20 @@ type Order struct {
 	StoreId               int64     `json:"-"`
 }
 
-func (this *Order) SpreeClass() string {
+func (this Order) SpreeClass() string {
 	return "Spree::Order"
 }
 
 func (this Order) TableName() string {
 	return "spree_orders"
+}
+
+func (this Order) AdjustableCurrency() string {
+	return this.Currency
+}
+
+func (this Order) AdjustableId() int64 {
+	return this.Id
 }
 
 func (this *Order) AfterFind() (err error) {

@@ -54,12 +54,13 @@ func (this *OrderInteractor) Show(order *domain.Order, u *domain.User) (*domain.
 			variant.OptionValues = this.OptionValueRepository.AllByVariantAssociation(&variant)
 
 			(*order.LineItems)[i].Variant = &variant
-			(*order.LineItems)[i].Adjustments = this.AdjustmentRepository.AllByAdjustable(lineItem.Id, lineItem.SpreeClass())
+			(*order.LineItems)[i].Adjustments = this.AdjustmentRepository.AllByAdjustable(lineItem)
 		}
 
 		this.setPayments(order)
 		order.Shipments = this.ShipmentRepository.AllByOrder(order)
-		order.Adjustments = this.AdjustmentRepository.AllByAdjustable(order.Id, order.SpreeClass())
+
+		order.Adjustments = this.AdjustmentRepository.AllByAdjustable(order)
 
 		if err := cache.Set(order); err != nil {
 			log.Println("An error occurred while setting the cache: ", err.Error())

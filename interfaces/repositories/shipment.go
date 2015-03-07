@@ -38,7 +38,7 @@ func (this *ShipmentRepository) AllByOrder(order *domain.Order) []domain.Shipmen
 			shipments[i].Manifest[j].Quantity = lineItemsMap[shipments[i].Manifest[j].LineItemId].(domain.LineItem).Quantity
 		}
 
-		shipments[i].Adjustments = adjustmentRepository.AllByAdjustable(shipments[i].Id, shipments[i].SpreeClass())
+		shipments[i].Adjustments = adjustmentRepository.AllByAdjustable(shipments[i])
 	}
 	return shipments
 }

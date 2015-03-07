@@ -30,6 +30,14 @@ type LineItem struct {
 	Variant     *Variant     `json:"variant" sql:"-"`
 }
 
+func (this LineItem) AdjustableId() int64 {
+	return this.Id
+}
+
+func (this LineItem) AdjustableCurrency() string {
+	return this.Currency
+}
+
 func (this *LineItem) AfterFind() (err error) {
 	this.Amount = this.Price * float64(this.Quantity)
 	this.FinalAmount = this.Amount + this.AdjustmentTotal
@@ -40,6 +48,6 @@ func (this LineItem) TableName() string {
 	return "spree_line_items"
 }
 
-func (this *LineItem) SpreeClass() string {
+func (this LineItem) SpreeClass() string {
 	return "Spree::LineItem"
 }

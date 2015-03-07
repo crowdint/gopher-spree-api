@@ -21,12 +21,26 @@ type Shipment struct {
 	ShippingMethods []ShippingMethod `json:"shipping_methods"`
 	ShippingRates   []ShippingRate   `json:"shipping_rates"`
 	Manifest        []InventoryUnit  `json:"shipment_manifest"`
+
+	Order Adjustable
+}
+
+func (this Shipment) AdjustableId() int64 {
+	return this.Id
+}
+
+func (this Shipment) AdjustableCurrency() string {
+	if this.Order != nil {
+		return this.Order.AdjustableCurrency()
+	}
+
+	return spree.Get(spree.CURRENCY)
 }
 
 func (this Shipment) TableName() string {
 	return "spree_shipments"
 }
 
-func (this *Shipment) SpreeClass() string {
+func (this Shipment) SpreeClass() string {
 	return "Spree::Shipment"
 }
