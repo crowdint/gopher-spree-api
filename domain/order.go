@@ -84,14 +84,7 @@ func (this Order) AdjustableId() int64 {
 }
 
 func (this *Order) AfterFind() (err error) {
-	this.TaxTotal = this.IncludedTaxTotal + this.AdditionalTaxTotal
-
-	this.DisplayAdditionalTaxTotal = Monetize(this.AdditionalTaxTotal, this.Currency)
-	this.DisplayIncludedTaxTotal = Monetize(this.IncludedTaxTotal, this.Currency)
-	this.DisplayItemTotal = Monetize(this.ItemTotal, this.Currency)
-	this.DisplayTaxTotal = Monetize(this.TaxTotal, this.Currency)
-	this.DisplayTotal = Monetize(this.Total, this.Currency)
-	this.DisplayShipTotal = Monetize(this.ShipTotal, this.Currency)
+	this.SetComputedValues()
 
 	return
 }
@@ -106,6 +99,17 @@ func (this *Order) KeyWithPrefix(prefix string) string {
 
 func (this *Order) Marshal() ([]byte, error) {
 	return json.Marshal(this)
+}
+
+func (this *Order) SetComputedValues() {
+	this.TaxTotal = this.IncludedTaxTotal + this.AdditionalTaxTotal
+
+	this.DisplayAdditionalTaxTotal = Monetize(this.AdditionalTaxTotal, this.Currency)
+	this.DisplayIncludedTaxTotal = Monetize(this.IncludedTaxTotal, this.Currency)
+	this.DisplayItemTotal = Monetize(this.ItemTotal, this.Currency)
+	this.DisplayTaxTotal = Monetize(this.TaxTotal, this.Currency)
+	this.DisplayTotal = Monetize(this.Total, this.Currency)
+	this.DisplayShipTotal = Monetize(this.ShipTotal, this.Currency)
 }
 
 func (this *Order) Unmarshal(data []byte) error {

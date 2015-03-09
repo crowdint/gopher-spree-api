@@ -95,8 +95,9 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, params Respon
 	}
 
 	quantities, err := this.OrderRepository.SumLineItemsQuantityByOrderIds(orderIds)
-	for index, order := range orders {
-		orders[index].Quantity = quantities[order.Id]
+	for _, order := range orders {
+		order.Quantity = quantities[order.Id]
+		order.SetComputedValues()
 		cache.SetWithPrefix("index", order)
 	}
 
