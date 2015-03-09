@@ -23,12 +23,6 @@ func ProductsIndex(c *gin.Context) {
 	productShowResponse(c, params)
 }
 
-func ProductsTextSearch(c *gin.Context) {
-	params := NewRequestParameters(c, json.ELASTIC_SEARCH)
-
-	productShowResponse(c, params)
-}
-
 func ProductsShow(c *gin.Context) {
 	params := NewRequestParameters(c, json.GRANSAK)
 
