@@ -38,7 +38,7 @@ func (this Product) TableName() string {
 	return "spree_products"
 }
 
-func (this *Product) SpreeClass() string {
+func (this Product) SpreeClass() string {
 	return "Spree::Product"
 }
 

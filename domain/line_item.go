@@ -24,9 +24,9 @@ type LineItem struct {
 	UpdatedAt          time.Time `json:"-"`
 
 	Amount              float64 `json:"-" sql:"-"`
-	DisplayAmount       string  `json:"display_amount" sql:"-"` //TODO: implement
+	DisplayAmount       string  `json:"display_amount" sql:"-"`
 	FinalAmount         float64 `json:"total,string" sql:"-"`
-	SingleDisplayAmount string  `json:"single_display_amount" sql:"-"` //TODO: implement
+	SingleDisplayAmount string  `json:"single_display_amount" sql:"-"`
 
 	Adjustments []Adjustment `json:"adjustments"`
 	Variant     *Variant     `json:"variant" sql:"-"`

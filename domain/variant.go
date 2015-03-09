@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/crowdint/gopher-spree-api/configs/spree"
+	. "github.com/crowdint/gopher-spree-api/utils"
 )
 
 type Variant struct {
@@ -45,10 +46,17 @@ type Variant struct {
 
 func (this *Variant) AfterFind() (err error) {
 	this.IsDestroyed = !this.DeletedAt.IsZero()
+
 	return
 }
 
-func (this *Variant) SetInventoryValues() {
+func (this *Variant) SetComputedValues() {
+	this.setInventoryValues()
+
+	this.DisplayPrice = Monetize(this.Price, this.CostCurrency)
+}
+
+func (this *Variant) setInventoryValues() {
 	if this.ShouldTrackInventory() {
 		for _, stockItem := range this.StockItems {
 			var totalOnHand int64

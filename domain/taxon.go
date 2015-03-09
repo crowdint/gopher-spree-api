@@ -33,7 +33,7 @@ func (this Taxon) TableName() string {
 	return "spree_taxons"
 }
 
-func (this Taxon) AfterFind() (err error) {
+func (this *Taxon) AfterFind() (err error) {
 	this.PrettyName = this.Name
 	return
 }

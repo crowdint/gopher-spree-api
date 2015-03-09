@@ -49,7 +49,7 @@ func (this *OrderInteractor) Show(order *domain.Order, u *domain.User) (*domain.
 				variant.StockItems = append(variant.StockItems, &si)
 			}
 
-			variant.SetInventoryValues()
+			variant.SetComputedValues()
 			variant.Images = this.getVariantImages(variant.Id)
 			variant.OptionValues = this.OptionValueRepository.AllByVariantAssociation(&variant)
 

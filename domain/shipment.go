@@ -24,7 +24,7 @@ type Shipment struct {
 	ShippingRates   []ShippingRate   `json:"shipping_rates"`
 	Manifest        []InventoryUnit  `json:"shipment_manifest"`
 
-	Order Adjustable
+	Order Adjustable `json:"-" sql:"-"`
 }
 
 func (this Shipment) AdjustableId() int64 {
