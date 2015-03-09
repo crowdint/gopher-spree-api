@@ -23,7 +23,7 @@ func TestParameterParser(t *testing.T) {
 		Request: request,
 	}
 
-	params := NewRequestParameters(context)
+	params := NewRequestParameters(context, 0)
 
 	reqQuery, err := params.GetQuery()
 	if err != nil {
