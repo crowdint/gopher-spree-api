@@ -118,3 +118,44 @@ func (this *Variant) ShouldTrackInventory() bool {
 func (this Variant) TableName() string {
 	return "spree_variants"
 }
+
+func (this *Variant) IsValid() bool {
+	variantErrors = &ValidatorErrors{}
+
+	if this.CostCurrency == "" {
+		this.setCurrency()
+	}
+
+	if this.CostPrice != nil && *this.CostPrice != "" {
+		costPrice, err := strconv.ParseFloat(*this.CostPrice, 64)
+		if costPrice < 0 || err != nil {
+			variantErrors.Add("cost_price", ErrGreaterThanOrEqual(0).Error())
+		}
+	}
+
+	if this.Price != nil && *this.Price < 0 {
+		variantErrors.Add("price", ErrGreaterThanOrEqual(0).Error())
+	}
+
+	return variantErrors.IsEmpty()
+}
+
+func (this *Variant) GetErrors() *ValidatorErrors {
+	if variantErrors.IsEmpty() {
+		return nil
+	}
+
+	return variantErrors
+}
+
+func (this *Variant) BeforeCreate() (err error) {
+	if !this.IsValid() {
+		err = ErrNotValid
+	}
+	return
+}
+
+func (this *Variant) setCurrency() {
+	this.CostCurrency = spree.Get(spree.CURRENCY)
+	this.DefaultPrice.Currency = this.CostCurrency
+}

@@ -33,3 +33,8 @@ func ErrTooShort(minLen int) error {
 	errStr := fmt.Sprintf("is too short (minimum is %d characters)", minLen)
 	return errors.New(errStr)
 }
+
+func ErrGreaterThanOrEqual(num int) error {
+	errStr := fmt.Sprintf("must be greater than or equal to %d", num)
+	return errors.New(errStr)
+}

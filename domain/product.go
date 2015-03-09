@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	productErrors = &ValidatorErrors{}
+	productErrors *ValidatorErrors
 )
 
 type Product struct {
