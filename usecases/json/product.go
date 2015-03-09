@@ -235,7 +235,7 @@ func (this *ProductInteractor) mergeVariants(productSlice []*domain.Product, var
 
 			if variant.IsMaster {
 				product.Master = *variant
-				product.Price = strconv.FormatFloat(variant.Price, 'f', 2, 64)
+				product.Price = strconv.FormatFloat(*variant.Price, 'f', 2, 64)
 			} else {
 				product.Variants = append(product.Variants, *variant)
 			}

@@ -11,11 +11,12 @@ func TestVariantStructure(t *testing.T) {
 
 	var totalOnHand int64 = 90
 	costPrice := "1.9"
+	price := 10.1
 	variant := Variant{
 		Id:              1,
 		Name:            "var1",
 		Sku:             "A1234",
-		Price:           10.1,
+		Price:           &price,
 		Weight:          11.1,
 		Height:          20.0,
 		Width:           21.0,

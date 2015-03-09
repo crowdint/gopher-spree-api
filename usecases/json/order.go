@@ -42,7 +42,7 @@ func (this *OrderInteractor) Show(order *domain.Order, u *domain.User) (*domain.
 			variant.Name = product.Name
 			variant.Description = product.Description
 			variant.Slug = product.Slug
-			variant.Price = price.Amount
+			variant.Price = &price.Amount
 
 			for _, stockItem := range stockItemsMap[variant.Id].([]interface{}) {
 				si := stockItem.(domain.StockItem)

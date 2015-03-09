@@ -1,25 +1,32 @@
 package domain
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/crowdint/gopher-spree-api/configs/spree"
 	. "github.com/crowdint/gopher-spree-api/utils"
 )
 
+var (
+	variantErrors *ValidatorErrors
+)
+
 type Variant struct {
-	Id          int64     `json:"id"`
-	CostPrice   *string   `json:"cost_price"`
-	Depth       float64   `json:"depth,string"`
-	Height      float64   `json:"height,string"`
-	IsMaster    bool      `json:"is_master"`
-	OptionsText string    `json:"options_text" sql:"-"`
-	Price       float64   `json:"price,string" sql:"-"`
-	ProductId   int64     `json:"product_id"`
-	Sku         string    `json:"sku"`
-	Weight      float64   `json:"weight,string"`
-	Width       float64   `json:"width,string"`
-	DeletedAt   time.Time `json:"-"`
+	Id           int64     `json:"id"`
+	CostPrice    *string   `json:"cost_price"`
+	Depth        float64   `json:"depth,string"`
+	Height       float64   `json:"height,string"`
+	IsMaster     bool      `json:"is_master"`
+	OptionsText  string    `json:"options_text" sql:"-"`
+	Price        *float64  `json:"price,string" sql:"-"`
+	DefaultPrice Price     `json:"-"`
+	ProductId    int64     `json:"product_id"`
+	Product      *Product  `json:"-" sql:"-"`
+	Sku          string    `json:"sku" sql:",unique"`
+	Weight       float64   `json:"weight,string"`
+	Width        float64   `json:"width,string"`
+	DeletedAt    time.Time `json:"-"`
 
 	Description     string `json:"description" sql:"-"`
 	DisplayPrice    string `json:"display_price" sql:"-"`
@@ -35,7 +42,7 @@ type Variant struct {
 	OptionValues []OptionValue `json:"option_values" gorm:"many2many:spree_option_values_variants;"`
 	StockItems   []*StockItem  `json:"-" sql:"-"`
 
-	Position            int64     `json:"-"`
+	Position            *int64    `json:"-"`
 	CostCurrency        string    `json:"-"`
 	TaxCategoryId       int64     `json:"-"`
 	UpdatedAt           time.Time `json:"-"`
