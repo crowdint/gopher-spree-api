@@ -28,7 +28,7 @@ func (this ProductResponse) GetTag() string {
 }
 
 type ProductInteractor struct {
-	BaseRepository            *repositories.DbRepository
+	ProductRepository         *repositories.ProductRepository
 	VariantInteractor         *VariantInteractor
 	ProductPropertyInteractor *ProductPropertyInteractor
 	ClassificationInteractor  *ClassificationInteractor
@@ -37,7 +37,7 @@ type ProductInteractor struct {
 
 func NewProductInteractor() *ProductInteractor {
 	return &ProductInteractor{
-		BaseRepository:            repositories.NewDatabaseRepository(),
+		ProductRepository:         repositories.NewProductRepository(),
 		VariantInteractor:         NewVariantInteractor(),
 		ProductPropertyInteractor: NewProductPropertyInteractor(),
 		ClassificationInteractor:  NewClassificationInteractor(),
@@ -55,7 +55,7 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int, params Resp
 	gparams := queryData.Params
 
 	var productModelSlice []*domain.Product
-	err = this.BaseRepository.All(&productModelSlice, map[string]interface{}{
+	err = this.ProductRepository.All(&productModelSlice, map[string]interface{}{
 		"limit":  perPage,
 		"offset": currentPage,
 		"order":  "created_at desc",
@@ -108,7 +108,7 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 	}
 
 	product := &domain.Product{}
-	err = this.BaseRepository.FindBy(product, nil, map[string]interface{}{"id": id})
+	err = this.ProductRepository.FindBy(product, nil, map[string]interface{}{"id": id})
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +144,7 @@ func (this *ProductInteractor) GetCreateResponse(params ResponseParameters) (int
 	this.setUpShippingCategory(productParams)
 	product := domain.NewProductFromPermittedParams(productParams)
 
-	if err := this.BaseRepository.CreateWithSlug(product); err != nil {
+	if err := this.ProductRepository.Create(product); err != nil {
 		if err == domain.ErrNotValid {
 			return struct{}{}, product.GetErrors(), err
 		}
@@ -157,7 +157,7 @@ func (this *ProductInteractor) GetCreateResponse(params ResponseParameters) (int
 func (this *ProductInteractor) setUpShippingCategory(productParams *domain.ProductParams) {
 	if category := productParams.PermittedProductParams.ShippingCategory; category != "" {
 		shippingCategory := &domain.ShippingCategory{}
-		err := this.BaseRepository.FirstOrCreate(shippingCategory, map[string]interface{}{"name": category})
+		err := this.ProductRepository.FirstOrCreate(shippingCategory, map[string]interface{}{"name": category})
 		if err == nil {
 			productParams.PermittedProductParams.ShippingCategoryId = shippingCategory.Id
 		}
@@ -312,5 +312,5 @@ func (this *ProductInteractor) GetTotalCount(params ResponseParameters) (int64, 
 	query := queryData.Query
 	gparams := queryData.Params
 
-	return this.BaseRepository.Count(&domain.Product{}, query, gparams)
+	return this.ProductRepository.Count(&domain.Product{}, query, gparams)
 }

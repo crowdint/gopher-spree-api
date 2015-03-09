@@ -129,7 +129,7 @@ func TestProductInteractor_SetUpShippingCategory(t *testing.T) {
 	productInteractor.setUpShippingCategory(productParams)
 
 	shippingCategory := &domain.ShippingCategory{}
-	err := productInteractor.BaseRepository.FindBy(shippingCategory, nil, map[string]interface{}{
+	err := productInteractor.ProductRepository.FindBy(shippingCategory, nil, map[string]interface{}{
 		"name": "Test Default",
 	})
 
