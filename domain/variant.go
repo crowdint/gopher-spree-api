@@ -51,6 +51,30 @@ type Variant struct {
 	Backorderable       bool      `json:"-" sql:"-"`
 }
 
+func NewMasterVariant(product *Product) *Variant {
+	price, err := strconv.ParseFloat(product.Price, 64)
+	position := int64(1)
+
+	if err != nil {
+		return &Variant{
+			IsMaster:     true,
+			Product:      product,
+			ProductId:    product.Id,
+			DefaultPrice: Price{},
+			Position:     &position,
+		}
+	}
+
+	return &Variant{
+		IsMaster:     true,
+		Price:        &price,
+		Product:      product,
+		ProductId:    product.Id,
+		DefaultPrice: Price{Amount: price},
+		Position:     &position,
+	}
+}
+
 func (this *Variant) AfterFind() (err error) {
 	this.IsDestroyed = !this.DeletedAt.IsZero()
 
