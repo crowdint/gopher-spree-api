@@ -5,11 +5,13 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type VariantRepository DbRepository
+type VariantRepository struct {
+	DbRepository
+}
 
-func NewVariantRepo() *VariantRepository {
+func NewVariantRepository() *VariantRepository {
 	return &VariantRepository{
-		dbHandler: Spree_db,
+		DbRepository{Spree_db},
 	}
 }
 
@@ -36,4 +38,38 @@ func (this *VariantRepository) FindByProductIds(productIds []int64) ([]*domain.V
 	} else {
 		return variants, query.Error
 	}
+}
+
+func (this *VariantRepository) Create(variant *domain.Variant) error {
+	if err := this.DbRepository.Create(variant); err != nil {
+		return err
+	}
+
+	return this.AfterCreate(variant)
+}
+
+func (this *VariantRepository) AfterCreate(variant *domain.Variant) error {
+	// TODO: setPosition and setMasterOutOfStock
+	return this.createStockItems(variant)
+}
+
+func (this *VariantRepository) createStockItems(variant *domain.Variant) error {
+	stockLocationRepository := NewStockLocationRepository()
+	stockItemRepository := NewStockItemRepository()
+	stockLocations, err := stockLocationRepository.AllBy("propagate_all_variants = ?", true)
+	if err != nil {
+		return err
+	}
+
+	for _, stockLocation := range stockLocations {
+		stockItem := &domain.StockItem{VariantId: variant.Id, StockLocationId: stockLocation.Id, Backorderable: stockLocation.BackorderableDefault}
+		if err = stockItemRepository.Create(stockItem); err != nil {
+			return err
+		}
+		stockItem.StockLocation = stockLocation
+		stockItem.Variant = variant
+		variant.StockItems = append(variant.StockItems, stockItem)
+	}
+
+	return nil
 }
