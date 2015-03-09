@@ -21,6 +21,8 @@ const (
 	SPREE_ASSET_HOST     = "SPREE_ASSET_HOST"
 	SPREE_DEFAULT_STYLES = "SPREE_DEFAULT_STYLES"
 
+	ELASTIC_SEARCH_SERVER_URL = "ES_SERVER"
+
 	PER_PAGE = "PER_PAGE"
 )
 
@@ -46,6 +48,8 @@ var defaultSettings = map[string]string{
 
 	//Response Settings
 	PER_PAGE: getEnvOrDefault(PER_PAGE, "10"),
+
+	ELASTIC_SEARCH_SERVER_URL: getEnvOrDefault(ELASTIC_SEARCH_SERVER_URL, "http://localhost:9200"),
 }
 
 func Get(key string) string {

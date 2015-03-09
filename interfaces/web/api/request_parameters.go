@@ -41,9 +41,16 @@ func (this *RequestParameters) GetStrParam(key string) (string, error) {
 	return param, nil
 }
 
-func (this *RequestParameters) GetGransakParams() (string, []interface{}, error) {
+func (this *RequestParameters) GetQuery() (*rsp.RequestQuery, error) {
 	query, params := Gransak.FromRequest(this.context.Request)
-	return query, params, nil
+
+	reqQuery := &rsp.RequestQuery{
+		Type:   rsp.GRANSAK,
+		Query:  query,
+		Params: params,
+	}
+
+	return reqQuery, nil
 }
 
 func getInt(str string) (int, error) {

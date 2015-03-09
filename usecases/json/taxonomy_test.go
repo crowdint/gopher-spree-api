@@ -23,7 +23,7 @@ func TestTaxonomyInteractor_GetResponse(t *testing.T) {
 
 	taxonInteractor := NewTaxonomyInteractor()
 
-	jsonTaxonomySlice, err := taxonInteractor.GetResponse(1, 10, &FakeResponseParameters{})
+	jsonTaxonomySlice, err := taxonInteractor.GetResponse(1, 10, &DummyResponseParams{})
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}

@@ -46,10 +46,13 @@ func NewProductInteractor() *ProductInteractor {
 }
 
 func (this *ProductInteractor) GetResponse(currentPage, perPage int, params ResponseParameters) (ContentResponse, error) {
-	query, gparams, err := params.GetGransakParams()
+	queryData, err := params.GetQuery()
 	if err != nil {
 		return ProductResponse{}, err
 	}
+
+	query := queryData.Query
+	gparams := queryData.Params
 
 	var productModelSlice []*domain.Product
 	err = this.BaseRepository.All(&productModelSlice, map[string]interface{}{
@@ -270,9 +273,13 @@ func (this *ProductInteractor) mergeOptionTypes(productSlice []*domain.Product, 
 }
 
 func (this *ProductInteractor) GetTotalCount(params ResponseParameters) (int64, error) {
-	query, gparams, err := params.GetGransakParams()
+	queryData, err := params.GetQuery()
 	if err != nil {
 		return 0, err
 	}
+
+	query := queryData.Query
+	gparams := queryData.Params
+
 	return this.BaseRepository.Count(&domain.Product{}, query, gparams)
 }

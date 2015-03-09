@@ -59,7 +59,7 @@ func TestProductInteractor_GetMergedResponse(t *testing.T) {
 
 	productInteractor := NewProductInteractor()
 
-	jsonProductSlice, err := productInteractor.GetResponse(1, 10, &FakeResponseParameters{})
+	jsonProductSlice, err := productInteractor.GetResponse(1, 10, &DummyResponseParams{})
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}
