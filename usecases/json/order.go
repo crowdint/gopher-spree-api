@@ -125,10 +125,16 @@ func (this *OrderInteractor) toCacheData(orderSlice []*domain.Order) (ordersCach
 }
 
 func (this *OrderInteractor) setPayments(order *domain.Order) {
-	payments := []domain.Payment{}
+	payments := []*domain.Payment{}
 	this.OrderRepository.All(&payments, map[string]interface{}{
 		"order": "created_at",
 	}, "order_id = ?", order.Id)
+
+	for _, payment := range payments {
+		payment.Order = order
+		payment.SetComputedValues()
+	}
+
 	order.Payments = payments
 }
 

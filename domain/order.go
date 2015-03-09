@@ -46,7 +46,7 @@ type Order struct {
 
 	BillAddress *Address     `json:"bill_address" sql:"-"`
 	LineItems   *[]LineItem  `json:"line_items,omitempty" sql:"-"`
-	Payments    []Payment    `json:"payments" sql:"-"`
+	Payments    []*Payment   `json:"payments" sql:"-"`
 	ShipAddress *Address     `json:"ship_address" sql:"-""`
 	Shipments   []Shipment   `json:"shipments" sql:"-"`
 	Adjustments []Adjustment `json:"adjustments" sql:"-"`

@@ -25,10 +25,8 @@ type Payment struct {
 	Order *Order `json:"-" sql:"-"`
 }
 
-func (this *Payment) AfterFind() (err error) {
+func (this *Payment) SetComputedValues() {
 	this.DisplayAmount = Monetize(this.Amount, this.Currency())
-
-	return
 }
 
 func (this *Payment) Currency() string {
