@@ -14,22 +14,26 @@ func NewShippingRateRepository() *ShippingRateRepository {
 	}
 }
 
-func (this *ShippingRateRepository) AllByShipment(shipment *domain.Shipment) []domain.ShippingRate {
-	shippingRates := []domain.ShippingRate{}
+func (this *ShippingRateRepository) AllByShipment(shipment *domain.Shipment) []*domain.ShippingRate {
+	shippingRates := []*domain.ShippingRate{}
+
 	this.All(&shippingRates, map[string]interface{}{
 		"order": "cost ASC",
 	}, "shipment_id = ?", shipment.Id)
 
 	shippingMethodRepository := NewShippingMethodRepository()
 
-	for i, _ := range shippingRates {
-		shippingMethodRepository.FindByShippingRateAssociation(&shippingRates[i])
-		shippingRates[i].Name = shippingRates[i].ShippingMethod.Name
-		shippingRates[i].ShippingMethodCode = &shippingRates[i].ShippingMethod.Code
-		shipment.ShippingMethods = append(shipment.ShippingMethods, shippingRates[i].ShippingMethod)
+	for _, shippingRate := range shippingRates {
+		shippingMethodRepository.FindByShippingRateAssociation(shippingRate)
+		shippingRate.Name = shippingRate.ShippingMethod.Name
+		shippingRate.ShippingMethodCode = &shippingRate.ShippingMethod.Code
+		shippingRate.Shipment = shipment
+		shippingRate.SetComputedValues()
 
-		if shippingRates[i].Selected {
-			shipment.SelectedShippingRate = shippingRates[i]
+		shipment.ShippingMethods = append(shipment.ShippingMethods, shippingRate.ShippingMethod)
+
+		if shippingRate.Selected {
+			shipment.SelectedShippingRate = *shippingRate
 		}
 	}
 

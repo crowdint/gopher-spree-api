@@ -21,8 +21,8 @@ type Shipment struct {
 	StockLocation   StockLocation    `json:"-"`
 	Adjustments     []Adjustment     `json:"adjustments"`
 	ShippingMethods []ShippingMethod `json:"shipping_methods"`
-	ShippingRates   []ShippingRate   `json:"shipping_rates"`
-	Manifest        []InventoryUnit  `json:"shipment_manifest"`
+	ShippingRates   []*ShippingRate  `json:"shipping_rates"`
+	Manifest        []InventoryUnit  `json:"manifest"`
 
 	Order Adjustable `json:"-" sql:"-"`
 }
@@ -37,6 +37,10 @@ func (this Shipment) AdjustableCurrency() string {
 	}
 
 	return spree.Get(spree.CURRENCY)
+}
+
+func (this Shipment) Currency() string {
+	return this.AdjustableCurrency()
 }
 
 func (this Shipment) TableName() string {

@@ -58,7 +58,7 @@ func (this *OrderInteractor) Show(order *domain.Order, u *domain.User) (*domain.
 		}
 
 		this.setPayments(order)
-		order.Shipments = this.ShipmentRepository.AllByOrder(order)
+		this.setShipments(order)
 
 		order.Adjustments = this.AdjustmentRepository.AllByAdjustable(order)
 
@@ -136,6 +136,10 @@ func (this *OrderInteractor) setPayments(order *domain.Order) {
 	}
 
 	order.Payments = payments
+}
+
+func (this *OrderInteractor) setShipments(order *domain.Order) {
+	order.Shipments = this.ShipmentRepository.AllByOrder(order)
 }
 
 func (this *OrderInteractor) getVariantImages(variantId int64) []*domain.Asset {
