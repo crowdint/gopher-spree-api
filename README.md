@@ -2,50 +2,49 @@
 
 Experimental implementation of the Spree API on steroids.
 
-## Prerequisites
+## Pre-requisites
 
 - An up and running spree app
 - A go installation
+- A memcached server
+- Any database server
+- An elasticsearch server
 
 ## Getting started
 
-First of all install [gpm](https://github.com/pote/gpm),
-[gvp](https://github.com/pote/gvp) and
-[gpm-local](https://github.com/technosophos/gpm-local):
+First of all install [gpm](https://github.com/pote/gpm), for osx:
 
     $ brew install gpm
-    $ brew install gvp
-    $ brew install gpm-local # This is a gpm plugin
+
+For *nix:
+
+    $ git clone https://github.com/pote/gpm.git && cd gpm
+    $ git checkout v1.3.2 # You can ignore this part if you want to install HEAD.
+    $ ./configure
+    $ make install
 
 In order to allow `gpm` to install our package dependencies
 you will need a personal github token configured for your workstation,
 if you already did it for another project that will do it, if not, just
 follow [gpm instructions](https://github.com/pote/gpm#private-repos).
 
+### Install memcached
+
+To install memcached.
+
+    $ brew install memcached
+
+To start Memcached Server
+
+    $ memcached -vv
+
+### Install Elastic Search
+
+Follow the instructions [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.html).
+
 ## Workflow
 
-### Always and for every shell session
-
-Source gvp into your shell session:
-
-    $ source gvp in
-
-### Installing dependencies
-
-Install dependencies by running:
-
-    $ gpm install
-
-### One time only
-
-Tell gpm to link this project into the `.godeps` dir with `gpm-local`:
-
-    $ gpm local name github.com/crowdint/gopher-spree-api
-
-This will allow us to find this projects subpackages in the current
-$GOPATH
-
-### Adding new dependencies
+### Adding new package dependencies
 
 Add dependencies by appending them to the Godeps file in the following
 format:
@@ -65,18 +64,13 @@ format:
 
 And install dependencies again.
 
-### Istalling Elastic (Elastic Search)
-Follow the instructions in https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.html
+### Installing package dependencies
 
+Install dependencies by running:
 
-### Installing Memcached
-To install memcached.
+    $ gpm install       # All defined dependencies in the Godeps file
+    $ go install ./...  # All of this project's subpackages
 
-    $ brew install memcached
-
-To start Memcached Server
-
-    $ memcached -vv
 
 ### Configuration
 
@@ -130,8 +124,7 @@ following flags:
     $ RAILS_ENV=test rake db:create
     $ RAILS_ENV=test rake db:migrate
 
-  Also you should index some product test data into Elastic.
-Firs, create the 'test' index:
+  Also you should index some product test data into Elastic. First, create the 'test' index:
 
     curl -XPOST 'http://localhost:9200/test?pretty'
 
