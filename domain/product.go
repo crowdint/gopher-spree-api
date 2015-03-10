@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/crowdint/gopher-spree-api/configs/spree"
 )
 
 var (
@@ -108,7 +110,7 @@ func (this *Product) IsValid() bool {
 		productErrors.Add("name", ErrNotBlank.Error())
 	}
 
-	if this.Price == "" {
+	if this.Price == "" && spree.Get(spree.MASTER_PRICE) == "true" {
 		productErrors.Add("price", ErrNotBlank.Error())
 	}
 
@@ -118,6 +120,14 @@ func (this *Product) IsValid() bool {
 
 	if len(this.Slug) < 3 {
 		productErrors.Add("slug", ErrTooShort(3).Error())
+	}
+
+	if len(this.MetaKeyWords) > 255 {
+		productErrors.Add("meta_keywords", ErrMaxLen(255).Error())
+	}
+
+	if len(this.MetaTitle) > 255 {
+		productErrors.Add("meta_title", ErrMaxLen(255).Error())
 	}
 
 	return productErrors.IsEmpty()

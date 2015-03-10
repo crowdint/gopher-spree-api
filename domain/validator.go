@@ -38,3 +38,8 @@ func ErrGreaterThanOrEqual(num int) error {
 	errStr := fmt.Sprintf("must be greater than or equal to %d", num)
 	return errors.New(errStr)
 }
+
+func ErrMaxLen(num int) error {
+	errStr := fmt.Sprintf("is too long (maximum is %d characters)", num)
+	return errors.New(errStr)
+}
