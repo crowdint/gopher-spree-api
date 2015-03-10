@@ -40,7 +40,7 @@ func TestOrderInteractor_GetResponse(t *testing.T) {
 
 	orderInteractor := NewOrderInteractor()
 
-	jsonOrderSlice, err := orderInteractor.GetResponse(1, 10, &FakeResponseParameters{})
+	jsonOrderSlice, err := orderInteractor.GetResponse(1, 10, &DummyResponseParams{})
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 		return

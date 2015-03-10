@@ -72,10 +72,13 @@ func (this *OrderInteractor) Show(order *domain.Order, u *domain.User) (*domain.
 func (this *OrderInteractor) GetResponse(currentPage, perPage int, params ResponseParameters) (ContentResponse, error) {
 	orders := []*domain.Order{}
 
-	query, gparams, err := params.GetGransakParams()
+	queryData, err := params.GetQuery()
 	if err != nil {
 		return &OrderResponse{}, err
 	}
+
+	query := queryData.Query
+	gparams := queryData.Params
 
 	err = this.OrderRepository.All(&orders, map[string]interface{}{"limit": perPage, "offset": currentPage}, query, gparams)
 	if err != nil {
@@ -107,11 +110,13 @@ func (this *OrderInteractor) GetShowResponse(params ResponseParameters) (interfa
 }
 
 func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, error) {
-	query, gparams, err := params.GetGransakParams()
-
+	queryData, err := params.GetQuery()
 	if err != nil {
 		return 0, err
 	}
+
+	query := queryData.Query
+	gparams := queryData.Params
 
 	return this.OrderRepository.Count(domain.Order{}, query, gparams)
 }

@@ -34,10 +34,13 @@ func NewTaxonInteractor() *TaxonInteractor {
 }
 
 func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params ResponseParameters) (ContentResponse, error) {
-	query, gparams, err := params.GetGransakParams()
+	queryData, err := params.GetQuery()
 	if err != nil {
 		return TaxonResponse{}, err
 	}
+
+	query := queryData.Query
+	gparams := queryData.Params
 
 	var taxonModelSlice []*domain.Taxon
 
@@ -58,10 +61,14 @@ func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params Respon
 }
 
 func (this *TaxonInteractor) GetTotalCount(params ResponseParameters) (int64, error) {
-	query, gparams, err := params.GetGransakParams()
+	queryData, err := params.GetQuery()
 	if err != nil {
 		return 0, err
 	}
+
+	query := queryData.Query
+	gparams := queryData.Params
+
 	return this.BaseRepository.Count(domain.Taxon{}, query, gparams)
 }
 

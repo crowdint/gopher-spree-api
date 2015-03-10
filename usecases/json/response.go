@@ -29,7 +29,7 @@ func init() {
 type ResponseParameters interface {
 	GetIntParam(string) (int, error)
 	GetStrParam(string) (string, error)
-	GetGransakParams() (string, []interface{}, error)
+	GetQuery() (*RequestQuery, error)
 }
 
 type ContentInteractor interface {

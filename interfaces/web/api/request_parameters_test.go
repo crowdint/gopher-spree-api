@@ -23,12 +23,16 @@ func TestParameterParser(t *testing.T) {
 		Request: request,
 	}
 
-	params := NewRequestParameters(context)
+	params := NewRequestParameters(context, 0)
 
-	query, gparams, err := params.GetGransakParams()
+	reqQuery, err := params.GetQuery()
 	if err != nil {
 		t.Error("An error has ocurred:", err)
 	}
+
+	query := reqQuery.Query
+
+	gparams := reqQuery.Params
 
 	expected := "name "
 

@@ -2,23 +2,29 @@ package api
 
 import (
 	"strconv"
+	"strings"
 
+	"github.com/crowdint/gopher-spree-api/configs"
 	rsp "github.com/crowdint/gopher-spree-api/usecases/json"
 	. "github.com/crowdint/gransak"
 
 	"github.com/gin-gonic/gin"
 )
 
-func NewRequestParameters(context *gin.Context) *RequestParameters {
+func NewRequestParameters(context *gin.Context, queryType int) *RequestParameters {
 	context.Request.ParseForm()
 
 	return &RequestParameters{
-		context: context,
+		context:   context,
+		queryType: queryType,
 	}
 }
 
 type RequestParameters struct {
-	context *gin.Context
+	context   *gin.Context
+	queryType int
+	Index     string
+	Type      string
 }
 
 func (this *RequestParameters) GetIntParam(key string) (int, error) {
@@ -41,9 +47,46 @@ func (this *RequestParameters) GetStrParam(key string) (string, error) {
 	return param, nil
 }
 
-func (this *RequestParameters) GetGransakParams() (string, []interface{}, error) {
-	query, params := Gransak.FromRequest(this.context.Request)
-	return query, params, nil
+func (this *RequestParameters) GetQuery() (*rsp.RequestQuery, error) {
+	var query string
+	var params []interface{}
+
+	if this.queryType == rsp.GRANSAK {
+		query, params = Gransak.FromRequest(this.context.Request)
+	} else {
+		ids, err := esfetcher.GetProducIds("spree", "product", this.context.Request)
+		if err != nil {
+			return nil, err
+		}
+
+		query, params = this.getParamsFromES(ids)
+	}
+
+	reqQuery := &rsp.RequestQuery{
+		Type:   this.queryType,
+		Query:  query,
+		Params: params,
+	}
+
+	return reqQuery, nil
+}
+
+func (this *RequestParameters) getParamsFromES(ids []int64) (string, []interface{}) {
+	var params []interface{}
+	var paramPlaceHolders []string
+	placeHolder := "?"
+
+	for i, id := range ids {
+		params = append(params, id)
+
+		if configs.Get(configs.DB_ENGINE) == "postgres" {
+			placeHolder = "$" + strconv.Itoa(i+1)
+		}
+
+		paramPlaceHolders = append(paramPlaceHolders, placeHolder)
+	}
+
+	return "id IN (" + strings.Join(paramPlaceHolders, ",") + ")", params
 }
 
 func getInt(str string) (int, error) {

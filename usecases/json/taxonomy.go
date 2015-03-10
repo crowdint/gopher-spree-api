@@ -32,10 +32,13 @@ func NewTaxonomyInteractor() *TaxonomyInteractor {
 }
 
 func (this *TaxonomyInteractor) GetResponse(currentPage, perPage int, params ResponseParameters) (ContentResponse, error) {
-	query, gparams, err := params.GetGransakParams()
+	queryData, err := params.GetQuery()
 	if err != nil {
 		return TaxonomyResponse{}, err
 	}
+
+	query := queryData.Query
+	gparams := queryData.Params
 
 	var taxonomies []*domain.Taxonomy
 	this.BaseRepository.All(&taxonomies, map[string]interface{}{
@@ -59,10 +62,14 @@ func (this *TaxonomyInteractor) GetShowResponse(param ResponseParameters) (inter
 }
 
 func (this *TaxonomyInteractor) GetTotalCount(param ResponseParameters) (int64, error) {
-	query, gparams, err := param.GetGransakParams()
+	queryData, err := param.GetQuery()
 	if err != nil {
 		return 0, err
 	}
+
+	query := queryData.Query
+	gparams := queryData.Params
+
 	return this.BaseRepository.Count(domain.Taxonomy{}, query, gparams)
 }
 

@@ -20,7 +20,7 @@ func TestTaxonInteractor_GetResponse(t *testing.T) {
 
 	taxonInteractor := NewTaxonInteractor()
 
-	jsonTaxonSlice, err := taxonInteractor.GetResponse(1, 10, &FakeResponseParameters{})
+	jsonTaxonSlice, err := taxonInteractor.GetResponse(1, 10, &DummyResponseParams{})
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}
