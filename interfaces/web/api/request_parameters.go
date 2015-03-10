@@ -54,7 +54,10 @@ func (this *RequestParameters) GetQuery() (*rsp.RequestQuery, error) {
 	if this.queryType == rsp.GRANSAK {
 		query, params = Gransak.FromRequest(this.context.Request)
 	} else {
-		ids, err := esfetcher.GetProducIds("spree", "product", this.context.Request)
+		index := configs.Get(configs.ES_INDEX)
+		ptype := configs.Get(configs.ES_PRODUCT_TYPE)
+
+		ids, err := esfetcher.GetProducIds(index, ptype, this.context.Request)
 		if err != nil {
 			return nil, err
 		}

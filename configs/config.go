@@ -24,6 +24,8 @@ const (
 	SPREE_DEFAULT_STYLES = "SPREE_DEFAULT_STYLES"
 
 	ELASTIC_SEARCH_SERVER_URL = "ES_SERVER"
+	ES_INDEX                  = "ES_INDEX"
+	ES_PRODUCT_TYPE           = "ES_PRODUCT_TYPE"
 
 	PER_PAGE = "PER_PAGE"
 )
@@ -55,6 +57,8 @@ var defaultSettings = map[string]string{
 	PER_PAGE: getEnvOrDefault(PER_PAGE, "10"),
 
 	ELASTIC_SEARCH_SERVER_URL: getEnvOrDefault(ELASTIC_SEARCH_SERVER_URL, "http://localhost:9200"),
+	ES_INDEX:                  getEnvOrDefault(ES_INDEX, "spree"),
+	ES_PRODUCT_TYPE:           getEnvOrDefault(ES_PRODUCT_TYPE, "product"),
 }
 
 func Get(key string) string {
