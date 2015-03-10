@@ -38,8 +38,9 @@ To start Memcached Server
 
     $ memcached -vv
 
-### Istalling Elastic (Elastic Search)
-Follow the instructions in https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.html
+### Install Elastic Search
+
+Follow the instructions [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.html).
 
 ## Workflow
 
