@@ -1,6 +1,10 @@
 package domain
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/crowdint/gopher-spree-api/configs/spree"
+)
 
 func TestVariantStructure(t *testing.T) {
 	expected := `{"id":1,"cost_price":"1.9","depth":"23.1","height":"20","is_master":true,` +
@@ -142,3 +146,48 @@ func TestVariantValidator(t *testing.T) {
 
 }
 
+func TestVariant_CheckPrice(t *testing.T) {
+	product := &Product{
+		Name:        "Product Test",
+		Description: "Product Description",
+		Price:       "12.79",
+	}
+
+	product.Master = *NewMasterVariant(product)
+	variant := Variant{}
+	spree.Set(spree.MASTER_PRICE, "true")
+
+	if err := variant.checkPrice(); err == nil {
+		t.Error("Should have 'No master variant found to infer price' error")
+	}
+
+	variant.Product = product
+	variant.Product.Master.IsMaster = false
+	if err := variant.checkPrice(); err == nil {
+		t.Error("Should have 'No master variant found to infer price' error")
+	}
+
+	variant.Product.Master.IsMaster = true
+
+	tempMaster := variant.Product.Master
+	price := tempMaster.Price
+
+	tempMaster.Price = nil
+	variant.Product.Master.Price = nil
+	if err := tempMaster.checkPrice(); err == nil {
+		t.Error("Should have 'Must supply price for variant or master.price for product.' error")
+	}
+
+	variant.Product.Master.Price = price
+	if err := tempMaster.checkPrice(); err != nil {
+		t.Error("Should not have errors, but", err.Error())
+	}
+
+	if *tempMaster.Price != *price {
+		t.Error("Price should be %f, but was %f", *price, *tempMaster.Price)
+	}
+
+	if tempMaster.DefaultPrice.Currency == "" {
+		t.Error("Currency was not set")
+	}
+}

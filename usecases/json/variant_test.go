@@ -15,7 +15,8 @@ func TestVariantInteractor_GetJsonVariantsMap(t *testing.T) {
 	defer ResetDB()
 
 	costPrice := "10"
-	repositories.Spree_db.Create(&domain.Variant{Id: 1, ProductId: 1, CostPrice: &costPrice})
+	price := 10.0
+	repositories.Spree_db.Create(&domain.Variant{Id: 1, ProductId: 1, CostPrice: &costPrice, Price: &price})
 	repositories.Spree_db.Exec("INSERT INTO spree_stock_items(variant_id) values(1)")
 	repositories.Spree_db.Exec("INSERT INTO spree_prices(variant_id, currency) values(1, 'USD')")
 

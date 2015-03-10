@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"errors"
+	"reflect"
 	"strconv"
 	"time"
 
@@ -159,4 +161,25 @@ func (this *Variant) BeforeCreate() error {
 func (this *Variant) setCurrency() {
 	this.CostCurrency = spree.Get(spree.CURRENCY)
 	this.DefaultPrice.Currency = this.CostCurrency
+}
+
+func (this *Variant) checkPrice() error {
+	if this.Price == nil && spree.Get(spree.MASTER_PRICE) == "true" {
+		if !(this.Product != nil && this.Product.Master.IsMaster) {
+			return errors.New("No master variant found to infer price")
+		}
+
+		master := this.Product.Master
+		if reflect.DeepEqual(*this, master) {
+			return errors.New("Must supply price for variant or master.price for product.")
+		}
+
+		this.Price = master.Price
+	}
+
+	if this.DefaultPrice.Currency == "" {
+		this.setCurrency()
+	}
+
+	return nil
 }

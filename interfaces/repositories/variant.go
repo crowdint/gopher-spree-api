@@ -1,8 +1,9 @@
 package repositories
 
 import (
-	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/jinzhu/gorm"
+
+	"github.com/crowdint/gopher-spree-api/domain"
 )
 
 type VariantRepository struct {
@@ -32,7 +33,6 @@ func (this *VariantRepository) FindByProductIds(productIds []int64) ([]*domain.V
 		Group("spree_variants.id, spree_variants, backorderable, price").
 		Scan(&variants)
 
-	//	spew.Dump("Variants from the query %-v", variants)
 	if query.Error != nil && query.Error != gorm.RecordNotFound {
 		return variants, nil
 	} else {

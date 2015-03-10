@@ -21,7 +21,8 @@ func TestVariantRepo(t *testing.T) {
 	}
 
 	costPrice := "10"
-	Spree_db.Create(&domain.Variant{Id: 1, ProductId: 1, CostPrice: &costPrice, DefaultPrice: domain.Price{}})
+	price := 10.0
+	Spree_db.Create(&domain.Variant{Id: 1, ProductId: 1, CostPrice: &costPrice, DefaultPrice: domain.Price{}, Price: &price})
 	Spree_db.Exec("INSERT INTO spree_stock_items(variant_id) values(1)")
 	Spree_db.Exec("INSERT INTO spree_prices(variant_id, currency) values(1, 'USD')")
 
@@ -60,11 +61,12 @@ func TestVariantRepository_Create(t *testing.T) {
 	}
 
 	costPrice := "10"
-	variant := &domain.Variant{Id: 1, ProductId: 1, CostPrice: &costPrice, DefaultPrice: domain.Price{}}
+	price := 10.0
+	variant := &domain.Variant{Id: 1, ProductId: 1, CostPrice: &costPrice, DefaultPrice: domain.Price{}, Price: &price}
 
 	variantRepository := NewVariantRepository()
 	if err = variantRepository.Create(variant); err != nil {
-		t.Error("An error occured while creating variant")
+		t.Error("An error occured while creating variant:", err.Error())
 	}
 
 	if len(variant.StockItems) == 0 {
