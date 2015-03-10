@@ -134,7 +134,7 @@ func (this *Product) SetSlug(slug string) {
 	this.Slug = slug
 }
 
-func (this *Product) GetErrors() *ValidatorErrors {
+func (this *Product) Errors() *ValidatorErrors {
 	if productErrors.IsEmpty() {
 		return nil
 	}

@@ -146,7 +146,7 @@ func (this *ProductInteractor) GetCreateResponse(params ResponseParameters) (int
 
 	if err := this.ProductRepository.Create(product); err != nil {
 		if err == domain.ErrNotValid {
-			return struct{}{}, product.GetErrors(), err
+			return struct{}{}, product.Errors(), err
 		}
 		return struct{}{}, nil, err
 	}

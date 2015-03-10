@@ -49,8 +49,8 @@ func TestProductValidator(t *testing.T) {
 		t.Error("Product should be invalid")
 	}
 
-	if p.GetErrors().Size() != 4 {
-		t.Errorf("Product should have 4 errors, but has %d", p.GetErrors().Size())
+	if p.Errors().Size() != 4 {
+		t.Errorf("Product should have 4 errors, but has %d", p.Errors().Size())
 	}
 
 	p.Name = "Test Product"
@@ -59,8 +59,8 @@ func TestProductValidator(t *testing.T) {
 		t.Error("Product should be invalid")
 	}
 
-	if p.GetErrors().Size() != 3 {
-		t.Errorf("Product should have 3 errors, but has %d", p.GetErrors().Size())
+	if p.Errors().Size() != 3 {
+		t.Errorf("Product should have 3 errors, but has %d", p.Errors().Size())
 	}
 
 	p.Price = "3"
@@ -69,8 +69,8 @@ func TestProductValidator(t *testing.T) {
 		t.Error("Product should be invalid")
 	}
 
-	if p.GetErrors().Size() != 2 {
-		t.Errorf("Product should have 2 errors, but has %d", p.GetErrors().Size())
+	if p.Errors().Size() != 2 {
+		t.Errorf("Product should have 2 errors, but has %d", p.Errors().Size())
 	}
 
 	p.Slug = "test-product"
@@ -79,8 +79,8 @@ func TestProductValidator(t *testing.T) {
 		t.Error("Product should be invalid")
 	}
 
-	if p.GetErrors().Size() != 1 {
-		t.Errorf("Product should have 1 error, but has %d", p.GetErrors().Size())
+	if p.Errors().Size() != 1 {
+		t.Errorf("Product should have 1 error, but has %d", p.Errors().Size())
 	}
 
 	p.ShippingCategoryId = 3

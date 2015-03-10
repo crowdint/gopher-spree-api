@@ -103,3 +103,42 @@ func TestVariant_NewMasterVariant(t *testing.T) {
 		t.Error("Master positon should be 1, but was", master.Position)
 	}
 }
+
+func TestVariantValidator(t *testing.T) {
+	costPrice := "-1.0"
+	price := -1.0
+
+	variant := &Variant{CostPrice: &costPrice, Price: &price}
+
+	if variant.IsValid() {
+		t.Error("Variant should be invalid")
+	}
+
+	if variant.Errors().Size() != 2 {
+		t.Errorf("Variant should have 2 errors, but has %d", variant.Errors().Size())
+	}
+
+	costPrice = "2.0"
+	variant.CostPrice = &costPrice
+
+	if variant.IsValid() {
+		t.Error("Variant should be invalid")
+	}
+
+	if variant.Errors().Size() != 1 {
+		t.Errorf("Variant should have 1 error, but has %d", variant.Errors().Size())
+	}
+
+	price = 2.59
+	variant.Price = &price
+
+	if !variant.IsValid() {
+		t.Error("Variant should be valid")
+	}
+
+	if variantErrors.Size() != 0 {
+		t.Errorf("Variant should not have errors, but has %d", variantErrors.Size())
+	}
+
+}
+

@@ -140,7 +140,7 @@ func (this *Variant) IsValid() bool {
 	return variantErrors.IsEmpty()
 }
 
-func (this *Variant) GetErrors() *ValidatorErrors {
+func (this *Variant) Errors() *ValidatorErrors {
 	if variantErrors.IsEmpty() {
 		return nil
 	}
@@ -148,11 +148,12 @@ func (this *Variant) GetErrors() *ValidatorErrors {
 	return variantErrors
 }
 
-func (this *Variant) BeforeCreate() (err error) {
+func (this *Variant) BeforeCreate() error {
 	if !this.IsValid() {
-		err = ErrNotValid
+		return ErrNotValid
 	}
-	return
+
+	return nil
 }
 
 func (this *Variant) setCurrency() {

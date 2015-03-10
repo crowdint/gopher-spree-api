@@ -10,9 +10,9 @@ var (
 	ErrNotValid = errors.New("Invalid resource. Please fix errors and try again.")
 )
 
-type Validatorable interface {
+type Validator interface {
 	IsValid() bool
-	GetErrors() *ValidatorErrors
+	Errors() *ValidatorErrors
 }
 
 type ValidatorErrors map[string]string
