@@ -2,6 +2,8 @@ package domain
 
 import (
 	"time"
+
+	. "github.com/crowdint/gopher-spree-api/utils"
 )
 
 type LineItem struct {
@@ -22,17 +24,28 @@ type LineItem struct {
 	UpdatedAt          time.Time `json:"-"`
 
 	Amount              float64 `json:"-" sql:"-"`
-	DisplayAmount       string  `json:"display_amount" sql:"-"` //TODO: implement
+	DisplayAmount       string  `json:"display_amount" sql:"-"`
 	FinalAmount         float64 `json:"total,string" sql:"-"`
-	SingleDisplayAmount string  `json:"single_display_amount" sql:"-"` //TODO: implement
+	SingleDisplayAmount string  `json:"single_display_amount" sql:"-"`
 
 	Adjustments []Adjustment `json:"adjustments"`
 	Variant     *Variant     `json:"variant" sql:"-"`
 }
 
+func (this LineItem) AdjustableId() int64 {
+	return this.Id
+}
+
+func (this LineItem) AdjustableCurrency() string {
+	return this.Currency
+}
+
 func (this *LineItem) AfterFind() (err error) {
 	this.Amount = this.Price * float64(this.Quantity)
-	this.FinalAmount = this.Amount + this.AdjustmentTotal
+	this.FinalAmount = this.Amount + this.AdjustmentTotal //TODO: this should match spree api (rounded).
+
+	this.DisplayAmount = Monetize(this.Amount, this.Currency)
+	this.SingleDisplayAmount = Monetize(this.Price, this.Currency)
 	return
 }
 
@@ -40,6 +53,6 @@ func (this LineItem) TableName() string {
 	return "spree_line_items"
 }
 
-func (this *LineItem) SpreeClass() string {
+func (this LineItem) SpreeClass() string {
 	return "Spree::LineItem"
 }

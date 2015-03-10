@@ -14,8 +14,14 @@ func NewAdjustmentRepository() *AdjustmentRepository {
 	}
 }
 
-func (this *AdjustmentRepository) AllByAdjustable(adjustableId int64, adjustableType string) []domain.Adjustment {
+func (this *AdjustmentRepository) AllByAdjustable(adjustable domain.Adjustable) []domain.Adjustment {
 	adjustments := []domain.Adjustment{}
-	this.All(&adjustments, nil, "adjustable_id = ? AND adjustable_type = ?", adjustableId, adjustableType)
+
+	this.All(&adjustments, nil, "adjustable_id = ? AND adjustable_type = ?", adjustable.AdjustableId(), adjustable.SpreeClass())
+
+	for _, adjustment := range adjustments {
+		adjustment.Adjustable = adjustable
+	}
+
 	return adjustments
 }

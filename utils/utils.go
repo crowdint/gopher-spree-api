@@ -2,6 +2,8 @@ package utils
 
 import (
 	"reflect"
+
+	"github.com/joiggama/money"
 )
 
 func Collect(collection interface{}, fieldName string) (result []interface{}) {
@@ -15,6 +17,10 @@ func Collect(collection interface{}, fieldName string) (result []interface{}) {
 		}
 	}
 	return
+}
+
+func Monetize(value float64, currency string) string {
+	return money.New(value, money.Options{"currency": currency})
 }
 
 func ToMap(collection interface{}, key string, multiple bool) map[int64]interface{} {

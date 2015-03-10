@@ -2,6 +2,8 @@ package domain
 
 import (
 	"time"
+
+	"github.com/crowdint/gopher-spree-api/configs/spree"
 )
 
 type Shipment struct {
@@ -19,14 +21,32 @@ type Shipment struct {
 	StockLocation   StockLocation    `json:"-"`
 	Adjustments     []Adjustment     `json:"adjustments"`
 	ShippingMethods []ShippingMethod `json:"shipping_methods"`
-	ShippingRates   []ShippingRate   `json:"shipping_rates"`
-	Manifest        []InventoryUnit  `json:"shipment_manifest"`
+	ShippingRates   []*ShippingRate  `json:"shipping_rates"`
+	Manifest        []InventoryUnit  `json:"manifest"`
+
+	Order Adjustable `json:"-" sql:"-"`
+}
+
+func (this Shipment) AdjustableId() int64 {
+	return this.Id
+}
+
+func (this Shipment) AdjustableCurrency() string {
+	if this.Order != nil {
+		return this.Order.AdjustableCurrency()
+	}
+
+	return spree.Get(spree.CURRENCY)
+}
+
+func (this Shipment) Currency() string {
+	return this.AdjustableCurrency()
 }
 
 func (this Shipment) TableName() string {
 	return "spree_shipments"
 }
 
-func (this *Shipment) SpreeClass() string {
+func (this Shipment) SpreeClass() string {
 	return "Spree::Shipment"
 }

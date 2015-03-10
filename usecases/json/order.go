@@ -49,17 +49,18 @@ func (this *OrderInteractor) Show(order *domain.Order, u *domain.User) (*domain.
 				variant.StockItems = append(variant.StockItems, &si)
 			}
 
-			variant.SetInventoryValues()
+			variant.SetComputedValues()
 			variant.Images = this.getVariantImages(variant.Id)
 			variant.OptionValues = this.OptionValueRepository.AllByVariantAssociation(&variant)
 
 			(*order.LineItems)[i].Variant = &variant
-			(*order.LineItems)[i].Adjustments = this.AdjustmentRepository.AllByAdjustable(lineItem.Id, lineItem.SpreeClass())
+			(*order.LineItems)[i].Adjustments = this.AdjustmentRepository.AllByAdjustable(lineItem)
 		}
 
 		this.setPayments(order)
-		order.Shipments = this.ShipmentRepository.AllByOrder(order)
-		order.Adjustments = this.AdjustmentRepository.AllByAdjustable(order.Id, order.SpreeClass())
+		this.setShipments(order)
+
+		order.Adjustments = this.AdjustmentRepository.AllByAdjustable(order)
 
 		if err := cache.Set(order); err != nil {
 			log.Println("An error occurred while setting the cache: ", err.Error())
@@ -97,8 +98,9 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, params Respon
 	}
 
 	quantities, err := this.OrderRepository.SumLineItemsQuantityByOrderIds(orderIds)
-	for index, order := range orders {
-		orders[index].Quantity = quantities[order.Id]
+	for _, order := range orders {
+		order.Quantity = quantities[order.Id]
+		order.SetComputedValues()
 		cache.SetWithPrefix("index", order)
 	}
 
@@ -129,11 +131,21 @@ func (this *OrderInteractor) toCacheData(orderSlice []*domain.Order) (ordersCach
 }
 
 func (this *OrderInteractor) setPayments(order *domain.Order) {
-	payments := []domain.Payment{}
+	payments := []*domain.Payment{}
 	this.OrderRepository.All(&payments, map[string]interface{}{
 		"order": "created_at",
 	}, "order_id = ?", order.Id)
+
+	for _, payment := range payments {
+		payment.Order = order
+		payment.SetComputedValues()
+	}
+
 	order.Payments = payments
+}
+
+func (this *OrderInteractor) setShipments(order *domain.Order) {
+	order.Shipments = this.ShipmentRepository.AllByOrder(order)
 }
 
 func (this *OrderInteractor) getVariantImages(variantId int64) []*domain.Asset {

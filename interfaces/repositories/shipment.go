@@ -15,8 +15,8 @@ func NewShipmentRepository() *ShipmentRepository {
 	}
 }
 
-func (this *ShipmentRepository) AllByOrder(order *domain.Order) []domain.Shipment {
-	shipments := []domain.Shipment{}
+func (this *ShipmentRepository) AllByOrder(order *domain.Order) []*domain.Shipment {
+	shipments := []*domain.Shipment{}
 	this.All(&shipments, nil, "order_id = ?", order.Id)
 	lineItemsMap := utils.ToMap(*(order.LineItems), "Id", false)
 
@@ -25,20 +25,20 @@ func (this *ShipmentRepository) AllByOrder(order *domain.Order) []domain.Shipmen
 	inventoryUnitRepository := NewInventoryUnitRepository()
 	adjustmentRepository := NewAdjustmentRepository()
 
-	for i, _ := range shipments {
-		shipments[i].OrderId = order.Number
+	for _, shipment := range shipments {
+		shipment.OrderId = order.Number
 
-		stockLocationRepository.FindByShipmentAssociation(&shipments[i])
-		shipments[i].StockLocationName = shipments[i].StockLocation.Name
+		stockLocationRepository.FindByShipmentAssociation(shipment)
+		shipment.StockLocationName = shipment.StockLocation.Name
 
-		shipments[i].ShippingRates = shippingRateRepository.AllByShipment(&shipments[i])
+		shipment.ShippingRates = shippingRateRepository.AllByShipment(shipment)
 
-		inventoryUnitRepository.AllByShipmentAssociation(&shipments[i])
-		for j := 0; j < len(shipments[i].Manifest); j++ {
-			shipments[i].Manifest[j].Quantity = lineItemsMap[shipments[i].Manifest[j].LineItemId].(domain.LineItem).Quantity
+		inventoryUnitRepository.AllByShipmentAssociation(shipment)
+		for j := 0; j < len(shipment.Manifest); j++ {
+			shipment.Manifest[j].Quantity = lineItemsMap[shipment.Manifest[j].LineItemId].(domain.LineItem).Quantity
 		}
 
-		shipments[i].Adjustments = adjustmentRepository.AllByAdjustable(shipments[i].Id, shipments[i].SpreeClass())
+		shipment.Adjustments = adjustmentRepository.AllByAdjustable(shipment)
 	}
 	return shipments
 }
