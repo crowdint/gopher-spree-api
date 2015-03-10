@@ -54,7 +54,6 @@ type Variant struct {
 }
 
 func NewMasterVariant(product *Product) *Variant {
-	price, err := strconv.ParseFloat(product.Price, 64)
 	position := int64(1)
 
 	variant := &Variant{
@@ -62,15 +61,12 @@ func NewMasterVariant(product *Product) *Variant {
 		Product:   product,
 		ProductId: product.Id,
 		Position:  &position,
+		DefaultPrice: Price{
+			Amount: *product.Price,
+		},
+		Price: product.Price,
 	}
 
-	if err != nil {
-		variant.DefaultPrice = Price{}
-		return variant
-	}
-
-	variant.DefaultPrice = Price{Amount: price}
-	variant.Price = &price
 	return variant
 }
 
@@ -78,6 +74,10 @@ func (this *Variant) AfterFind() (err error) {
 	this.IsDestroyed = !this.DeletedAt.IsZero()
 
 	return
+}
+
+func (this *Variant) Currency() string {
+	return this.CostCurrency
 }
 
 func (this *Variant) SetComputedValues() {

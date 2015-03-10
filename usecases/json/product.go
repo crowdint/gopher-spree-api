@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"strconv"
 
 	"github.com/crowdint/gopher-spree-api/cache"
 	"github.com/crowdint/gopher-spree-api/domain"
@@ -235,10 +234,10 @@ func (this *ProductInteractor) mergeVariants(productSlice []*domain.Product, var
 			variant.Name = product.Name
 
 			if variant.IsMaster {
-				product.Master = *variant
-				product.Price = strconv.FormatFloat(*variant.Price, 'f', 2, 64)
+				product.Master = variant
+				product.SetComputedValues()
 			} else {
-				product.Variants = append(product.Variants, *variant)
+				product.Variants = append(product.Variants, variant)
 			}
 
 			if variant.TotalOnHand != nil {
