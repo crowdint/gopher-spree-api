@@ -240,7 +240,7 @@ func TestProductInteractor_mergeVariants(t *testing.T) {
 	}
 
 	price := 9.99
-	jsonVariantsMap := JsonVariantsMap{
+	variantsMap := VariantsMap{
 		99991: []*domain.Variant{
 			{
 				Id:    99991,

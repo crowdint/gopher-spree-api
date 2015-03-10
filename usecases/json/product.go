@@ -176,7 +176,8 @@ func (this *ProductInteractor) transformToJsonResponse(productModelSlice []*doma
 }
 
 func (this *ProductInteractor) mergeComplementaryValues(productIds []int64, productJsonSlice []*domain.Product) error {
-	variantsMap, err := this.VariantInteractor.GetJsonVariantsMap(productIds)
+	variantsMap, err := this.VariantInteractor.GetVariantsMap(productIds)
+
 	if err != nil {
 		return errors.New("Error getting variants: " + err.Error())
 	}
@@ -217,9 +218,9 @@ func (this *ProductInteractor) getIdSlice(productSlice []*domain.Product) []int6
 	return productIds
 }
 
-func (this *ProductInteractor) mergeVariants(productSlice []*domain.Product, variantsMap JsonVariantsMap) {
+func (this *ProductInteractor) mergeVariants(productSlice []*domain.Product, variantsMap VariantsMap) {
 	for _, product := range productSlice {
-		product.Variants = []domain.Variant{}
+		product.Variants = []*domain.Variant{}
 		var totalOnHand int64
 
 		variantSlice := variantsMap[product.Id]
