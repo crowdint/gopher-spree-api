@@ -99,6 +99,10 @@ SPREE_ASSET_HOST      = ""                                                 # Ass
 SPREE_DEFAULT_STYLES  = "mini,small,product,large"                         # Assets default styles
 ```
 
+# Cross Domain Policy
+X_ORIGIN              = '*'                                                # X-Domain origin header
+X_METHODS             = '*'                                                # X-Domain methods header
+
 ## Build
 
 To build run the entire project:
