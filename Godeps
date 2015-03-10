@@ -3,12 +3,11 @@ github.com/crowdint/gransak                ee0d161c0301cf8ae1c75f955c86d3cffb49b
 github.com/gin-gonic/gin                   v0.5
 github.com/jinzhu/copier                   6e12de4f75d99030d1d4f40d78025562b068d26d
 github.com/jinzhu/gorm                     3e9c2d581fc8f470bcda02e45ae6ee2707af6767
+github.com/joiggama/money                  v1.0.0
 github.com/julienschmidt/httprouter        bde5c16eb82ff15a1734a3818d9b9547065f65b1
 github.com/lib/pq                          go1.0-cutoff
 github.com/yvasiyarov/gorelic              v0.0.6
 github.com/yvasiyarov/go-metrics           c25f46c4b94079672242ec48a545e7ca9ebe3aec
 github.com/yvasiyarov/newrelic_platform_go 13d5af9721f4455a501db543c93827447089bab3
 github.com/bradfitz/gomemcache/memcache    72a68649ba712ee7c4b5b4a943a626bcd7d90eb8
-
-# Tools
 github.com/ddollar/forego                  f0fe9777cd8728b79cb167835667a9c3919177cb
