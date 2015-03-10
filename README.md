@@ -19,8 +19,7 @@ First of all install [gpm](https://github.com/pote/gpm), for osx:
 For *nix:
 
     $ git clone https://github.com/pote/gpm.git && cd gpm
-    $ git checkout v1.3.2 # You can ignore this part if you want to install
-    HEAD.
+    $ git checkout v1.3.2 # You can ignore this part if you want to install HEAD.
     $ ./configure
     $ make install
 
