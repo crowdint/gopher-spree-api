@@ -51,7 +51,7 @@ func productResponse(c *gin.Context, params *RequestParameters) {
 }
 
 func ProductsCreate(c *gin.Context) {
-	params := NewRequestParameters(c)
+	params := NewRequestParameters(c, json.GRANSAK)
 	product, productError, err := json.SpreeResponseFetcher.GetCreateResponse(json.NewProductInteractor(), params)
 
 	if err != nil && productError == nil {

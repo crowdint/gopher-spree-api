@@ -30,7 +30,7 @@ func TestProductsTextSearch(t *testing.T) {
 		c.Set("CurrentUser", user)
 		ProductsIndex(c)
 	})
-	w := PerformRequest(r, method, path)
+	w := PerformRequest(r, method, path, nil)
 
 	if w.Code != http.StatusOK {
 		t.Errorf("Status code should be %d, but was %d", http.StatusOK, w.Code)

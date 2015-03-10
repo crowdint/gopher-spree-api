@@ -62,3 +62,7 @@ func (this *FakeContentInteractor) GetResponse(a, b int, params ResponseParamete
 func (this *FakeContentInteractor) GetShowResponse(a ResponseParameters) (interface{}, error) {
 	return struct{}{}, nil
 }
+
+func (this *FakeContentInteractor) GetCreateResponse(a ResponseParameters) (interface{}, interface{}, error) {
+	return struct{}{}, nil, nil
+}

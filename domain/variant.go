@@ -83,7 +83,7 @@ func (this *Variant) AfterFind() (err error) {
 func (this *Variant) SetComputedValues() {
 	this.setInventoryValues()
 
-	this.DisplayPrice = Monetize(this.Price, this.CostCurrency)
+	this.DisplayPrice = Monetize(*this.Price, this.CostCurrency)
 }
 
 func (this *Variant) setInventoryValues() {

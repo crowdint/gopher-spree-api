@@ -30,7 +30,6 @@ type ResponseParameters interface {
 	GetIntParam(string) (int, error)
 	GetStrParam(string) (string, error)
 	GetQuery() (*RequestQuery, error)
-	GetPermittedParams(string, interface{}) bool
 	BindPermittedParams(string, interface{}) bool
 }
 
