@@ -27,8 +27,7 @@ func init() {
 
 func Proxy() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", configs.Get(configs.X_ORIGIN))
-		c.Writer.Header().Set("Access-Control-Allow-Methods", configs.Get(configs.X_METHODS))
+		setOriginPolicyHeaders(c)
 		if shouldRedirectToOrigin(c) {
 			c.Abort()
 			proxy.ServeHTTP(c.Writer, c.Request)
@@ -57,4 +56,13 @@ func isMissingRoute(method string, url *url.URL) bool {
 	}
 
 	return true
+}
+
+func setOriginPolicyHeaders(c *gin.Context) {
+	originConfig := configs.Get(configs.X_ORIGIN)
+	if originConfig != "" {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", configs.Get(configs.X_ORIGIN))
+		c.Writer.Header().Set("Access-Control-Allow-Methods", configs.Get(configs.X_METHODS))
+	}
+
 }

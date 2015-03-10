@@ -64,7 +64,7 @@ var defaultSettings = map[string]string{
 	ES_PRODUCT_TYPE:           getEnvOrDefault(ES_PRODUCT_TYPE, "product"),
 
 	//Access Control
-	X_ORIGIN:  getEnvOrDefault(X_ORIGIN, "*"),
+	X_ORIGIN:  getEnvOrDefault(X_ORIGIN, ""),
 	X_METHODS: getEnvOrDefault(X_METHODS, "*"),
 }
 
