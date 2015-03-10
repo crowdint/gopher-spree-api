@@ -65,6 +65,10 @@ format:
 
 And install dependencies again.
 
+### Istalling Elastic (Elastic Search)
+Follow the instructions in https://www.elastic.co/guide/en/elasticsearch/reference/current/_installation.html
+
+
 ### Installing Memcached
 To install memcached.
 
@@ -101,15 +105,6 @@ SPREE_ASSET_HOST      = ""                                                 # Ass
 SPREE_DEFAULT_STYLES  = "mini,small,product,large"                         # Assets default styles
 ```
 
-## Testing
-
-You should create a test database. So the following commands should be executed in the spree project:
-
-    $ RAILS_ENV=test rake db:create
-    $ RAILS_ENV=test rake db:migrate
-
-Each test should create and roll back the data used to tests.
-
 ## Build
 
 To build run the entire project:
@@ -129,6 +124,22 @@ following flags:
     $ forego -f <My Procfile> -e <My Envfile>
 
 ## Tests
+
+  You should create a test database. So the following commands should be executed in the spree project:
+
+    $ RAILS_ENV=test rake db:create
+    $ RAILS_ENV=test rake db:migrate
+
+  Also you should index some product test data into Elastic.
+Firs, create the 'test' index:
+
+    curl -XPOST 'http://localhost:9200/test?pretty'
+
+  Then index some data. We provide an example in `test/products.json`:
+
+    curl -XPOST 'localhost:9200/test/product/_bulk?pretty' --data-binary @/full_project_path/test/products.json
+
+Each test should create and roll back the data used to tests.
 
   We use the builtin `testing` package. To run the entire test suite:
 

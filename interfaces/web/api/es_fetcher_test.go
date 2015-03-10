@@ -12,7 +12,7 @@ func TestESFetcher_GetProductIds(t *testing.T) {
 		t.Error("An error has ocurred: " + err.Error())
 	}
 
-	_, err = esfetcher.GetProducIds("spree", "product", req)
+	_, err = esfetcher.GetProducIds("test", "product", req)
 	if err != nil {
 		t.Error("An error has ocurred: " + err.Error())
 	}
