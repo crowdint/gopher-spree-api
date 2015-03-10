@@ -3,7 +3,14 @@ package domain
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
+
+	"github.com/crowdint/gopher-spree-api/configs/spree"
+)
+
+var (
+	productErrors *ValidatorErrors
 )
 
 type Product struct {
@@ -34,6 +41,44 @@ type Product struct {
 	MetaTitle     string    `json:"-"`
 }
 
+type PermittedProductParams struct {
+	Id                 int64     `json:"id"`
+	Name               string    `json:"name"`
+	Description        string    `json:"description"`
+	Price              string    `json:"price"`
+	AvailableOn        time.Time `json:"available_on"`
+	MetaDescription    string    `json:"meta_description"`
+	MetaKeyWords       string    `json:"meta_keywords"`
+	ShippingCategoryId int64     `json:"shipping_category_id"`
+	ShippingCategory   string    `json:"shipping_category"`
+}
+
+type ProductParams struct {
+	PermittedProductParams *PermittedProductParams `json:"product"`
+}
+
+func NewProductFromPermittedParams(productParams *ProductParams) *Product {
+	permittedProductParams := productParams.PermittedProductParams
+	if permittedProductParams == nil {
+		return &Product{}
+	}
+
+	product := &Product{
+		Id:                 permittedProductParams.Id,
+		Name:               permittedProductParams.Name,
+		Description:        permittedProductParams.Description,
+		Price:              permittedProductParams.Price,
+		AvailableOn:        permittedProductParams.GetAvailableOn(),
+		Slug:               strings.Trim(permittedProductParams.Name, " "),
+		MetaDescription:    permittedProductParams.MetaDescription,
+		MetaKeyWords:       permittedProductParams.MetaKeyWords,
+		ShippingCategoryId: permittedProductParams.ShippingCategoryId,
+		Promotionable:      true,
+	}
+	product.Master = *NewMasterVariant(product)
+	return product
+}
+
 func (this Product) TableName() string {
 	return "spree_products"
 }
@@ -56,4 +101,67 @@ func (this *Product) Marshal() ([]byte, error) {
 
 func (this *Product) Unmarshal(data []byte) error {
 	return json.Unmarshal(data, this)
+}
+
+func (this *Product) IsValid() bool {
+	productErrors = &ValidatorErrors{}
+
+	if this.Name == "" {
+		productErrors.Add("name", ErrNotBlank.Error())
+	}
+
+	if this.Price == "" && spree.Get(spree.MASTER_PRICE) == "true" {
+		productErrors.Add("price", ErrNotBlank.Error())
+	}
+
+	if this.ShippingCategoryId == 0 {
+		productErrors.Add("shipping_category_id", ErrNotBlank.Error())
+	}
+
+	if len(this.Slug) < 3 {
+		productErrors.Add("slug", ErrTooShort(3).Error())
+	}
+
+	if len(this.MetaKeyWords) > 255 {
+		productErrors.Add("meta_keywords", ErrMaxLen(255).Error())
+	}
+
+	if len(this.MetaTitle) > 255 {
+		productErrors.Add("meta_title", ErrMaxLen(255).Error())
+	}
+
+	return productErrors.IsEmpty()
+}
+
+func (this *Product) SlugCandidates() []interface{} {
+	return []interface{}{
+		this.Name,
+		[]interface{}{this.Name, this.Master.Sku},
+	}
+}
+
+func (this *Product) SetSlug(slug string) {
+	this.Slug = slug
+}
+
+func (this *Product) Errors() *ValidatorErrors {
+	if productErrors.IsEmpty() {
+		return nil
+	}
+
+	return productErrors
+}
+
+func (this *Product) BeforeCreate() (err error) {
+	if !this.IsValid() {
+		err = ErrNotValid
+	}
+	return
+}
+
+func (this *PermittedProductParams) GetAvailableOn() time.Time {
+	if this.AvailableOn.IsZero() {
+		this.AvailableOn = time.Now()
+	}
+	return this.AvailableOn
 }

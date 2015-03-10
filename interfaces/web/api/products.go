@@ -14,6 +14,8 @@ func init() {
 		products.GET("", ProductsIndex)
 		products.GET("/", ProductsIndex)
 		products.GET("/:product_id", ProductsShow)
+		products.POST("", authorizeProduct, ProductsCreate)
+		products.POST("/", authorizeProduct, ProductsCreate)
 	}
 }
 
@@ -46,4 +48,27 @@ func productResponse(c *gin.Context, params *RequestParameters) {
 	} else {
 		c.JSON(200, products)
 	}
+}
+
+func ProductsCreate(c *gin.Context) {
+	params := NewRequestParameters(c, json.GRANSAK)
+	product, productError, err := json.SpreeResponseFetcher.GetCreateResponse(json.NewProductInteractor(), params)
+
+	if err != nil && productError == nil {
+		c.JSON(422, gin.H{"error": err.Error()})
+	} else if productError != nil {
+		c.JSON(422, gin.H{"error": err.Error(), "errors": productError})
+	} else {
+		c.JSON(201, product)
+	}
+}
+
+func authorizeProduct(c *gin.Context) {
+	user := currentUser(c)
+	if user.HasRole("admin") {
+		c.Next()
+		return
+	}
+
+	unauthorized(c, "You are not authorized to perform that action.")
 }

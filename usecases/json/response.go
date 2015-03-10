@@ -30,12 +30,14 @@ type ResponseParameters interface {
 	GetIntParam(string) (int, error)
 	GetStrParam(string) (string, error)
 	GetQuery() (*RequestQuery, error)
+	BindPermittedParams(string, interface{}) bool
 }
 
 type ContentInteractor interface {
 	GetTotalCount(ResponseParameters) (int64, error)
 	GetResponse(int, int, ResponseParameters) (ContentResponse, error)
 	GetShowResponse(ResponseParameters) (interface{}, error)
+	GetCreateResponse(ResponseParameters) (interface{}, interface{}, error)
 }
 
 type ContentResponse interface {
@@ -78,6 +80,10 @@ func (this *ResponseInteractor) GetResponse(contentInteractor ContentInteractor,
 
 func (this *ResponseInteractor) GetShowResponse(contentInteractor ContentInteractor, params ResponseParameters) (interface{}, error) {
 	return contentInteractor.GetShowResponse(params)
+}
+
+func (this *ResponseInteractor) GetCreateResponse(contentInteractor ContentInteractor, params ResponseParameters) (interface{}, interface{}, error) {
+	return contentInteractor.GetCreateResponse(params)
 }
 
 func (this *ResponseInteractor) getContent(paginator *Paginator, params ResponseParameters) (ContentResponse, error) {

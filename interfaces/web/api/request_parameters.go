@@ -89,6 +89,10 @@ func (this *RequestParameters) getParamsFromES(ids []int64) (string, []interface
 	return "id IN (" + strings.Join(paramPlaceHolders, ",") + ")", params
 }
 
+func (this *RequestParameters) BindPermittedParams(key string, obj interface{}) bool {
+	return this.context.Bind(obj)
+}
+
 func getInt(str string) (int, error) {
 	if str == "" {
 		return 0, nil

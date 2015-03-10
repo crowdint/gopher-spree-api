@@ -1,25 +1,34 @@
 package domain
 
 import (
+	"errors"
+	"reflect"
+	"strconv"
 	"time"
 
 	"github.com/crowdint/gopher-spree-api/configs/spree"
 	. "github.com/crowdint/gopher-spree-api/utils"
 )
 
+var (
+	variantErrors *ValidatorErrors
+)
+
 type Variant struct {
-	Id          int64     `json:"id"`
-	CostPrice   string    `json:"cost_price"`
-	Depth       float64   `json:"depth,string"`
-	Height      float64   `json:"height,string"`
-	IsMaster    bool      `json:"is_master"`
-	OptionsText string    `json:"options_text" sql:"-"`
-	Price       float64   `json:"price,string" sql:"-"`
-	ProductId   int64     `json:"product_id"`
-	Sku         string    `json:"sku"`
-	Weight      float64   `json:"weight,string"`
-	Width       float64   `json:"width,string"`
-	DeletedAt   time.Time `json:"-"`
+	Id           int64     `json:"id"`
+	CostPrice    *string   `json:"cost_price"`
+	Depth        float64   `json:"depth,string"`
+	Height       float64   `json:"height,string"`
+	IsMaster     bool      `json:"is_master"`
+	OptionsText  string    `json:"options_text" sql:"-"`
+	Price        *float64  `json:"price,string" sql:"-"`
+	DefaultPrice Price     `json:"-"`
+	ProductId    int64     `json:"product_id"`
+	Product      *Product  `json:"-" sql:"-"`
+	Sku          string    `json:"sku" sql:",unique"`
+	Weight       float64   `json:"weight,string"`
+	Width        float64   `json:"width,string"`
+	DeletedAt    time.Time `json:"-"`
 
 	Description     string `json:"description" sql:"-"`
 	DisplayPrice    string `json:"display_price" sql:"-"`
@@ -35,13 +44,34 @@ type Variant struct {
 	OptionValues []OptionValue `json:"option_values" gorm:"many2many:spree_option_values_variants;"`
 	StockItems   []*StockItem  `json:"-" sql:"-"`
 
-	Position            int64     `json:"-"`
+	Position            *int64    `json:"-"`
 	CostCurrency        string    `json:"-"`
 	TaxCategoryId       int64     `json:"-"`
 	UpdatedAt           time.Time `json:"-"`
 	StockItemsCount     int64     `json:"-"`
 	RealStockItemsCount int64     `json:"-" sql:"-"`
 	Backorderable       bool      `json:"-" sql:"-"`
+}
+
+func NewMasterVariant(product *Product) *Variant {
+	price, err := strconv.ParseFloat(product.Price, 64)
+	position := int64(1)
+
+	variant := &Variant{
+		IsMaster:  true,
+		Product:   product,
+		ProductId: product.Id,
+		Position:  &position,
+	}
+
+	if err != nil {
+		variant.DefaultPrice = Price{}
+		return variant
+	}
+
+	variant.DefaultPrice = Price{Amount: price}
+	variant.Price = &price
+	return variant
 }
 
 func (this *Variant) AfterFind() (err error) {
@@ -53,7 +83,7 @@ func (this *Variant) AfterFind() (err error) {
 func (this *Variant) SetComputedValues() {
 	this.setInventoryValues()
 
-	this.DisplayPrice = Monetize(this.Price, this.CostCurrency)
+	this.DisplayPrice = Monetize(*this.Price, this.CostCurrency)
 }
 
 func (this *Variant) setInventoryValues() {
@@ -86,4 +116,67 @@ func (this *Variant) ShouldTrackInventory() bool {
 
 func (this Variant) TableName() string {
 	return "spree_variants"
+}
+
+func (this *Variant) IsValid() bool {
+	variantErrors = &ValidatorErrors{}
+
+	if this.CostCurrency == "" {
+		this.setCurrency()
+	}
+
+	if this.CostPrice != nil && *this.CostPrice != "" {
+		costPrice, err := strconv.ParseFloat(*this.CostPrice, 64)
+		if costPrice < 0 || err != nil {
+			variantErrors.Add("cost_price", ErrGreaterThanOrEqual(0).Error())
+		}
+	}
+
+	if this.Price != nil && *this.Price < 0 {
+		variantErrors.Add("price", ErrGreaterThanOrEqual(0).Error())
+	}
+
+	return variantErrors.IsEmpty()
+}
+
+func (this *Variant) Errors() *ValidatorErrors {
+	if variantErrors.IsEmpty() {
+		return nil
+	}
+
+	return variantErrors
+}
+
+func (this *Variant) BeforeCreate() error {
+	if !this.IsValid() {
+		return ErrNotValid
+	}
+
+	return nil
+}
+
+func (this *Variant) setCurrency() {
+	this.CostCurrency = spree.Get(spree.CURRENCY)
+	this.DefaultPrice.Currency = this.CostCurrency
+}
+
+func (this *Variant) checkPrice() error {
+	if this.Price == nil && spree.Get(spree.MASTER_PRICE) == "true" {
+		if !(this.Product != nil && this.Product.Master.IsMaster) {
+			return errors.New("No master variant found to infer price")
+		}
+
+		master := this.Product.Master
+		if reflect.DeepEqual(*this, master) {
+			return errors.New("Must supply price for variant or master.price for product.")
+		}
+
+		this.Price = master.Price
+	}
+
+	if this.DefaultPrice.Currency == "" {
+		this.setCurrency()
+	}
+
+	return nil
 }

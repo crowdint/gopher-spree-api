@@ -13,7 +13,7 @@ type VariantInteractor struct {
 
 func NewVariantInteractor() *VariantInteractor {
 	return &VariantInteractor{
-		Repository:            repositories.NewVariantRepo(),
+		Repository:            repositories.NewVariantRepository(),
 		AssetInteractor:       NewAssetInteractor(),
 		OptionValueInteractor: NewOptionValueInteractor(),
 	}

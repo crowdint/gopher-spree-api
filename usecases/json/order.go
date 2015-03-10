@@ -42,7 +42,7 @@ func (this *OrderInteractor) Show(order *domain.Order, u *domain.User) (*domain.
 			variant.Name = product.Name
 			variant.Description = product.Description
 			variant.Slug = product.Slug
-			variant.Price = price.Amount
+			variant.Price = &price.Amount
 
 			for _, stockItem := range stockItemsMap[variant.Id].([]interface{}) {
 				si := stockItem.(domain.StockItem)
@@ -109,6 +109,10 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, params Respon
 
 func (this *OrderInteractor) GetShowResponse(params ResponseParameters) (interface{}, error) {
 	return nil, nil
+}
+
+func (this *OrderInteractor) GetCreateResponse(params ResponseParameters) (interface{}, interface{}, error) {
+	return nil, nil, nil
 }
 
 func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, error) {

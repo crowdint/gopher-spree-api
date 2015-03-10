@@ -9,7 +9,9 @@ type StockItem struct {
 	Backorderable   bool
 	CountOnHand     int64
 	StockLocationId int64
+	StockLocation   *StockLocation `sql:"-"`
 	VariantId       int64
+	Variant         *Variant `sql:"-"`
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 }

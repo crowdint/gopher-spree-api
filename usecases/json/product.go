@@ -28,7 +28,7 @@ func (this ProductResponse) GetTag() string {
 }
 
 type ProductInteractor struct {
-	BaseRepository            *repositories.DbRepository
+	ProductRepository         *repositories.ProductRepository
 	VariantInteractor         *VariantInteractor
 	ProductPropertyInteractor *ProductPropertyInteractor
 	ClassificationInteractor  *ClassificationInteractor
@@ -37,7 +37,7 @@ type ProductInteractor struct {
 
 func NewProductInteractor() *ProductInteractor {
 	return &ProductInteractor{
-		BaseRepository:            repositories.NewDatabaseRepository(),
+		ProductRepository:         repositories.NewProductRepository(),
 		VariantInteractor:         NewVariantInteractor(),
 		ProductPropertyInteractor: NewProductPropertyInteractor(),
 		ClassificationInteractor:  NewClassificationInteractor(),
@@ -55,7 +55,7 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int, params Resp
 	gparams := queryData.Params
 
 	var productModelSlice []*domain.Product
-	err = this.BaseRepository.All(&productModelSlice, map[string]interface{}{
+	err = this.ProductRepository.All(&productModelSlice, map[string]interface{}{
 		"limit":  perPage,
 		"offset": currentPage,
 		"order":  "created_at desc",
@@ -108,7 +108,7 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 	}
 
 	product := &domain.Product{}
-	err = this.BaseRepository.FindBy(product, nil, map[string]interface{}{"id": id})
+	err = this.ProductRepository.FindBy(product, nil, map[string]interface{}{"id": id})
 	if err != nil {
 		return nil, err
 	}
@@ -131,6 +131,37 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 	}
 
 	return productJsonSlice[0], nil
+}
+
+func (this *ProductInteractor) GetCreateResponse(params ResponseParameters) (interface{}, interface{}, error) {
+	productParams := &domain.ProductParams{}
+	ok := params.BindPermittedParams("product", productParams)
+
+	if !ok {
+		return struct{}{}, nil, errors.New("Error occurred while parsing request parameters.")
+	}
+
+	this.setUpShippingCategory(productParams)
+	product := domain.NewProductFromPermittedParams(productParams)
+
+	if err := this.ProductRepository.Create(product); err != nil {
+		if err == domain.ErrNotValid {
+			return struct{}{}, product.Errors(), err
+		}
+		return struct{}{}, nil, err
+	}
+
+	return product, nil, nil
+}
+
+func (this *ProductInteractor) setUpShippingCategory(productParams *domain.ProductParams) {
+	if category := productParams.PermittedProductParams.ShippingCategory; category != "" {
+		shippingCategory := &domain.ShippingCategory{}
+		err := this.ProductRepository.FirstOrCreate(shippingCategory, map[string]interface{}{"name": category})
+		if err == nil {
+			productParams.PermittedProductParams.ShippingCategoryId = shippingCategory.Id
+		}
+	}
 }
 
 func (this *ProductInteractor) transformToJsonResponse(productModelSlice []*domain.Product) ([]*domain.Product, error) {
@@ -204,7 +235,7 @@ func (this *ProductInteractor) mergeVariants(productSlice []*domain.Product, var
 
 			if variant.IsMaster {
 				product.Master = *variant
-				product.Price = strconv.FormatFloat(variant.Price, 'f', 2, 64)
+				product.Price = strconv.FormatFloat(*variant.Price, 'f', 2, 64)
 			} else {
 				product.Variants = append(product.Variants, *variant)
 			}
@@ -281,5 +312,5 @@ func (this *ProductInteractor) GetTotalCount(params ResponseParameters) (int64, 
 	query := queryData.Query
 	gparams := queryData.Params
 
-	return this.BaseRepository.Count(&domain.Product{}, query, gparams)
+	return this.ProductRepository.Count(&domain.Product{}, query, gparams)
 }

@@ -32,7 +32,7 @@ func TestFindOrderWhenOrderIsInContext(t *testing.T) {
 		findOrder(c)
 		ctx = c
 	})
-	w := PerformRequest(r, method, path)
+	w := PerformRequest(r, method, path, nil)
 
 	if w.Code != 200 {
 		t.Errorf("Status code should be 200, but was %d", w.Code)
@@ -68,7 +68,7 @@ func TestFindOrderWhenOrderExists(t *testing.T) {
 		findOrder(c)
 		ctx = c
 	})
-	w := PerformRequest(r, method, path)
+	w := PerformRequest(r, method, path, nil)
 
 	if w.Code != 200 {
 		t.Errorf("Status code should be 200, but was %d", w.Code)
@@ -100,7 +100,7 @@ func TestFindOrderWhenOrderDoesNotExist(t *testing.T) {
 		findOrder(c)
 		ctx = c
 	})
-	w := PerformRequest(r, method, path)
+	w := PerformRequest(r, method, path, nil)
 
 	if w.Code != 404 {
 		t.Errorf("Status code should be 404, but was %d", w.Code)
@@ -172,7 +172,7 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsAdmin(t *testing.T) {
 		authorizeOrders(c)
 		ctx = c
 	})
-	w := PerformRequest(r, method, path)
+	w := PerformRequest(r, method, path, nil)
 
 	if w.Code != 200 {
 		t.Errorf("Status code should be 200, but was %d", w.Code)
@@ -205,7 +205,7 @@ func TestAuthorizeOrdersWhenUserIsSetAndIsNotAdmin(t *testing.T) {
 		authorizeOrders(c)
 		ctx = c
 	})
-	w := PerformRequest(r, method, path)
+	w := PerformRequest(r, method, path, nil)
 
 	if w.Code != 401 {
 		t.Errorf("Status code should be 401, but was %d", w.Code)
@@ -244,7 +244,7 @@ func TestAuthorizeOrderWhenUserIsSetAndIsAdmin(t *testing.T) {
 		authorizeOrder(c)
 		ctx = c
 	})
-	w := PerformRequest(r, method, path)
+	w := PerformRequest(r, method, path, nil)
 
 	if w.Code != 200 {
 		t.Errorf("Status code should be 200, but was %d", w.Code)
@@ -290,7 +290,7 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderBelongsToHim(t *testing.T) {
 		authorizeOrder(c)
 		ctx = c
 	})
-	w := PerformRequest(r, method, path)
+	w := PerformRequest(r, method, path, nil)
 
 	if w.Code != 200 {
 		t.Errorf("Status code should be 200, but was %d", w.Code)
@@ -337,7 +337,7 @@ func TestAuthorizeOrderWhenUserIsNotAdminAndOrderDoesNotBelongToHim(t *testing.T
 		authorizeOrder(c)
 		ctx = c
 	})
-	w := PerformRequest(r, method, path)
+	w := PerformRequest(r, method, path, nil)
 
 	if w.Code != 401 {
 		t.Errorf("Status code should be 401, but was %d", w.Code)

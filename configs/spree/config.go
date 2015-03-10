@@ -14,6 +14,7 @@ const (
 	CURRENCY               = "spree/app_configuration/currency"
 	API_AUTHENTICATION     = "spree/api_configuration/requires_authentication"
 	TRACK_INVENTORY_LEVELS = "spree/app_configuration/track_inventory_levels"
+	MASTER_PRICE           = "spree/app_configuration/require_master_price"
 )
 
 var (
@@ -23,6 +24,7 @@ var (
 		CURRENCY:               getDbOrDefault(CURRENCY, "USD"),
 		API_AUTHENTICATION:     getDbOrDefault(API_AUTHENTICATION, "true"),
 		TRACK_INVENTORY_LEVELS: getDbOrDefault(TRACK_INVENTORY_LEVELS, "true"),
+		MASTER_PRICE:           getDbOrDefault(MASTER_PRICE, "true"),
 	}
 )
 

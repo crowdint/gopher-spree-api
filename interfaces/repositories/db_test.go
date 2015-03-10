@@ -78,14 +78,14 @@ func TestFindBy(t *testing.T) {
 
 	r := NewDatabaseRepository()
 
-	p := &domain.Product{}
+	p := &domain.Product{Name: "Test Product", Price: "12", ShippingCategoryId: 1, Slug: "test-product"}
 
 	Spree_db.Create(p)
 
 	err := r.FindBy(p, nil, nil)
 
 	if err != nil {
-		t.Errorf("DB.All %s", err)
+		t.Errorf("DB.FindBy %s", err.Error())
 	}
 }
 
@@ -98,12 +98,12 @@ func TestFindByWithConditions(t *testing.T) {
 
 	p := &domain.Product{}
 
-	Spree_db.Create(&domain.Product{Id: 1})
+	Spree_db.Create(&domain.Product{Id: 1, Name: "Test Product", Price: "12", ShippingCategoryId: 1, Slug: "test-product"})
 
 	err := r.FindBy(p, nil, map[string]interface{}{"id": 1})
 
 	if err != nil {
-		t.Errorf("DB.All %s", err)
+		t.Errorf("DB.FindBy %s", err.Error())
 	}
 }
 
@@ -116,13 +116,78 @@ func TestFindByWithOptions(t *testing.T) {
 
 	p := &domain.Product{}
 
-	Spree_db.Create(&domain.Product{Id: 1, TaxCategoryId: 1})
+	Spree_db.Create(&domain.Product{Id: 1, TaxCategoryId: 1, Name: "Test Product", Price: "12", ShippingCategoryId: 1, Slug: "test-product"})
 
 	err := r.FindBy(p, map[string]interface{}{
 		"not": Not{Key: "tax_category_id", Values: []interface{}{0}},
 	}, nil)
 
 	if err != nil {
-		t.Errorf("DB.All %s", err)
+		t.Errorf("DB.FindBy %s", err.Error())
+	}
+}
+
+func TestCreate(t *testing.T) {
+	InitDB(true)
+
+	defer ResetDB()
+
+	r := NewDatabaseRepository()
+
+	p := &domain.Product{Name: "Test Product", Price: "12", ShippingCategoryId: 1, Slug: "test-product"}
+
+	err := r.Create(p)
+	if err != nil {
+		t.Errorf("DB.Create %s", err.Error())
+	}
+
+	if p.Id == 0 {
+		t.Errorf("The product was not created in the DB.")
+	}
+}
+
+func TestFirstOrCreate(t *testing.T) {
+	InitDB(true)
+
+	defer ResetDB()
+
+	r := NewDatabaseRepository()
+
+	p := &domain.Product{Price: "12", ShippingCategoryId: 1, Slug: "test-product"}
+
+	err := r.FirstOrCreate(p, map[string]interface{}{"name": "Test Product"})
+	if err != nil {
+		t.Errorf("DB.FirstOrCreate %s", err.Error())
+	}
+
+	if p.Id == 0 {
+		t.Errorf("The product was not created in the DB.")
+	}
+
+	if p.Name != "Test Product" {
+		t.Errorf("The product's name should be Test Product, but was %s.", p.Name)
+	}
+}
+
+func TestCreateWithSlug(t *testing.T) {
+	InitDB(true)
+
+	defer ResetDB()
+
+	r := NewDatabaseRepository()
+
+	p := &domain.Product{Name: "Test Product", Price: "12", ShippingCategoryId: 1, Slug: "test-product"}
+
+	err := r.CreateWithSlug(p)
+	if err != nil {
+		t.Errorf("DB.CreateWithSlug %s", err.Error())
+	}
+
+	if p.Id == 0 {
+		t.Errorf("The product was not created in the DB.")
+	}
+
+	if p.Slug == "" {
+		t.Errorf("The product slug was not set correctly.")
 	}
 }

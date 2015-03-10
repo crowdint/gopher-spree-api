@@ -92,8 +92,10 @@ func TestOrderInteractor_Show(t *testing.T) {
 	repositories.Spree_db.Create(&domain.LineItem{Id: 1, OrderId: 379, VariantId: 1, Quantity: 1})
 	repositories.Spree_db.Create(&domain.LineItem{Id: 2, OrderId: 379, VariantId: 2, Quantity: 1})
 
-	repositories.Spree_db.Create(&domain.Variant{Id: 1, ProductId: 1, CostPrice: "10"})
-	repositories.Spree_db.Create(&domain.Variant{Id: 2, ProductId: 2, CostPrice: "10"})
+	costPrice := "10"
+	price := 10.0
+	repositories.Spree_db.Create(&domain.Variant{Id: 1, ProductId: 1, CostPrice: &costPrice, Price: &price})
+	repositories.Spree_db.Create(&domain.Variant{Id: 2, ProductId: 2, CostPrice: &costPrice, Price: &price})
 
 	repositories.Spree_db.FirstOrCreate(&domain.StockLocation{Id: 1, Active: true})
 

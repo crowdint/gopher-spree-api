@@ -73,6 +73,10 @@ func (this *TaxonomyInteractor) GetTotalCount(param ResponseParameters) (int64, 
 	return this.BaseRepository.Count(domain.Taxonomy{}, query, gparams)
 }
 
+func (this *TaxonomyInteractor) GetCreateResponse(params ResponseParameters) (interface{}, interface{}, error) {
+	return nil, nil, nil
+}
+
 func (this *TaxonomyInteractor) mergeTaxons(taxonomies []*domain.Taxonomy) {
 	taxonomyIds := []int64{}
 	for _, taxonomy := range taxonomies {

@@ -1,11 +1,16 @@
 package json
 
-import "github.com/crowdint/gopher-spree-api/interfaces/repositories"
+import (
+	"encoding/json"
+
+	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+)
 
 type DummyResponseParams struct {
-	currentPage  int
-	perPage      int
-	gransakQuery string
+	currentPage          int
+	perPage              int
+	gransakQuery         string
+	permittedParamsBytes []byte
 }
 
 func (this *DummyResponseParams) GetIntParam(key string) (int, error) {
@@ -26,11 +31,16 @@ func (this *DummyResponseParams) GetQuery() (*RequestQuery, error) {
 	return &RequestQuery{}, nil
 }
 
-func newDummyResponseParams(currentPage, perPage int, gransakQuery string) *DummyResponseParams {
+func (this *DummyResponseParams) BindPermittedParams(key string, obj interface{}) bool {
+	return json.Unmarshal(this.permittedParamsBytes, obj) == nil
+}
+
+func newDummyResponseParams(currentPage, perPage int, gransakQuery string, permittedParamsBytes []byte) *DummyResponseParams {
 	return &DummyResponseParams{
-		currentPage:  currentPage,
-		perPage:      perPage,
-		gransakQuery: gransakQuery,
+		currentPage:          currentPage,
+		perPage:              perPage,
+		gransakQuery:         gransakQuery,
+		permittedParamsBytes: permittedParamsBytes,
 	}
 }
 
@@ -51,4 +61,8 @@ func (this *FakeContentInteractor) GetResponse(a, b int, params ResponseParamete
 
 func (this *FakeContentInteractor) GetShowResponse(a ResponseParameters) (interface{}, error) {
 	return struct{}{}, nil
+}
+
+func (this *FakeContentInteractor) GetCreateResponse(a ResponseParameters) (interface{}, interface{}, error) {
+	return struct{}{}, nil, nil
 }

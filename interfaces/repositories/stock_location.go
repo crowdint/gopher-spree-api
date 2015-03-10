@@ -17,3 +17,14 @@ func NewStockLocationRepository() *StockLocationRepository {
 func (this *StockLocationRepository) FindByShipmentAssociation(shipment *domain.Shipment) {
 	this.Association(shipment, &shipment.StockLocation, "StockLocationId")
 }
+
+func (this *StockLocationRepository) AllBy(query interface{}, values ...interface{}) ([]*domain.StockLocation, error) {
+	stockLocations := []*domain.StockLocation{}
+
+	err := this.All(&stockLocations, nil, query, values...)
+	if err != nil {
+		return stockLocations, err
+	}
+
+	return stockLocations, nil
+}

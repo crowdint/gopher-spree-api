@@ -3,6 +3,8 @@ package json
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/crowdint/gopher-spree-api/cache"
@@ -23,6 +25,126 @@ func TestProductInteractor_ToCacheData(t *testing.T) {
 	if len(cacheSlice) != len(productSlice) {
 		t.Fatalf("The len of cache Slice should be %d, but was %d", len(productSlice), len(cacheSlice))
 	}
+}
+
+func TestProductInteractor_GetCreateResponse_Success(t *testing.T) {
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	defer ResetDB()
+
+	file, err := os.Open("../../test/data/products/with_shipping_category.json")
+	if err != nil {
+		t.Error("An error occured while trying to open JSON file: ", err.Error())
+		return
+	}
+
+	productParams, err := ioutil.ReadAll(file)
+	if err != nil {
+		t.Error("An error occured: ", err.Error())
+	}
+
+	params := newDummyResponseParams(0, 0, "", productParams)
+	productInteractor := NewProductInteractor()
+
+	product, productErrors, err := productInteractor.GetCreateResponse(params)
+	if err != nil {
+		t.Error("An error occurred while getting create response: ", err.Error())
+	}
+
+	if productErrors != nil {
+		t.Error("Product should not have these errors: ", productErrors)
+	}
+
+	if product.(*domain.Product).Id == 0 {
+		t.Error("Product was not created")
+	}
+}
+
+func TestProductInteractor_GetCreateResponse_ErrorParamsParsing(t *testing.T) {
+	file, err := os.Open("../../test/data/products/wrong_params.json")
+	if err != nil {
+		t.Error("An error occured while trying to open JSON file: ", err.Error())
+		return
+	}
+
+	productParams, err := ioutil.ReadAll(file)
+	if err != nil {
+		t.Error("An error occured: ", err.Error())
+	}
+
+	params := newDummyResponseParams(0, 0, "", productParams)
+	productInteractor := NewProductInteractor()
+
+	_, productErrors, err := productInteractor.GetCreateResponse(params)
+	if err == nil {
+		t.Error("GetCreateResponse should have an error")
+	}
+
+	if productErrors != nil {
+		t.Error("Product should not have these errors: ", productErrors)
+	}
+}
+
+func TestProductInteractor_GetCreateResponse_ErrorInvalidProduct(t *testing.T) {
+	file, err := os.Open("../../test/data/products/invalid_product.json")
+	if err != nil {
+		t.Error("An error occured while trying to open JSON file: ", err.Error())
+		return
+	}
+
+	productParams, err := ioutil.ReadAll(file)
+	if err != nil {
+		t.Error("An error occured: ", err.Error())
+	}
+
+	params := newDummyResponseParams(0, 0, "", productParams)
+	productInteractor := NewProductInteractor()
+
+	_, productErrors, err := productInteractor.GetCreateResponse(params)
+	if err == nil {
+		t.Error("GetCreateResponse should have an error")
+	}
+
+	if productErrors == nil {
+		t.Error("Product should have errors: ")
+	}
+}
+
+func TestProductInteractor_SetUpShippingCategory(t *testing.T) {
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	defer ResetDB()
+
+	productParams := &domain.ProductParams{
+		&domain.PermittedProductParams{
+			ShippingCategory: "Test Default",
+		},
+	}
+
+	productInteractor := NewProductInteractor()
+	productInteractor.setUpShippingCategory(productParams)
+
+	shippingCategory := &domain.ShippingCategory{}
+	err := productInteractor.ProductRepository.FindBy(shippingCategory, nil, map[string]interface{}{
+		"name": "Test Default",
+	})
+
+	if err != nil {
+		t.Errorf("An error occurred while getting Shipping Category: %s", err.Error())
+	}
+
+	if productParams.PermittedProductParams.ShippingCategoryId == 0 {
+		t.Error("Shipping Category Id should not be 0")
+	}
+
+	if shippingCategory.Id != productParams.PermittedProductParams.ShippingCategoryId {
+		t.Errorf("Shipping Category Id from Product Params should be %d, but was %d", shippingCategory.Id, productParams.PermittedProductParams.ShippingCategoryId)
+	}
+
 }
 
 func TestProductInteractor_GetMissingProductsFromMissongData(t *testing.T) {
@@ -117,16 +239,19 @@ func TestProductInteractor_mergeVariants(t *testing.T) {
 		},
 	}
 
+	price := 9.99
 	jsonVariantsMap := JsonVariantsMap{
 		99991: []*domain.Variant{
 			{
-				Id: 99991,
+				Id:    99991,
+				Price: &price,
 			},
 		},
 		99992: []*domain.Variant{
 			{
 				Id:       99992,
 				IsMaster: true,
+				Price:    &price,
 			},
 		},
 	}
