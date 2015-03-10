@@ -63,7 +63,7 @@ func NewProductFromPermittedParams(productParams *ProductParams) *Product {
 		return &Product{}
 	}
 
-	p := &Product{
+	product := &Product{
 		Id:                 permittedProductParams.Id,
 		Name:               permittedProductParams.Name,
 		Description:        permittedProductParams.Description,
@@ -75,8 +75,8 @@ func NewProductFromPermittedParams(productParams *ProductParams) *Product {
 		ShippingCategoryId: permittedProductParams.ShippingCategoryId,
 		Promotionable:      true,
 	}
-	p.Master = *NewMasterVariant(p)
-	return p
+	product.Master = *NewMasterVariant(product)
+	return product
 }
 
 func (this Product) TableName() string {
