@@ -34,11 +34,24 @@ func (this *ESQueryGenerator) Parse(index, itype string, r *http.Request) string
 }
 
 func (this *ESQueryGenerator) addToParams(field string, values []string) {
+	if this.isNotValid(field) {
+		return
+	}
+
 	if len(values) == 1 {
-		this.params = append(this.params, field+":"+values[0])
+		value := strings.Replace(values[0], " ", "+", -1)
+		this.params = append(this.params, field+":"+value)
 	} else {
 		for _, value := range values {
+			value = strings.Replace(value, " ", "+", -1)
 			this.params = append(this.params, field+":"+value)
 		}
 	}
+}
+
+func (this *ESQueryGenerator) isNotValid(value string) bool {
+	if value == "token" || value == "page" || value == "per_page" {
+		return true
+	}
+	return false
 }

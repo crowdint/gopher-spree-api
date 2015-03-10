@@ -47,11 +47,12 @@ func Router() *gin.Engine {
 
 func routes() map[string]bool {
 	return map[string]bool{
-		`^` + namespace() + `/api/products(/?)$`:   true,
-		`^` + namespace() + `/api/products/\d+$`:   true,
-		`^` + namespace() + `/api/orders(/?)$`:     false,
-		`^` + namespace() + `/api/orders/\w+$`:     false,
-		`^` + namespace() + `/api/taxonomies(/?)$`: false,
-		`^` + namespace() + `/api/taxons(/?)$`:     false,
+		`^` + namespace() + `/api/products(/?)$`:        true,
+		`^` + namespace() + `/api/products/\d+$`:        true,
+		`^` + namespace() + `/api/orders(/?)$`:          false,
+		`^` + namespace() + `/api/orders/\w+$`:          false,
+		`^` + namespace() + `/api/taxonomies(/?)$`:      false,
+		`^` + namespace() + `/api/taxons(/?)$`:          false,
+		`^` + namespace() + `/api/search/products(/?)$`: false,
 	}
 }

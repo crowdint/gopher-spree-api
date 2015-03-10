@@ -23,6 +23,8 @@ func NewRequestParameters(context *gin.Context, queryType int) *RequestParameter
 type RequestParameters struct {
 	context   *gin.Context
 	queryType int
+	Index     string
+	Type      string
 }
 
 func (this *RequestParameters) GetIntParam(key string) (int, error) {
@@ -78,7 +80,7 @@ func (this *RequestParameters) getParamsFromES(ids []int64) (string, []interface
 		params = append(params, id)
 
 		if configs.Get(configs.DB_ENGINE) == "postgres" {
-			placeHolder = "$" + strconv.Itoa(i)
+			placeHolder = "$" + strconv.Itoa(i+1)
 		}
 
 		paramPlaceHolders = append(paramPlaceHolders, placeHolder)

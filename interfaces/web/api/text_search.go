@@ -16,5 +16,5 @@ func init() {
 func ProductsTextSearch(c *gin.Context) {
 	params := NewRequestParameters(c, json.ELASTIC_SEARCH)
 
-	productShowResponse(c, params)
+	productResponse(c, params)
 }

@@ -20,7 +20,7 @@ func init() {
 func ProductsIndex(c *gin.Context) {
 	params := NewRequestParameters(c, json.GRANSAK)
 
-	productShowResponse(c, params)
+	productResponse(c, params)
 }
 
 func ProductsShow(c *gin.Context) {
@@ -40,7 +40,7 @@ func ProductsShow(c *gin.Context) {
 	}
 }
 
-func productShowResponse(c *gin.Context, params *RequestParameters) {
+func productResponse(c *gin.Context, params *RequestParameters) {
 	if products, err := json.SpreeResponseFetcher.GetResponse(json.NewProductInteractor(), params); err != nil && err.Error() != "Record Not Found" {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	} else {
