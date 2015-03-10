@@ -14,8 +14,8 @@ func init() {
 		products.GET("", ProductsIndex)
 		products.GET("/", ProductsIndex)
 		products.GET("/:product_id", ProductsShow)
-		products.POST("", ProductsCreate)
-		products.POST("/", ProductsCreate)
+		products.POST("", authorizeProduct, ProductsCreate)
+		products.POST("/", authorizeProduct, ProductsCreate)
 	}
 }
 
@@ -61,4 +61,14 @@ func ProductsCreate(c *gin.Context) {
 	} else {
 		c.JSON(201, product)
 	}
+}
+
+func authorizeProduct(c *gin.Context) {
+	user := currentUser(c)
+	if user.HasRole("admin") {
+		c.Next()
+		return
+	}
+
+	unauthorized(c, "You are not authorized to perform that action.")
 }

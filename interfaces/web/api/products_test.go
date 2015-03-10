@@ -95,3 +95,73 @@ func TestProductsCreate(t *testing.T) {
 		t.Errorf("Status code should be %d, but was %d -> %s", http.StatusCreated, w.Code, w.Body.String())
 	}
 }
+
+func TestAuthorizeProducts_AdminUser(t *testing.T) {
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	defer ResetDB()
+
+	user := &domain.User{}
+	user.Roles = []domain.Role{
+		domain.Role{Name: "admin"},
+	}
+
+	repositories.Spree_db.Create(user)
+
+	err := repositories.NewDatabaseRepository().FindBy(user, nil, nil)
+	if err != nil {
+		t.Error("An error occurred: " + err.Error())
+	}
+
+	var ctx *gin.Context
+	r := gin.New()
+
+	method := "POST"
+	path := "/api/products"
+
+	r.POST(path, func(c *gin.Context) {
+		c.Set("CurrentUser", user)
+		authorizeProduct(c)
+		ctx = c
+	})
+	w := PerformRequest(r, method, path, nil)
+
+	if w.Code != 200 {
+		t.Errorf("Status code should be 200, but was %d", w.Code)
+	}
+}
+
+func TestAuthorizeProducts_NormalUser(t *testing.T) {
+	if err := repositories.InitDB(true); err != nil {
+		t.Error("An error has ocurred", err)
+	}
+
+	defer ResetDB()
+
+	user := &domain.User{}
+	repositories.Spree_db.Create(user)
+
+	err := repositories.NewDatabaseRepository().FindBy(user, nil, nil)
+	if err != nil {
+		t.Error("An error occurred: " + err.Error())
+	}
+
+	var ctx *gin.Context
+	r := gin.New()
+
+	method := "POST"
+	path := "/api/products"
+
+	r.POST(path, func(c *gin.Context) {
+		c.Set("CurrentUser", user)
+		authorizeProduct(c)
+		ctx = c
+	})
+	w := PerformRequest(r, method, path, nil)
+
+	if w.Code != 401 {
+		t.Errorf("Status code should be 401, but was %d", w.Code)
+	}
+}
