@@ -61,12 +61,15 @@ func NewMasterVariant(product *Product) *Variant {
 		Product:   product,
 		ProductId: product.Id,
 		Position:  &position,
-		DefaultPrice: Price{
-			Amount: *product.Price,
-		},
-		Price: product.Price,
 	}
 
+	if product.Price == nil {
+		variant.DefaultPrice = Price{}
+		return variant
+	}
+
+	variant.DefaultPrice = Price{Amount: *product.Price}
+	variant.Price = product.Price
 	return variant
 }
 
@@ -182,7 +185,7 @@ func (this *Variant) checkPrice() error {
 		}
 
 		master := this.Product.Master
-		if reflect.DeepEqual(*this, master) {
+		if reflect.DeepEqual(this, master) {
 			return errors.New("Must supply price for variant or master.price for product.")
 		}
 
