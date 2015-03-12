@@ -49,7 +49,7 @@ type Variant struct {
 	TaxCategoryId       int64     `json:"-"`
 	UpdatedAt           time.Time `json:"-"`
 	StockItemsCount     int64     `json:"-"`
-	RealStockItemsCount int64     `json:"-" sql:"-"`
+	RealStockItemsCount *int64    `json:"-" sql:"-"`
 	Backorderable       bool      `json:"-" sql:"-"`
 }
 
@@ -88,25 +88,40 @@ func (this *Variant) SetComputedValues() {
 
 func (this *Variant) setInventoryValues() {
 	if this.ShouldTrackInventory() {
-		for _, stockItem := range this.StockItems {
-			var totalOnHand int64
 
-			if this.TotalOnHand != nil {
-				totalOnHand = (*this.TotalOnHand + stockItem.CountOnHand)
-			} else {
-				totalOnHand = stockItem.CountOnHand
-			}
-
-			this.TotalOnHand = &totalOnHand
-
-			if stockItem.Backorderable {
-				this.IsBackorderable = true
-			}
+		if this.RealStockItemsCount != nil {
+			this.setInventoryValuesFromFields()
+		} else {
+			this.setInventoryValuesFromStockItems()
 		}
+
 		this.InStock = *this.TotalOnHand > 0
 	} else {
 		this.IsBackorderable = true
 		this.InStock = true
+	}
+}
+
+func (this *Variant) setInventoryValuesFromFields() {
+	this.TotalOnHand = this.RealStockItemsCount
+	this.IsBackorderable = this.Backorderable
+}
+
+func (this *Variant) setInventoryValuesFromStockItems() {
+	for _, stockItem := range this.StockItems {
+		var totalOnHand int64
+
+		if this.TotalOnHand != nil {
+			totalOnHand = (*this.TotalOnHand + stockItem.CountOnHand)
+		} else {
+			totalOnHand = stockItem.CountOnHand
+		}
+
+		this.TotalOnHand = &totalOnHand
+
+		if stockItem.Backorderable {
+			this.IsBackorderable = true
+		}
 	}
 }
 
