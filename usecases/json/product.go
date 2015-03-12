@@ -220,7 +220,6 @@ func (this *ProductInteractor) getIdSlice(productSlice []*domain.Product) []int6
 func (this *ProductInteractor) mergeVariants(productSlice []*domain.Product, variantsMap VariantsMap) {
 	for _, product := range productSlice {
 		product.Variants = []*domain.Variant{}
-		var totalOnHand int64
 
 		variantSlice := variantsMap[product.Id]
 
@@ -232,20 +231,18 @@ func (this *ProductInteractor) mergeVariants(productSlice []*domain.Product, var
 			variant.Description = product.Description
 			variant.Slug = product.Slug
 			variant.Name = product.Name
+			variant.SetComputedValues()
 
 			if variant.IsMaster {
 				product.Master = variant
-				product.SetComputedValues()
 			} else {
 				product.Variants = append(product.Variants, variant)
 			}
 
-			if variant.TotalOnHand != nil {
-				totalOnHand += *variant.TotalOnHand
-			}
+			product.TotalOnHand += *variant.TotalOnHand
 		}
 
-		product.TotalOnHand = totalOnHand
+		product.SetComputedValues()
 
 		if len(product.Variants) > 0 {
 			product.HasVariants = true
