@@ -44,10 +44,11 @@ func TestVariantStructure(t *testing.T) {
 }
 
 func TestVariant_NewMasterVariant(t *testing.T) {
+	price := 12.45
 	productWithPrice := &Product{
 		Name:        "Product Name",
 		Description: "Product Description",
-		Price:       "12.45",
+		Price:       &price,
 	}
 
 	master := NewMasterVariant(productWithPrice)
@@ -147,13 +148,14 @@ func TestVariantValidator(t *testing.T) {
 }
 
 func TestVariant_CheckPrice(t *testing.T) {
+	productPrice := 12.79
 	product := &Product{
 		Name:        "Product Test",
 		Description: "Product Description",
-		Price:       "12.79",
+		Price:       &productPrice,
 	}
 
-	product.Master = *NewMasterVariant(product)
+	product.Master = NewMasterVariant(product)
 	variant := Variant{}
 	spree.Set(spree.MASTER_PRICE, "true")
 

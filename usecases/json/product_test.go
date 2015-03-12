@@ -258,7 +258,7 @@ func TestProductInteractor_mergeVariants(t *testing.T) {
 
 	productInteractor := NewProductInteractor()
 
-	productInteractor.mergeVariants(jsonProductSlice, jsonVariantsMap)
+	productInteractor.mergeVariants(jsonProductSlice, variantsMap)
 
 	p2 := jsonProductSlice[0]
 

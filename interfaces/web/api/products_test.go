@@ -47,7 +47,8 @@ func TestProductsShow(t *testing.T) {
 
 	defer ResetDB()
 
-	repositories.Spree_db.Create(&domain.Product{Id: 1, Name: "Test Product", Price: "12", ShippingCategoryId: 1, Slug: "test-product"})
+	productPrice := 12.0
+	repositories.Spree_db.Create(&domain.Product{Id: 1, Name: "Test Product", Price: &productPrice, ShippingCategoryId: 1, Slug: "test-product"})
 
 	r := gin.New()
 

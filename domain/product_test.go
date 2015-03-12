@@ -19,22 +19,24 @@ func TestProductStructure(t *testing.T) {
 
 	someTime := time.Date(2013, 10, 10, 0, 0, 0, 0, time.UTC)
 
+	price := 10.0
+
 	product := Product{
 		Name:               "Product1",
 		Id:                 1,
 		Description:        "A prodcut",
 		Slug:               "product1",
+		Master:             &Variant{},
 		MetaDescription:    "...",
 		MetaKeyWords:       "...",
 		AvailableOn:        someTime,
 		ShippingCategoryId: 1,
-		Price:              10,
+		Price:              &price,
 		DisplayPrice:       "$10.00",
 		TaxonIds:           []int{1, 10},
 		TotalOnHand:        10,
 		HasVariants:        true,
-		Master:             Variant{},
-		Variants:           []Variant{},
+		Variants:           make([]*Variant, 0),
 		OptionTypes:        []OptionType{},
 		ProductProperties:  []ProductProperty{},
 		Classifications:    []Classification{},
@@ -64,7 +66,8 @@ func TestProductValidator(t *testing.T) {
 		t.Errorf("Product should have 3 errors, but has %d", p.Errors().Size())
 	}
 
-	p.Price = "3"
+	price := 3.0
+	p.Price = &price
 
 	if p.IsValid() {
 		t.Error("Product should be invalid")
@@ -99,7 +102,7 @@ func TestNewProductFromPermittedParams(t *testing.T) {
 	permittedProductParams := &PermittedProductParams{
 		Name:               "Test Product",
 		Description:        "Test Description",
-		Price:              "12.40",
+		Price:              12.40,
 		ShippingCategoryId: 3,
 	}
 
@@ -113,7 +116,7 @@ func TestNewProductFromPermittedParams(t *testing.T) {
 		t.Errorf("Product Description should be %s, but was %s", permittedProductParams.Description, product.Description)
 	}
 
-	if product.Price != permittedProductParams.Price {
+	if *product.Price != permittedProductParams.Price {
 		t.Errorf("Product Price should be %s, but was %s", permittedProductParams.Price, product.Price)
 	}
 }
@@ -122,7 +125,7 @@ func TestPermittedParams_GetAvailableOn(t *testing.T) {
 	permittedProductParams := &PermittedProductParams{
 		Name:               "Test Product",
 		Description:        "Test Description",
-		Price:              "12.40",
+		Price:              12.40,
 		ShippingCategoryId: 3,
 	}
 

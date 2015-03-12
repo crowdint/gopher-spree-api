@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"strconv"
 	"testing"
 
 	"github.com/crowdint/gopher-spree-api/domain"
@@ -21,22 +20,22 @@ func TestProductRepository_Create(t *testing.T) {
 	}
 
 	productRepository := NewProductRepository()
+	productPrice := 12.5
 	product := &domain.Product{
 		Name:               "Test Product",
 		Description:        "Test Description",
-		Price:              "12.50",
+		Price:              &productPrice,
 		Slug:               "test-product",
 		ShippingCategoryId: 1,
 	}
 
-	price, err := strconv.ParseFloat(product.Price, 64)
 	position := int64(1)
-	product.Master = domain.Variant{
+	product.Master = &domain.Variant{
 		IsMaster:     true,
-		Price:        &price,
+		Price:        &productPrice,
 		Product:      product,
 		ProductId:    product.Id,
-		DefaultPrice: domain.Price{Amount: price},
+		DefaultPrice: domain.Price{Amount: productPrice},
 		Position:     &position,
 	}
 
