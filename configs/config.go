@@ -28,6 +28,9 @@ const (
 	ES_PRODUCT_TYPE           = "ES_PRODUCT_TYPE"
 
 	PER_PAGE = "PER_PAGE"
+
+	X_ORIGIN  = "X_ORIGIN"
+	X_METHODS = "X_METHODS"
 )
 
 var defaultSettings = map[string]string{
@@ -59,6 +62,10 @@ var defaultSettings = map[string]string{
 	ELASTIC_SEARCH_SERVER_URL: getEnvOrDefault(ELASTIC_SEARCH_SERVER_URL, "http://localhost:9200"),
 	ES_INDEX:                  getEnvOrDefault(ES_INDEX, "spree"),
 	ES_PRODUCT_TYPE:           getEnvOrDefault(ES_PRODUCT_TYPE, "product"),
+
+	//Access Control
+	X_ORIGIN:  getEnvOrDefault(X_ORIGIN, ""),
+	X_METHODS: getEnvOrDefault(X_METHODS, "*"),
 }
 
 func Get(key string) string {

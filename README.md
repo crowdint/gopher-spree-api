@@ -97,6 +97,10 @@ SPREE_URL             = http://localhost:5100                              # Hos
 SPREE_ASSET_PATH      = ":host/spree/products/:asset_id/:style/:filename"  # Assets default path
 SPREE_ASSET_HOST      = ""                                                 # Assets host
 SPREE_DEFAULT_STYLES  = "mini,small,product,large"                         # Assets default styles
+
+# Cross Domain Policy
+X_ORIGIN              = ''                                                 # X-Domain origin header. By default is not allowed.
+X_METHODS             = '*'                                                # X-Domain methods header
 ```
 
 ## Build
