@@ -239,7 +239,9 @@ func (this *ProductInteractor) mergeVariants(productSlice []*domain.Product, var
 				product.Variants = append(product.Variants, variant)
 			}
 
-			product.TotalOnHand += *variant.TotalOnHand
+			if variant.TotalOnHand != nil {
+				product.TotalOnHand += *variant.TotalOnHand
+			}
 		}
 
 		product.SetComputedValues()

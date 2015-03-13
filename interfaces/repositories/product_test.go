@@ -43,10 +43,6 @@ func TestProductRepository_Create(t *testing.T) {
 		t.Error("An error occured while creating the product:", err.Error())
 	}
 
-	if product.Master.Id == 0 {
-		t.Error("Master variant was not created")
-	}
-
 	if len(product.Master.StockItems) == 0 {
 		t.Error("Master should have stock items")
 	}
