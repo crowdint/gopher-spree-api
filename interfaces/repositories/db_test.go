@@ -182,7 +182,8 @@ func TestCreateWithSlug(t *testing.T) {
 	r := NewDatabaseRepository()
 
 	productPrice := 12.0
-	p := &domain.Product{Name: "Test Product", Price: &productPrice, ShippingCategoryId: 1, Slug: "test-product"}
+	v := &domain.Variant{Sku: "test"}
+	p := &domain.Product{Name: "Test Product", Price: &productPrice, ShippingCategoryId: 1, Slug: "test-product", Master: v}
 
 	err := r.CreateWithSlug(p)
 	if err != nil {
