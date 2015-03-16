@@ -6,6 +6,7 @@ import (
 
 	"github.com/crowdint/gopher-spree-api/configs"
 	rsp "github.com/crowdint/gopher-spree-api/usecases/json"
+	"github.com/crowdint/gopher-spree-api/utils"
 	. "github.com/crowdint/gransak"
 
 	"github.com/gin-gonic/gin"
@@ -103,6 +104,7 @@ func getInt(str string) (int, error) {
 
 	number, err := strconv.Atoi(str)
 	if err != nil {
+		utils.LogrusError("GetInt", "GET", err)
 		return 0, err
 	}
 

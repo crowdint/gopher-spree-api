@@ -3,6 +3,7 @@ package json
 import (
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 type OptionValueInteractor struct {
@@ -21,6 +22,8 @@ func (this *OptionValueInteractor) GetJsonOptionValuesMap(variantIds []int64) (O
 
 	optionValues, err := this.Repository.FindByVariantIds(variantIds)
 	if err != nil {
+		utils.LogrusError("GetJsonOptionValuesMap", "GET", err)
+
 		return OptionValuesMap{}, err
 	}
 

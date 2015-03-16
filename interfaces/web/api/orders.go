@@ -1,11 +1,14 @@
 package api
 
 import (
+	"errors"
+
 	"github.com/gin-gonic/gin"
 
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/crowdint/gopher-spree-api/usecases/json"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 func init() {
@@ -27,6 +30,7 @@ func findOrder(c *gin.Context) {
 		})
 
 		if err != nil {
+			utils.LogrusError("findOrder", "GET", err)
 			fail(c, err)
 			return
 		}
@@ -42,13 +46,17 @@ func currentOrder(c *gin.Context) *domain.Order {
 	if err == nil {
 		return order.(*domain.Order)
 	}
+	utils.LogrusError("currentOrder", "GET", err)
 	return nil
 }
 
 func authorizeOrders(c *gin.Context) {
 	user := currentUser(c)
 	if !user.HasRole("admin") {
-		unauthorized(c, "You are not authorized to perform that action.")
+		msg := "You are not authorized to perform that action."
+		err := errors.New(msg)
+		utils.LogrusWarning("authorizeOrders", "GET", err)
+		unauthorized(c, msg)
 		return
 	}
 
@@ -66,7 +74,10 @@ func authorizeOrder(c *gin.Context) {
 	if order != nil && (*order.UserId == user.Id || order.GuestToken == getOrderToken(c)) {
 		c.Next()
 	} else {
-		unauthorized(c, "You are not authorized to perform that action.")
+		msg := "You are not authorized to perform that action."
+		err := errors.New(msg)
+		utils.LogrusWarning("authorizeOrder", "GET", err)
+		unauthorized(c, msg)
 		return
 	}
 }
@@ -78,6 +89,7 @@ func OrdersIndex(c *gin.Context) {
 	if err == nil || len(orders) == 0 {
 		c.JSON(200, orders)
 	} else {
+		utils.LogrusError("OrdersIndex", "GET", err)
 		c.JSON(422, gin.H{"error": err.Error()})
 	}
 }
@@ -88,6 +100,7 @@ func OrdersShow(c *gin.Context) {
 	if err == nil {
 		c.JSON(200, order)
 	} else {
+		utils.LogrusError("OrdersShow", "GET", err)
 		internalServerError(c, err.Error())
 	}
 }

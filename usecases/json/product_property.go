@@ -3,6 +3,7 @@ package json
 import (
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 type ProductPropertyInteractor struct {
@@ -21,6 +22,8 @@ func (this *ProductPropertyInteractor) GetJsonProductPropertiesMap(productIds []
 
 	productProperties, err := this.Repository.FindByProductIds(productIds)
 	if err != nil {
+		utils.LogrusError("GetJsonProductPropertiesMap", "", err)
+
 		return JsonProductPropertiesMap{}, err
 	}
 

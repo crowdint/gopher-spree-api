@@ -6,6 +6,7 @@ import (
 	"github.com/crowdint/gopher-spree-api/configs"
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 type AssetInteractor struct {
@@ -24,6 +25,7 @@ func (this *AssetInteractor) GetJsonAssetsMap(viewableIds []int64) (JsonAssetsMa
 
 	assets, err := this.Repository.FindByViewableIds(viewableIds)
 	if err != nil {
+		utils.LogrusError("GetJsonAssetsMap", "GET", err)
 		return JsonAssetsMap{}, err
 	}
 

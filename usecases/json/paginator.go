@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/crowdint/gopher-spree-api/configs"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 type Paginator struct {
@@ -26,10 +27,14 @@ func (this *Paginator) CalculatePaginationData(contentInteractor ContentInteract
 
 	calculatedPerPage, err := this.calculatePerPage(perPage)
 	if err != nil {
+		utils.LogrusError("CalculatePaginationData", "", err)
+
 		return err
 	}
 	calculatedTotalCount, err := this.calculateTotalCount()
 	if err != nil {
+		utils.LogrusError("CalculatePaginationData", "", err)
+
 		return err
 	}
 
@@ -52,6 +57,8 @@ func (this *Paginator) calculatePerPage(perPage int) (int, error) {
 	if perPage == 0 {
 		perPage, err = this.getPerPageDefault(10)
 		if err != nil {
+			utils.LogrusError("calculatePerPage", "", err)
+
 			return 0, this.getError(err)
 		}
 	}
@@ -70,6 +77,8 @@ func (this *Paginator) getPerPageDefault(def int) (int, error) {
 
 	perPage, err := strconv.Atoi(perPageStr)
 	if err != nil {
+		utils.LogrusError("getPerPageDefault", "", err)
+
 		return 0, err
 	}
 
@@ -79,6 +88,8 @@ func (this *Paginator) getPerPageDefault(def int) (int, error) {
 func (this *Paginator) calculateTotalCount() (int, error) {
 	totalCount, err := this.ContentInteractor.GetTotalCount(this.responseParams)
 	if err != nil {
+		utils.LogrusError("calculateTotalCount", "", err)
+
 		return 0, this.getError(err)
 	}
 

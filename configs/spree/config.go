@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 
 	"github.com/crowdint/gopher-spree-api/configs"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 const (
@@ -104,7 +105,7 @@ func initDbRepo() error {
 	if dbHandler == nil {
 		dbUrl := configs.Get(configs.DB_URL)
 		dbEngine := configs.Get(configs.DB_ENGINE)
-
+		utils.LogrusInfo("initDbRepo", "Initializing database")
 		db, err := gorm.Open(dbEngine, dbUrl)
 		if err != nil {
 			return err
