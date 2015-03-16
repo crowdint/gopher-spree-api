@@ -11,6 +11,7 @@ import (
 	"github.com/crowdint/gopher-spree-api/configs/spree"
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 func Authentication() gin.HandlerFunc {
@@ -41,6 +42,7 @@ func verifySpreeTokenAccess(c *gin.Context, authRequired bool) error {
 	// If spreeToken is empty, check if orderToken is set and action is orders show
 	if spreeToken == "" {
 		if isGuestUser, err = verifyOrderTokenAndAction(c, dbRepo, authRequired); err != nil {
+			utils.LogrusWarning("verifySpreeTokenAccess", "GET", err)
 			return err
 		}
 	}
@@ -48,6 +50,7 @@ func verifySpreeTokenAccess(c *gin.Context, authRequired bool) error {
 	// if user is not guest then find him by spree token
 	if !isGuestUser {
 		if err = findUserBySpreeApiKey(c, dbRepo, user, spreeToken); err != nil {
+			utils.LogrusWarning("verifySpreeTokenAccess", "GET", err)
 			return err
 		}
 	} else {
@@ -68,7 +71,10 @@ func verifyOrderTokenAndAction(c *gin.Context, dbRepo *repositories.DbRepository
 		return true, nil
 	} else {
 		unauthorizedAuthRequiredMsg(c, authRequired)
-		return false, errors.New("Unathorized to perform that action.")
+		msg := "Unathorized to perform that action."
+		err := errors.New(msg)
+		utils.LogrusWarning("verifyOrderTokenAndAction", "GET", err)
+		return false, err
 	}
 
 }
@@ -79,15 +85,21 @@ func verifyOrderTokenAccess(c *gin.Context, dbRepo *repositories.DbRepository, a
 
 	// Return if order token is not provided
 	if orderToken == "" {
+		msg := "Order Token is not present"
+		err := errors.New(msg)
+		utils.LogrusWarning("verifyOrderTokenAccess", "GET", err)
 		unauthorizedAuthRequiredMsg(c, authRequired)
-		return errors.New("Order Token is not present")
+		return errors.New(msg)
 	}
 
 	// Find the order by guest token (order token)
 	order := &domain.Order{}
 	err := dbRepo.FindBy(order, nil, map[string]interface{}{"guest_token": orderToken})
 	if err != nil {
-		unauthorized(c, "You are not authorized to perform that action.")
+		msg := "You are not authorized to perform that action."
+		err := errors.New(msg)
+		utils.LogrusWarning("verifyOrderTokenAccess", "GET", err)
+		unauthorized(c, msg)
 		return err
 	}
 
@@ -95,6 +107,7 @@ func verifyOrderTokenAccess(c *gin.Context, dbRepo *repositories.DbRepository, a
 	orderNumber := getOrderNumber(c.Request.URL.Path)
 	if order.Number != orderNumber {
 		unauthorized(c, "You are not authorized to perform that action.")
+		utils.LogrusWarning("verifyOrderTokenAccess", "GET", errors.New("The order number param is not equal to order's number"))
 		return errors.New("The order number param is not equal to order's number")
 	}
 
@@ -104,9 +117,15 @@ func verifyOrderTokenAccess(c *gin.Context, dbRepo *repositories.DbRepository, a
 
 func unauthorizedAuthRequiredMsg(c *gin.Context, authRequired bool) {
 	if authRequired {
-		unauthorized(c, "You must specify an API key.")
+		msg := "You must specify an API key."
+		err := errors.New(msg)
+		utils.LogrusWarning("unauthorizedAuthRequiredMsg", "GET", err)
+		unauthorized(c, msg)
 	} else {
-		unauthorized(c, "You are not authorized to perform that action.")
+		msg := "You are not authorized to perform that action."
+		err := errors.New(msg)
+		utils.LogrusWarning("unauthorizedAuthRequiredMsg", "GET", err)
+		unauthorized(c, msg)
 	}
 }
 
@@ -119,7 +138,10 @@ func findUserBySpreeApiKey(c *gin.Context, dbRepo *repositories.DbRepository, us
 	err := dbRepo.FindBy(user, nil, map[string]interface{}{"spree_api_key": spreeToken})
 
 	if err != nil {
-		unauthorized(c, "Invalid API key ("+spreeToken+") specified.")
+		msg := "Invalid API key (" + spreeToken + ") specified."
+		err := errors.New(msg)
+		utils.LogrusWarning("findUserBySpreeApiKey", "GET", err)
+		unauthorized(c, msg)
 		return err
 	}
 

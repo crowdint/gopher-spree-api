@@ -7,7 +7,7 @@ import (
 	"github.com/crowdint/gopher-spree-api/configs/spree"
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
-	. "github.com/crowdint/gopher-spree-api/utils"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 type OrderInteractor struct {
@@ -30,6 +30,8 @@ func NewOrderInteractor() *OrderInteractor {
 
 func (this *OrderInteractor) Show(order *domain.Order, u *domain.User) (*domain.Order, error) {
 	if err := cache.Find(order); err != nil {
+		utils.LogrusError("Show", "GET", err)
+
 		this.setComputedValues(order, u)
 
 		variantsMap, productsMap, pricesMap, stockItemsMap := this.getAssociationMaps(order)
@@ -63,6 +65,7 @@ func (this *OrderInteractor) Show(order *domain.Order, u *domain.User) (*domain.
 		order.Adjustments = this.AdjustmentRepository.AllByAdjustable(order)
 
 		if err := cache.Set(order); err != nil {
+			utils.LogrusError("Show", "", err)
 			log.Println("An error occurred while setting the cache: ", err.Error())
 		}
 	}
@@ -83,6 +86,8 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, params Respon
 
 	err = this.OrderRepository.All(&orders, map[string]interface{}{"limit": perPage, "offset": currentPage}, query, gparams)
 	if err != nil {
+		utils.LogrusError("GetResponse", "GET", err)
+
 		return &OrderResponse{}, err
 	}
 
@@ -118,6 +123,8 @@ func (this *OrderInteractor) GetCreateResponse(params ResponseParameters) (inter
 func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, error) {
 	queryData, err := params.GetQuery()
 	if err != nil {
+		utils.LogrusError("GetTotalCount", "GET", err)
+
 		return 0, err
 	}
 
@@ -184,27 +191,27 @@ func (this *OrderInteractor) getAddress(order *domain.Order, id string) *domain.
 }
 
 func (this *OrderInteractor) getAssociationMaps(order *domain.Order) (varm, prom, prim, stim map[int64]interface{}) {
-	variantIds := Collect(*order.LineItems, "VariantId")
+	variantIds := utils.Collect(*order.LineItems, "VariantId")
 	var variants []domain.Variant
 	this.OrderRepository.All(&variants, nil, "id IN(?)", variantIds)
-	varm = ToMap(variants, "Id", false)
+	varm = utils.ToMap(variants, "Id", false)
 
-	productIds := Collect(variants, "ProductId")
+	productIds := utils.Collect(variants, "ProductId")
 	var products []domain.Product
 	this.OrderRepository.All(&products, nil, "id IN(?)", productIds)
-	prom = ToMap(products, "Id", false)
+	prom = utils.ToMap(products, "Id", false)
 
 	var prices []domain.Price
 	this.OrderRepository.All(&prices, nil, "currency = ? AND variant_id IN(?)", spree.Get(spree.CURRENCY), variantIds)
-	prim = ToMap(prices, "VariantId", false)
+	prim = utils.ToMap(prices, "VariantId", false)
 
 	var stockLocations []domain.StockLocation
 	this.OrderRepository.All(&stockLocations, nil, map[string]interface{}{"active": true})
-	stockLocationIds := Collect(stockLocations, "Id")
+	stockLocationIds := utils.Collect(stockLocations, "Id")
 
 	var stockItems []domain.StockItem
 	this.OrderRepository.All(&stockItems, nil, "variant_id IN(?) AND stock_location_id IN(?)", variantIds, stockLocationIds)
-	stim = ToMap(stockItems, "VariantId", true)
+	stim = utils.ToMap(stockItems, "VariantId", true)
 
 	return
 }

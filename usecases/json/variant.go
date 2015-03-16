@@ -3,6 +3,7 @@ package json
 import (
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 type VariantInteractor struct {
@@ -24,11 +25,15 @@ type JsonVariantsMap map[int64][]*domain.Variant
 func (this *VariantInteractor) GetJsonVariantsMap(productIds []int64) (JsonVariantsMap, error) {
 	variants, err := this.Repository.FindByProductIds(productIds)
 	if err != nil {
+		utils.LogrusError("GetJsonVariantsMap", "", err)
+
 		return JsonVariantsMap{}, err
 	}
 
 	variantsJson, err := this.modelsToJsonVariantsMap(variants)
 	if err != nil {
+		utils.LogrusError("GetJsonVariantsMap", "", err)
+
 		return variantsJson, err
 	}
 
@@ -39,11 +44,15 @@ func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*domain.Va
 	variantIds := this.getIdSlice(variantSlice)
 	jsonAssetsMap, err := this.AssetInteractor.GetJsonAssetsMap(variantIds)
 	if err != nil {
+		utils.LogrusError("GetJsonVariantsMap", "", err)
+
 		return JsonVariantsMap{}, err
 	}
 
 	jsonOptionValuesMap, err := this.OptionValueInteractor.GetJsonOptionValuesMap(variantIds)
 	if err != nil {
+		utils.LogrusError("GetJsonVariantsMap", "", err)
+
 		return JsonVariantsMap{}, err
 	}
 

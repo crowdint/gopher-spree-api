@@ -3,6 +3,7 @@ package json
 import (
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 type OptionTypeInteractor struct {
@@ -21,6 +22,8 @@ func (this *OptionTypeInteractor) GetJsonOptionTypesMap(productIds []int64) (Jso
 
 	optionTypes, err := this.Repository.FindByProductIds(productIds)
 	if err != nil {
+		utils.LogrusError("GetJsonOptionTypesMap", "GET", err)
+
 		return JsonOptionTypesMap{}, err
 	}
 

@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/crowdint/gopher-spree-api/configs"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 var (
@@ -19,10 +20,13 @@ func init() {
 	spreeURL, err := url.Parse(configs.Get(configs.SPREE_URL))
 
 	if err != nil {
+		utils.LogrusError("Initialize", "GET", err)
 		panic(err)
 	}
+	utils.LogrusInfo("Initialize", "Request to spreeURL")
 
 	proxy = httputil.NewSingleHostReverseProxy(spreeURL)
+
 }
 
 func Proxy() gin.HandlerFunc {

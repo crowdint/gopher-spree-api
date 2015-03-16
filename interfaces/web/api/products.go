@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/crowdint/gopher-spree-api/usecases/json"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 func init() {
@@ -29,13 +30,13 @@ func ProductsShow(c *gin.Context) {
 	params := NewRequestParameters(c, json.GRANSAK)
 
 	product, err := json.SpreeResponseFetcher.GetShowResponse(json.NewProductInteractor(), params)
-
 	if err == nil {
 		c.JSON(200, product)
 		return
 	}
 
 	if err.Error() == "Record Not Found" {
+		utils.LogrusError("ProductsShow", "GET", err)
 		notFound(c)
 	} else {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -44,6 +45,7 @@ func ProductsShow(c *gin.Context) {
 
 func productResponse(c *gin.Context, params *RequestParameters) {
 	if products, err := json.SpreeResponseFetcher.GetResponse(json.NewProductInteractor(), params); err != nil && err.Error() != "Record Not Found" {
+		utils.LogrusError("productResponse", "GET", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(200, products)
@@ -55,6 +57,7 @@ func ProductsCreate(c *gin.Context) {
 	product, productError, err := json.SpreeResponseFetcher.GetCreateResponse(json.NewProductInteractor(), params)
 
 	if err != nil && productError == nil {
+		utils.LogrusError("ProductsCreate", "POST", err)
 		c.JSON(422, gin.H{"error": err.Error()})
 	} else if productError != nil {
 		c.JSON(422, gin.H{"error": err.Error(), "errors": productError})

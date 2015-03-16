@@ -3,6 +3,7 @@ package json
 import (
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 type TaxonResponse struct {
@@ -36,6 +37,8 @@ func NewTaxonInteractor() *TaxonInteractor {
 func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params ResponseParameters) (ContentResponse, error) {
 	queryData, err := params.GetQuery()
 	if err != nil {
+		utils.LogrusError("GetResponse", "", err)
+
 		return TaxonResponse{}, err
 	}
 
@@ -50,6 +53,8 @@ func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params Respon
 		"order":  "created_at desc",
 	}, query, gparams)
 	if err != nil {
+		utils.LogrusError("GetResponse", "", err)
+
 		return TaxonResponse{}, err
 	}
 
@@ -63,6 +68,8 @@ func (this *TaxonInteractor) GetResponse(currentPage, perPage int, params Respon
 func (this *TaxonInteractor) GetTotalCount(params ResponseParameters) (int64, error) {
 	queryData, err := params.GetQuery()
 	if err != nil {
+		utils.LogrusError("GetResponse", "", err)
+
 		return 0, err
 	}
 

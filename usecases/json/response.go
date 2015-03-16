@@ -2,6 +2,8 @@ package json
 
 import (
 	"errors"
+
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 const (
@@ -55,21 +57,29 @@ func (this *ResponseInteractor) GetResponse(contentInteractor ContentInteractor,
 
 	currentPage, err := params.GetIntParam(PAGE_PARAM)
 	if err != nil {
+		utils.LogrusError("GetResponse", "", err)
+
 		return nil, err
 	}
 
 	perPage, err := params.GetIntParam(PER_PAGE_PARAM)
 	if err != nil {
+		utils.LogrusError("GetResponse", "", err)
+
 		return nil, err
 	}
 
 	err = responsePaginator.CalculatePaginationData(this.ContentInteractor, currentPage, perPage, params)
 	if err != nil {
+		utils.LogrusError("GetResponse", "", err)
+
 		return nil, err
 	}
 
 	content, err := this.getContent(responsePaginator, params)
 	if err != nil {
+		utils.LogrusError("GetResponse", "", err)
+
 		return nil, err
 	}
 
@@ -93,6 +103,8 @@ func (this *ResponseInteractor) getContent(paginator *Paginator, params Response
 		params,
 	)
 	if err != nil {
+		utils.LogrusError("getContent", "", err)
+
 		return nil, err
 	}
 
@@ -114,5 +126,7 @@ func (this *ResponseInteractor) getResponse(paginator *Paginator, contentRespons
 }
 
 func (this *ResponseInteractor) getError(err error) error {
+	utils.LogrusError("getContent", "", errors.New("Response error: "+err.Error()))
+
 	return errors.New("Response error: " + err.Error())
 }

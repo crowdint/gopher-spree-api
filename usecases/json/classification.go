@@ -3,6 +3,7 @@ package json
 import (
 	"github.com/crowdint/gopher-spree-api/domain"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
+	"github.com/crowdint/gopher-spree-api/utils"
 	"github.com/jinzhu/copier"
 )
 
@@ -22,6 +23,8 @@ func (this *ClassificationInteractor) GetJsonClassificationsMap(productIds []int
 
 	taxons, err := this.TaxonRepository.FindByProductIds(productIds)
 	if err != nil {
+		utils.LogrusError("GetJsonClassificationsMap", "GET", err)
+
 		return JsonClassificationsMap{}, err
 	}
 

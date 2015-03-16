@@ -101,6 +101,9 @@ SPREE_DEFAULT_STYLES  = "mini,small,product,large"                         # Ass
 # Cross Domain Policy
 X_ORIGIN              = ''                                                 # X-Domain origin header. By default is not allowed.
 X_METHODS             = '*'                                                # X-Domain methods header
+
+# Log Level
+LOG_LEVEL             = "debug,error,info"
 ```
 
 ## Build

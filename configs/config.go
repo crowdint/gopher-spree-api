@@ -31,6 +31,8 @@ const (
 
 	X_ORIGIN  = "X_ORIGIN"
 	X_METHODS = "X_METHODS"
+
+	LOG_LEVEL = "LOG_LEVEL"
 )
 
 var defaultSettings = map[string]string{
@@ -63,9 +65,8 @@ var defaultSettings = map[string]string{
 	ES_INDEX:                  getEnvOrDefault(ES_INDEX, "spree"),
 	ES_PRODUCT_TYPE:           getEnvOrDefault(ES_PRODUCT_TYPE, "product"),
 
-	//Access Control
-	X_ORIGIN:  getEnvOrDefault(X_ORIGIN, ""),
-	X_METHODS: getEnvOrDefault(X_METHODS, "*"),
+	///Logrus Settings debug, warn, info
+	LOG_LEVEL: getEnvOrDefault(LOG_LEVEL, "debug"),
 }
 
 func Get(key string) string {
