@@ -228,19 +228,9 @@ func TestProductInteractor_getIdSlice(t *testing.T) {
 }
 
 func TestProductInteractor_mergeVariants(t *testing.T) {
-	jsonProductSlice := []*domain.Product{
-		&domain.Product{
-			Id:   99991,
-			Name: "Product1",
-		},
-		&domain.Product{
-			Id:   99992,
-			Name: "Product2",
-		},
-	}
 
 	price := 9.99
-	jsonVariantsMap := JsonVariantsMap{
+	variantsMap := VariantsMap{
 		99991: []*domain.Variant{
 			{
 				Id:    99991,
@@ -256,9 +246,21 @@ func TestProductInteractor_mergeVariants(t *testing.T) {
 		},
 	}
 
+	jsonProductSlice := []*domain.Product{
+		&domain.Product{
+			Id:     99991,
+			Name:   "Product1",
+			Master: variantsMap[99991][0],
+		},
+		&domain.Product{
+			Id:     99992,
+			Name:   "Product2",
+			Master: variantsMap[99992][0],
+		},
+	}
 	productInteractor := NewProductInteractor()
 
-	productInteractor.mergeVariants(jsonProductSlice, jsonVariantsMap)
+	productInteractor.mergeVariants(jsonProductSlice, variantsMap)
 
 	p2 := jsonProductSlice[0]
 

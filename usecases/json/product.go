@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"strconv"
 
 	"github.com/crowdint/gopher-spree-api/cache"
 	"github.com/crowdint/gopher-spree-api/domain"
@@ -176,7 +175,8 @@ func (this *ProductInteractor) transformToJsonResponse(productModelSlice []*doma
 }
 
 func (this *ProductInteractor) mergeComplementaryValues(productIds []int64, productJsonSlice []*domain.Product) error {
-	variantsMap, err := this.VariantInteractor.GetJsonVariantsMap(productIds)
+	variantsMap, err := this.VariantInteractor.GetVariantsMap(productIds)
+
 	if err != nil {
 		return errors.New("Error getting variants: " + err.Error())
 	}
@@ -217,10 +217,9 @@ func (this *ProductInteractor) getIdSlice(productSlice []*domain.Product) []int6
 	return productIds
 }
 
-func (this *ProductInteractor) mergeVariants(productSlice []*domain.Product, variantsMap JsonVariantsMap) {
+func (this *ProductInteractor) mergeVariants(productSlice []*domain.Product, variantsMap VariantsMap) {
 	for _, product := range productSlice {
-		product.Variants = []domain.Variant{}
-		var totalOnHand int64
+		product.Variants = []*domain.Variant{}
 
 		variantSlice := variantsMap[product.Id]
 
@@ -232,20 +231,20 @@ func (this *ProductInteractor) mergeVariants(productSlice []*domain.Product, var
 			variant.Description = product.Description
 			variant.Slug = product.Slug
 			variant.Name = product.Name
+			variant.SetComputedValues()
 
 			if variant.IsMaster {
-				product.Master = *variant
-				product.Price = strconv.FormatFloat(*variant.Price, 'f', 2, 64)
+				product.Master = variant
 			} else {
-				product.Variants = append(product.Variants, *variant)
+				product.Variants = append(product.Variants, variant)
 			}
 
 			if variant.TotalOnHand != nil {
-				totalOnHand += *variant.TotalOnHand
+				product.TotalOnHand += *variant.TotalOnHand
 			}
 		}
 
-		product.TotalOnHand = totalOnHand
+		product.SetComputedValues()
 
 		if len(product.Variants) > 0 {
 			product.HasVariants = true

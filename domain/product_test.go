@@ -6,34 +6,37 @@ import (
 )
 
 func TestProductStructure(t *testing.T) {
-	expected := `{"id":1,"name":"Product1","description":"A prodcut","price":"10.0",` +
-		`"display_price":"$10.0","available_on":"2013-10-10T00:00:00Z","slug":"product1",` +
+	expected := `{"id":1,"name":"Product1","description":"A prodcut","price":"10",` +
+		`"available_on":"2013-10-10T00:00:00Z","slug":"product1",` +
 		`"meta_description":"...","meta_keywords":"...","shipping_category_id":1,` +
 		`"taxon_ids":[1,10],"total_on_hand":10,"has_variants":true,"master":{"id":0,` +
 		`"cost_price":null,"depth":"0","height":"0","is_master":false,"options_text":"",` +
 		`"price":null,"product_id":0,"sku":"","weight":"0","width":"0","description":"",` +
 		`"display_price":"","in_stock":false,"is_backorderable":false,"is_destroyed":false,` +
 		`"name":"","slug":"","total_on_hand":null,"track_inventory":false,"images":null,` +
-		`"option_values":null},"variants":[],"option_types":[],"product_properties":[],"classifications":[]}`
+		`"option_values":null},"variants":[],"option_types":[],"product_properties":[],"classifications":[],` +
+		`"display_price":"$10.00"}`
 
 	someTime := time.Date(2013, 10, 10, 0, 0, 0, 0, time.UTC)
+
+	price := 10.0
 
 	product := Product{
 		Name:               "Product1",
 		Id:                 1,
 		Description:        "A prodcut",
 		Slug:               "product1",
+		Master:             &Variant{},
 		MetaDescription:    "...",
 		MetaKeyWords:       "...",
 		AvailableOn:        someTime,
 		ShippingCategoryId: 1,
-		Price:              "10.0",
-		DisplayPrice:       "$10.0",
+		Price:              &price,
+		DisplayPrice:       "$10.00",
 		TaxonIds:           []int{1, 10},
 		TotalOnHand:        10,
 		HasVariants:        true,
-		Master:             Variant{},
-		Variants:           []Variant{},
+		Variants:           make([]*Variant, 0),
 		OptionTypes:        []OptionType{},
 		ProductProperties:  []ProductProperty{},
 		Classifications:    []Classification{},
@@ -63,7 +66,8 @@ func TestProductValidator(t *testing.T) {
 		t.Errorf("Product should have 3 errors, but has %d", p.Errors().Size())
 	}
 
-	p.Price = "3"
+	price := 3.0
+	p.Price = &price
 
 	if p.IsValid() {
 		t.Error("Product should be invalid")
@@ -98,7 +102,7 @@ func TestNewProductFromPermittedParams(t *testing.T) {
 	permittedProductParams := &PermittedProductParams{
 		Name:               "Test Product",
 		Description:        "Test Description",
-		Price:              "12.40",
+		Price:              12.40,
 		ShippingCategoryId: 3,
 	}
 
@@ -112,7 +116,7 @@ func TestNewProductFromPermittedParams(t *testing.T) {
 		t.Errorf("Product Description should be %s, but was %s", permittedProductParams.Description, product.Description)
 	}
 
-	if product.Price != permittedProductParams.Price {
+	if *product.Price != permittedProductParams.Price {
 		t.Errorf("Product Price should be %s, but was %s", permittedProductParams.Price, product.Price)
 	}
 }
@@ -121,7 +125,7 @@ func TestPermittedParams_GetAvailableOn(t *testing.T) {
 	permittedProductParams := &PermittedProductParams{
 		Name:               "Test Product",
 		Description:        "Test Description",
-		Price:              "12.40",
+		Price:              12.40,
 		ShippingCategoryId: 3,
 	}
 

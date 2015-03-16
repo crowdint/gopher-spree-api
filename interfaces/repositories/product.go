@@ -20,7 +20,7 @@ func (this *ProductRepository) Create(product *domain.Product) (err error) {
 
 	variantRepository := NewVariantRepository()
 	// TODO: AfterCreate for each variant in product.Variants
-	err = variantRepository.AfterCreate(&product.Master)
+	err = variantRepository.AfterCreate(product.Master)
 
 	return
 }

@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestVariantInteractor_GetJsonVariantsMap(t *testing.T) {
+func TestVariantInteractor_GetVariantsMap(t *testing.T) {
 	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
@@ -22,24 +22,24 @@ func TestVariantInteractor_GetJsonVariantsMap(t *testing.T) {
 
 	variantInteractor := NewVariantInteractor()
 
-	variantMap, err := variantInteractor.GetJsonVariantsMap([]int64{1, 2, 3})
+	variantsMap, err := variantInteractor.GetVariantsMap([]int64{1, 2, 3})
 	if err != nil {
 		t.Error("Error: An error has ocurred:", err.Error())
 	}
 
-	nvariants := len(variantMap)
+	nvariants := len(variantsMap)
 
 	if nvariants < 1 {
 		t.Errorf("Wrong number of records %d", nvariants)
 	}
 
-	varray1 := variantMap[1]
+	varray1 := variantsMap[1]
 	if len(varray1) < 1 {
 		t.Error("No variants found")
 	}
 }
 
-func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
+func TestVariantInteractor_modelsToVariantsMap(t *testing.T) {
 	if err := repositories.InitDB(true); err != nil {
 		t.Error("An error has ocurred", err)
 	}
@@ -65,14 +65,14 @@ func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
 
 	variantInteractor := NewVariantInteractor()
 
-	jsonVariantMap, err := variantInteractor.modelsToJsonVariantsMap(variantSlice)
+	variantsMap, err := variantInteractor.modelsToVariantsMap(variantSlice)
 
 	if err != nil {
 		t.Error("Error: something went wrong", err.Error)
 	}
 
-	v1 := jsonVariantMap[10][0]
-	v2 := jsonVariantMap[20][0]
+	v1 := variantsMap[10][0]
+	v2 := variantsMap[20][0]
 
 	if v1 == nil || v2 == nil {
 		t.Error("Error: nil value on map")
@@ -84,23 +84,5 @@ func TestVariantInteractor_modelsToJsonVariantsMap(t *testing.T) {
 
 	if v2.Id != 2 || v2.Sku != "sku0002" || *v2.Price != 10.99 {
 		t.Error("Invalid values for second variant")
-	}
-}
-
-func TestVariantInteractor_toJson(t *testing.T) {
-	price := 9.99
-	variant := &domain.Variant{
-		Id:        1,
-		Sku:       "sku0001",
-		Price:     &price,
-		ProductId: 10,
-	}
-
-	variantInteractor := NewVariantInteractor()
-
-	jsonVariant := variantInteractor.toJson(variant)
-
-	if jsonVariant.Id != 1 || jsonVariant.Sku != "sku0001" || *jsonVariant.Price != 9.99 {
-		t.Error("Invalid values for second domain.Variant")
 	}
 }

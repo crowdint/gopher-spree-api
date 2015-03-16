@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/crowdint/gopher-spree-api/configs/spree"
+	. "github.com/crowdint/gopher-spree-api/utils"
 )
 
 var (
@@ -17,8 +18,7 @@ type Product struct {
 	Id                 int64             `json:"id"`
 	Name               string            `json:"name"`
 	Description        string            `json:"description"`
-	Price              string            `json:"price" sql:"-"`
-	DisplayPrice       string            `json:"display_price" sql:"-"`
+	Price              *float64          `json:"price,string" sql:"-"`
 	AvailableOn        time.Time         `json:"available_on"`
 	Slug               string            `json:"slug"`
 	MetaDescription    string            `json:"meta_description"`
@@ -27,8 +27,8 @@ type Product struct {
 	TaxonIds           []int             `json:"taxon_ids" sql:"-"`
 	TotalOnHand        int64             `json:"total_on_hand" sql:"-"`
 	HasVariants        bool              `json:"has_variants" sql:"-"`
-	Master             Variant           `json:"master"`
-	Variants           []Variant         `json:"variants" sql:"-"`
+	Master             *Variant          `json:"master" sql:"-"`
+	Variants           []*Variant        `json:"variants" sql:"-"`
 	OptionTypes        []OptionType      `json:"option_types" sql:"-"`
 	ProductProperties  []ProductProperty `json:"product_properties" sql:"-"`
 	Classifications    []Classification  `json:"classifications" sql:"-"`
@@ -39,13 +39,19 @@ type Product struct {
 	UpdatedAt     time.Time `json:"-"`
 	Promotionable bool      `json:"-"`
 	MetaTitle     string    `json:"-"`
+
+	DisplayPrice string `json:"display_price" sql:"-"`
+}
+
+func (this *Product) Currency() string {
+	return this.Master.Currency()
 }
 
 type PermittedProductParams struct {
 	Id                 int64     `json:"id"`
 	Name               string    `json:"name"`
 	Description        string    `json:"description"`
-	Price              string    `json:"price"`
+	Price              float64   `json:"price,string"`
 	AvailableOn        time.Time `json:"available_on"`
 	MetaDescription    string    `json:"meta_description"`
 	MetaKeyWords       string    `json:"meta_keywords"`
@@ -67,7 +73,7 @@ func NewProductFromPermittedParams(productParams *ProductParams) *Product {
 		Id:                 permittedProductParams.Id,
 		Name:               permittedProductParams.Name,
 		Description:        permittedProductParams.Description,
-		Price:              permittedProductParams.Price,
+		Price:              &permittedProductParams.Price,
 		AvailableOn:        permittedProductParams.GetAvailableOn(),
 		Slug:               strings.Trim(permittedProductParams.Name, " "),
 		MetaDescription:    permittedProductParams.MetaDescription,
@@ -75,7 +81,7 @@ func NewProductFromPermittedParams(productParams *ProductParams) *Product {
 		ShippingCategoryId: permittedProductParams.ShippingCategoryId,
 		Promotionable:      true,
 	}
-	product.Master = *NewMasterVariant(product)
+	product.Master = NewMasterVariant(product)
 	return product
 }
 
@@ -99,6 +105,11 @@ func (this *Product) Marshal() ([]byte, error) {
 	return json.Marshal(this)
 }
 
+func (this *Product) SetComputedValues() {
+	this.Price = this.Master.Price
+	this.DisplayPrice = Monetize(*this.Price, this.Currency())
+}
+
 func (this *Product) Unmarshal(data []byte) error {
 	return json.Unmarshal(data, this)
 }
@@ -110,7 +121,7 @@ func (this *Product) IsValid() bool {
 		productErrors.Add("name", ErrNotBlank.Error())
 	}
 
-	if this.Price == "" && spree.Get(spree.MASTER_PRICE) == "true" {
+	if this.Price == nil && spree.Get(spree.MASTER_PRICE) == "true" {
 		productErrors.Add("price", ErrNotBlank.Error())
 	}
 

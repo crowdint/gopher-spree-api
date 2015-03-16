@@ -19,78 +19,48 @@ func NewVariantInteractor() *VariantInteractor {
 	}
 }
 
-type JsonVariantsMap map[int64][]*domain.Variant
+type VariantsMap map[int64][]*domain.Variant
 
-func (this *VariantInteractor) GetJsonVariantsMap(productIds []int64) (JsonVariantsMap, error) {
+func (this *VariantInteractor) GetVariantsMap(productIds []int64) (VariantsMap, error) {
 	variants, err := this.Repository.FindByProductIds(productIds)
 	if err != nil {
-		return JsonVariantsMap{}, err
+		return VariantsMap{}, err
 	}
 
-	variantsJson, err := this.modelsToJsonVariantsMap(variants)
+	variantsMap, err := this.modelsToVariantsMap(variants)
 	if err != nil {
-		return variantsJson, err
+		return variantsMap, err
 	}
 
-	return variantsJson, nil
+	return variantsMap, nil
 }
 
-func (this *VariantInteractor) modelsToJsonVariantsMap(variantSlice []*domain.Variant) (JsonVariantsMap, error) {
+func (this *VariantInteractor) modelsToVariantsMap(variantSlice []*domain.Variant) (VariantsMap, error) {
 	variantIds := this.getIdSlice(variantSlice)
 	jsonAssetsMap, err := this.AssetInteractor.GetJsonAssetsMap(variantIds)
 	if err != nil {
-		return JsonVariantsMap{}, err
+		return VariantsMap{}, err
 	}
 
 	jsonOptionValuesMap, err := this.OptionValueInteractor.GetJsonOptionValuesMap(variantIds)
 	if err != nil {
-		return JsonVariantsMap{}, err
+		return VariantsMap{}, err
 	}
 
-	jsonVariantsMap := JsonVariantsMap{}
+	variantsMap := VariantsMap{}
 
 	for _, variant := range variantSlice {
-		variantJson := this.toJson(variant)
+		variant.Images = jsonAssetsMap[variant.Id]
+		variant.OptionValues = jsonOptionValuesMap[variant.Id]
 
-		variantJson.Images = jsonAssetsMap[variant.Id]
-		variantJson.OptionValues = jsonOptionValuesMap[variant.Id]
-
-		if _, exists := jsonVariantsMap[variant.ProductId]; !exists {
-			jsonVariantsMap[variant.ProductId] = []*domain.Variant{}
+		if _, exists := variantsMap[variant.ProductId]; !exists {
+			variantsMap[variant.ProductId] = []*domain.Variant{}
 		}
 
-		jsonVariantsMap[variant.ProductId] = append(jsonVariantsMap[variant.ProductId], variantJson)
-
+		variantsMap[variant.ProductId] = append(variantsMap[variant.ProductId], variant)
 	}
 
-	return jsonVariantsMap, nil
-}
-
-func (this *VariantInteractor) toJson(variant *domain.Variant) *domain.Variant {
-	variantJson := &domain.Variant{
-		Id: variant.Id,
-		//Name: from product
-		Sku:      variant.Sku,
-		Price:    variant.Price,
-		Weight:   variant.Weight,
-		Height:   variant.Height,
-		Width:    variant.Width,
-		Depth:    variant.Depth,
-		IsMaster: variant.IsMaster,
-		//Slug: from product
-		//Description: from product
-		TrackInventory: variant.TrackInventory,
-		CostPrice:      variant.CostPrice,
-		//DisplayPrice:
-		//OptionsText:
-		InStock:         variant.RealStockItemsCount > 0,
-		IsBackorderable: variant.Backorderable,
-		TotalOnHand:     &variant.RealStockItemsCount,
-		IsDestroyed:     !variant.DeletedAt.IsZero(),
-		//OptionValues:
-		//Images:
-	}
-	return variantJson
+	return variantsMap, nil
 }
 
 func (this *VariantInteractor) getIdSlice(variantSlice []*domain.Variant) []int64 {
