@@ -3,6 +3,7 @@ package repositories
 import (
 	"github.com/jinzhu/gorm"
 
+	"github.com/crowdint/gopher-spree-api/configs/spree"
 	"github.com/crowdint/gopher-spree-api/domain"
 )
 
@@ -28,7 +29,7 @@ func (this *VariantRepository) FindByProductIds(productIds []int64) ([]*domain.V
 		Table("spree_variants").
 		Select("spree_variants.*, SUM(count_on_hand) AS real_stock_items_count, spree_stock_items.backorderable, spree_prices.amount price").
 		Joins("INNER JOIN spree_stock_items ON spree_variants.id = spree_stock_items.variant_id INNER JOIN spree_prices ON spree_variants.id = spree_prices.variant_id").
-		Where("spree_prices.currency='USD'"). //TODO: Remove hardcoded currency
+		Where("spree_prices.currency = ?", spree.Get(spree.CURRENCY)).
 		Where("spree_variants.product_id IN (?)", productIds).
 		Group("spree_variants.id, spree_variants, backorderable, price").
 		Scan(&variants)
