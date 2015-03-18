@@ -20,7 +20,7 @@ func init() {
 	spreeURL, err := url.Parse(configs.Get(configs.SPREE_URL))
 
 	if err != nil {
-		utils.LogrusError("Initialize", "GET", err)
+		utils.LogrusError("Initialize", err)
 		panic(err)
 	}
 	utils.LogrusInfo("Initialize", "Request to spreeURL")

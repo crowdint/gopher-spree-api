@@ -22,7 +22,7 @@ func (this *OptionTypeInteractor) GetJsonOptionTypesMap(productIds []int64) (Jso
 
 	optionTypes, err := this.Repository.FindByProductIds(productIds)
 	if err != nil {
-		utils.LogrusError("GetJsonOptionTypesMap", "GET", err)
+		utils.LogrusError("GetJsonOptionTypesMap", err)
 
 		return JsonOptionTypesMap{}, err
 	}

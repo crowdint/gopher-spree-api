@@ -1,8 +1,6 @@
 package utils
 
 import (
-	"fmt"
-
 	"github.com/crowdint/gopher-spree-api/configs"
 	"github.com/sirupsen/logrus"
 )
@@ -17,31 +15,16 @@ const (
 	DebugLevel
 )
 
-func ParseLevel(level string) (Level, error) {
-	switch level {
-	case "warn", "warning":
-		return WarnLevel, nil
-	case "info":
-		return InfoLevel, nil
-	case "debug":
-		return DebugLevel, nil
-	}
-	var l Level
-	return l, fmt.Errorf("not a valid logrus level: %q", level)
-}
-
-func getLogrusLevelDefault(def Level) (Level, error) {
-	logLevelStr := configs.Get(configs.LOG_LEVEL)
-	if logLevelStr == "" {
-		return def, nil
+func getLogrusLevelDefault(def Level) Level {
+	levels := map[string]Level{
+		"warn":    WarnLevel,
+		"warning": WarnLevel,
+		"info":    InfoLevel,
+		"debug":   DebugLevel,
 	}
 
-	logLevel, err := ParseLevel(logLevelStr)
-	if err != nil {
-		return 0, err
-	}
-
-	return logLevel, nil
+	logLevel := levels[configs.Get(configs.LOG_LEVEL)]
+	return logLevel
 }
 
 func init() {
@@ -50,18 +33,17 @@ func init() {
 	}
 }
 
-func LogrusError(fname string, action string, err error) {
-	logLevel, _ := getLogrusLevelDefault(DebugLevel)
+func LogrusError(fname string, err error) {
+	logLevel := getLogrusLevelDefault(DebugLevel)
 	if logLevel != InfoLevel {
 		logr.WithFields(logrus.Fields{
 			"func_name": fname,
-			"Action":    action,
 		}).Errorf(err.Error())
 	}
 }
 
 func LogrusInfo(fname, text string) {
-	logLevel, _ := getLogrusLevelDefault(DebugLevel)
+	logLevel := getLogrusLevelDefault(DebugLevel)
 	if logLevel != WarnLevel {
 		logr.WithFields(logrus.Fields{
 			"func_name": fname,
@@ -69,12 +51,11 @@ func LogrusInfo(fname, text string) {
 	}
 }
 
-func LogrusWarning(fname, action string, err error) {
-	logLevel, _ := getLogrusLevelDefault(DebugLevel)
+func LogrusWarning(fname string, err error) {
+	logLevel := getLogrusLevelDefault(DebugLevel)
 	if logLevel != InfoLevel {
 		logr.WithFields(logrus.Fields{
 			"func_name": fname,
-			"Action":    action,
 		}).Warn(err)
 	}
 }

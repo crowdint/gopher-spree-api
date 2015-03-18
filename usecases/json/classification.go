@@ -23,7 +23,7 @@ func (this *ClassificationInteractor) GetJsonClassificationsMap(productIds []int
 
 	taxons, err := this.TaxonRepository.FindByProductIds(productIds)
 	if err != nil {
-		utils.LogrusError("GetJsonClassificationsMap", "GET", err)
+		utils.LogrusError("GetJsonClassificationsMap", err)
 
 		return JsonClassificationsMap{}, err
 	}

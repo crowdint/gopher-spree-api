@@ -104,7 +104,7 @@ func getInt(str string) (int, error) {
 
 	number, err := strconv.Atoi(str)
 	if err != nil {
-		utils.LogrusError("GetInt", "GET", err)
+		utils.LogrusError("GetInt", err)
 		return 0, err
 	}
 

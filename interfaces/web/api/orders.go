@@ -30,7 +30,7 @@ func findOrder(c *gin.Context) {
 		})
 
 		if err != nil {
-			utils.LogrusError("findOrder", "GET", err)
+			utils.LogrusError("findOrder", err)
 			fail(c, err)
 			return
 		}
@@ -46,7 +46,7 @@ func currentOrder(c *gin.Context) *domain.Order {
 	if err == nil {
 		return order.(*domain.Order)
 	}
-	utils.LogrusError("currentOrder", "GET", err)
+	utils.LogrusError("currentOrder", err)
 	return nil
 }
 
@@ -55,7 +55,7 @@ func authorizeOrders(c *gin.Context) {
 	if !user.HasRole("admin") {
 		msg := "You are not authorized to perform that action."
 		err := errors.New(msg)
-		utils.LogrusWarning("authorizeOrders", "GET", err)
+		utils.LogrusWarning("authorizeOrders", err)
 		unauthorized(c, msg)
 		return
 	}
@@ -76,7 +76,7 @@ func authorizeOrder(c *gin.Context) {
 	} else {
 		msg := "You are not authorized to perform that action."
 		err := errors.New(msg)
-		utils.LogrusWarning("authorizeOrder", "GET", err)
+		utils.LogrusWarning("authorizeOrder", err)
 		unauthorized(c, msg)
 		return
 	}
@@ -89,7 +89,7 @@ func OrdersIndex(c *gin.Context) {
 	if err == nil || len(orders) == 0 {
 		c.JSON(200, orders)
 	} else {
-		utils.LogrusError("OrdersIndex", "GET", err)
+		utils.LogrusError("OrdersIndex", err)
 		c.JSON(422, gin.H{"error": err.Error()})
 	}
 }
@@ -100,7 +100,7 @@ func OrdersShow(c *gin.Context) {
 	if err == nil {
 		c.JSON(200, order)
 	} else {
-		utils.LogrusError("OrdersShow", "GET", err)
+		utils.LogrusError("OrdersShow", err)
 		internalServerError(c, err.Error())
 	}
 }

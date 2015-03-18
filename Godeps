@@ -12,15 +12,4 @@ github.com/yvasiyarov/newrelic_platform_go 13d5af9721f4455a501db543c93827447089b
 github.com/bradfitz/gomemcache/memcache    72a68649ba712ee7c4b5b4a943a626bcd7d90eb8
 github.com/nu7hatch/gouuid                 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
 github.com/ddollar/forego                  f0fe9777cd8728b79cb167835667a9c3919177cb
-
-
-github.com/nu7hatch/gotrail             v0.0.2
-github.com/replicon/fast-archiver       v1.02
-
-github.com/garyburd/redigo/redis        a6a0a737c00caf4d4c2bb589941ace0d688168bb
-
-github.com/go-check/check               64131543e7896d5bcc6bd5a76287eb75ea96c673
-
-code.google.com/p/go.example/hello/...  ae081cd1d6cc
-
 github.com/sirupsen/logrus              2cea0f0d141f56fae06df5b813ec4119d1c8ccbd

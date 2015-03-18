@@ -30,7 +30,7 @@ func NewOrderInteractor() *OrderInteractor {
 
 func (this *OrderInteractor) Show(order *domain.Order, u *domain.User) (*domain.Order, error) {
 	if err := cache.Find(order); err != nil {
-		utils.LogrusError("Show", "GET", err)
+		utils.LogrusError("Show", err)
 
 		this.setComputedValues(order, u)
 
@@ -65,7 +65,7 @@ func (this *OrderInteractor) Show(order *domain.Order, u *domain.User) (*domain.
 		order.Adjustments = this.AdjustmentRepository.AllByAdjustable(order)
 
 		if err := cache.Set(order); err != nil {
-			utils.LogrusError("Show", "", err)
+			utils.LogrusError("Show", err)
 			log.Println("An error occurred while setting the cache: ", err.Error())
 		}
 	}
@@ -86,7 +86,7 @@ func (this *OrderInteractor) GetResponse(currentPage, perPage int, params Respon
 
 	err = this.OrderRepository.All(&orders, map[string]interface{}{"limit": perPage, "offset": currentPage}, query, gparams)
 	if err != nil {
-		utils.LogrusError("GetResponse", "GET", err)
+		utils.LogrusError("GetResponse", err)
 
 		return &OrderResponse{}, err
 	}
@@ -123,7 +123,7 @@ func (this *OrderInteractor) GetCreateResponse(params ResponseParameters) (inter
 func (this *OrderInteractor) GetTotalCount(params ResponseParameters) (int64, error) {
 	queryData, err := params.GetQuery()
 	if err != nil {
-		utils.LogrusError("GetTotalCount", "GET", err)
+		utils.LogrusError("GetTotalCount", err)
 
 		return 0, err
 	}
