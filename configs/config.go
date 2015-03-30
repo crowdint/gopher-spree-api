@@ -1,8 +1,6 @@
 package configs
 
-import (
-	"os"
-)
+import "os"
 
 const (
 	DB_DEBUG      = "DATABASE_DEBUG"
@@ -39,8 +37,8 @@ var defaultSettings = map[string]string{
 	// Database Settings
 	DB_DEBUG:      getEnvOrDefault(DB_DEBUG, "false"),
 	DB_ENGINE:     getEnvOrDefault(DB_ENGINE, "postgres"),
-	DB_URL:        getEnvOrDefault(DB_URL, "dbname=spree_dev sslmode=disable"),
-	TEST_DB_URL:   getEnvOrDefault(TEST_DB_URL, "dbname=spree_test sslmode=disable"),
+	DB_URL:        getEnvOrDefault(DB_URL, "user=aranza password=151879 dbname=spree_dev sslmode=disable"),
+	TEST_DB_URL:   getEnvOrDefault(TEST_DB_URL, "user=aranza password=151879 dbname=spree_test sslmode=disable"),
 	DB_IDLE_CONNS: getEnvOrDefault(DB_IDLE_CONNS, "2"),
 	DB_OPEN_CONNS: getEnvOrDefault(DB_OPEN_CONNS, "5"),
 

@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 func NewESQueryGenerator(serverUrl string) *ESQueryGenerator {
+	utils.LogrusInfo("NewESQueryGenerator", serverUrl)
 	return &ESQueryGenerator{
 		serverUrl:        serverUrl,
 		outgoingTemplate: "%s/%s/%s/_search?q=%s&fields=id",

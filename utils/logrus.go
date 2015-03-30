@@ -17,13 +17,16 @@ const (
 
 func getLogrusLevelDefault(def Level) Level {
 	levels := map[string]Level{
-		"warn":    WarnLevel,
-		"warning": WarnLevel,
-		"info":    InfoLevel,
-		"debug":   DebugLevel,
+		"warn":  WarnLevel,
+		"info":  InfoLevel,
+		"debug": DebugLevel,
 	}
 
-	logLevel := levels[configs.Get(configs.LOG_LEVEL)]
+	logLevel, isLevel := levels[configs.Get(configs.LOG_LEVEL)]
+
+	if !isLevel {
+		return def
+	}
 	return logLevel
 }
 
