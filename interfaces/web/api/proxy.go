@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"net/http/httputil"
 	"net/url"
 	"regexp"
@@ -20,10 +21,10 @@ func init() {
 	spreeURL, err := url.Parse(configs.Get(configs.SPREE_URL))
 
 	if err != nil {
-		utils.LogrusError("Initialize", err)
+		utils.LogrusError(utils.FuncName(), err)
 		panic(err)
 	}
-	utils.LogrusInfo("Initialize", "Request to spreeURL")
+	utils.LogrusInfo(utils.FuncName(), "Request to spreeURL")
 
 	proxy = httputil.NewSingleHostReverseProxy(spreeURL)
 
@@ -49,6 +50,8 @@ func shouldRedirectToOrigin(c *gin.Context) bool {
 }
 
 func isNotRequestToApi(url *url.URL) bool {
+	err := errors.New(url.String())
+	utils.LogrusError(utils.FuncName(), err)
 	return !strings.Contains(url.Path, configs.Get(configs.SPREE_NS)+"/api/")
 }
 
@@ -58,7 +61,9 @@ func isMissingRoute(method string, url *url.URL) bool {
 			return false
 		}
 	}
+	err := errors.New("Method: " + method + "url: " + url.String())
 
+	utils.LogrusError(utils.FuncName(), err)
 	return true
 }
 

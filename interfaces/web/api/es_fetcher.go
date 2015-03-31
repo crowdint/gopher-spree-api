@@ -28,7 +28,7 @@ func (this *ESFetcher) GetProducIds(index, itype string, r *http.Request) ([]int
 
 	resBytes, err := this.doRequest(esquery)
 	if err != nil {
-		utils.LogrusError("GetProducIds", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return []int64{}, err
 	}
@@ -46,7 +46,7 @@ func (this *ESFetcher) GetProducIds(index, itype string, r *http.Request) ([]int
 func (this *ESFetcher) doRequest(esquery string) ([]byte, error) {
 	req, err := http.NewRequest("GET", esquery, nil)
 	if err != nil {
-		utils.LogrusError("doRequest", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return []byte{}, err
 	}
@@ -55,7 +55,7 @@ func (this *ESFetcher) doRequest(esquery string) ([]byte, error) {
 
 	res, err := client.Do(req)
 	if err != nil {
-		utils.LogrusError("doRequest", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return []byte{}, err
 	}
@@ -68,7 +68,7 @@ func (this *ESFetcher) toResponse(resBytes []byte) (*ESResponse, error) {
 
 	err := json.Unmarshal(resBytes, esr)
 	if err != nil {
-		utils.LogrusError("toResponse", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return nil, err
 	}

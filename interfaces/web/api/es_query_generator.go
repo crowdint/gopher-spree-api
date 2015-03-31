@@ -9,7 +9,7 @@ import (
 )
 
 func NewESQueryGenerator(serverUrl string) *ESQueryGenerator {
-	utils.LogrusInfo("NewESQueryGenerator", serverUrl)
+	utils.LogrusInfo(utils.FuncName(), serverUrl)
 	return &ESQueryGenerator{
 		serverUrl:        serverUrl,
 		outgoingTemplate: "%s/%s/%s/_search?q=%s&fields=id",

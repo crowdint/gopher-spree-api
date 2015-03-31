@@ -105,7 +105,7 @@ func initDbRepo() error {
 	if dbHandler == nil {
 		dbUrl := configs.Get(configs.DB_URL)
 		dbEngine := configs.Get(configs.DB_ENGINE)
-		utils.LogrusInfo("initDbRepo", "Initializing database")
+		utils.LogrusInfo(utils.FuncName(), "Initializing database")
 		db, err := gorm.Open(dbEngine, dbUrl)
 		if err != nil {
 			return err

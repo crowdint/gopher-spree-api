@@ -25,7 +25,7 @@ func (this *AssetInteractor) GetJsonAssetsMap(viewableIds []int64) (JsonAssetsMa
 
 	assets, err := this.Repository.FindByViewableIds(viewableIds)
 	if err != nil {
-		utils.LogrusError("GetJsonAssetsMap", err)
+		utils.LogrusError(utils.FuncName(), err)
 		return JsonAssetsMap{}, err
 	}
 

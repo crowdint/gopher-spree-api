@@ -22,7 +22,7 @@ func (this *OptionValueInteractor) GetJsonOptionValuesMap(variantIds []int64) (O
 
 	optionValues, err := this.Repository.FindByVariantIds(variantIds)
 	if err != nil {
-		utils.LogrusError("GetJsonOptionValuesMap", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return OptionValuesMap{}, err
 	}

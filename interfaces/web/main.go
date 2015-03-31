@@ -15,7 +15,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	utils.LogrusInfo("", "Listening and serving HTTP on 0.0.0.0:"+os.Getenv("PORT"))
+	utils.LogrusInfo(utils.FuncName(), "Listening and serving HTTP on 0.0.0.0:"+os.Getenv("PORT"))
 	api.Router().Run("0.0.0.0:" + os.Getenv("PORT"))
 
 }

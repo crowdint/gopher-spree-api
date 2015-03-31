@@ -36,7 +36,7 @@ func ProductsShow(c *gin.Context) {
 	}
 
 	if err.Error() == "Record Not Found" {
-		utils.LogrusError("ProductsShow", err)
+		utils.LogrusError(utils.FuncName(), err)
 		notFound(c)
 	} else {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -45,7 +45,7 @@ func ProductsShow(c *gin.Context) {
 
 func productResponse(c *gin.Context, params *RequestParameters) {
 	if products, err := json.SpreeResponseFetcher.GetResponse(json.NewProductInteractor(), params); err != nil && err.Error() != "Record Not Found" {
-		utils.LogrusError("productResponse", err)
+		utils.LogrusError(utils.FuncName(), err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	} else {
 		c.JSON(200, products)
@@ -57,7 +57,7 @@ func ProductsCreate(c *gin.Context) {
 	product, productError, err := json.SpreeResponseFetcher.GetCreateResponse(json.NewProductInteractor(), params)
 
 	if err != nil && productError == nil {
-		utils.LogrusError("ProductsCreate", err)
+		utils.LogrusError(utils.FuncName(), err)
 		c.JSON(422, gin.H{"error": err.Error()})
 	} else if productError != nil {
 		c.JSON(422, gin.H{"error": err.Error(), "errors": productError})

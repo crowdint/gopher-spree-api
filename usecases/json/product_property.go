@@ -22,7 +22,7 @@ func (this *ProductPropertyInteractor) GetJsonProductPropertiesMap(productIds []
 
 	productProperties, err := this.Repository.FindByProductIds(productIds)
 	if err != nil {
-		utils.LogrusError("GetJsonProductPropertiesMap", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return JsonProductPropertiesMap{}, err
 	}

@@ -49,7 +49,7 @@ func NewProductInteractor() *ProductInteractor {
 func (this *ProductInteractor) GetResponse(currentPage, perPage int, params ResponseParameters) (ContentResponse, error) {
 	queryData, err := params.GetQuery()
 	if err != nil {
-		utils.LogrusError("GetResponse", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return ProductResponse{}, err
 	}
@@ -65,7 +65,7 @@ func (this *ProductInteractor) GetResponse(currentPage, perPage int, params Resp
 	}, query, gparams)
 
 	if err != nil {
-		utils.LogrusError("GetResponse", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return ProductResponse{}, err
 	}
@@ -109,7 +109,7 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 	id, err := params.GetIntParam(ID_PARAM)
 
 	if err != nil {
-		utils.LogrusError("GetShowResponse", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return struct{}{}, errors.New("Invalid parameter type: " + fmt.Sprintf("%v", id))
 	}
@@ -117,7 +117,7 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 	product := &domain.Product{}
 	err = this.ProductRepository.FindBy(product, nil, map[string]interface{}{"id": id})
 	if err != nil {
-		utils.LogrusError("GetShowResponse", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return nil, err
 	}
@@ -132,13 +132,13 @@ func (this *ProductInteractor) GetShowResponse(params ResponseParameters) (inter
 
 	productJsonSlice, err := this.transformToJsonResponse(productModelSlice)
 	if err != nil {
-		utils.LogrusError("GetShowResponse", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return nil, err
 	}
 
 	if err = cache.Set(productJsonSlice[0]); err != nil {
-		utils.LogrusError("GetShowResponse", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		log.Println("An error occurred while setting the cache: ", err.Error())
 	}
@@ -151,7 +151,7 @@ func (this *ProductInteractor) GetCreateResponse(params ResponseParameters) (int
 	ok := params.BindPermittedParams("product", productParams)
 
 	if !ok {
-		utils.LogrusError("GetCreateResponse", errors.New("Error occurred while parsing request parameters."))
+		utils.LogrusError(utils.FuncName(), errors.New("Error occurred while parsing request parameters."))
 
 		return struct{}{}, nil, errors.New("Error occurred while parsing request parameters.")
 	}
@@ -161,11 +161,11 @@ func (this *ProductInteractor) GetCreateResponse(params ResponseParameters) (int
 
 	if err := this.ProductRepository.Create(product); err != nil {
 		if err == domain.ErrNotValid {
-			utils.LogrusError("GetCreateResponse", err)
+			utils.LogrusError(utils.FuncName(), err)
 
 			return struct{}{}, product.Errors(), err
 		}
-		utils.LogrusError("GetCreateResponse", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return struct{}{}, nil, err
 	}
@@ -188,7 +188,7 @@ func (this *ProductInteractor) transformToJsonResponse(productModelSlice []*doma
 
 	err := this.mergeComplementaryValues(productIds, productModelSlice)
 	if err != nil {
-		utils.LogrusError("transformToJsonResponse", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return []*domain.Product{}, err
 	}
@@ -199,27 +199,27 @@ func (this *ProductInteractor) transformToJsonResponse(productModelSlice []*doma
 func (this *ProductInteractor) mergeComplementaryValues(productIds []int64, productJsonSlice []*domain.Product) error {
 	variantsMap, err := this.VariantInteractor.GetJsonVariantsMap(productIds)
 	if err != nil {
-		utils.LogrusError("mergeComplementaryValues", errors.New("Error getting variants: "+err.Error()))
+		utils.LogrusError(utils.FuncName(), errors.New("Error getting variants: "+err.Error()))
 		return errors.New("Error getting variants: " + err.Error())
 	}
 
 	productPropertiesMap, err := this.ProductPropertyInteractor.GetJsonProductPropertiesMap(productIds)
 	if err != nil {
-		utils.LogrusError("mergeComplementaryValues", errors.New("Error getting product properties: "+err.Error()))
+		utils.LogrusError(utils.FuncName(), errors.New("Error getting product properties: "+err.Error()))
 
 		return errors.New("Error getting product properties: " + err.Error())
 	}
 
 	classificationsMap, err := this.ClassificationInteractor.GetJsonClassificationsMap(productIds)
 	if err != nil {
-		utils.LogrusError("mergeComplementaryValues", errors.New("Error getting classifications: "+err.Error()))
+		utils.LogrusError(utils.FuncName(), errors.New("Error getting classifications: "+err.Error()))
 
 		return errors.New("Error getting classifications: " + err.Error())
 	}
 
 	optionTypesMap, err := this.OptionTypeInteractor.GetJsonOptionTypesMap(productIds)
 	if err != nil {
-		utils.LogrusError("mergeComplementaryValues", errors.New("Error getting option types: "+err.Error()))
+		utils.LogrusError(utils.FuncName(), errors.New("Error getting option types: "+err.Error()))
 
 		return errors.New("Error getting option types: " + err.Error())
 	}
@@ -334,7 +334,7 @@ func (this *ProductInteractor) mergeOptionTypes(productSlice []*domain.Product, 
 func (this *ProductInteractor) GetTotalCount(params ResponseParameters) (int64, error) {
 	queryData, err := params.GetQuery()
 	if err != nil {
-		utils.LogrusError("GetTotalCount", err)
+		utils.LogrusError(utils.FuncName(), err)
 
 		return 0, err
 	}

@@ -8,6 +8,7 @@ import (
 
 	"github.com/crowdint/gopher-spree-api/configs"
 	"github.com/crowdint/gopher-spree-api/domain"
+	"github.com/crowdint/gopher-spree-api/utils"
 )
 
 const (
@@ -40,9 +41,11 @@ func getOrderToken(c *gin.Context) string {
 	orderToken := c.Request.Header.Get(SPREE_ORDER_TOKEN_HEADER)
 
 	if orderToken != "" {
+		utils.LogrusInfo(utils.FuncName(), "orderToken= "+orderToken)
 		return orderToken
 	}
 
+	utils.LogrusInfo(utils.FuncName(), c.Request.URL.Query().Get("order_token"))
 	return c.Request.URL.Query().Get("order_token")
 }
 
@@ -50,9 +53,10 @@ func getSpreeToken(c *gin.Context) string {
 	spreeToken := c.Request.Header.Get(SPREE_TOKEN_HEADER)
 
 	if len(spreeToken) > 0 {
+		utils.LogrusInfo(utils.FuncName(), spreeToken)
 		return spreeToken
 	}
-
+	utils.LogrusInfo(utils.FuncName(), c.Request.URL.Query().Get("token"))
 	return c.Request.URL.Query().Get("token")
 }
 
