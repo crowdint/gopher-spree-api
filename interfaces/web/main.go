@@ -6,6 +6,7 @@ import (
 	_ "github.com/crowdint/gopher-spree-api/cache"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/crowdint/gopher-spree-api/interfaces/web/api"
+	_ "github.com/jpfuentes2/go-env/autoload"
 )
 
 func main() {

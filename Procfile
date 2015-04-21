@@ -1,0 +1,1 @@
+web: $GOPATH/bin/web
