@@ -15,7 +15,7 @@ type User struct {
 	CreatedAt           time.Time
 	CurrentSignInAt     time.Time
 	CurrentSignInIp     string
-	DeletedAt           time.Time
+	//DeletedAt           time.Time
 	Email               string
 	EncryptedPassword   string
 	FailedAttempts      int64
