@@ -1,1 +1,1 @@
-web: $GOPATH/bin/web
+web: ./gopher-spree-api-dev
