@@ -8,6 +8,7 @@ import (
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/crowdint/gopher-spree-api/interfaces/web/api"
 	"github.com/crowdint/gopher-spree-api/logger"
+    _ "github.com/jpfuentes2/go-env/autoload"
 )
 
 func main() {

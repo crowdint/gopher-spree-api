@@ -74,52 +74,21 @@ Install dependencies by running:
 
 ### Configuration
 
-There are sane defaults for running this app, but if you need to have
-specific configurations, the following variables will override them:
+1. Check the [defaults](https://github.com/crowdint/gopher-spree-api/blob/master/configs/config.go#L7)
+2. Override your settings in environment variables
+3. For a development environment [copy the example env](https://github.com/crowdint/gopher-spree-api/blob/master/.gitignore) to .env:
 
+```bash
+cp .env.example .env
 ```
-# Database
-DATABASE_DEBUG        = true                                               # Logging enabled
-DATABASE_ENGINE       = postgres                                           # Engine name
-DATABASE_URL          = dbname=spree_dev sslmode=disable                   # Connection string/URL
-TEST_DATABASE_URL     = dbname=spree_test sslmode=disable                  # Test database connection string/URL
-MAX_IDLE_CONNS        = 2                                                  # Max iddle connections
-MAX_OPEN_CONNS        = 5                                                  # Max open connections
-
-
-# New Relic
-NEWRELIC_API_KEY      = ''                                                 # API Key
-NEWRELIC_APP_NAME     = ''                                                 # Application name
-
-# Spree
-SPREE_NAMESPACE       = ''                                                 # Mounted at location (without slashes)
-SPREE_URL             = http://localhost:5100                              # Host and port
-SPREE_ASSET_PATH      = ":host/spree/products/:asset_id/:style/:filename"  # Assets default path
-SPREE_ASSET_HOST      = ""                                                 # Assets host
-SPREE_DEFAULT_STYLES  = "mini,small,product,large"                         # Assets default styles
-
-# Cross Domain Policy
-X_ORIGIN              = ''                                                 # X-Domain origin header. By default is not allowed.
-X_METHODS             = '*'                                                # X-Domain methods header
-```
-
-## Build
-
-To build run the entire project:
-
-    $ go build ./...
 
 ## Run
 
-We use [forego](http://github.com/ddollar/forego) to run the app and
-its services by simply running:
+Simply do a:
 
-    $ forego start
-
-**NOTE**: Use a custom `Procfile` or `Envfile` by specifying the
-following flags:
-
-    $ forego -f <My Procfile> -e <My Envfile>
+```bash
+make run
+```
 
 ## Tests
 
