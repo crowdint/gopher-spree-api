@@ -4,9 +4,9 @@ import (
 	"errors"
 	"strconv"
 
+	"github.com/crowdint/gopher-spree-api/logger"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
-	"github.com/supherman/logger"
 
 	"github.com/crowdint/gopher-spree-api/configs"
 	"github.com/crowdint/gopher-spree-api/slugged"

@@ -6,7 +6,7 @@ import (
 	_ "github.com/crowdint/gopher-spree-api/cache"
 	"github.com/crowdint/gopher-spree-api/interfaces/repositories"
 	"github.com/crowdint/gopher-spree-api/interfaces/web/api"
-	"github.com/supherman/logger"
+	"github.com/crowdint/gopher-spree-api/logger"
 )
 
 func main() {
