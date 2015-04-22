@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strconv"
 
+	"github.com/crowdint/gopher-spree-api/logger"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
 
@@ -51,6 +52,7 @@ func InitDB(testing bool) error {
 
 	dbLog, _ := strconv.ParseBool(configs.Get(configs.DB_DEBUG))
 	db.LogMode(dbLog)
+	db.SetLogger(logger.Get())
 
 	if err != nil {
 		return err

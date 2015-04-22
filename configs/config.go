@@ -31,6 +31,7 @@ const (
 
 	X_ORIGIN  = "X_ORIGIN"
 	X_METHODS = "X_METHODS"
+	LOG_LEVEL = "LOG_LEVEL"
 )
 
 var defaultSettings = map[string]string{
@@ -66,6 +67,8 @@ var defaultSettings = map[string]string{
 	//Access Control
 	X_ORIGIN:  getEnvOrDefault(X_ORIGIN, ""),
 	X_METHODS: getEnvOrDefault(X_METHODS, "*"),
+
+	LOG_LEVEL: getEnvOrDefault(LOG_LEVEL, "debug"),
 }
 
 func Get(key string) string {
